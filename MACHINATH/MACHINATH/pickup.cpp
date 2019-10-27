@@ -5,6 +5,7 @@
 #include "mydirect3d.h"
 #include "transformation.h"
 #include "player.h"
+#include "effect.h"
 
 
 // variable declaration
@@ -60,7 +61,8 @@ void UpdatePickup()
 			// check for collision with player
 			if (BoxCollider::CheckCollision(*pickup[i], *player))
 			{
-				// collided, delete coin
+				// collided, delete coin and play effect
+				PlayEffect(EFFECT_PICKUP_MEDAL, pickup[i]->transform.position);
 				pickup.erase(pickup.begin() + i);
 			}
 		}

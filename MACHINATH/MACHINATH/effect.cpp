@@ -1,5 +1,3 @@
-#include <d3d9.h>
-#include <d3dx9.h>
 #include <vector>
 #include <Effekseer.h>
 #include <EffekseerRendererDX9.h>
@@ -25,7 +23,7 @@
 EFK_CHAR* path[2]
 {
 	(EFK_CHAR*)L"asset/effect/blow.efk",
-	(EFK_CHAR*)L"asset/effect/Sword.efk"
+	(EFK_CHAR*)L"asset/effect/pickup_medal.efk"
 };
 
 
@@ -71,6 +69,11 @@ void InitEffect()
 	// set projection
 	renderer->SetProjectionMatrix(
 		::Effekseer::Matrix44().PerspectiveFovLH(camera->fov, camera->aspect, camera->nearClip, camera->farClip));
+}
+
+void PlayEffect(Effect type, D3DXVECTOR3 position)
+{
+	PlayEffect(type, position.x, position.y, position.z);
 }
 
 void PlayEffect(Effect type, float posX, float posY, float posZ)
