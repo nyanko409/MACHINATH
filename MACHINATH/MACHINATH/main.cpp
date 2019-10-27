@@ -366,7 +366,7 @@ void DrawTriangle()
 	pDevice->SetTexture(0, NULL);
 
 	// draw pot
-	TransformObject(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, deg), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
+	TransformObject(D3DXVECTOR3(-20, 0, 0), D3DXVECTOR3(0, 0, deg), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
 	pot->DrawSubset(0);
 
 	// draw block
@@ -390,7 +390,7 @@ void DrawTriangle()
 	}
 
 	// draw egg
-	TransformObject(D3DXVECTOR3(100, 0, 0), D3DXVECTOR3(0, deg, 0), D3DXVECTOR3(0.5F, 0.5F, 0.5F));
+	TransformObject(D3DXVECTOR3(100, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0.5F, 0.5F, 0.5F));
 	for (DWORD i = 0; i < slime->mesh->numMaterial; i++)
 	{
 		SetMaterial(&(slime->mesh->material[i]));

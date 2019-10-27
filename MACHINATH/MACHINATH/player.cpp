@@ -54,3 +54,8 @@ void DrawPlayer()
 		player->mesh->mesh->DrawSubset(i);
 	}
 }
+
+Player* GetPlayer()
+{
+	return player;
+}
