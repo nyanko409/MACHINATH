@@ -9,8 +9,8 @@ public:
 	float moveSpeed;
 
 	// constructor
-	Player(Transform transform, float moveSpeed, MESH_NAME name, GameObject* parent = nullptr) :
-		GameObject(transform, name, parent), BoxCollider(&(GameObject::transform), 5, 5, 5),  moveSpeed(moveSpeed) 
+	Player(Transform transform, float moveSpeed, MESH_NAME name, float width, float height, float depth, GameObject* parent = nullptr) :
+		GameObject(transform, name, parent), BoxCollider(&(GameObject::transform), width, height, depth),  moveSpeed(moveSpeed) 
 	{}
 
 	// destructor

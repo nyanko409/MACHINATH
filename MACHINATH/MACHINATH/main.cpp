@@ -70,7 +70,6 @@ void InitModel();
 GameObject* flooor;
 GameObject* block;
 GameObject* slime;
-LPD3DXMESH pot;
 
 
 /*-----------------------------------------------------------------------
@@ -318,7 +317,6 @@ void InitRenderState()
 void InitLight()
 {
 	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 0.0F), D3DXCOLOR(.5F, .5F, .5F, 1.0F));
-	AddPointLight(1, D3DXVECTOR3(10.0F, 3.0F, 0.0F), 100.0F, D3DXCOLOR(1.0F, 0.0F, 0.0F, 1.0F));
 }
 
 
@@ -333,9 +331,6 @@ D3DXCOLOR operator - (D3DXCOLOR o1, float o2) { return D3DXCOLOR(o1.r - o2, o1.g
 void InitModel()
 {
 	auto device = MyDirect3D_GetDevice();
-
-	// teapot
-	D3DXCreateTeapot(device, &pot, NULL);
 
 	// room
 	flooor = new GameObject(Transform(), MESH_FLOOR, nullptr);
@@ -355,19 +350,12 @@ void DrawTriangle()
 
 	//static float speed = 0.0F; speed += 0.1F;
 	static float deg = 0.0F; deg += 3.0F;
-
-	RotateLight(1, 0, 5, 0, false);
 	
 	// enable alpha blending
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	
 	// set default material and texture
-	SetMaterial();
 	pDevice->SetTexture(0, NULL);
-
-	// draw pot
-	TransformObject(D3DXVECTOR3(-20, 0, 0), D3DXVECTOR3(0, 0, deg), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	pot->DrawSubset(0);
 
 	// draw block
 	TransformObject(D3DXVECTOR3(40, 40.0F, 0), D3DXVECTOR3(deg, deg, deg), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
@@ -390,7 +378,7 @@ void DrawTriangle()
 	}
 
 	// draw egg
-	TransformObject(D3DXVECTOR3(100, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0.5F, 0.5F, 0.5F));
+	TransformObject(D3DXVECTOR3(50, 3, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0.5F, 0.5F, 0.5F));
 	for (DWORD i = 0; i < slime->mesh->numMaterial; i++)
 	{
 		SetMaterial(&(slime->mesh->material[i]));

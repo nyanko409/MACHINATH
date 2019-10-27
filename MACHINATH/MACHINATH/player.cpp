@@ -15,7 +15,7 @@ void InitPlayer()
 
 	// create player
 	Transform trans(D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 180.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 0.1F, MESH_SLIME, nullptr);
+	player = new Player(trans, 0.1F, MESH_SLIME, 5, 5, 5 ,nullptr);
 }
 
 void UninitPlayer()

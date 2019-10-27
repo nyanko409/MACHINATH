@@ -42,7 +42,7 @@ void UpdatePickup()
 		currentTime -= spawnInterval;
 
 		Transform trans(D3DXVECTOR3(0, 1, 80), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(0.2F, 0.2F, 0.2F));
-		pickup.push_back(new Pickup(trans, MESH_COIN));
+		pickup.push_back(new Pickup(trans, MESH_COIN, 3, 3, 3));
 	}
 
 	// loop for every pickup

@@ -7,8 +7,8 @@ class Pickup : public GameObject, public BoxCollider
 {
 public:
 	// constructor
-	Pickup(Transform trans, MESH_NAME mesh) : GameObject(trans, mesh), BoxCollider(&(GameObject::transform), 5, 5, 5)
-	{}
+	Pickup(Transform trans, MESH_NAME mesh, float width, float height, float depth) :
+		GameObject(trans, mesh), BoxCollider(&(GameObject::transform), width, height, depth) {}
 	
 	// destructor
 	~Pickup() {}

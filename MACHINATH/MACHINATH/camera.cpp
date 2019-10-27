@@ -5,10 +5,6 @@
 #include "font.h"
 
 
-
-
-
-
 // operator overload
 POINT operator - (POINT o1, POINT o2) { return POINT{ o1.x - o2.x, o1.y - o2.y }; }
 
