@@ -23,11 +23,7 @@ public:
 	}
 
 	// destructor
-	~GameObject() 
-	{
-		if(parent) free(parent);
-		//if (mesh) free(mesh);
-	}
+	~GameObject() {}
 
 	// returns the world space position of this gameobject
 	D3DXVECTOR3 GetWorldPosition()

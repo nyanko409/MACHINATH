@@ -25,6 +25,7 @@
 #include "transformation.h"
 #include "gameObject.h"
 #include "player.h"
+#include "pickup.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -219,10 +220,12 @@ bool Initialize(void)
 	InitFont();
 	InitEffect();
 	Texture_Load();
-	InitLight();
 	LoadMesh();
+	InitLight();
 
 	InitPlayer();
+	InitPickup();
+
 	InitModel();
 
 	return true;
@@ -234,6 +237,7 @@ void Update(void)
 	Keyboard_Update();
 
 	UpdatePlayer();
+	UpdatePickup();
 
 	UpdateCamera();
 	//std::thread t_input(Keyboard_Update);
@@ -253,8 +257,9 @@ void Draw(void)
 	//絵画処理開始
 	pDevice->BeginScene();
 
-	DrawTriangle();
 	DrawPlayer();
+	DrawTriangle();
+	DrawPickup();
 	DrawEffect();
 
 	pDevice->EndScene();
@@ -267,6 +272,7 @@ void Draw(void)
 void Finalize(void)
 {
 	UninitPlayer();
+	UninitPickup();
 	UninitCamera();
 	UninitEffect();
 
@@ -383,15 +389,15 @@ void DrawTriangle()
 		flooor->mesh->mesh->DrawSubset(i);
 	}
 
-	// draw slime
+	// draw egg
 	TransformObject(D3DXVECTOR3(100, 0, 0), D3DXVECTOR3(0, deg, 0), D3DXVECTOR3(0.5F, 0.5F, 0.5F));
 	for (DWORD i = 0; i < slime->mesh->numMaterial; i++)
 	{
 		SetMaterial(&(slime->mesh->material[i]));
-
+	
 		if (slime->mesh->texture[i] != NULL)
 			pDevice->SetTexture(0, slime->mesh->texture[i]);
-
+	
 		slime->mesh->mesh->DrawSubset(i);
 	}
 

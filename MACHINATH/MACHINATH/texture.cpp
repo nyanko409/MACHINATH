@@ -25,7 +25,7 @@ typedef struct TextureFile_tag
 ------------------------------------------------------------------------------*/
 // 読み込みテクスチャ情報
 static const TextureFile g_TextureFiles[] = {
-    { "asset/texture/bricks.png", 512, 512 }
+    { "", 0, 0 }
 };
 // 読み込みテクスチャ数
 static const int TEXTURE_FILE_COUNT = sizeof(g_TextureFiles) / sizeof(g_TextureFiles[0]);

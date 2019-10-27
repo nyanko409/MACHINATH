@@ -13,7 +13,9 @@
 #define FULLSCREEN		false
 #define SCREEN_WIDTH	(2560)
 #define SCREEN_HEIGHT	(1440)
+
 #define FPS				60
+#define TIME_PER_FRAME	(float)1/FPS
 
 // custom vertex struct
 struct CUSTOM_VERTEX

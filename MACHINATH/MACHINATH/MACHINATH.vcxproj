@@ -136,6 +136,7 @@
     <ClCompile Include="material.cpp" />
     <ClCompile Include="meshLoader.cpp" />
     <ClCompile Include="mydirect3d.cpp" />
+    <ClCompile Include="pickup.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="material.h" />
     <ClInclude Include="meshLoader.h" />
     <ClInclude Include="mydirect3d.h" />
+    <ClInclude Include="pickup.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="texture.h" />

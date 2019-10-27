@@ -66,6 +66,9 @@
     <ClCompile Include="effect.cpp">
       <Filter>ソース ファイル\Library</Filter>
     </ClCompile>
+    <ClCompile Include="pickup.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="effect.h">
       <Filter>ヘッダー ファイル\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="pickup.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

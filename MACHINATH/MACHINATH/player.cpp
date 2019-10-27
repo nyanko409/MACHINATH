@@ -27,8 +27,6 @@ void UninitPlayer()
 void UpdatePlayer()
 {
 	// move player
-	player->transform.position.z += player->moveSpeed;
-
 	if (Keyboard_IsPress(DIK_F))
 		player->transform.position.x += -0.5F;
 	if (Keyboard_IsPress(DIK_G))
