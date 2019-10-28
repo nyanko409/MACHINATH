@@ -11,6 +11,7 @@
 #include<d3dx9.h>		//Ç±ÇÃìÒÇ¬ÇÕç≈í·å¿ïKóv
 #include <chrono>
 #include <thread>
+#include <time.h>
 #include "common.h"
 #include "mydirect3d.h"
 #include "texture.h"
@@ -70,6 +71,8 @@ void InitModel();
 GameObject* flooor;
 GameObject* block;
 GameObject* slime;
+LPDIRECT3DVERTEXBUFFER9 v_buffer;
+LPDIRECT3DINDEXBUFFER9 i_buffer;
 
 
 /*-----------------------------------------------------------------------
@@ -79,6 +82,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+
+	srand(time(NULL));
 
 	WNDCLASS wc = {};
 	wc.lpfnWndProc = WndProc;
@@ -340,7 +345,39 @@ void InitModel()
 
 	// slime
 	slime = new GameObject(Transform(), MESH_EGG, nullptr);
+
+	// primitive
+	CUSTOM_VERTEX vert[] = 
+	{
+		{-3, 3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{0, 0} },
+		{3, 3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{0, 1} },
+		{-3, -3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{1, 0} },
+		{3, -3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{1, 1} },
+	};
+
+	short indices[] =
+	{
+		0, 1, 2, 2, 1, 3
+	};
+
+	void* pVoid;
+
+	device->CreateVertexBuffer(sizeof(CUSTOM_VERTEX) * 4, 0, CUSTOM_FVF, D3DPOOL_MANAGED, &v_buffer, NULL);
+	v_buffer->Lock(0, 0, (void**)&pVoid, 0);
+	memcpy(pVoid, vert, sizeof(vert));
+	v_buffer->Unlock();
+
+	device->CreateIndexBuffer(sizeof(short) * 6, 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &i_buffer, NULL);
+	i_buffer->Lock(0, 0, (void**)&pVoid, 0);
+	memcpy(pVoid, indices, sizeof(indices));
+	i_buffer->Unlock();
 }
+
+struct CUSTOM_LINE
+{
+	D3DXVECTOR3 pos;
+	DWORD color;
+};
 
 void DrawTriangle()
 {
@@ -349,7 +386,8 @@ void DrawTriangle()
 	auto pDevice = MyDirect3D_GetDevice();
 
 	//static float speed = 0.0F; speed += 0.1F;
-	static float deg = 0.0F; deg += 3.0F;
+	static float deg = 0.0F; deg += 0.5F;
+	if (deg > 100) deg -= 100;
 	
 	// enable alpha blending
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
@@ -366,16 +404,16 @@ void DrawTriangle()
 	}
 
 	// draw floor
-	TransformObject(D3DXVECTOR3(0, 0.0F, 0), D3DXVECTOR3(0, 0 , 0), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	for (DWORD i = 0; i < flooor->mesh->numMaterial; i++)
-	{
-		SetMaterial(&(flooor->mesh->material[i]));
-	
-		if (flooor->mesh->texture[i] != NULL)
-			pDevice->SetTexture(0, flooor->mesh->texture[i]);
-	
-		flooor->mesh->mesh->DrawSubset(i);
-	}
+	//TransformObject(D3DXVECTOR3(0, 0.0F, 0), D3DXVECTOR3(0, 0 , 0), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
+	//for (DWORD i = 0; i < flooor->mesh->numMaterial; i++)
+	//{
+	//	SetMaterial(&(flooor->mesh->material[i]));
+	//
+	//	if (flooor->mesh->texture[i] != NULL)
+	//		pDevice->SetTexture(0, flooor->mesh->texture[i]);
+	//
+	//	flooor->mesh->mesh->DrawSubset(i);
+	//}
 
 	// draw egg
 	TransformObject(D3DXVECTOR3(50, 3, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0.5F, 0.5F, 0.5F));
@@ -388,6 +426,66 @@ void DrawTriangle()
 	
 		slime->mesh->mesh->DrawSubset(i);
 	}
+
+
+	// primitive line
+	TransformObject(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
+	pDevice->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+	pDevice->SetTexture(0, NULL);
+
+	pDevice->SetRenderState(D3DRS_LIGHTING, false);
+	for (int i = 0; i < 10; i++)
+	{
+		CUSTOM_LINE vert[]
+		{
+			{D3DXVECTOR3(-100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+			{D3DXVECTOR3(100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+		};
+		CUSTOM_LINE vert2[]
+		{
+			{D3DXVECTOR3(-100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+			{D3DXVECTOR3(100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+		};
+
+		if (vert[0].pos.z < -100)
+		{
+			vert[0].pos.z += 200;
+			vert[1].pos.z += 200;
+		}
+		if (vert2[0].pos.z < -100)
+		{
+			vert2[0].pos.z += 200;
+			vert2[1].pos.z += 200;
+		}
+
+		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
+		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert2, sizeof(CUSTOM_LINE));
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		CUSTOM_LINE vert[]
+		{
+			{D3DXVECTOR3(-10 * i, 0, -100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+			{D3DXVECTOR3(-10 * i, 0, 100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+		};
+		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
+
+		CUSTOM_LINE vert2[]
+		{
+			{D3DXVECTOR3(10 * (i + 1), 0, -100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+			{D3DXVECTOR3(10 * (i + 1), 0, 100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+		};
+		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert2, sizeof(CUSTOM_LINE));
+	}
+
+	pDevice->SetRenderState(D3DRS_LIGHTING, true);
+
+	// primitive cube
+	pDevice->SetFVF(CUSTOM_FVF);
+	pDevice->SetStreamSource(0, v_buffer, 0, sizeof(CUSTOM_VERTEX));
+	pDevice->SetIndices(i_buffer);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
 
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 }

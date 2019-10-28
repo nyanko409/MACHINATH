@@ -52,7 +52,7 @@ void UpdatePickup()
 		pickup[i]->transform.position.z -= moveSpeed;
 
 		// delete unneeded pickup
-		if(pickup[i]->transform.position.z <= -10)
+		if(pickup[i]->transform.position.z <= -10.0F)
 			pickup.erase(pickup.begin() + i);
 
 		// only check for collision if needed (check magnitude)
