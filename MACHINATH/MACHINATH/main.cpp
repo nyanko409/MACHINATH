@@ -344,7 +344,7 @@ void InitModel()
 
 void DrawTriangle()
 {
-	if (Keyboard_IsTrigger(DIK_V)) PlayEffect(EFFECT_EXPLOSION, 0, 5, 0);
+	if (Keyboard_IsTrigger(DIK_V)) PlayEffect(EFFECT_FUCK, 0, 15, 0);
 
 	auto pDevice = MyDirect3D_GetDevice();
 

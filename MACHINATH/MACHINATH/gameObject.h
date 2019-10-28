@@ -107,8 +107,11 @@ public:
 		// check collision
 		if (topLeft1.x < topLeft2.x + size2.x && topLeft1.x + size1.x > topLeft2.x)
 		{
-			// collision occured
-			return true;
+			if (topLeft1.z < topLeft2.z + size2.z && topLeft1.z + size1.z > topLeft2.z)
+			{
+				// collision occured
+				return true;
+			}
 		}
 
 		// no collision occured

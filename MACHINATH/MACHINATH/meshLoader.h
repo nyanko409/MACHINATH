@@ -10,7 +10,8 @@ enum MESH_NAME
 	MESH_EGG,
 	MESH_COIN,
 	MESH_SLIME,
-	MESH_BLOCK
+	MESH_BLOCK,
+	MESH_ROBOT
 };
 
 // mesh data struct

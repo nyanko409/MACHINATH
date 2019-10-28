@@ -20,10 +20,11 @@
 #define MAX_EFFECTS 5
 
 // path to the effect
-EFK_CHAR* path[2]
+EFK_CHAR* path[3]
 {
 	(EFK_CHAR*)L"asset/effect/blow.efk",
-	(EFK_CHAR*)L"asset/effect/pickup_medal.efk"
+	(EFK_CHAR*)L"asset/effect/pickup_medal.efk",
+	(EFK_CHAR*)L"asset/effect/fuck.efk"
 };
 
 

@@ -15,7 +15,7 @@ void InitPlayer()
 
 	// create player
 	Transform trans(D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 180.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 0.1F, MESH_SLIME, 5, 5, 5 ,nullptr);
+	player = new Player(trans, 0.1F, MESH_ROBOT, 5, 5, 5 ,nullptr);
 }
 
 void UninitPlayer()
@@ -46,7 +46,11 @@ void DrawPlayer()
 	
 	for (int i = 0; i < player->mesh->numMaterial; ++i)
 	{
-		SetMaterial(&(player->mesh->material[i]));
+		//SetMaterial(&(player->mesh->material[i]));
+		D3DMATERIAL9 mat;
+		mat.Diffuse = D3DXCOLOR(1.0F, 0.0F, 0.0F, 1.0F);
+		mat.Ambient = D3DXCOLOR(0.5F, 0.5F, 0.5F, 1.0F);
+		SetMaterial(&mat);
 
 		if (player->mesh->texture[i] != NULL)
 			device->SetTexture(0, player->mesh->texture[i]);

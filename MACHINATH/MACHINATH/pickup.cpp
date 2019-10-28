@@ -55,8 +55,8 @@ void UpdatePickup()
 		if(pickup[i]->transform.position.z <= -10)
 			pickup.erase(pickup.begin() + i);
 
-		// only check for collision if needed
-		if (pickup[i]->transform.position.z < player->transform.position.z + player->GetSize().z)
+		// only check for collision if needed (check magnitude)
+		if (true)
 		{
 			// check for collision with player
 			if (BoxCollider::CheckCollision(*pickup[i], *player))
