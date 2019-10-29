@@ -393,7 +393,7 @@ void DrawTriangle()
 
 	//static float speed = 0.0F; speed += 0.1F;
 	static float deg = 0.0F; deg += 0.5F;
-	//if (deg > 100) deg -= 100;
+	if (deg > 100) deg -= 100;
 	
 	// enable alpha blending
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
@@ -433,24 +433,23 @@ void DrawTriangle()
 		slime->mesh->mesh->DrawSubset(i);
 	}
 
-
 	// primitive line
+	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	TransformObject(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
 	pDevice->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
 	pDevice->SetTexture(0, NULL);
 
-	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	for (int i = 0; i < 10; i++)
 	{
 		CUSTOM_LINE vert[]
 		{
-			{D3DXVECTOR3(-100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
-			{D3DXVECTOR3(100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+			{D3DXVECTOR3(-100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(50, 255, 0, 0))},
+			{D3DXVECTOR3(100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(50, 255, 0, 0))}
 		};
 		CUSTOM_LINE vert2[]
 		{
-			{D3DXVECTOR3(-100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
-			{D3DXVECTOR3(100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+			{D3DXVECTOR3(-100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(50, 255, 0, 0))},
+			{D3DXVECTOR3(100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(50, 255, 0, 0))}
 		};
 
 		if (vert[0].pos.z < -100)
@@ -475,23 +474,22 @@ void DrawTriangle()
 			{D3DXVECTOR3(-10 * i, 0, -100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
 			{D3DXVECTOR3(-10 * i, 0, 100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
 		};
-		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
-
 		CUSTOM_LINE vert2[]
 		{
 			{D3DXVECTOR3(10 * (i + 1), 0, -100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
 			{D3DXVECTOR3(10 * (i + 1), 0, 100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
 		};
+
+		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
 		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert2, sizeof(CUSTOM_LINE));
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 
 	// primitive cube
 	//pDevice->SetFVF(CUSTOM_FVF);
 	//pDevice->SetStreamSource(0, v_buffer, 0, sizeof(CUSTOM_VERTEX));
 	//pDevice->SetIndices(i_buffer);
 	//pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
-
-	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 }

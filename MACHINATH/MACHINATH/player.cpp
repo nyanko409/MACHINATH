@@ -21,7 +21,7 @@ void InitPlayer()
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
 	player = new Player(trans, 1.0F, MESH_ROBOT, 5, 5, 5 ,nullptr);
 
-	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
+	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
 	skateboard = new GameObject(trans, MESH_SKATEBOARD, player);
 
 	rotSpeed = 3.0F;
@@ -36,7 +36,7 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {
-	// move player
+	// move player and rotate in z axis
 	if (Keyboard_IsPress(DIK_F))
 	{
 		player->transform.position.x += -0.5F;
@@ -49,18 +49,21 @@ void UpdatePlayer()
 	}
 	else
 	{
-
-		if (player->transform.rotation.z > -rotSpeed || player->transform.rotation.z < rotSpeed)
+		if (player->transform.rotation.z > 0)
 		{
-			player->transform.rotation.z = 0;
-		}
-		else if (player->transform.rotation.z > 0)
 			player->transform.rotation.z -= rotSpeed;
+			if (player->transform.rotation.z < 0)
+				player->transform.rotation.z = 0;
+		}
 		else
+		{
 			player->transform.rotation.z += rotSpeed;
+			if (player->transform.rotation.z > 0)
+				player->transform.rotation.z = 0;
+		}
 	}
 
-	// clip rotation between 10 and -10
+	// clip rotation
 	if(player->transform.rotation.z > rotMax)
 		player->transform.rotation.z = rotMax;
 	if (player->transform.rotation.z < -rotMax)
@@ -97,14 +100,10 @@ void DrawPlayer()
 	}
 
 	// skateboard
-	TransformObject(skateboard->GetWorldPosition(), skateboard->transform.rotation, skateboard->transform.scale);
+	TransformObject(skateboard->GetWorldPosition(), skateboard->GetWorldRotation(), skateboard->GetWorldScale());
 	for (int i = 0; i < skateboard->mesh->numMaterial; ++i)
 	{
 		SetMaterial(&(skateboard->mesh->material[i]));
-		//D3DMATERIAL9 mat;
-		//mat.Diffuse = D3DXCOLOR(1.0F, 0.0F, 0.0F, 1.0F);
-		//mat.Ambient = D3DXCOLOR(0.5F, 0.5F, 0.5F, 1.0F);
-		//SetMaterial(&mat);
 
 		if (skateboard->mesh->texture[i] != NULL)
 			device->SetTexture(0, skateboard->mesh->texture[i]);
