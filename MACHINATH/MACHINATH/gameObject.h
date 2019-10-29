@@ -57,6 +57,36 @@ public:
 	{
 		return transform.position;
 	}
+
+	// returns the world space rotation of this gameobject
+	D3DXVECTOR3 GetWorldRotation()
+	{
+		if (parent != nullptr)
+			return transform.rotation + parent->GetWorldRotation();
+
+		return transform.rotation;
+	}
+
+	// returns the local space rotation relative to parent of this gameobject
+	D3DXVECTOR3 GetLocalRotation()
+	{
+		return transform.rotation;
+	}
+
+	// returns the world space rotation of this gameobject
+	D3DXVECTOR3 GetWorldScale()
+	{
+		if (parent != nullptr)
+			return transform.scale + parent->GetWorldScale();
+
+		return transform.scale;
+	}
+
+	// returns the local space rotation relative to parent of this gameobject
+	D3DXVECTOR3 GetLocalScale()
+	{
+		return transform.scale;
+	}
 };
 
 

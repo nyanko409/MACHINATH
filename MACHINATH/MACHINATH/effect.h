@@ -8,7 +8,9 @@ enum Effect
 {
 	EFFECT_EXPLOSION,
 	EFFECT_PICKUP_MEDAL,
-	EFFECT_FUCK
+	EFFECT_FUCK,
+	EFFECT_SHIELD,
+	EFFECT_BLOW
 };
 
 // call once at init

@@ -138,6 +138,7 @@
     <ClCompile Include="mydirect3d.cpp" />
     <ClCompile Include="pickup.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="playTime.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="transformation.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="mydirect3d.h" />
     <ClInclude Include="pickup.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playTime.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="transform.h" />

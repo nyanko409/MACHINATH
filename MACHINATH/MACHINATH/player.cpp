@@ -7,6 +7,10 @@
 
 static LPDIRECT3DDEVICE9 device;
 static Player* player;
+static GameObject* skateboard;
+
+static float rotSpeed;
+static float rotMax;
 
 void InitPlayer()
 {	
@@ -14,8 +18,14 @@ void InitPlayer()
 	device = MyDirect3D_GetDevice();
 
 	// create player
-	Transform trans(D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 180.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 0.1F, MESH_ROBOT, 5, 5, 5 ,nullptr);
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
+	player = new Player(trans, 1.0F, MESH_ROBOT, 5, 5, 5 ,nullptr);
+
+	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
+	skateboard = new GameObject(trans, MESH_SKATEBOARD, player);
+
+	rotSpeed = 3.0F;
+	rotMax = 10.0F;
 }
 
 void UninitPlayer()
@@ -28,14 +38,42 @@ void UpdatePlayer()
 {
 	// move player
 	if (Keyboard_IsPress(DIK_F))
+	{
 		player->transform.position.x += -0.5F;
-	if (Keyboard_IsPress(DIK_G))
+		player->transform.rotation.z += rotSpeed;
+	}
+	else if (Keyboard_IsPress(DIK_G))
+	{
 		player->transform.position.x += 0.5F;
+		player->transform.rotation.z += -rotSpeed;
+	}
+	else
+	{
+
+		if (player->transform.rotation.z > -rotSpeed || player->transform.rotation.z < rotSpeed)
+		{
+			player->transform.rotation.z = 0;
+		}
+		else if (player->transform.rotation.z > 0)
+			player->transform.rotation.z -= rotSpeed;
+		else
+			player->transform.rotation.z += rotSpeed;
+	}
+
+	// clip rotation between 10 and -10
+	if(player->transform.rotation.z > rotMax)
+		player->transform.rotation.z = rotMax;
+	if (player->transform.rotation.z < -rotMax)
+		player->transform.rotation.z = -rotMax;
 
 	// set camera position
-	static float rotX = 0, rotY = 0; rotX = 0; rotY++;
+	static float rotX = 0, rotY = 0; rotX = 0; rotY--;
+	if (rotY <= -90) rotY = -90;
+	static float offsetY = 30.0F;
+	offsetY -= 0.1F;
+	if (offsetY < 10) offsetY = 10;
 	
-	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, 20.0F, -20.0F), rotX, rotY);
+	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
 }
 
 void DrawPlayer()
@@ -56,6 +94,22 @@ void DrawPlayer()
 			device->SetTexture(0, player->mesh->texture[i]);
 			
 		player->mesh->mesh->DrawSubset(i);
+	}
+
+	// skateboard
+	TransformObject(skateboard->GetWorldPosition(), skateboard->transform.rotation, skateboard->transform.scale);
+	for (int i = 0; i < skateboard->mesh->numMaterial; ++i)
+	{
+		SetMaterial(&(skateboard->mesh->material[i]));
+		//D3DMATERIAL9 mat;
+		//mat.Diffuse = D3DXCOLOR(1.0F, 0.0F, 0.0F, 1.0F);
+		//mat.Ambient = D3DXCOLOR(0.5F, 0.5F, 0.5F, 1.0F);
+		//SetMaterial(&mat);
+
+		if (skateboard->mesh->texture[i] != NULL)
+			device->SetTexture(0, skateboard->mesh->texture[i]);
+
+		skateboard->mesh->mesh->DrawSubset(i);
 	}
 }
 

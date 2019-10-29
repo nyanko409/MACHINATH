@@ -17,14 +17,16 @@
 #pragma comment(lib,"EffekseerSoundXAudio2.Release.lib")
 #endif
 
-#define MAX_EFFECTS 5
+#define MAX_EFFECTS 50
 
 // path to the effect
-EFK_CHAR* path[3]
+EFK_CHAR* path[5]
 {
 	(EFK_CHAR*)L"asset/effect/blow.efk",
 	(EFK_CHAR*)L"asset/effect/pickup_medal.efk",
-	(EFK_CHAR*)L"asset/effect/fuck.efk"
+	(EFK_CHAR*)L"asset/effect/fuck.efk",
+	(EFK_CHAR*)L"asset/effect/shield.efk",
+	(EFK_CHAR*)L"asset/effect/eff.efk"
 };
 
 
@@ -115,7 +117,7 @@ void DrawEffect()
 		// update drawing effects
 		if (handle[i] != -1)
 		{
-			manager->AddLocation(handle[i], Effekseer::Vector3D(0.0F, 0.0F, 0.0F));
+			manager->AddLocation(handle[i], Effekseer::Vector3D(0.0F, 0.0F, -0.5F));
 			manager->SetSpeed(handle[i], 1.0F);
 		}
 	}

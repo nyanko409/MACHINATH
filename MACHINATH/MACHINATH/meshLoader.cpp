@@ -12,7 +12,10 @@ std::vector<MESH_DATA> mesh
 	{"asset/mesh/coin.x"},
 	{"asset/mesh/slime.x"},
 	{"asset/mesh/block.x" },
-	{"asset/mesh/robot.x" }
+	{"asset/mesh/robot.x" },
+	{"asset/mesh/skateboard.x" },
+	{"asset/mesh/neoshinjuku.x" }
+
 };
 
 

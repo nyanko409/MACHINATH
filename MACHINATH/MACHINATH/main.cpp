@@ -27,6 +27,7 @@
 #include "gameObject.h"
 #include "player.h"
 #include "pickup.h"
+#include "playTime.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -71,6 +72,7 @@ void InitModel();
 GameObject* flooor;
 GameObject* block;
 GameObject* slime;
+GameObject* shinjyuku;
 LPDIRECT3DVERTEXBUFFER9 v_buffer;
 LPDIRECT3DINDEXBUFFER9 i_buffer;
 
@@ -240,6 +242,7 @@ void Update(void)
 {
 	Keyboard_Update();
 
+	UpdateTimer();
 	UpdatePlayer();
 	UpdatePickup();
 
@@ -291,7 +294,7 @@ void InitRenderState()
 
 	// init 3d rendering
 	device->SetRenderState(D3DRS_LIGHTING, true);
-	device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	device->SetRenderState(D3DRS_ZENABLE, true);
 	device->SetRenderState(D3DRS_NORMALIZENORMALS, true);
 	device->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
@@ -346,6 +349,9 @@ void InitModel()
 	// slime
 	slime = new GameObject(Transform(), MESH_EGG, nullptr);
 
+	// shinjyuku
+	shinjyuku = new GameObject(Transform(), MESH_NEOSHINJYUKU, nullptr);
+
 	// primitive
 	CUSTOM_VERTEX vert[] = 
 	{
@@ -381,13 +387,13 @@ struct CUSTOM_LINE
 
 void DrawTriangle()
 {
-	if (Keyboard_IsTrigger(DIK_V)) PlayEffect(EFFECT_FUCK, 0, 15, 0);
+	if (Keyboard_IsTrigger(DIK_V)) PlayEffect(EFFECT_BLOW, 0, 15, 0);
 
 	auto pDevice = MyDirect3D_GetDevice();
 
 	//static float speed = 0.0F; speed += 0.1F;
 	static float deg = 0.0F; deg += 0.5F;
-	if (deg > 100) deg -= 100;
+	//if (deg > 100) deg -= 100;
 	
 	// enable alpha blending
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
@@ -404,15 +410,15 @@ void DrawTriangle()
 	}
 
 	// draw floor
-	//TransformObject(D3DXVECTOR3(0, 0.0F, 0), D3DXVECTOR3(0, 0 , 0), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	//for (DWORD i = 0; i < flooor->mesh->numMaterial; i++)
+	//TransformObject(D3DXVECTOR3(10, 0.0F, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(10.0F, 10.0F, 10.0F));
+	//for (DWORD i = 0; i < shinjyuku->mesh->numMaterial; i++)
 	//{
-	//	SetMaterial(&(flooor->mesh->material[i]));
+	//	SetMaterial(&(shinjyuku->mesh->material[i]));
 	//
-	//	if (flooor->mesh->texture[i] != NULL)
-	//		pDevice->SetTexture(0, flooor->mesh->texture[i]);
+	//	if (shinjyuku->mesh->texture[i] != NULL)
+	//		pDevice->SetTexture(0, shinjyuku->mesh->texture[i]);
 	//
-	//	flooor->mesh->mesh->DrawSubset(i);
+	//	shinjyuku->mesh->mesh->DrawSubset(i);
 	//}
 
 	// draw egg
@@ -482,10 +488,10 @@ void DrawTriangle()
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
 
 	// primitive cube
-	pDevice->SetFVF(CUSTOM_FVF);
-	pDevice->SetStreamSource(0, v_buffer, 0, sizeof(CUSTOM_VERTEX));
-	pDevice->SetIndices(i_buffer);
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
+	//pDevice->SetFVF(CUSTOM_FVF);
+	//pDevice->SetStreamSource(0, v_buffer, 0, sizeof(CUSTOM_VERTEX));
+	//pDevice->SetIndices(i_buffer);
+	//pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
 
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 }

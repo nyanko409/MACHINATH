@@ -11,7 +11,8 @@
 // variable declaration
 static LPDIRECT3DDEVICE9 device;
 static std::vector<Pickup*> pickup;
-static float moveSpeed = 0.5F;
+
+static float rotSpeed = 10.0F;
 static float spawnInterval = 1.0F;
 static float currentTime = 0.0F;
 
@@ -41,7 +42,8 @@ void UpdatePickup()
 	{
 		currentTime -= spawnInterval;
 
-		Transform trans(D3DXVECTOR3(0, 1, 80), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(0.2F, 0.2F, 0.2F));
+		int pos = (rand() % 21) - 10.0F;
+		Transform trans(D3DXVECTOR3(pos, 1, 80), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(0.2F, 0.2F, 0.2F));
 		pickup.push_back(new Pickup(trans, MESH_COIN, 3, 3, 3));
 	}
 
@@ -49,11 +51,14 @@ void UpdatePickup()
 	for (int i = 0; i < pickup.size(); i++)
 	{
 		// move pickup to -z direction
-		pickup[i]->transform.position.z -= moveSpeed;
+		pickup[i]->transform.position.z -= player->moveSpeed;
 
 		// delete unneeded pickup
 		if(pickup[i]->transform.position.z <= -10.0F)
 			pickup.erase(pickup.begin() + i);
+
+		// rotate pickup
+		pickup[i]->transform.rotation.y += rotSpeed;
 
 		// only check for collision if needed (check magnitude)
 		if (true)
