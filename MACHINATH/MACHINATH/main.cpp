@@ -28,6 +28,8 @@
 #include "player.h"
 #include "pickup.h"
 #include "playTime.h"
+#include "sceneManagement.h"
+#include "frameObject.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -242,6 +244,7 @@ void Update(void)
 {
 	Keyboard_Update();
 
+	UpdateScene();
 	UpdateTimer();
 	UpdatePlayer();
 	UpdatePickup();
@@ -339,10 +342,10 @@ D3DXCOLOR operator - (D3DXCOLOR o1, float o2) { return D3DXCOLOR(o1.r - o2, o1.g
 void InitModel()
 {
 	auto device = MyDirect3D_GetDevice();
-
+	
 	// room
 	flooor = new GameObject(Transform(), MESH_FLOOR, nullptr);
-
+	
 	// block
 	block = new GameObject(Transform(), MESH_BLOCK, nullptr);
 
@@ -377,6 +380,9 @@ void InitModel()
 	i_buffer->Lock(0, 0, (void**)&pVoid, 0);
 	memcpy(pVoid, indices, sizeof(indices));
 	i_buffer->Unlock();
+
+	// animation test
+	InitFrameMesh();
 }
 
 struct CUSTOM_LINE
@@ -410,16 +416,19 @@ void DrawTriangle()
 	}
 
 	// draw floor
-	//TransformObject(D3DXVECTOR3(10, 0.0F, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(10.0F, 10.0F, 10.0F));
-	//for (DWORD i = 0; i < shinjyuku->mesh->numMaterial; i++)
-	//{
-	//	SetMaterial(&(shinjyuku->mesh->material[i]));
-	//
-	//	if (shinjyuku->mesh->texture[i] != NULL)
-	//		pDevice->SetTexture(0, shinjyuku->mesh->texture[i]);
-	//
-	//	shinjyuku->mesh->mesh->DrawSubset(i);
-	//}
+	TransformObject(D3DXVECTOR3(10, -1.0F, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(20.0F, 10.0F, 10.0F));
+	for (DWORD i = 0; i < shinjyuku->mesh->numMaterial; i++)
+	{
+		SetMaterial(&(shinjyuku->mesh->material[i]));
+	
+		if (shinjyuku->mesh->texture[i] != NULL)
+			pDevice->SetTexture(0, shinjyuku->mesh->texture[i]);
+	
+		shinjyuku->mesh->mesh->DrawSubset(i);
+	}
+
+	// draw animated char
+	//DrawFrameMesh();
 
 	// draw egg
 	TransformObject(D3DXVECTOR3(50, 3, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0.5F, 0.5F, 0.5F));

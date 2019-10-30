@@ -17,7 +17,7 @@
 #pragma comment(lib,"EffekseerSoundXAudio2.Release.lib")
 #endif
 
-#define MAX_EFFECTS 50
+#define MAX_EFFECTS 10
 
 // path to the effect
 EFK_CHAR* path[5]
@@ -90,7 +90,7 @@ void PlayEffect(Effect type, float posX, float posY, float posZ)
 
 			Effekseer::Handle _handle = manager->Play(effect[i], posX, posY, posZ);
 			handle[i] = _handle;
-
+			
 			return;
 		}
 	}

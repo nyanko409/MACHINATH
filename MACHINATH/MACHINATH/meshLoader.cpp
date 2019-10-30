@@ -15,7 +15,6 @@ std::vector<MESH_DATA> mesh
 	{"asset/mesh/robot.x" },
 	{"asset/mesh/skateboard.x" },
 	{"asset/mesh/neoshinjuku.x" }
-
 };
 
 
