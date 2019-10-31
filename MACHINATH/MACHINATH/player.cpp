@@ -4,6 +4,7 @@
 #include "input.h"
 #include "camera.h"
 #include "playTime.h"
+#include "sceneManagement.h"
 
 
 static LPDIRECT3DDEVICE9 device;
@@ -42,6 +43,8 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {
+	if (GetScene() != SCENE_GAMESCREEN) return;
+
 	// move player and rotate in z axis
 	if (Keyboard_IsPress(DIK_F))
 	{
@@ -79,49 +82,25 @@ void UpdatePlayer()
 	static float rotX = 0, rotY = 0;
 	static float offsetY = 30.0F;
 
-	if (playTime > 10.0F) 
+	if (playTime > 5.0F) 
 	{
 		rotY--;
-		if (rotY <= -90) rotY = -90;
+		if (rotY <= -45) rotY = -45;
 		offsetY -= 0.1F;
 		if (offsetY < 10) offsetY = 10;
 
 	}
 
-	 SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
+	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
 }
 
 void DrawPlayer()
 {
 	// draw player
-	device->SetTexture(0, NULL);
-	TransformObject(player->transform.position, player->transform.rotation, player->transform.scale);
-	
-	for (int i = 0; i < player->mesh->numMaterial; ++i)
-	{
-		//SetMaterial(&(player->mesh->material[i]));
-		D3DMATERIAL9 mat{};
-		mat.Diffuse = D3DXCOLOR(1.0F, 0.0F, 0.0F, 1.0F);
-		mat.Ambient = D3DXCOLOR(0.5F, 0.5F, 0.5F, 1.0F);
-		SetMaterial(&mat);
-
-		if (player->mesh->texture[i] != NULL)
-			device->SetTexture(0, player->mesh->texture[i]);
-			
-		player->mesh->mesh->DrawSubset(i);
-	}
+	player->Draw(true, true);
 
 	// draw skateboard
-	TransformObject(skateboard->GetWorldPosition(), skateboard->GetWorldRotation(), skateboard->GetWorldScale());
-	for (int i = 0; i < skateboard->mesh->numMaterial; ++i)
-	{
-		SetMaterial(&(skateboard->mesh->material[i]));
-
-		if (skateboard->mesh->texture[i] != NULL)
-			device->SetTexture(0, skateboard->mesh->texture[i]);
-
-		skateboard->mesh->mesh->DrawSubset(i);
-	}
+	skateboard->Draw(true, true);
 }
 
 Player* GetPlayer()

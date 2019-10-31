@@ -4,9 +4,13 @@
 #include "common.h"
 
 D3DXMATRIX matTranslate, matRotation, matScale;
+D3DXMATRIX matWorld;
 
-void TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR3 scale, bool rotateAtPosition)
+D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR3 scale, bool rotateAtPosition)
 {
+	// get device
+	auto device = MyDirect3D_GetDevice();
+
 	// set translation and scaling matrix
 	D3DXMatrixTranslation(&matTranslate, translate.x, translate.y, translate.z);
 	D3DXMatrixScaling(&matScale, scale.x, scale.y, scale.z);
@@ -20,11 +24,14 @@ void TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR3 scal
 
 	matRotation = xRot * yRot * zRot;
 
-	// get device and set world transformation
-	auto device = MyDirect3D_GetDevice();
-
-	if(!rotateAtPosition)
-		device->SetTransform(D3DTS_WORLD, &(matScale * matTranslate * matRotation));
+	if (!rotateAtPosition)
+		matWorld = (matScale * matTranslate * matRotation);
 	else
-		device->SetTransform(D3DTS_WORLD, &(matScale * matRotation * matTranslate));
+		matWorld = (matScale * matRotation * matTranslate);
+
+	// set world matrix
+
+	device->SetTransform(D3DTS_WORLD, &matWorld);
+
+	return matWorld;
 }

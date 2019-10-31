@@ -1,8 +1,10 @@
 #pragma once
 
 #include "transform.h"
+#include "transformation.h"
 #include "mydirect3d.h"
 #include "meshLoader.h"
+#include "material.h"
 #include <string>
 
 
@@ -42,6 +44,29 @@ public:
 
 	// destructor
 	~GameObject() {}
+
+	// draw the object
+	void Draw(bool UseWorldPos, bool rotateAtPosition)
+	{
+		auto device = MyDirect3D_GetDevice();
+
+		// apply world matrix
+		if(UseWorldPos)
+			TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPosition);
+		else
+			TransformObject(GetLocalPosition(), GetLocalRotation(), GetLocalScale(), rotateAtPosition);
+
+		// draw
+		for (DWORD i = 0; i < mesh->numMaterial; i++)
+		{
+			SetMaterial(&(mesh->material[i]));
+
+			if (mesh->texture[i] != NULL)
+				device->SetTexture(0, mesh->texture[i]);
+
+			mesh->mesh->DrawSubset(i);
+		}
+	}
 
 	// returns the world space position of this gameobject
 	D3DXVECTOR3 GetWorldPosition()

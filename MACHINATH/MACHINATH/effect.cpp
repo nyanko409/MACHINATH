@@ -108,8 +108,11 @@ void DrawEffect()
 	for (int i = 0; i < MAX_EFFECTS; i++)
 	{
 		// set handle and effect to null after draw
-		if (!manager->Exists(handle[i]))
+		if (effect[i] && !manager->Exists(handle[i]))
 		{
+			effect[i]->UnloadResources();
+			effect[i]->Release();
+
 			handle[i] = -1;
 			effect[i] = NULL;
 		}

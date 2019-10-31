@@ -81,16 +81,6 @@ void DrawPickup()
 
 	for (int i = 0; i < pickup.size(); i++)
 	{
-		TransformObject(pickup[i]->transform.position, pickup[i]->transform.rotation, pickup[i]->transform.scale);
-		
-		for (int j = 0; j < pickup[i]->mesh->numMaterial; j++)
-		{
-			SetMaterial(pickup[i]->mesh->material);
-	
-			if (pickup[i]->mesh->texture[j] != NULL)
-				device->SetTexture(0, pickup[i]->mesh->texture[j]);
-	
-			pickup[i]->mesh->mesh->DrawSubset(j);
-		}
+		pickup[i]->Draw(true, true);
 	}
 }

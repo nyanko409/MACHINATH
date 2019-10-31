@@ -30,6 +30,7 @@
 #include "playTime.h"
 #include "sceneManagement.h"
 #include "frameObject.h"
+#include <vector>
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -72,9 +73,11 @@ void InitLight();
 void DrawTriangle();
 void InitModel();
 GameObject* flooor;
-GameObject* block;
+GameObject block[6];
 GameObject* slime;
-GameObject* shinjyuku;
+
+std::vector<GameObject*> shinjyuku;
+
 LPDIRECT3DVERTEXBUFFER9 v_buffer;
 LPDIRECT3DINDEXBUFFER9 i_buffer;
 
@@ -345,15 +348,16 @@ void InitModel()
 	
 	// room
 	flooor = new GameObject(Transform(), MESH_FLOOR, nullptr);
-	
-	// block
-	block = new GameObject(Transform(), MESH_BLOCK, nullptr);
 
 	// slime
 	slime = new GameObject(Transform(), MESH_EGG, nullptr);
 
 	// shinjyuku
-	shinjyuku = new GameObject(Transform(), MESH_NEOSHINJYUKU, nullptr);
+	shinjyuku = std::vector<GameObject*>();
+	shinjyuku.push_back(new GameObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku.push_back(new GameObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku.push_back(new GameObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+
 
 	// primitive
 	CUSTOM_VERTEX vert[] = 
@@ -382,7 +386,7 @@ void InitModel()
 	i_buffer->Unlock();
 
 	// animation test
-	InitFrameMesh();
+	InitBone();
 }
 
 struct CUSTOM_LINE
@@ -397,7 +401,6 @@ void DrawTriangle()
 
 	auto pDevice = MyDirect3D_GetDevice();
 
-	//static float speed = 0.0F; speed += 0.1F;
 	static float deg = 0.0F; deg += 0.5F;
 	if (deg > 100) deg -= 100;
 	
@@ -407,40 +410,28 @@ void DrawTriangle()
 	// set default material and texture
 	pDevice->SetTexture(0, NULL);
 
-	// draw block
-	TransformObject(D3DXVECTOR3(40, 40.0F, 0), D3DXVECTOR3(deg, deg, deg), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	for (DWORD i = 0; i < block->mesh->numMaterial; i++)
-	{
-		SetMaterial(&(block->mesh->material[i]));
-		block->mesh->mesh->DrawSubset(i);
-	}
-
 	// draw floor
-	TransformObject(D3DXVECTOR3(10, -1.0F, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(20.0F, 10.0F, 10.0F));
-	for (DWORD i = 0; i < shinjyuku->mesh->numMaterial; i++)
+	for (int i = 0; i < shinjyuku.size(); i++)
 	{
-		SetMaterial(&(shinjyuku->mesh->material[i]));
-	
-		if (shinjyuku->mesh->texture[i] != NULL)
-			pDevice->SetTexture(0, shinjyuku->mesh->texture[i]);
-	
-		shinjyuku->mesh->mesh->DrawSubset(i);
+		// move
+		shinjyuku[i]->transform.position.z -= 0.8;
+
+		// pool object
+		if (shinjyuku[i]->transform.position.z < -150)
+		{
+			shinjyuku.push_back(new GameObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+			shinjyuku.erase(shinjyuku.begin() + i);
+		}
+
+		// draw
+		shinjyuku[i]->Draw(true, true);
 	}
 
 	// draw animated char
-	//DrawFrameMesh();
+	DrawAnim();
 
 	// draw egg
-	TransformObject(D3DXVECTOR3(50, 3, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0.5F, 0.5F, 0.5F));
-	for (DWORD i = 0; i < slime->mesh->numMaterial; i++)
-	{
-		SetMaterial(&(slime->mesh->material[i]));
-	
-		if (slime->mesh->texture[i] != NULL)
-			pDevice->SetTexture(0, slime->mesh->texture[i]);
-	
-		slime->mesh->mesh->DrawSubset(i);
-	}
+	//slime->Draw(true, true);
 
 	// primitive line
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
@@ -452,15 +443,15 @@ void DrawTriangle()
 	{
 		CUSTOM_LINE vert[]
 		{
-			{D3DXVECTOR3(-100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(50, 255, 0, 0))},
-			{D3DXVECTOR3(100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(50, 255, 0, 0))}
+			{D3DXVECTOR3(-100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+			{D3DXVECTOR3(100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
 		};
 		CUSTOM_LINE vert2[]
 		{
-			{D3DXVECTOR3(-100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(50, 255, 0, 0))},
-			{D3DXVECTOR3(100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(50, 255, 0, 0))}
+			{D3DXVECTOR3(-100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+			{D3DXVECTOR3(100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
 		};
-
+	
 		if (vert[0].pos.z < -100)
 		{
 			vert[0].pos.z += 200;
@@ -471,34 +462,37 @@ void DrawTriangle()
 			vert2[0].pos.z += 200;
 			vert2[1].pos.z += 200;
 		}
-
+	
 		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
 		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert2, sizeof(CUSTOM_LINE));
 	}
 
+	float offset = 5;
 	for (int i = 0; i < 10; i++)
 	{
 		CUSTOM_LINE vert[]
 		{
-			{D3DXVECTOR3(-10 * i, 0, -100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
-			{D3DXVECTOR3(-10 * i, 0, 100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+			{D3DXVECTOR3((-10 * i) - offset, 0, -50), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+			{D3DXVECTOR3((-10 * i) - offset, 0, 300), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+
 		};
 		CUSTOM_LINE vert2[]
 		{
-			{D3DXVECTOR3(10 * (i + 1), 0, -100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
-			{D3DXVECTOR3(10 * (i + 1), 0, 100), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+			{D3DXVECTOR3((10 * (i + 1)) - offset, 0, -50), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+			{D3DXVECTOR3((10 * (i + 1)) - offset, 0, 300), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
 		};
-
+	
 		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
 		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert2, sizeof(CUSTOM_LINE));
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
-	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 
 	// primitive cube
 	//pDevice->SetFVF(CUSTOM_FVF);
 	//pDevice->SetStreamSource(0, v_buffer, 0, sizeof(CUSTOM_VERTEX));
 	//pDevice->SetIndices(i_buffer);
 	//pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
+
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 }

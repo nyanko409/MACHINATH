@@ -27,6 +27,7 @@ void UpdateScene()
 		if (Keyboard_IsTrigger(DIK_SPACE))
 		{
 			scene = SCENE_GAMESCREEN;
+			return;
 		}
 	}
 	else if (scene == SCENE_RESULTSCREEN)
@@ -35,6 +36,7 @@ void UpdateScene()
 		if (Keyboard_IsTrigger(DIK_SPACE))
 		{
 			scene = SCENE_STARTSCREEN;
+			return;
 		}
 	}
 }
