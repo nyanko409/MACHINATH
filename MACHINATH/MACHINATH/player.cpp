@@ -9,7 +9,7 @@
 
 static LPDIRECT3DDEVICE9 device;
 static Player* player;
-static GameObject* skateboard;
+static MeshObject* skateboard;
 
 static float rotSpeed;
 static float rotMax;
@@ -25,7 +25,7 @@ void InitPlayer()
 
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
-	skateboard = new GameObject(trans, MESH_SKATEBOARD, player);
+	skateboard = new MeshObject(trans, MESH_SKATEBOARD, player);
 
 	// init player rotation
 	rotSpeed = 3.0F;

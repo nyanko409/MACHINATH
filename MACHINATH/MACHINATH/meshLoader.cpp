@@ -4,7 +4,7 @@
 #include "texture.h"
 #include "meshLoader.h"
 
-// mesh data, add path to x file
+// unanimated mesh data, add path to x file
 std::vector<MESH_DATA> mesh
 {
 	{"asset/mesh/floor.x"},
@@ -17,13 +17,26 @@ std::vector<MESH_DATA> mesh
 	{"asset/mesh/neoshinjuku.x" }
 };
 
+// animated mesh data, add path to x file
+std::vector<std::string> boneMeshPath
+{
+	{"asset/mesh/tiny.x"},
+	{"asset/mesh/robotA.x"},
+};
+
+// animated mesh data
+std::vector<SkinMeshFile*> boneMesh;
+
+
+
 
 void LoadMesh()
 {
+	// get device
 	auto device = MyDirect3D_GetDevice();
 
-	// loop for every mesh
-	for (int i = 0; i < mesh.capacity(); i++)
+	// loop for every unanimated mesh
+	for (int i = 0; i < mesh.size(); i++)
 	{
 		// load mesh from path
 		LPD3DXBUFFER matBuffer;
@@ -53,9 +66,22 @@ void LoadMesh()
 				mesh[i].texture[j] = NULL;
 		}
 	}
+
+	// for animated mesh
+	boneMesh = std::vector<SkinMeshFile*>();
+	for (int i = 0; boneMeshPath.size(); i++)
+	{
+		boneMesh.push_back(new SkinMeshFile);
+		boneMesh[i]->Load(boneMeshPath[i].c_str());
+	}
 }
 
 MESH_DATA* GetMesh(MESH_NAME name)
 {
 	return &mesh[name];
+}
+
+SkinMeshFile* GetAnimatedMesh(ANIMATED_MESH_NAME name)
+{
+	return boneMesh[name];
 }

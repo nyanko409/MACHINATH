@@ -12,6 +12,7 @@
 #include <chrono>
 #include <thread>
 #include <time.h>
+#include <vector>
 #include "common.h"
 #include "mydirect3d.h"
 #include "texture.h"
@@ -29,8 +30,8 @@
 #include "pickup.h"
 #include "playTime.h"
 #include "sceneManagement.h"
-#include "frameObject.h"
-#include <vector>
+#include "mesh.h"
+
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -72,11 +73,11 @@ void InitLight();
 // TEST
 void DrawTriangle();
 void InitModel();
-GameObject* flooor;
-GameObject block[6];
-GameObject* slime;
+MeshObject* flooor;
+MeshObject* slime;
+//AnimatedGameObject* tiny;
 
-std::vector<GameObject*> shinjyuku;
+std::vector<MeshObject*> shinjyuku;
 
 LPDIRECT3DVERTEXBUFFER9 v_buffer;
 LPDIRECT3DINDEXBUFFER9 i_buffer;
@@ -347,16 +348,16 @@ void InitModel()
 	auto device = MyDirect3D_GetDevice();
 	
 	// room
-	flooor = new GameObject(Transform(), MESH_FLOOR, nullptr);
+	flooor = new MeshObject(Transform(), MESH_FLOOR, nullptr);
 
 	// slime
-	slime = new GameObject(Transform(), MESH_EGG, nullptr);
+	slime = new MeshObject(Transform(), MESH_EGG, nullptr);
 
 	// shinjyuku
-	shinjyuku = std::vector<GameObject*>();
-	shinjyuku.push_back(new GameObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
-	shinjyuku.push_back(new GameObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
-	shinjyuku.push_back(new GameObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku = std::vector<MeshObject*>();
+	shinjyuku.push_back(new MeshObject (Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku.push_back(new MeshObject (Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku.push_back(new MeshObject (Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
 
 
 	// primitive
@@ -386,7 +387,8 @@ void InitModel()
 	i_buffer->Unlock();
 
 	// animation test
-	InitBone();
+	//AnimatedGameObject an = 
+	//InitBone();
 }
 
 struct CUSTOM_LINE
@@ -419,7 +421,7 @@ void DrawTriangle()
 		// pool object
 		if (shinjyuku[i]->transform.position.z < -150)
 		{
-			shinjyuku.push_back(new GameObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+			shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
 			shinjyuku.erase(shinjyuku.begin() + i);
 		}
 
@@ -428,7 +430,7 @@ void DrawTriangle()
 	}
 
 	// draw animated char
-	DrawAnim();
+	//DrawAnim();
 
 	// draw egg
 	//slime->Draw(true, true);

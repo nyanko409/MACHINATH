@@ -31,42 +31,12 @@ public:
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
 	GameObject* parent;				// the parent this gameobject is attached to
 
-	MESH_DATA* mesh;				// data of this mesh
-
 	// constructor
 	GameObject() {}
-
-	GameObject(Transform transform, MESH_NAME name, GameObject* parent = nullptr) : transform(transform), parent(parent) 
-	{
-		// load mesh
-		mesh = GetMesh(name);
-	}
+	GameObject(Transform transform, GameObject* parent = nullptr) : transform(transform), parent(parent) {}
 
 	// destructor
 	~GameObject() {}
-
-	// draw the object
-	void Draw(bool UseWorldPos, bool rotateAtPosition)
-	{
-		auto device = MyDirect3D_GetDevice();
-
-		// apply world matrix
-		if(UseWorldPos)
-			TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPosition);
-		else
-			TransformObject(GetLocalPosition(), GetLocalRotation(), GetLocalScale(), rotateAtPosition);
-
-		// draw
-		for (DWORD i = 0; i < mesh->numMaterial; i++)
-		{
-			SetMaterial(&(mesh->material[i]));
-
-			if (mesh->texture[i] != NULL)
-				device->SetTexture(0, mesh->texture[i]);
-
-			mesh->mesh->DrawSubset(i);
-		}
-	}
 
 	// returns the world space position of this gameobject
 	D3DXVECTOR3 GetWorldPosition()

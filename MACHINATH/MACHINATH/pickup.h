@@ -1,14 +1,14 @@
 #pragma once
 
-#include "gameObject.h"
+#include "mesh.h"
 
 // pickup class - medals, powerups etc
-class Pickup : public GameObject, public BoxCollider
+class Pickup : public MeshObject, public BoxCollider
 {
 public:
 	// constructor
 	Pickup(Transform trans, MESH_NAME mesh, float width, float height, float depth) :
-		GameObject(trans, mesh), BoxCollider(&(GameObject::transform), width, height, depth) {}
+		MeshObject(trans, mesh), BoxCollider(&(MeshObject::transform), width, height, depth) {}
 	
 	// destructor
 	~Pickup() {}

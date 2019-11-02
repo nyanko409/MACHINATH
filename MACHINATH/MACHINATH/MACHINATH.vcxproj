@@ -154,6 +154,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="material.h" />
+    <ClInclude Include="mesh.h" />
     <ClInclude Include="meshLoader.h" />
     <ClInclude Include="mydirect3d.h" />
     <ClInclude Include="pickup.h" />

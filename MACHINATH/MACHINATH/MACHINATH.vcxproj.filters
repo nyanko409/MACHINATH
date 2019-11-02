@@ -134,5 +134,8 @@
     <ClInclude Include="sceneManagement.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>ヘッダー ファイル\Library</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
