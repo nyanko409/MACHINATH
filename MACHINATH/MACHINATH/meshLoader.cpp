@@ -69,7 +69,7 @@ void LoadMesh()
 
 	// for animated mesh
 	boneMesh = std::vector<SkinMeshFile*>();
-	for (int i = 0; boneMeshPath.size(); i++)
+	for (int i = 0; i < boneMeshPath.size(); i++)
 	{
 		boneMesh.push_back(new SkinMeshFile);
 		boneMesh[i]->Load(boneMeshPath[i].c_str());

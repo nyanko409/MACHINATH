@@ -75,7 +75,7 @@ void DrawTriangle();
 void InitModel();
 MeshObject* flooor;
 MeshObject* slime;
-//AnimatedGameObject* tiny;
+BoneObject* tiny;
 
 std::vector<MeshObject*> shinjyuku;
 
@@ -387,8 +387,8 @@ void InitModel()
 	i_buffer->Unlock();
 
 	// animation test
-	//AnimatedGameObject an = 
-	//InitBone();
+	tiny = new BoneObject(Transform(), MESH_ROBOTA, nullptr);
+	tiny->SetAnimationSpeed(0, 0.01F);
 }
 
 struct CUSTOM_LINE
@@ -430,7 +430,7 @@ void DrawTriangle()
 	}
 
 	// draw animated char
-	//DrawAnim();
+	tiny->Draw(true, true);
 
 	// draw egg
 	//slime->Draw(true, true);

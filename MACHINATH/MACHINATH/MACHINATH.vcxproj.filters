@@ -128,9 +128,6 @@
     <ClInclude Include="playTime.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
-    <ClInclude Include="frameObject.h">
-      <Filter>ヘッダー ファイル\Library</Filter>
-    </ClInclude>
     <ClInclude Include="sceneManagement.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
