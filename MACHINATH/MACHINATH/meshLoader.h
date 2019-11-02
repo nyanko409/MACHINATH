@@ -577,6 +577,8 @@ public:
 			m_AnimController->SetTrackSpeed(track, speed);
 	}
 
+	LPD3DXANIMATIONCONTROLLER GetAnimator() { return m_AnimController; }
+
 private:
 	// ŠK‘wƒf[ƒ^
 	SkinMeshData *m_SkinMeshData;

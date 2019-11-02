@@ -328,7 +328,7 @@ void InitRenderState()
 	device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 }
 
-// init lights
+// init lighting
 void InitLight()
 {
 	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 0.0F), D3DXCOLOR(.5F, .5F, .5F, 1.0F));
@@ -387,7 +387,7 @@ void InitModel()
 	i_buffer->Unlock();
 
 	// animation test
-	tiny = new BoneObject(Transform(), MESH_ROBOTA, nullptr);
+	tiny = new BoneObject(Transform(), MESH_ROBOTA);
 	tiny->SetAnimationSpeed(0, 0.01F);
 }
 
