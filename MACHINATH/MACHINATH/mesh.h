@@ -76,8 +76,17 @@ public:
 	}
 
 	// set animation speed
-	void SetAnimationSpeed(const UINT track, const float speed)
+	void SetAnimationSpeed(const float speed)
 	{
-		mesh->SetAnimationSpeed(track, speed);
+		mesh->SetAnimationSpeed(0, speed);
+	}
+
+	// play specified animation track
+	void PlayAnimation(const UINT track)
+	{
+		ID3DXAnimationSet* tr = 0;
+		mesh->GetAnimator()->GetAnimationSet(track, &tr);
+		mesh->GetAnimator()->SetTrackAnimationSet(0, tr);
+		mesh->GetAnimator()->ResetTime();
 	}
 };

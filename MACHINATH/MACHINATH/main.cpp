@@ -346,7 +346,7 @@ D3DXCOLOR operator - (D3DXCOLOR o1, float o2) { return D3DXCOLOR(o1.r - o2, o1.g
 void InitModel()
 {
 	auto device = MyDirect3D_GetDevice();
-	
+
 	// room
 	flooor = new MeshObject(Transform(), MESH_FLOOR, nullptr);
 
@@ -355,13 +355,13 @@ void InitModel()
 
 	// shinjyuku
 	shinjyuku = std::vector<MeshObject*>();
-	shinjyuku.push_back(new MeshObject (Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
-	shinjyuku.push_back(new MeshObject (Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
-	shinjyuku.push_back(new MeshObject (Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
 
 
 	// primitive
-	CUSTOM_VERTEX vert[] = 
+	CUSTOM_VERTEX vert[] =
 	{
 		{-3, 3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{0, 0} },
 		{3, 3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{0, 1} },
@@ -387,8 +387,9 @@ void InitModel()
 	i_buffer->Unlock();
 
 	// animation test
-	tiny = new BoneObject(Transform(), MESH_ROBOTA);
-	tiny->SetAnimationSpeed(0, 0.01F);
+	//tiny = new BoneObject(Transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(1, 1, 1)), MESH_ROBOTA);
+	//tiny->SetAnimationSpeed(0, 0.03F);
+	//tiny->PlayAnimation(1);
 }
 
 struct CUSTOM_LINE
@@ -430,7 +431,7 @@ void DrawTriangle()
 	}
 
 	// draw animated char
-	tiny->Draw(true, true);
+	//tiny->Draw(true, true);
 
 	// draw egg
 	//slime->Draw(true, true);
