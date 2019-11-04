@@ -22,6 +22,7 @@
 #include "font.h"
 #include "material.h"
 #include "light.h"
+#include "sprite.h"
 #include "meshLoader.h"
 #include "transform.h"
 #include "transformation.h"
@@ -81,6 +82,7 @@ std::vector<MeshObject*> shinjyuku;
 
 LPDIRECT3DVERTEXBUFFER9 v_buffer;
 LPDIRECT3DINDEXBUFFER9 i_buffer;
+Sprite sprite;
 
 
 /*-----------------------------------------------------------------------
@@ -233,6 +235,7 @@ bool Initialize(void)
 	InitEffect();
 	Texture_Load();
 	LoadMesh();
+	InitSprite();
 	InitLight();
 
 	InitPlayer();
@@ -268,7 +271,7 @@ void Draw(void)
 	//バックバッファーのクリア 紫色は230，0，255，255
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0F, 0);
 
-	//絵画処理開始
+	// draw 3d meshes
 	pDevice->BeginScene();
 
 	DrawPlayer();
@@ -276,9 +279,18 @@ void Draw(void)
 	DrawPickup();
 	DrawEffect();
 
-	pDevice->EndScene();
+	// draw 2d sprites
+	SpriteStart();
+	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 
-	//バックバッファを画面に表示する
+	SpriteDraw(sprite);
+
+	// finish draw
+	SpriteEnd();
+	pDevice->EndScene();
+	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
+
+	// draw to screen
 	pDevice->Present(NULL, NULL, NULL, NULL);
 }
 
@@ -341,17 +353,13 @@ void InitLight()
 
 
 
-D3DXCOLOR operator - (D3DXCOLOR o1, float o2) { return D3DXCOLOR(o1.r - o2, o1.g - o2, o1.b - o2, o1.a); };
 
 void InitModel()
 {
 	auto device = MyDirect3D_GetDevice();
 
-	// room
-	flooor = new MeshObject(Transform(), MESH_FLOOR, nullptr);
-
-	// slime
-	slime = new MeshObject(Transform(), MESH_EGG, nullptr);
+	// sprite test
+	sprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_GORILLA), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DCOLOR_RGBA(255, 255, 255, 100));
 
 	// shinjyuku
 	shinjyuku = std::vector<MeshObject*>();
@@ -385,11 +393,6 @@ void InitModel()
 	i_buffer->Lock(0, 0, (void**)&pVoid, 0);
 	memcpy(pVoid, indices, sizeof(indices));
 	i_buffer->Unlock();
-
-	// animation test
-	//tiny = new BoneObject(Transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(1, 1, 1)), MESH_ROBOTA);
-	//tiny->SetAnimationSpeed(0, 0.03F);
-	//tiny->PlayAnimation(1);
 }
 
 struct CUSTOM_LINE
@@ -407,13 +410,11 @@ void DrawTriangle()
 	static float deg = 0.0F; deg += 0.5F;
 	if (deg > 100) deg -= 100;
 	
-	// enable alpha blending
-	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
-	
 	// set default material and texture
+	SetMaterial();
 	pDevice->SetTexture(0, NULL);
 
-	// draw floor
+	// draw shinjyuku
 	for (int i = 0; i < shinjyuku.size(); i++)
 	{
 		// move
@@ -430,48 +431,14 @@ void DrawTriangle()
 		shinjyuku[i]->Draw(true, true);
 	}
 
-	// draw animated char
-	//tiny->Draw(true, true);
-
-	// draw egg
-	//slime->Draw(true, true);
-
 	// primitive line
 	pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	TransformObject(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
 	pDevice->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
 	pDevice->SetTexture(0, NULL);
 
-	for (int i = 0; i < 10; i++)
-	{
-		CUSTOM_LINE vert[]
-		{
-			{D3DXVECTOR3(-100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
-			{D3DXVECTOR3(100, 0, (-10 * i) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
-		};
-		CUSTOM_LINE vert2[]
-		{
-			{D3DXVECTOR3(-100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
-			{D3DXVECTOR3(100, 0, (10 * (i + 1)) - deg), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
-		};
-	
-		if (vert[0].pos.z < -100)
-		{
-			vert[0].pos.z += 200;
-			vert[1].pos.z += 200;
-		}
-		if (vert2[0].pos.z < -100)
-		{
-			vert2[0].pos.z += 200;
-			vert2[1].pos.z += 200;
-		}
-	
-		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
-		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert2, sizeof(CUSTOM_LINE));
-	}
-
 	float offset = 5;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		CUSTOM_LINE vert[]
 		{
@@ -490,12 +457,4 @@ void DrawTriangle()
 	}
 
 	pDevice->SetRenderState(D3DRS_LIGHTING, true);
-
-	// primitive cube
-	//pDevice->SetFVF(CUSTOM_FVF);
-	//pDevice->SetStreamSource(0, v_buffer, 0, sizeof(CUSTOM_VERTEX));
-	//pDevice->SetIndices(i_buffer);
-	//pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
-
-	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 }

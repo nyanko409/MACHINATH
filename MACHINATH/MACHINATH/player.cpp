@@ -26,7 +26,7 @@ void InitPlayer()
 	player->PlayAnimation(1);
 
 	// create skateboard and make player the parent
-	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
+	trans = Transform(D3DXVECTOR3(-0.2F, -1.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
 	skateboard = new MeshObject(trans, MESH_SKATEBOARD, player);
 
 	// init player rotation
@@ -90,7 +90,6 @@ void UpdatePlayer()
 		if (rotY <= -45) rotY = -45;
 		offsetY -= 0.1F;
 		if (offsetY < 10) offsetY = 10;
-
 	}
 
 	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
