@@ -74,15 +74,9 @@ void InitLight();
 // TEST
 void DrawTriangle();
 void InitModel();
-MeshObject* flooor;
-MeshObject* slime;
-BoneObject* tiny;
 
 std::vector<MeshObject*> shinjyuku;
-
-LPDIRECT3DVERTEXBUFFER9 v_buffer;
-LPDIRECT3DINDEXBUFFER9 i_buffer;
-Sprite sprite;
+Sprite sprite, sprite2;
 
 
 /*-----------------------------------------------------------------------
@@ -269,7 +263,7 @@ void Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
 	
 	//バックバッファーのクリア 紫色は230，0，255，255
-	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0F, 0);
+	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(80, 80, 255), 1.0F, 0);
 
 	// draw 3d meshes
 	pDevice->BeginScene();
@@ -283,6 +277,7 @@ void Draw(void)
 	SpriteStart();
 
 	SpriteDraw(sprite);
+	SpriteDraw(sprite2);
 
 	// finish draw
 	SpriteEnd();
@@ -357,40 +352,16 @@ void InitModel()
 	auto device = MyDirect3D_GetDevice();
 
 	// sprite test
-	sprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_GORILLA), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DCOLOR_RGBA(255, 255, 255, 100));
+	sprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_GORILLA), 
+		D3DXVECTOR3(300, 150, 0), D3DXVECTOR3(0, 0, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
+	sprite2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_GORILLA),
+		D3DXVECTOR3(906, 1024, 0.1F), D3DXVECTOR3(906 / 2, 1024 / 2, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 0, 0, 255));
 
 	// shinjyuku
 	shinjyuku = std::vector<MeshObject*>();
 	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
 	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
 	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
-
-
-	// primitive
-	CUSTOM_VERTEX vert[] =
-	{
-		{-3, 3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{0, 0} },
-		{3, 3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{0, 1} },
-		{-3, -3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{1, 0} },
-		{3, -3, 3, D3DVECTOR{0, 0, -1}, D3DCOLOR_ARGB(255, 255, 255, 255), D3DXVECTOR2{1, 1} },
-	};
-
-	short indices[] =
-	{
-		0, 1, 2, 2, 1, 3
-	};
-
-	void* pVoid;
-
-	device->CreateVertexBuffer(sizeof(CUSTOM_VERTEX) * 4, 0, CUSTOM_FVF, D3DPOOL_MANAGED, &v_buffer, NULL);
-	v_buffer->Lock(0, 0, (void**)&pVoid, 0);
-	memcpy(pVoid, vert, sizeof(vert));
-	v_buffer->Unlock();
-
-	device->CreateIndexBuffer(sizeof(short) * 6, 0, D3DFMT_INDEX16, D3DPOOL_MANAGED, &i_buffer, NULL);
-	i_buffer->Lock(0, 0, (void**)&pVoid, 0);
-	memcpy(pVoid, indices, sizeof(indices));
-	i_buffer->Unlock();
 }
 
 struct CUSTOM_LINE
@@ -401,11 +372,14 @@ struct CUSTOM_LINE
 
 void DrawTriangle()
 {
+	sprite2.rotZ++;
+
 	// draw text
-	char f[] = "lol h d dw dw wd w d wd wd ";
+	char f[] = "";
 	DrawTextTo(RECT{200, 100, 100, 50}, f, sizeof(f) / sizeof(char));
 
-	if (Keyboard_IsTrigger(DIK_V)) PlayEffect(EFFECT_BLOW, 0, 15, 0);
+	if (Keyboard_IsTrigger(DIK_V)) 
+		PlayEffect(EFFECT_BLOW, 0, 15, 0, 0.1F, 0.1F, 0.2F);
 
 	auto pDevice = MyDirect3D_GetDevice();
 

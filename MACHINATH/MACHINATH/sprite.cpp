@@ -1,5 +1,6 @@
 #include "sprite.h"
 #include "mydirect3d.h"
+#include "transformation.h"
 
 
 // sprite device
@@ -7,9 +8,10 @@ static LPD3DXSPRITE sprite;
 
 
 
-void SpriteDraw(const Sprite& sp)
+void SpriteDraw(const Sprite& sp, bool rotateAtPos)
 {
-	sprite->Draw(sp.sprite, NULL, &sp.center, &sp.position, sp.color);
+	sprite->SetTransform(&TransformSprite(sp.position, sp.rotZ, sp.scale, rotateAtPos));
+	sprite->Draw(sp.sprite, NULL, &sp.center, NULL, sp.color);
 }
 
 void InitSprite()
