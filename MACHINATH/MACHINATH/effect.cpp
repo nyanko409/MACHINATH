@@ -36,7 +36,10 @@ Camera* camera = NULL;
 EffekseerRenderer::Renderer* renderer = NULL;
 Effekseer::Manager* manager = NULL;
 std::vector<Effekseer::Handle> handle;
-Effekseer::Effect* effect[MAX_EFFECTS];
+
+Effekseer::Effect* effect[MAX_EFFECTS] = { };
+Effekseer::Vector3D g_delta[MAX_EFFECTS] = { };
+float g_playSpeed[MAX_EFFECTS] = { };
 
 
 void InitEffect()
@@ -74,12 +77,12 @@ void InitEffect()
 		::Effekseer::Matrix44().PerspectiveFovLH(camera->fov, camera->aspect, camera->nearClip, camera->farClip));
 }
 
-void PlayEffect(Effect type, D3DXVECTOR3 position)
+void PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 delta, float speed)
 {
-	PlayEffect(type, position.x, position.y, position.z);
+	PlayEffect(type, position.x, position.y, position.z, delta.x, delta.y, delta.z, speed);
 }
 
-void PlayEffect(Effect type, float posX, float posY, float posZ)
+void PlayEffect(Effect type, float posX, float posY, float posZ, float deltaX, float deltaY, float deltaZ, float playSpeed)
 {
 	// エフェクトの読込
 	for (int i = 0; i < MAX_EFFECTS; i++)
@@ -87,6 +90,8 @@ void PlayEffect(Effect type, float posX, float posY, float posZ)
 		if (!effect[i])
 		{
 			effect[i] = Effekseer::Effect::Create(manager, path[type]);
+			g_delta[i] = Effekseer::Vector3D(deltaX, deltaY, deltaZ);
+			g_playSpeed[i] = playSpeed;
 
 			Effekseer::Handle _handle = manager->Play(effect[i], posX, posY, posZ);
 			handle[i] = _handle;
@@ -120,8 +125,8 @@ void DrawEffect()
 		// update drawing effects
 		if (handle[i] != -1)
 		{
-			manager->AddLocation(handle[i], Effekseer::Vector3D(0.0F, 0.0F, -0.5F));
-			manager->SetSpeed(handle[i], 1.0F);
+			manager->AddLocation(handle[i], g_delta[i]);
+			manager->SetSpeed(handle[i], g_playSpeed[i]);
 		}
 	}
 
