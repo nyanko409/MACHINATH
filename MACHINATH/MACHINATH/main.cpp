@@ -281,14 +281,12 @@ void Draw(void)
 
 	// draw 2d sprites
 	SpriteStart();
-	//pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, true);
 
 	SpriteDraw(sprite);
 
 	// finish draw
 	SpriteEnd();
 	pDevice->EndScene();
-	pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 
 	// draw to screen
 	pDevice->Present(NULL, NULL, NULL, NULL);
@@ -403,6 +401,10 @@ struct CUSTOM_LINE
 
 void DrawTriangle()
 {
+	// draw text
+	char f[] = "lol h d dw dw wd w d wd wd ";
+	DrawTextTo(RECT{200, 100, 100, 50}, f, sizeof(f) / sizeof(char));
+
 	if (Keyboard_IsTrigger(DIK_V)) PlayEffect(EFFECT_BLOW, 0, 15, 0);
 
 	auto pDevice = MyDirect3D_GetDevice();
