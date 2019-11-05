@@ -18,6 +18,8 @@ static float rotMax;
 static bool jumpFrag;
 static int jumpcnt;
 
+void Jump();
+
 void InitPlayer()
 {	
 	// get device
@@ -66,11 +68,6 @@ void UpdatePlayer()
 		player->transform.position.x += 0.5F;
 		player->transform.rotation.z += -rotSpeed;
 	}
-	else if (jumpFrag == false && Keyboard_IsPress(DIK_J))
-	{
-		jumpFrag = true;
-		player->PlayAnimation(2);
-	}
 	else
 	{
 		if (player->transform.rotation.z > 0)
@@ -86,24 +83,8 @@ void UpdatePlayer()
 				player->transform.rotation.z = 0;
 		}
 	}
-	//jump
-	if (jumpFrag == true)
-	{
-		player->transform.position.y = 1.0F + 40.0F*sin(D3DXToRadian(jumpcnt));
-		jumpcnt += JumpSpeed;
-		player->transform.rotation.y += 360.0F / (180.0F / JumpSpeed);
-		//player->transform.rotation.z += 360.0F / (180.0F / JumpSpeed);
-		player->transform.rotation.x += 360.0F / (180.0F / JumpSpeed);
-		if (jumpcnt > 180)
-		{
-			jumpFrag = false;
-			jumpcnt = 0;
-			player->transform.rotation.y = 90.0F;
-			//	player->transform.rotation.z = 0.0F;
-			player->transform.rotation.x = 0.0F;
-			player->PlayAnimation(1);
-		}
-	}
+
+	Jump();
 
 	// clip rotation
 	if(player->transform.rotation.z > rotMax)
@@ -124,6 +105,34 @@ void UpdatePlayer()
 	}
 
 	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
+}
+
+void Jump()
+{
+	if (!jumpFrag && Keyboard_IsPress(DIK_J))
+	{
+		jumpFrag = true;
+		player->PlayAnimation(2);
+	}
+
+	//jump
+	if (jumpFrag)
+	{
+		player->transform.position.y = 1.0F + 40.0F*sin(D3DXToRadian(jumpcnt));
+		jumpcnt += JumpSpeed;
+		player->transform.rotation.y += 360.0F / (180.0F / JumpSpeed);
+		//player->transform.rotation.z += 360.0F / (180.0F / JumpSpeed);
+		player->transform.rotation.x += 360.0F / (180.0F / JumpSpeed);
+		if (jumpcnt > 180)
+		{
+			jumpFrag = false;
+			jumpcnt = 0;
+			player->transform.rotation.y = 90.0F;
+			//	player->transform.rotation.z = 0.0F;
+			player->transform.rotation.x = 0.0F;
+			player->PlayAnimation(1);
+		}
+	}
 }
 
 void DrawPlayer()
