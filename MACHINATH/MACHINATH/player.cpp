@@ -6,6 +6,8 @@
 #include "playTime.h"
 #include "sceneManagement.h"
 
+#define JumpHeight (30.0F)
+#define JumpSpeed (3.0F)
 
 static LPDIRECT3DDEVICE9 device;
 static Player* player;
@@ -13,6 +15,8 @@ static MeshObject* skateboard;
 
 static float rotSpeed;
 static float rotMax;
+static bool jumpFrag;
+static int jumpcnt;
 
 void InitPlayer()
 {	
@@ -23,7 +27,7 @@ void InitPlayer()
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
 	player = new Player(trans, 1.0F, MESH_ROBOTA, 5, 5, 5 ,nullptr);
 	player->SetAnimationSpeed(0.04F);
-	player->PlayAnimation(2);
+	player->PlayAnimation(1);
 
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -1.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
@@ -32,6 +36,10 @@ void InitPlayer()
 	// init player rotation
 	rotSpeed = 3.0F;
 	rotMax = 10.0F;
+
+	//reset jumpfrag,jumpcnt
+	jumpFrag = false;
+	jumpcnt = 0;
 
 	StartTimer();
 }
@@ -58,6 +66,11 @@ void UpdatePlayer()
 		player->transform.position.x += 0.5F;
 		player->transform.rotation.z += -rotSpeed;
 	}
+	else if (jumpFrag == false && Keyboard_IsPress(DIK_J))
+	{
+		jumpFrag = true;
+		player->PlayAnimation(2);
+	}
 	else
 	{
 		if (player->transform.rotation.z > 0)
@@ -71,6 +84,24 @@ void UpdatePlayer()
 			player->transform.rotation.z += rotSpeed;
 			if (player->transform.rotation.z > 0)
 				player->transform.rotation.z = 0;
+		}
+	}
+	//jump
+	if (jumpFrag == true)
+	{
+		player->transform.position.y = 1.0F + 40.0F*sin(D3DXToRadian(jumpcnt));
+		jumpcnt += JumpSpeed;
+		player->transform.rotation.y += 360.0F / (180.0F / JumpSpeed);
+		//player->transform.rotation.z += 360.0F / (180.0F / JumpSpeed);
+		player->transform.rotation.x += 360.0F / (180.0F / JumpSpeed);
+		if (jumpcnt > 180)
+		{
+			jumpFrag = false;
+			jumpcnt = 0;
+			player->transform.rotation.y = 90.0F;
+			//	player->transform.rotation.z = 0.0F;
+			player->transform.rotation.x = 0.0F;
+			player->PlayAnimation(1);
 		}
 	}
 
