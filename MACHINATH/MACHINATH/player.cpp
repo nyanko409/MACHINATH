@@ -6,6 +6,7 @@
 #include "playTime.h"
 #include "sceneManagement.h"
 
+// globals
 #define JumpHeight (30.0F)
 #define JumpSpeed (3.0F)
 
@@ -18,7 +19,10 @@ static float rotMax;
 static bool jumpFrag;
 static int jumpcnt;
 
+// functions
 void Jump();
+
+
 
 void InitPlayer()
 {	
@@ -84,6 +88,7 @@ void UpdatePlayer()
 		}
 	}
 
+	// handle jumping
 	Jump();
 
 	// clip rotation
@@ -106,6 +111,23 @@ void UpdatePlayer()
 
 	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
 }
+
+void DrawPlayer()
+{
+	// draw player
+	player->Draw(true, true);
+
+	// draw skateboard
+	skateboard->Draw(true, true);
+}
+
+Player* GetPlayer()
+{
+	return player;
+}
+
+
+
 
 void Jump()
 {
@@ -133,18 +155,4 @@ void Jump()
 			player->PlayAnimation(1);
 		}
 	}
-}
-
-void DrawPlayer()
-{
-	// draw player
-	player->Draw(true, true);
-
-	// draw skateboard
-	skateboard->Draw(true, true);
-}
-
-Player* GetPlayer()
-{
-	return player;
 }

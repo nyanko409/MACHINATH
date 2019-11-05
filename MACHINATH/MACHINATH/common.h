@@ -9,13 +9,13 @@
 
 /*
 	FULLSCREEN: 1440 x 900 (wide)
-	WINDOWED:	2560 x 1440
+	WINDOWED:	1920 x 1080
 */
 #define FULLSCREEN		false
-#define SCREEN_WIDTH	(2560)
-#define SCREEN_HEIGHT	(1440)
+#define SCREEN_WIDTH	(1920)
+#define SCREEN_HEIGHT	(1080)
 
-#define FPS				50
+#define FPS				60
 #define TIME_PER_FRAME	(float)1/FPS
 
 // custom vertex struct

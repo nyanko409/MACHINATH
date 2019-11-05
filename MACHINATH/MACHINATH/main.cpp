@@ -32,6 +32,7 @@
 #include "playTime.h"
 #include "sceneManagement.h"
 #include "mesh.h"
+#include "shader.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -164,20 +165,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		else
 		{
-			// FPS 管理
-			a = std::chrono::system_clock::now();
-			std::chrono::duration<double, std::milli> work_time = a - b;
-
-			if (work_time.count() < 1.0F/FPS * 1000)
-			{
-				std::chrono::duration<double, std::milli> delta_ms(1.0F / FPS * 1000 - work_time.count());
-				auto delta_ms_duration = std::chrono::duration_cast<std::chrono::milliseconds>(delta_ms);
-				std::this_thread::sleep_for(std::chrono::milliseconds(delta_ms_duration.count()));
-			}
-
-			b = std::chrono::system_clock::now();
-
 			// update and draw every frame
+			Sleep(TIME_PER_FRAME * 1000);
 			Update();
 			Draw();
 		}
@@ -223,6 +212,7 @@ bool Initialize(void)
 
 	InitRenderState();
 	
+	InitShader();
 	InitCamera();
 	InitFont();
 	InitEffect();
@@ -267,16 +257,19 @@ void Draw(void)
 	// draw 3d meshes
 	pDevice->BeginScene();
 
+	EffectStart();
+
 	DrawPlayer();
 	DrawTriangle();
 	DrawPickup();
 	DrawEffect();
 
+	EffectEnd();
+
 	// draw 2d sprites
 	SpriteStart();
 
-	SpriteDraw(sprite);
-	//SpriteDraw(sprite2);
+	//SpriteDraw(sprite);
 
 	// finish draw
 	SpriteEnd();
@@ -293,6 +286,7 @@ void Finalize(void)
 	UninitPickup();
 	UninitCamera();
 	UninitEffect();
+	UninitShader();
 
 	Texture_Release();
 	MyDirect3D_Finalize();//DirectXの終了
@@ -371,19 +365,18 @@ struct CUSTOM_LINE
 
 void DrawTriangle()
 {
-	sprite.rotZ++;
+	auto pDevice = MyDirect3D_GetDevice();
+
+	static float deg = 0.0F; deg += 0.5F;
+	if (deg > 100) deg -= 100;
 
 	// draw text
 	char f[] = "";
 	DrawTextTo(RECT{200, 100, 100, 50}, f, sizeof(f) / sizeof(char));
 
+	// random effect
 	if (Keyboard_IsTrigger(DIK_V)) 
 		PlayEffect(EFFECT_BLOW, 0, 15, 0, 0.1F, 0.1F, 0.2F);
-
-	auto pDevice = MyDirect3D_GetDevice();
-
-	static float deg = 0.0F; deg += 0.5F;
-	if (deg > 100) deg -= 100;
 	
 	// set default material and texture
 	SetMaterial();

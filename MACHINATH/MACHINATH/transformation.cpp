@@ -2,6 +2,7 @@
 #include "transformation.h"
 #include "mydirect3d.h"
 #include "common.h"
+#include "shader.h"
 
 D3DXMATRIX matTranslate, matRotation, matScale;
 D3DXMATRIX matWorld;
@@ -14,7 +15,7 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR
 	// set translation and scaling matrix
 	D3DXMatrixTranslation(&matTranslate, translate.x, translate.y, translate.z);
 	D3DXMatrixScaling(&matScale, scale.x, scale.y, scale.z);
-
+	
 	// set rotation matrix
 	D3DXMATRIX xRot, yRot, zRot;
 
@@ -31,7 +32,9 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR
 		matWorld = (matScale * matRotation * matTranslate);
 
 	// set and return the world matrix
-	device->SetTransform(D3DTS_WORLD, &matWorld);
+	//device->SetTransform(D3DTS_WORLD, &matWorld);
+	GetEffect()->SetMatrix("World", &matWorld);
+	GetEffect()->CommitChanges();
 
 	return matWorld;
 }

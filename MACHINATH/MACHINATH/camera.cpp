@@ -3,6 +3,7 @@
 #include "mydirect3d.h"
 #include "input.h"
 #include "font.h"
+#include "shader.h"
 
 
 // operator overload
@@ -54,11 +55,14 @@ void UpdateCamera()
 
 	// set view
 	D3DXMatrixLookAtLH(&matView, &cam->position, &(cam->forward + cam->position), &cam->up);
-	device->SetTransform(D3DTS_VIEW, &matView);
+	//device->SetTransform(D3DTS_VIEW, &matView);
+	GetEffect()->SetMatrix("View", &matView);
 
 	// set projection
 	D3DXMatrixPerspectiveFovLH(&matProjection, cam->fov, cam->aspect, cam->nearClip, cam->farClip);
-	device->SetTransform(D3DTS_PROJECTION, &matProjection);
+	//device->SetTransform(D3DTS_PROJECTION, &matProjection);
+	GetEffect()->SetMatrix("Projection", &matProjection);
+	GetEffect()->CommitChanges();
 }
 
 void UninitCamera()

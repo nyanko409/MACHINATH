@@ -22,11 +22,11 @@
 // path to the effect
 EFK_CHAR* path[5]
 {
-	(EFK_CHAR*)L"asset/effect/blow.efk",
-	(EFK_CHAR*)L"asset/effect/pickup_medal.efk",
-	(EFK_CHAR*)L"asset/effect/fuck.efk",
-	(EFK_CHAR*)L"asset/effect/shield.efk",
-	(EFK_CHAR*)L"asset/effect/eff.efk"
+	(EFK_CHAR*)L"asset/shader/effekseer/blow.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/pickup_medal.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/fuck.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/shield.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/eff.efk"
 };
 
 

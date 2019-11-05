@@ -78,6 +78,9 @@
     <ClCompile Include="sprite.cpp">
       <Filter>ソース ファイル\Library</Filter>
     </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>ソース ファイル\Library</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -138,6 +141,9 @@
       <Filter>ヘッダー ファイル\Library</Filter>
     </ClInclude>
     <ClInclude Include="sprite.h">
+      <Filter>ヘッダー ファイル\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
       <Filter>ヘッダー ファイル\Library</Filter>
     </ClInclude>
   </ItemGroup>
