@@ -22,8 +22,8 @@ void InitPlayer()
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
 	player = new Player(trans, 1.0F, MESH_ROBOTA, 5, 5, 5 ,nullptr);
-	player->SetAnimationSpeed(0.03F);
-	player->PlayAnimation(1);
+	player->SetAnimationSpeed(0.04F);
+	player->PlayAnimation(2);
 
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -1.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));

@@ -33,7 +33,7 @@ public:
 
 		aspect = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
 		nearClip = 1.0F;
-		farClip = 500.0F;
+		farClip = 200.0F;
 		fov = D3DXToRadian(90);
 		moveSpeed = 0.6F;
 		lookSensivity = 1.0F;

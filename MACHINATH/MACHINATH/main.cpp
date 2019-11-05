@@ -277,7 +277,7 @@ void Draw(void)
 	SpriteStart();
 
 	SpriteDraw(sprite);
-	SpriteDraw(sprite2);
+	//SpriteDraw(sprite2);
 
 	// finish draw
 	SpriteEnd();
@@ -353,7 +353,7 @@ void InitModel()
 
 	// sprite test
 	sprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_GORILLA), 
-		D3DXVECTOR3(300, 150, 0), D3DXVECTOR3(0, 0, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
+		D3DXVECTOR3(300, 150, 0), D3DXVECTOR3(0, 0, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 100));
 	sprite2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_GORILLA),
 		D3DXVECTOR3(906, 1024, 0.1F), D3DXVECTOR3(906 / 2, 1024 / 2, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 0, 0, 255));
 
@@ -372,7 +372,7 @@ struct CUSTOM_LINE
 
 void DrawTriangle()
 {
-	sprite2.rotZ++;
+	sprite.rotZ++;
 
 	// draw text
 	char f[] = "";
