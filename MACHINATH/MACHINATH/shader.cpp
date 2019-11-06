@@ -12,7 +12,7 @@ void InitShader()
 	static LPD3DXBUFFER errorlog;
 	
 	// load shader into memory
-	D3DXCreateEffectFromFile(pDevice, "asset/shader/custom/simple.fx", 0, 0, 
+	D3DXCreateEffectFromFile(pDevice, "asset/shader/custom/vertex.fx", 0, 0, 
 		D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &effect, &errorlog);
 	effect->FindNextValidTechnique(NULL, &technique);
 }

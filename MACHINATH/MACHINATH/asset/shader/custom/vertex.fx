@@ -18,6 +18,7 @@ VertexOut VShader(float4 Pos : POSITION)
 	Vert.Pos = mul(Pos, Transform);
 
 	Vert.Color = float4(1, 1, 1, 1);
+	//Vert.Pos = float4(1, 1, 1, 1);
 
 	return Vert;
 }

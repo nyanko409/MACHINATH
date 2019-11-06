@@ -166,7 +166,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		else
 		{
 			// update and draw every frame
-			Sleep(TIME_PER_FRAME * 1000);
+			Sleep(10);
 			Update();
 			Draw();
 		}
