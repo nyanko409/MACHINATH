@@ -7,11 +7,17 @@ class Pickup : public MeshObject, public BoxCollider
 {
 public:
 	// constructor
-	Pickup(Transform trans, MESH_NAME mesh, float width, float height, float depth) :
-		MeshObject(trans, mesh), BoxCollider(&(MeshObject::transform), width, height, depth) {}
+	Pickup(Transform trans, MESH_NAME mesh, SHADER_TYPE type, float width, float height, float depth) :
+		MeshObject(trans, mesh, type), BoxCollider(&(MeshObject::transform), width, height, depth) {}
 	
 	// destructor
 	~Pickup() {}
+
+	// draw
+	void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override
+	{
+		MeshObject::Draw(UseWorldPos, rotateAtPosition, shader);
+	}
 };
 
 

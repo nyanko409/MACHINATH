@@ -257,14 +257,8 @@ void Draw(void)
 	// draw 3d meshes
 	pDevice->BeginScene();
 
-	EffectStart();
-
-	DrawPlayer();
-	DrawTriangle();
-	DrawPickup();
+	DrawObjects();
 	DrawEffect();
-
-	EffectEnd();
 
 	// draw 2d sprites
 	SpriteStart();
@@ -352,9 +346,9 @@ void InitModel()
 
 	// shinjyuku
 	shinjyuku = std::vector<MeshObject*>();
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
 }
 
 struct CUSTOM_LINE
@@ -391,7 +385,7 @@ void DrawTriangle()
 		// pool object
 		if (shinjyuku[i]->transform.position.z < -150)
 		{
-			shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, nullptr));
+			shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
 			shinjyuku.erase(shinjyuku.begin() + i);
 		}
 

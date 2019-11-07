@@ -55,14 +55,11 @@ void UpdateCamera()
 
 	// set view
 	D3DXMatrixLookAtLH(&matView, &cam->position, &(cam->forward + cam->position), &cam->up);
-	//device->SetTransform(D3DTS_VIEW, &matView);
-	GetEffect()->SetMatrix("View", &matView);
+	device->SetTransform(D3DTS_VIEW, &matView);
 
 	// set projection
 	D3DXMatrixPerspectiveFovLH(&matProjection, cam->fov, cam->aspect, cam->nearClip, cam->farClip);
-	//device->SetTransform(D3DTS_PROJECTION, &matProjection);
-	GetEffect()->SetMatrix("Projection", &matProjection);
-	GetEffect()->CommitChanges();
+	device->SetTransform(D3DTS_PROJECTION, &matProjection);
 }
 
 void UninitCamera()

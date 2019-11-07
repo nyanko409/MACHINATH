@@ -10,12 +10,18 @@ public:
 	float moveSpeed;
 
 	// constructor
-	Player(Transform transform, float moveSpeed, ANIMATED_MESH_NAME name, float width, float height, float depth, GameObject* parent = nullptr) :
-		BoneObject(transform, name, parent), BoxCollider(&(GameObject::transform), width, height, depth),  moveSpeed(moveSpeed)
+	Player(Transform transform, float moveSpeed, ANIMATED_MESH_NAME name, SHADER_TYPE type, float width, float height, float depth, GameObject* parent = nullptr) :
+		BoneObject(transform, name, type, parent), BoxCollider(&(GameObject::transform), width, height, depth),  moveSpeed(moveSpeed)
 	{}
 
 	// destructor
 	~Player() {}
+
+	// draw
+	void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override
+	{
+		BoneObject::Draw(UseWorldPos, rotateAtPosition, shader);
+	}
 };
 
 

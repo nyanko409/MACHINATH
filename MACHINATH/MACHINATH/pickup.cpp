@@ -44,7 +44,7 @@ void UpdatePickup()
 
 		int pos = (rand() % 21) - 10.0F;
 		Transform trans(D3DXVECTOR3(pos, 1, 80), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(0.2F, 0.2F, 0.2F));
-		pickup.push_back(new Pickup(trans, MESH_COIN, 3, 3, 3));
+		pickup.push_back(new Pickup(trans, MESH_COIN, SHADER_SIMPLE, 3, 3, 3));
 	}
 
 	// loop for every pickup
@@ -53,23 +53,24 @@ void UpdatePickup()
 		// move pickup to -z direction
 		pickup[i]->transform.position.z -= player->moveSpeed;
 
-		// delete unneeded pickup
-		if(pickup[i]->transform.position.z <= -10.0F)
+		// delete pickup out of bounds
+		if (pickup[i]->transform.position.z <= -10.0F)
+		{
+			delete pickup[i];
 			pickup.erase(pickup.begin() + i);
+		}
 
 		// rotate pickup
 		pickup[i]->transform.rotation.y += rotSpeed;
 
-		// only check for collision if needed (check magnitude)
-		if (true)
+		// check for collision with player
+		if (BoxCollider::CheckCollision(*pickup[i], *player))
 		{
-			// check for collision with player
-			if (BoxCollider::CheckCollision(*pickup[i], *player))
-			{
-				// collided, delete coin and play effect
-				PlayEffect(EFFECT_PICKUP_MEDAL, pickup[i]->transform.position);
-				pickup.erase(pickup.begin() + i);
-			}
+			// collided, delete coin and play effect
+			PlayEffect(EFFECT_PICKUP_MEDAL, pickup[i]->transform.position);
+
+			delete pickup[i];
+			pickup.erase(pickup.begin() + i);
 		}
 	}
 }

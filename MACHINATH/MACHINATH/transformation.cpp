@@ -32,9 +32,7 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR
 		matWorld = (matScale * matRotation * matTranslate);
 
 	// set and return the world matrix
-	//device->SetTransform(D3DTS_WORLD, &matWorld);
-	GetEffect()->SetMatrix("World", &matWorld);
-	GetEffect()->CommitChanges();
+	device->SetTransform(D3DTS_WORLD, &matWorld);
 
 	return matWorld;
 }

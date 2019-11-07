@@ -1,11 +1,12 @@
 #pragma once
 
+#include <string>
 #include "transform.h"
 #include "transformation.h"
 #include "mydirect3d.h"
 #include "meshLoader.h"
 #include "material.h"
-#include <string>
+#include "shader.h"
 
 
 // simple vector 2 template struct
@@ -27,16 +28,31 @@ typedef v3t<float>	 v3t_float;
 // base gameobject class
 class GameObject
 {
+private:
+	SHADER_TYPE shader;
+
 public:
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
 	GameObject* parent;				// the parent this gameobject is attached to
 
 	// constructor
 	GameObject() {}
-	GameObject(Transform transform, GameObject* parent = nullptr) : transform(transform), parent(parent) {}
+	GameObject(Transform transform, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) : transform(transform), parent(parent) 
+	{
+		// assign the shader at creation
+		shader = type;
+		AssignShader(this, shader);
+	}
 
 	// destructor
-	~GameObject() {}
+	~GameObject() 
+	{
+		// deassign the shader
+		DeassignShader(this, shader);
+	}
+
+	// virtual draw
+	virtual void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) {}
 
 	// returns the world space position of this gameobject
 	D3DXVECTOR3 GetWorldPosition()
@@ -143,4 +159,3 @@ public:
 		return false;
 	}
 };
-

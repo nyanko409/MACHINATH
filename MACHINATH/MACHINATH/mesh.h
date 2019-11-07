@@ -11,8 +11,8 @@ public:
 	MESH_DATA* mesh;				// data of this mesh
 
 
-	MeshObject(Transform transform, MESH_NAME name, GameObject* parent = nullptr) :
-		GameObject(transform, parent)
+	MeshObject(Transform transform, MESH_NAME name, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
+		GameObject(transform, type, parent)
 	{
 		// set mesh
 		mesh = GetMesh(name);
@@ -21,17 +21,27 @@ public:
 	~MeshObject() {}
 
 	// draw the object
-	void Draw(bool UseWorldPos, bool rotateAtPosition)
+	virtual void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override
 	{
 		auto device = MyDirect3D_GetDevice();
+		D3DXMATRIX matWorld;
 
 		// apply world matrix
 		if (UseWorldPos)
-			TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPosition);
+			matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPosition);
 		else
-			TransformObject(GetLocalPosition(), GetLocalRotation(), GetLocalScale(), rotateAtPosition);
+			matWorld = TransformObject(GetLocalPosition(), GetLocalRotation(), GetLocalScale(), rotateAtPosition);
 
-		// draw
+		// set world transform and draw
+		if (shader)
+		{
+			shader->SetMatrix("World", &matWorld);
+			shader->CommitChanges();
+		}
+		else 
+			device->SetTransform(D3DTS_WORLD, &matWorld);
+
+
 		for (DWORD i = 0; i < mesh->numMaterial; i++)
 		{
 			SetMaterial(&(mesh->material[i]));
@@ -52,8 +62,8 @@ public:
 	SkinMeshFile* mesh;				// data of this mesh
 
 
-	BoneObject(Transform transform, ANIMATED_MESH_NAME name, GameObject* parent = nullptr) :
-		GameObject(transform, parent)
+	BoneObject(Transform transform, ANIMATED_MESH_NAME name, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
+		GameObject(transform, type, parent)
 	{
 		mesh = GetAnimatedMesh(name);
 	}
@@ -61,18 +71,30 @@ public:
 	~BoneObject() {}
 
 	// draw the object
-	void Draw(bool UseWorldPos, bool rotateAtPosition)
+	virtual void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override
 	{
-		// apply world matrix
-		D3DXMATRIX world;
+		auto device = MyDirect3D_GetDevice();
+
+		// get world matrix
+		D3DXMATRIX matWorld;
+
 		if (UseWorldPos)
-			world = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPosition);
+			matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPosition);
 		else
-			world = TransformObject(GetLocalPosition(), GetLocalRotation(), GetLocalScale(), rotateAtPosition);
+			matWorld = TransformObject(GetLocalPosition(), GetLocalRotation(), GetLocalScale(), rotateAtPosition);
+
+		// apply world matrix
+		if (shader)
+		{
+			shader->SetMatrix("World", &matWorld);
+			shader->CommitChanges();
+		}
+		else
+			device->SetTransform(D3DTS_WORLD, &matWorld);
 
 		// draw	
 		mesh->UpdateAnim();
-		mesh->Draw(&world);
+		mesh->Draw(&matWorld);
 	}
 
 	// set animation speed
