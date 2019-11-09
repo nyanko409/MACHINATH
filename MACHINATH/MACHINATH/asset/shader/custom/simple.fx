@@ -60,6 +60,7 @@ VS_OUTPUT VS(
 	Out.Spec = I_s * k_s * pow(max(0, dot(R, V)), n / 4);   // specular
 	Out.Tex = Tex;
 
+	Out.Diff = float4(0, 1, 0, 1);
 	return Out;
 }
 
@@ -121,7 +122,7 @@ technique TNoShader
 		AlphaOp[1] = DISABLE;
 
 		// shaders
-		VertexShader = NULL;
+		VertexShader = compile vs_1_1 VS();
 		PixelShader = NULL;
 	}
 }

@@ -31,7 +31,7 @@ void InitPlayer()
 
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 1.0F, MESH_ROBOTA, SHADER_SIMPLE, 5, 5, 5 ,nullptr);
+	player = new Player(trans, 1.0F, MESH_ROBOTA, SHADER_DEFAULT, 5, 5, 5 ,nullptr);
 	player->SetAnimationSpeed(0.04F);
 	player->PlayAnimation(1);
 

@@ -433,16 +433,16 @@ public:
 		return S_OK;
 	}
 
-	void Draw(LPD3DXMATRIX matrix)
+	void Draw(LPD3DXMATRIX matrix, LPD3DXEFFECT shader = nullptr)
 	{
 		// フレームの行列を更新
 		UpdateFrame(m_RootFrame, matrix);
 
 		// フレーム描画
-		DrawFrame(m_RootFrame);
+		DrawFrame(m_RootFrame, shader);
 	}
 
-	void DrawFrame(LPD3DXFRAME frame)
+	void DrawFrame(LPD3DXFRAME frame, LPD3DXEFFECT shader = nullptr)
 	{
 		FrameData *frame_data = (FrameData*)frame;
 		LPD3DXMESHCONTAINER container_data = frame_data->pMeshContainer;
@@ -450,7 +450,7 @@ public:
 		// コンテナの数だけ描画する
 		while (container_data != NULL)
 		{
-			DrawMeshContainer(frame, container_data);
+			DrawMeshContainer(frame, container_data, shader);
 
 			container_data = container_data->pNextMeshContainer;
 		}
@@ -458,17 +458,17 @@ public:
 		// 兄弟がいれば再帰で呼び出す
 		if (frame_data->pFrameSibling != NULL)
 		{
-			DrawFrame(frame_data->pFrameSibling);
+			DrawFrame(frame_data->pFrameSibling, shader);
 		}
 
 		// 子がいれば再帰で呼び出す
 		if (frame_data->pFrameFirstChild != NULL)
 		{
-			DrawFrame(frame_data->pFrameFirstChild);
+			DrawFrame(frame_data->pFrameFirstChild, shader);
 		}
 	}
 
-	void DrawMeshContainer(LPD3DXFRAME frame, LPD3DXMESHCONTAINER container)
+	void DrawMeshContainer(LPD3DXFRAME frame, LPD3DXMESHCONTAINER container, LPD3DXEFFECT shader = nullptr)
 	{
 		auto device = MyDirect3D_GetDevice();
 
@@ -508,12 +508,22 @@ public:
 					{
 						// オフセット行列(m_BoneOffsetMatrix) * ボーンの行列(m_BoneMatrix)で最新の位置を割り出す
 						matrix = original_container->m_BoneOffsetMatrix[matrix_index] * (*original_container->m_BoneMatrix[matrix_index]);
-						device->SetTransform(D3DTS_WORLDMATRIX(j), &matrix);
+						
+						if(shader)
+							shader->SetMatrix("World", &matrix);
+						else
+							device->SetTransform(D3DTS_WORLDMATRIX(j), &matrix);
 					}
 				}
 
-				device->SetMaterial(&original_container->pMaterials[bone_buffer[i].AttribId].MatD3D);
-				device->SetTexture(0, original_container->m_TextureList[bone_buffer[i].AttribId]);
+				if(shader)
+					shader->CommitChanges();
+				else
+				{
+					device->SetMaterial(&original_container->pMaterials[bone_buffer[i].AttribId].MatD3D);
+					device->SetTexture(0, original_container->m_TextureList[bone_buffer[i].AttribId]);
+				}
+
 				original_container->MeshData.pMesh->DrawSubset(i);
 			}
 		}

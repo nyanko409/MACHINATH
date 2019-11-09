@@ -94,7 +94,7 @@ public:
 
 		// draw	
 		mesh->UpdateAnim();
-		mesh->Draw(&matWorld);
+		mesh->Draw(&matWorld, shader);
 	}
 
 	// set animation speed
