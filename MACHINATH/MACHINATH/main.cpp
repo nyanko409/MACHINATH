@@ -347,8 +347,14 @@ void InitModel()
 	// shinjyuku
 	shinjyuku = std::vector<MeshObject*>();
 	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_SIMPLE, nullptr));
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_SIMPLE, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_SIMPLE, nullptr));
+
+	D3DLIGHT9 light;
+	device->GetLight(0, &light);
+	shinjyuku[0]->pShader->SetFloatArray("DiffuseColor", &light.Diffuse.r, 3);
+	shinjyuku[0]->pShader->SetFloatArray("LightPos", &light.Position.x, 3);
+	shinjyuku[0]->pShader->SetFloatArray("AmbientColor", &light.Ambient.r, 3);
 }
 
 struct CUSTOM_LINE
@@ -376,7 +382,7 @@ void DrawTriangle()
 	SetMaterial();
 	pDevice->SetTexture(0, NULL);
 
-	// draw shinjyuku
+	// update shinjyuku
 	for (int i = 0; i < shinjyuku.size(); i++)
 	{
 		// move
@@ -388,9 +394,6 @@ void DrawTriangle()
 			shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
 			shinjyuku.erase(shinjyuku.begin() + i);
 		}
-
-		// draw
-		shinjyuku[i]->Draw(true, true);
 	}
 
 	// primitive line

@@ -18,10 +18,7 @@ public:
 	~Player() {}
 
 	// draw
-	void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override
-	{
-		BoneObject::Draw(UseWorldPos, rotateAtPosition, shader);
-	}
+	void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override;
 };
 
 

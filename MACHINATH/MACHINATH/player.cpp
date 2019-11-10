@@ -19,8 +19,15 @@ static float rotMax;
 static bool jumpFrag;
 static int jumpcnt;
 
-// functions
 void Jump();
+
+
+
+void Player::Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader)
+{
+	BoneObject::Draw(UseWorldPos, rotateAtPosition, shader);
+}
+
 
 
 

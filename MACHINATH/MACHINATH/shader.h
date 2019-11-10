@@ -1,5 +1,7 @@
 #pragma once
 
+#include <d3dx9.h>
+
 class GameObject;
 
 // shader types
@@ -12,16 +14,13 @@ enum SHADER_TYPE
 };
 
 // assigns the given object to shader
-void AssignShader(GameObject* obj, SHADER_TYPE type);
+LPD3DXEFFECT AssignShader(GameObject* obj, SHADER_TYPE type);
 
 // deassigns the given shader
 void DeassignShader(GameObject* obj, SHADER_TYPE type);
 
 
-#include <d3dx9.h>
 #include "gameObject.h"
-
-
 
 // call once at init
 void InitShader();

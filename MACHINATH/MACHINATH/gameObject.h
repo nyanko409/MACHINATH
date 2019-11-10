@@ -32,6 +32,7 @@ private:
 	SHADER_TYPE shader;
 
 public:
+	LPD3DXEFFECT pShader;			// pointer to the shader
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
 	GameObject* parent;				// the parent this gameobject is attached to
 
@@ -41,7 +42,7 @@ public:
 	{
 		// assign the shader at creation
 		shader = type;
-		AssignShader(this, shader);
+		pShader = AssignShader(this, shader);
 	}
 
 	// destructor

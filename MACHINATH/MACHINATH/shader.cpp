@@ -75,9 +75,10 @@ void DrawObjects()
 	}
 }
 
-void AssignShader(GameObject* obj, SHADER_TYPE type)
+LPD3DXEFFECT AssignShader(GameObject* obj, SHADER_TYPE type)
 {
 	effect[type].second.push_back(obj);
+	return effect[type].first.effect;
 }
 
 void DeassignShader(GameObject* obj, SHADER_TYPE type)
