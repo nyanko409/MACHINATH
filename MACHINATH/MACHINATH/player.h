@@ -18,12 +18,11 @@ public:
 	~Player() {}
 
 	// draw
-	void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override;
+	void Draw() override;
 };
 
 
 void InitPlayer();
 void UninitPlayer();
 void UpdatePlayer();
-void DrawPlayer();
 Player* GetPlayer();

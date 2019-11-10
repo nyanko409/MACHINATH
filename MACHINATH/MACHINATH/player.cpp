@@ -23,9 +23,10 @@ void Jump();
 
 
 
-void Player::Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader)
+void Player::Draw()
 {
-	BoneObject::Draw(UseWorldPos, rotateAtPosition, shader);
+	pShader->SetFloatArray("ViewDir", &GetCamera()->forward.x, 3);
+	BoneObject::Draw();
 }
 
 
@@ -38,7 +39,7 @@ void InitPlayer()
 
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 1.0F, MESH_ROBOTA, SHADER_DEFAULT, 5, 5, 5 ,nullptr);
+	player = new Player(trans, 1.0F, MESH_ROBOTA, SHADER_SIMPLE, 5, 5, 5 ,nullptr);
 	player->SetAnimationSpeed(0.04F);
 	player->PlayAnimation(1);
 
@@ -117,15 +118,6 @@ void UpdatePlayer()
 	}
 
 	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
-}
-
-void DrawPlayer()
-{
-	// draw player
-	player->Draw(true, true);
-
-	// draw skateboard
-	skateboard->Draw(true, true);
 }
 
 Player* GetPlayer()

@@ -35,6 +35,9 @@ void InitShader()
 
 		effect[i].first.effect->FindNextValidTechnique(NULL, &effect[i].first.technique);
 	}
+
+	// set defalt shader to null
+	effect.back().first.effect = nullptr;
 }
 
 void DrawObjects()
@@ -45,6 +48,12 @@ void DrawObjects()
 	D3DXMATRIX matView, matProjection;
 	pDevice->GetTransform(D3DTS_VIEW, &matView);
 	pDevice->GetTransform(D3DTS_PROJECTION, &matProjection);
+
+	// draw objects with default shader
+	for (int j = 0; j < effect.back().second.size(); j++)
+	{
+		effect.back().second[j]->Draw();
+	}
 
 	// draw for every shader except for default shader
 	for (int i = 0; i < effect.size() - 1; i++)
@@ -60,18 +69,12 @@ void DrawObjects()
 		// draw every assigned gameobject 
 		for (int j = 0; j < effect[i].second.size(); j++)
 		{
-			effect[i].second[j]->Draw(true, true, effect[i].first.effect);
+			effect[i].second[j]->Draw();
 		}
 
 		// end pass
 		effect[i].first.effect->EndPass();
 		effect[i].first.effect->End();
-
-		// draw rest with default shader
-		for (int j = 0; j < effect.back().second.size(); j++)
-		{
-			effect.back().second[j]->Draw(true, true);
-		}
 	}
 }
 
@@ -89,6 +92,9 @@ void DeassignShader(GameObject* obj, SHADER_TYPE type)
 void UninitShader()
 {
 	// free memory
-	//if(effect)
-	//	effect->Release();
+	for (int i = 0; i < effect.size(); i++)
+	{
+		if(effect[i].first.effect)
+			effect[i].first.effect->Release();
+	}
 }

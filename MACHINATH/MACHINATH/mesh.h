@@ -21,22 +21,20 @@ public:
 	~MeshObject() {}
 
 	// draw the object
-	virtual void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override
+	virtual void Draw() override
 	{
 		auto device = MyDirect3D_GetDevice();
-		D3DXMATRIX matWorld;
 
 		// apply world matrix
-		if (UseWorldPos)
-			matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPosition);
-		else
-			matWorld = TransformObject(GetLocalPosition(), GetLocalRotation(), GetLocalScale(), rotateAtPosition);
+		D3DXMATRIX matWorld;
+		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPos);
+
 
 		// set world transform and draw
-		if (shader)
+		if (pShader)
 		{
-			shader->SetMatrix("World", &matWorld);
-			shader->CommitChanges();
+			pShader->SetMatrix("World", &matWorld);
+			pShader->CommitChanges();
 		}
 		else 
 			device->SetTransform(D3DTS_WORLD, &matWorld);
@@ -71,30 +69,23 @@ public:
 	~BoneObject() {}
 
 	// draw the object
-	virtual void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override
+	virtual void Draw() override
 	{
 		auto device = MyDirect3D_GetDevice();
 
 		// get world matrix
 		D3DXMATRIX matWorld;
-
-		if (UseWorldPos)
-			matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPosition);
-		else
-			matWorld = TransformObject(GetLocalPosition(), GetLocalRotation(), GetLocalScale(), rotateAtPosition);
+		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPos);
 
 		// apply world matrix
-		if (shader)
-		{
-			shader->SetMatrix("World", &matWorld);
-			shader->CommitChanges();
-		}
+		if (pShader)
+			pShader->SetMatrix("World", &matWorld);
 		else
 			device->SetTransform(D3DTS_WORLD, &matWorld);
 
 		// draw	
 		mesh->UpdateAnim();
-		mesh->Draw(&matWorld, shader);
+		mesh->Draw(&matWorld, pShader);
 	}
 
 	// set animation speed

@@ -14,9 +14,9 @@ public:
 	~Pickup() {}
 
 	// draw
-	void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) override
+	void Draw() override
 	{
-		MeshObject::Draw(UseWorldPos, rotateAtPosition, shader);
+		MeshObject::Draw();
 	}
 };
 
@@ -24,4 +24,3 @@ public:
 void InitPickup();
 void UninitPickup();
 void UpdatePickup();
-void DrawPickup();

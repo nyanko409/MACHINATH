@@ -44,7 +44,7 @@ void UpdatePickup()
 
 		int pos = (rand() % 21) - 10.0F;
 		Transform trans(D3DXVECTOR3(pos, 1, 80), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(0.2F, 0.2F, 0.2F));
-		pickup.push_back(new Pickup(trans, MESH_COIN, SHADER_SIMPLE, 3, 3, 3));
+		pickup.push_back(new Pickup(trans, MESH_COIN, SHADER_DEFAULT, 3, 3, 3));
 	}
 
 	// loop for every pickup
@@ -72,16 +72,5 @@ void UpdatePickup()
 			delete pickup[i];
 			pickup.erase(pickup.begin() + i);
 		}
-	}
-}
-
-void DrawPickup()
-{
-	// draw every pickup in vector
-	device->SetTexture(0, NULL);
-
-	for (int i = 0; i < pickup.size(); i++)
-	{
-		pickup[i]->Draw(true, true);
 	}
 }

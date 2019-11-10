@@ -35,6 +35,7 @@ public:
 	LPD3DXEFFECT pShader;			// pointer to the shader
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
 	GameObject* parent;				// the parent this gameobject is attached to
+	bool rotateAtPos;				// if false, rotates around the origin of the world
 
 	// constructor
 	GameObject() {}
@@ -43,6 +44,8 @@ public:
 		// assign the shader at creation
 		shader = type;
 		pShader = AssignShader(this, shader);
+
+		rotateAtPos = true;
 	}
 
 	// destructor
@@ -53,7 +56,7 @@ public:
 	}
 
 	// virtual draw
-	virtual void Draw(bool UseWorldPos, bool rotateAtPosition, LPD3DXEFFECT shader = nullptr) {}
+	virtual void Draw() {}
 
 	// returns the world space position of this gameobject
 	D3DXVECTOR3 GetWorldPosition()
