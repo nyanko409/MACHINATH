@@ -12,7 +12,7 @@
 // テクスチャ管理番号
 typedef enum TextureIndex
 {
-	TEXTURE_INDEX_GORILLA,
+	TEXTURE_INDEX_CIRCLE,
 
     TEXTURE_INDEX_MAX
 };

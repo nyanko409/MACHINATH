@@ -39,13 +39,13 @@ void InitPlayer()
 
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 1.0F, MESH_ROBOTA, SHADER_SIMPLE, 5, 5, 5 ,nullptr);
+	player = new Player(trans, 1.0F, ANIM_MESH_ROBOT, SHADER_SIMPLE, 5, 5, 5);
 	player->SetAnimationSpeed(0.04F);
 	player->PlayAnimation(1);
 
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -1.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
-	skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_SIMPLE, player);
+	skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, player);
 
 	// init player rotation
 	rotSpeed = 3.0F;
@@ -141,9 +141,12 @@ void Jump()
 	{
 		player->transform.position.y = 1.0F + 40.0F*sin(D3DXToRadian(jumpcnt));
 		jumpcnt += JumpSpeed;
-		player->transform.rotation.y += 360.0F / (180.0F / JumpSpeed);
-		//player->transform.rotation.z += 360.0F / (180.0F / JumpSpeed);
-		player->transform.rotation.x += 360.0F / (180.0F / JumpSpeed);
+		float finalRot = 360.0F / (180.0F / JumpSpeed);
+
+		player->transform.rotation.y += finalRot;
+		//player->transform.rotation.z += finalRot;
+		player->transform.rotation.x += finalRot;
+
 		if (jumpcnt > 180)
 		{
 			jumpFrag = false;

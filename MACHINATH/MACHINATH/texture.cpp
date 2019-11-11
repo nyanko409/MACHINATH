@@ -25,7 +25,7 @@ typedef struct TextureFile_tag
 ------------------------------------------------------------------------------*/
 // 読み込みテクスチャ情報
 static const TextureFile g_TextureFiles[] = {
-    { "asset/texture/gorilla.jpg", 906, 1024 }
+    { "asset/texture/circle.png", 512, 512 }
 };
 
 // 読み込みテクスチャ数

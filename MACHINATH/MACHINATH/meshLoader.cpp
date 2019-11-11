@@ -7,12 +7,7 @@
 // unanimated mesh data, add path to x file
 std::vector<MESH_DATA> mesh
 {
-	{"asset/mesh/floor.x"},
-	{"asset/mesh/egg.x"},
 	{"asset/mesh/coin.x"},
-	{"asset/mesh/slime.x"},
-	{"asset/mesh/block.x" },
-	{"asset/mesh/robot.x" },
 	{"asset/mesh/skateboard.x" },
 	{"asset/mesh/neoshinjuku.x" }
 };
@@ -20,8 +15,7 @@ std::vector<MESH_DATA> mesh
 // animated mesh data, add path to x file
 std::vector<std::string> boneMeshPath
 {
-	{"asset/mesh/tiny.x"},
-	{"asset/mesh/robotA.x"},
+	{"asset/mesh/robot.x"},
 };
 
 // animated mesh data

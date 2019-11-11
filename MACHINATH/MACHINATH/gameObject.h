@@ -29,7 +29,7 @@ typedef v3t<float>	 v3t_float;
 class GameObject
 {
 private:
-	SHADER_TYPE shader;
+	SHADER_TYPE shaderType;
 
 public:
 	LPD3DXEFFECT pShader;			// pointer to the shader
@@ -42,8 +42,8 @@ public:
 	GameObject(Transform transform, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) : transform(transform), parent(parent) 
 	{
 		// assign the shader at creation
-		shader = type;
-		pShader = AssignShader(this, shader);
+		shaderType = type;
+		pShader = AssignShader(this, shaderType);
 
 		rotateAtPos = true;
 	}
@@ -52,7 +52,7 @@ public:
 	~GameObject() 
 	{
 		// deassign the shader
-		DeassignShader(this, shader);
+		DeassignShader(this, shaderType);
 	}
 
 	// virtual draw

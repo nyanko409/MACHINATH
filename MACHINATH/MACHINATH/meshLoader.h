@@ -14,12 +14,7 @@ struct MESH_DATA;
 // add mesh name to this enum
 enum MESH_NAME
 {
-	MESH_FLOOR,
-	MESH_EGG,
 	MESH_COIN,
-	MESH_SLIME,
-	MESH_BLOCK,
-	MESH_ROBOT,
 	MESH_SKATEBOARD,
 	MESH_NEOSHINJYUKU,
 };
@@ -27,8 +22,7 @@ enum MESH_NAME
 // for animated meshes
 enum ANIMATED_MESH_NAME
 {
-	MESH_TINY,
-	MESH_ROBOTA
+	ANIM_MESH_ROBOT
 };
 
 
@@ -530,7 +524,13 @@ public:
 		else
 		{
 			// 描画位置行列の設定
-			device->SetTransform(D3DTS_WORLD, &frame_data->m_CombinedTransformationMatrix);
+			if (shader)
+			{
+				shader->SetMatrix("World", &frame_data->m_CombinedTransformationMatrix);
+				shader->CommitChanges();
+			}
+			else
+				device->SetTransform(D3DTS_WORLD, &frame_data->m_CombinedTransformationMatrix);
 
 			// メッシュの描画
 			for (int i = 0; i < original_container->NumMaterials; i++)

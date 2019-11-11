@@ -238,6 +238,7 @@ void Update(void)
 	UpdateTimer();
 	UpdatePlayer();
 	UpdatePickup();
+	DrawTriangle();
 
 	UpdateCamera();
 	//std::thread t_input(Keyboard_Update);
@@ -263,7 +264,7 @@ void Draw(void)
 	// draw 2d sprites
 	SpriteStart();
 
-	//SpriteDraw(sprite);
+	SpriteDraw(sprite);
 
 	// finish draw
 	SpriteEnd();
@@ -296,7 +297,7 @@ void InitRenderState()
 	device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	device->SetRenderState(D3DRS_ZENABLE, true);
 	device->SetRenderState(D3DRS_NORMALIZENORMALS, true);
-	device->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
+	device->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(100, 100, 100));
 	device->SetRenderState(D3DRS_SHADEMODE, D3DSHADE_GOURAUD);
 
 	// set alpha blending
@@ -323,7 +324,7 @@ void InitRenderState()
 // init lighting
 void InitLight()
 {
-	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 0.0F), D3DXCOLOR(.5F, .5F, .5F, 1.0F));
+	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 1.0F), D3DXCOLOR(.5F, .5F, .5F, 1.0F));
 }
 
 
@@ -339,19 +340,19 @@ void InitModel()
 	auto device = MyDirect3D_GetDevice();
 
 	// sprite test
-	sprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_GORILLA), 
-		D3DXVECTOR3(300, 150, 0), D3DXVECTOR3(0, 0, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 100));
-	sprite2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_GORILLA),
-		D3DXVECTOR3(906, 1024, 0.1F), D3DXVECTOR3(906 / 2, 1024 / 2, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 0, 0, 255));
+	sprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_CIRCLE), 
+		D3DXVECTOR3(500, 500, 0), D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_CIRCLE) / 2, Texture_GetHeight(TEXTURE_INDEX_CIRCLE) / 2, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 50, 255, 255));
+	
+	//sprite.scale = D3DXVECTOR2(0.1F, 0.1F);
 
 	// shinjyuku
 	shinjyuku = std::vector<MeshObject*>();
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT));
 
-	D3DLIGHT9 light;
-	device->GetLight(0, &light);
+	//D3DLIGHT9 light;
+	//device->GetLight(0, &light);
 	//shinjyuku[0]->pShader->SetFloatArray("DiffuseColor", &light.Diffuse.r, 3);
 	//shinjyuku[0]->pShader->SetFloatArray("LightPos", &light.Position.x, 3);
 	//shinjyuku[0]->pShader->SetFloatArray("AmbientColor", &light.Ambient.r, 3);
@@ -367,59 +368,71 @@ void DrawTriangle()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 
-	static float deg = 0.0F; deg += 0.5F;
-	if (deg > 100) deg -= 100;
+	float scale = .001F;
+	sprite.rotZ += 5;
 
-	// draw text
-	char f[] = "";
-	DrawTextTo(RECT{200, 100, 100, 50}, f, sizeof(f) / sizeof(char));
+	D3DLIGHT9 light;
+	pDevice->GetLight(0, &light);
 
-	// random effect
-	if (Keyboard_IsTrigger(DIK_V)) 
-		PlayEffect(EFFECT_BLOW, 0, 15, 0, 0.1F, 0.1F, 0.2F);
-	
-	// set default material and texture
-	SetMaterial();
-	pDevice->SetTexture(0, NULL);
+	light.Diffuse = D3DXCOLOR(1, 1, 1, 1);
+	pDevice->SetLight(0, &light);
 
-	// update shinjyuku
-	for (int i = 0; i < shinjyuku.size(); i++)
-	{
-		// move
-		shinjyuku[i]->transform.position.z -= 0.8;
+	//sprite.scale.x -= scale;
+	//sprite.scale.y -= scale;
 
-		// pool object
-		if (shinjyuku[i]->transform.position.z < -150)
-		{
-			shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
-			shinjyuku.erase(shinjyuku.begin() + i);
-		}
-	}
+	//static float deg = 0.0F; deg += 0.5F;
+	//if (deg > 100) deg -= 100;
 
-	// primitive line
-	pDevice->SetRenderState(D3DRS_LIGHTING, false);
-	TransformObject(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-	pDevice->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
-	pDevice->SetTexture(0, NULL);
+	//// draw text
+	//char f[] = "";
+	//DrawTextTo(RECT{200, 100, 100, 50}, f, sizeof(f) / sizeof(char));
 
-	float offset = 5;
-	for (int i = 0; i < 3; i++)
-	{
-		CUSTOM_LINE vert[]
-		{
-			{D3DXVECTOR3((-10 * i) - offset, 0, -50), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
-			{D3DXVECTOR3((-10 * i) - offset, 0, 300), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+	//// random effect
+	//if (Keyboard_IsTrigger(DIK_V)) 
+	//	PlayEffect(EFFECT_BLOW, 0, 15, 0, 0.1F, 0.1F, 0.2F);
+	//
+	//// set default material and texture
+	//SetMaterial();
+	//pDevice->SetTexture(0, NULL);
 
-		};
-		CUSTOM_LINE vert2[]
-		{
-			{D3DXVECTOR3((10 * (i + 1)) - offset, 0, -50), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
-			{D3DXVECTOR3((10 * (i + 1)) - offset, 0, 300), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
-		};
-	
-		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
-		pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert2, sizeof(CUSTOM_LINE));
-	}
+	//// update shinjyuku
+	//for (int i = 0; i < shinjyuku.size(); i++)
+	//{
+	//	// move
+	//	shinjyuku[i]->transform.position.z -= 0.8;
 
-	pDevice->SetRenderState(D3DRS_LIGHTING, true);
+	//	// pool object
+	//	if (shinjyuku[i]->transform.position.z < -150)
+	//	{
+	//		shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT, nullptr));
+	//		shinjyuku.erase(shinjyuku.begin() + i);
+	//	}
+	//}
+
+	//// primitive line
+	//pDevice->SetRenderState(D3DRS_LIGHTING, false);
+	//TransformObject(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
+	//pDevice->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+	//pDevice->SetTexture(0, NULL);
+
+	//float offset = 5;
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	CUSTOM_LINE vert[]
+	//	{
+	//		{D3DXVECTOR3((-10 * i) - offset, 0, -50), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+	//		{D3DXVECTOR3((-10 * i) - offset, 0, 300), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+
+	//	};
+	//	CUSTOM_LINE vert2[]
+	//	{
+	//		{D3DXVECTOR3((10 * (i + 1)) - offset, 0, -50), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))},
+	//		{D3DXVECTOR3((10 * (i + 1)) - offset, 0, 300), D3DCOLOR(D3DCOLOR_ARGB(255, 255, 0, 0))}
+	//	};
+	//
+	//	pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert, sizeof(CUSTOM_LINE));
+	//	pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, vert2, sizeof(CUSTOM_LINE));
+	//}
+
+	//pDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
