@@ -37,13 +37,13 @@ void InitQTE()
 	// initialize
 	active = false;
 
-	inner = Sprite(Texture_GetTexture(TEXTURE_INDEX_CIRCLE), D3DXVECTOR3(500, 500, 0), 
-		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_CIRCLE) / 2, Texture_GetHeight(TEXTURE_INDEX_CIRCLE) / 2, 0), 
-		0, D3DXVECTOR2(innerScale, innerScale), D3DCOLOR_RGBA(255, 50, 255, 255));
+	inner = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_INNER), D3DXVECTOR3(500, 500, 0), 
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_INNER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_INNER) / 2, 0),
+		0, D3DXVECTOR2(innerScale, innerScale), D3DCOLOR_RGBA(255, 255, 255, 255));
 
-	outer = Sprite(Texture_GetTexture(TEXTURE_INDEX_CIRCLE), D3DXVECTOR3(500, 500, 0), 
-		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_CIRCLE) / 2, Texture_GetHeight(TEXTURE_INDEX_CIRCLE) / 2, 0), 
-		0, D3DXVECTOR2(outerScale, outerScale), D3DCOLOR_RGBA(255, 50, 255, 128));
+	outer = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(500, 500, 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_OUTER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_OUTER) / 2, 0),
+		0, D3DXVECTOR2(outerScale, outerScale), D3DCOLOR_RGBA(255, 255, 255, 255));
 }
 
 void UninitQTE()
@@ -60,6 +60,7 @@ void UpdateQTE()
 	{
 		// reduce scale
 		outer.scale -= {0.01F, 0.01F};
+		outer.rotZ += 10;
 
 		// get distance between inner and outer circle
 		float dist = outer.scale.x - inner.scale.x;

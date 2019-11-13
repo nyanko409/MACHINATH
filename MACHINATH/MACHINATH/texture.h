@@ -12,7 +12,8 @@
 // テクスチャ管理番号
 typedef enum TextureIndex
 {
-	TEXTURE_INDEX_CIRCLE,
+	TEXTURE_INDEX_QTE_OUTER,
+	TEXTURE_INDEX_QTE_INNER,
 
     TEXTURE_INDEX_MAX
 };

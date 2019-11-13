@@ -345,12 +345,6 @@ void InitModel()
 {
 	auto device = MyDirect3D_GetDevice();
 
-	// sprite test
-	sprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_CIRCLE), 
-		D3DXVECTOR3(500, 500, 0), D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_CIRCLE) / 2, Texture_GetHeight(TEXTURE_INDEX_CIRCLE) / 2, 0), 0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 50, 255, 255));
-	
-	//sprite.scale = D3DXVECTOR2(0.1F, 0.1F);
-
 	// shinjyuku
 	shinjyuku = std::vector<MeshObject*>();
 	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(10, 5, 10)), MESH_NEOSHINJYUKU2, SHADER_DEFAULT));
