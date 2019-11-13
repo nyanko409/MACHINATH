@@ -9,7 +9,6 @@
 #include<Windows.h>
 #include<d3d9.h>		//DirectXの奴を選ぶ
 #include<d3dx9.h>		//この二つは最低限必要
-#include <chrono>
 #include <thread>
 #include <time.h>
 #include <vector>
@@ -33,6 +32,8 @@
 #include "sceneManagement.h"
 #include "mesh.h"
 #include "shader.h"
+#include "qte.h"
+#include "score.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -221,6 +222,8 @@ bool Initialize(void)
 	InitSprite();
 	InitLight();
 
+	InitQTE();
+	InitScore();
 	InitPlayer();
 	InitPickup();
 
@@ -238,7 +241,7 @@ void Update(void)
 	UpdateTimer();
 	UpdatePlayer();
 	UpdatePickup();
-	DrawTriangle();
+	UpdateQTE();
 
 	UpdateCamera();
 	//std::thread t_input(Keyboard_Update);
@@ -264,10 +267,12 @@ void Draw(void)
 	// draw 2d sprites
 	SpriteStart();
 
-	SpriteDraw(sprite);
+	DrawQTE();
 
-	// finish draw
+	// display score and finish draw
 	SpriteEnd();
+
+	DrawScore();
 	pDevice->EndScene();
 
 	// draw to screen
@@ -277,6 +282,7 @@ void Draw(void)
 //終了処理
 void Finalize(void)
 {
+	UninitQTE();
 	UninitPlayer();
 	UninitPickup();
 	UninitCamera();
@@ -384,7 +390,7 @@ void DrawTriangle()
 	//if (deg > 100) deg -= 100;
 
 	//// draw text
-	//char f[] = "";
+	//char f[] = "iuhih";
 	//DrawTextTo(RECT{200, 100, 100, 50}, f, sizeof(f) / sizeof(char));
 
 	//// random effect

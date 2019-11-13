@@ -17,7 +17,7 @@ HRESULT InitFont()
 	return S_OK;
 }
 
-void DrawTextTo(RECT pos, char* text, int textLength)
+void DrawTextTo(RECT pos, const char* text, int textLength)
 {
 	pFont->DrawTextA(NULL, text, textLength, &pos, DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 50));
 }

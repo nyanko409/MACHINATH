@@ -2,4 +2,4 @@
 
 HRESULT InitFont();
 
-void DrawTextTo(RECT rect, char* text, int textLength);
+void DrawTextTo(RECT rect, const char* text, int textLength);

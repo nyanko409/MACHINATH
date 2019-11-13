@@ -139,7 +139,9 @@
     <ClCompile Include="pickup.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playTime.cpp" />
+    <ClCompile Include="qte.cpp" />
     <ClCompile Include="sceneManagement.cpp" />
+    <ClCompile Include="score.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -161,7 +163,9 @@
     <ClInclude Include="pickup.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playTime.h" />
+    <ClInclude Include="qte.h" />
     <ClInclude Include="sceneManagement.h" />
+    <ClInclude Include="score.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="sprite.h" />
