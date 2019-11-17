@@ -12,15 +12,20 @@
 
 // globals
 static bool active;
+static QTE activeQTE;
 static Sprite inner, outer;
 static float outerScale = 1.0F;
 static float innerScale = 0.4F;
 
 
 
-void StartQTE()
+void StartQTE(QTE type)
 {
-	// set scale and active
+	// return if qte is currently active
+	if (active) return;
+
+	// init qte
+	activeQTE = type;
 	outer.scale.x = outerScale;
 	outer.scale.y = outerScale;
 	inner.scale.x = innerScale;
@@ -54,7 +59,7 @@ void UninitQTE()
 void UpdateQTE()
 {
 	if (!active)
-		StartQTE();
+		StartQTE(QTE_DEFAULT);
 
 	if (active)
 	{

@@ -368,14 +368,9 @@ void DrawTriangle()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 
-	float scale = .001F;
-	sprite.rotZ += 5;
+	//float scale = .001F;
+	//sprite.rotZ += 5;
 
-	D3DLIGHT9 light;
-	pDevice->GetLight(0, &light);
-
-	light.Diffuse = D3DXCOLOR(1, 1, 1, 1);
-	pDevice->SetLight(0, &light);
 
 	//sprite.scale.x -= scale;
 	//sprite.scale.y -= scale;
