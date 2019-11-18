@@ -10,7 +10,8 @@ std::vector<MESH_DATA> mesh
 	{"asset/mesh/coin.x"},
 	{"asset/mesh/skateboard.x" },
 	{"asset/mesh/neoshinjuku.x" },
-	{"asset/mesh/neoshinjuku_2.x" }
+	{"asset/mesh/neoshinjuku_2.x" },
+	{"asset/mesh/sakamichi.x" }
 };
 
 // animated mesh data, add path to x file

@@ -13,7 +13,7 @@ public:
 
 	float rotZ;
 
-	D3DCOLOR color;
+	D3DXCOLOR color;
 
 	Sprite(LPDIRECT3DTEXTURE9 sprite, D3DXVECTOR3 position = {0, 0, 0}, D3DXVECTOR3 center = {0, 0, 0}, float rotZ = 0,
 		D3DXVECTOR2 scale = {1, 1},	D3DCOLOR color = D3DCOLOR_XRGB(255, 255, 255)) :

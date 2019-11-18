@@ -4,7 +4,6 @@
 enum QTE
 {
 	QTE_DEFAULT,
-	QTE_LONGPRESS,
 	QTE_MULTIPRESS
 };
 
