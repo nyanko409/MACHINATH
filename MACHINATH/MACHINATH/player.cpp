@@ -19,13 +19,13 @@ static float rotMax;
 static bool jumpFrag;
 static int jumpcnt;
 
+void MoveSideways();
 void Jump();
 
 
-
+// override player draw method
 void Player::Draw()
 {
-	pShader->SetFloatArray("ViewDir", &GetCamera()->forward.x, 3);
 	BoneObject::Draw();
 }
 
@@ -39,7 +39,7 @@ void InitPlayer()
 
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 1.0F, ANIM_MESH_ROBOT, SHADER_SIMPLE, 5, 5, 5);
+	player = new Player(trans, 1.0F, ANIM_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 	player->SetAnimationSpeed(0.04F);
 	player->PlayAnimation(1);
 
@@ -54,8 +54,6 @@ void InitPlayer()
 	//reset jumpfrag,jumpcnt
 	jumpFrag = false;
 	jumpcnt = 0;
-
-	StartTimer();
 }
 
 void UninitPlayer()
@@ -69,6 +67,39 @@ void UpdatePlayer()
 {
 	if (GetScene() != SCENE_GAMESCREEN) return;
 
+	// left and right movement
+	MoveSideways();
+
+	// handle jumping
+	Jump();
+
+	// set camera position
+	static float rotX = 0, rotY = 0;
+	static float offsetY = 30.0F;
+
+	if (playTime > 5.0F) 
+	{
+		rotY--;
+		if (rotY <= -45) rotY = -45;
+		offsetY -= 0.1F;
+		if (offsetY < 10) offsetY = 10;
+	}
+
+	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
+}
+
+
+
+
+
+
+Player* GetPlayer()
+{
+	return player;
+}
+
+void MoveSideways()
+{
 	// move player and rotate in z axis
 	if (Keyboard_IsPress(DIK_F))
 	{
@@ -96,37 +127,12 @@ void UpdatePlayer()
 		}
 	}
 
-	// handle jumping
-	Jump();
-
 	// clip rotation
-	if(player->transform.rotation.z > rotMax)
+	if (player->transform.rotation.z > rotMax)
 		player->transform.rotation.z = rotMax;
 	if (player->transform.rotation.z < -rotMax)
 		player->transform.rotation.z = -rotMax;
-
-	// set camera position
-	static float rotX = 0, rotY = 0;
-	static float offsetY = 30.0F;
-
-	if (playTime > 5.0F) 
-	{
-		rotY--;
-		if (rotY <= -45) rotY = -45;
-		offsetY -= 0.1F;
-		if (offsetY < 10) offsetY = 10;
-	}
-
-	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
 }
-
-Player* GetPlayer()
-{
-	return player;
-}
-
-
-
 
 void Jump()
 {
@@ -152,7 +158,7 @@ void Jump()
 			jumpFrag = false;
 			jumpcnt = 0;
 			player->transform.rotation.y = 90.0F;
-			//	player->transform.rotation.z = 0.0F;
+			//player->transform.rotation.z = 0.0F;
 			player->transform.rotation.x = 0.0F;
 			player->PlayAnimation(1);
 		}

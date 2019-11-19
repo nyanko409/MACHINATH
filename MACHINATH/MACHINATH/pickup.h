@@ -21,6 +21,8 @@ public:
 };
 
 
+void SpawnPickup(float posX, float posY, float posZ);
+
 void InitPickup();
 void UninitPickup();
 void UpdatePickup();

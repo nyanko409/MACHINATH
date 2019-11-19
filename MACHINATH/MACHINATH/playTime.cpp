@@ -1,4 +1,7 @@
+#include <string>
+#include "sceneManagement.h"
 #include "common.h"
+#include "font.h"
 #include "playTime.h"
 
 // game time passed in seconds
@@ -8,6 +11,20 @@ bool isPlaying = false;
 
 void UpdateTimer()
 {
+	// start game timer when in game screen
+	if (!isPlaying && GetScene() == SCENE_GAMESCREEN)
+	{
+		ResetTimer();
+		StartTimer();
+	}
+
+	// stop timer when not in game screen
+	if (isPlaying && GetScene() == !SCENE_GAMESCREEN)
+	{
+		StopTimer();
+	}
+
+	// add playtime every frame
 	if(isPlaying)
 		playTime += TIME_PER_FRAME;
 }
@@ -25,4 +42,11 @@ void ResetTimer()
 void StartTimer()
 {
 	isPlaying = true;
+}
+
+void DrawTimer()
+{
+	// draw text
+	std::string str = std::to_string(playTime);
+	DrawTextTo(RECT{ 10, 10, 100, 50 }, str.c_str(), str.length() - 4);
 }

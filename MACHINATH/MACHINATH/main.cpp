@@ -269,10 +269,11 @@ void Draw(void)
 
 	DrawQTE();
 
-	// display score and finish draw
+	// display text and finish
 	SpriteEnd();
 
 	DrawScore();
+	DrawTimer();
 	pDevice->EndScene();
 
 	// draw to screen
@@ -347,7 +348,7 @@ void InitModel()
 
 	// shinjyuku
 	shinjyuku = std::vector<MeshObject*>();
-	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(5, 8, 10)), MESH_SAKAMICHI, SHADER_DEFAULT));
+	shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(35, -1, 80), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(5, 8, 10)), MESH_NEOSHINJYUKU2, SHADER_DEFAULT));
 	//shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT));
 	//shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT));
 
