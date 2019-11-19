@@ -19,8 +19,11 @@ static float rotMax;
 static bool jumpFrag;
 static int jumpcnt;
 
+void MoveForward();
+bool Curve();
 void MoveSideways();
 void Jump();
+void PlayerCamera();
 
 
 // override player draw method
@@ -30,8 +33,6 @@ void Player::Draw()
 }
 
 
-
-
 void InitPlayer()
 {	
 	// get device
@@ -39,7 +40,7 @@ void InitPlayer()
 
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 1.0F, ANIM_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
+	player = new Player(trans, 0.4F, ANIM_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 	player->SetAnimationSpeed(0.04F);
 	player->PlayAnimation(1);
 
@@ -67,25 +68,25 @@ void UpdatePlayer()
 {
 	if (GetScene() != SCENE_GAMESCREEN) return;
 
+	// move forward
+	MoveForward();
+
+	if (playTime >= 2.5F)
+	{
+		if (Curve())
+		{
+			playTime = 0.0F;
+		}
+	}
+
 	// left and right movement
 	MoveSideways();
 
 	// handle jumping
 	Jump();
 
-	// set camera position
-	static float rotX = 0, rotY = 0;
-	static float offsetY = 30.0F;
-
-	if (playTime > 5.0F) 
-	{
-		rotY--;
-		if (rotY <= -45) rotY = -45;
-		offsetY -= 0.1F;
-		if (offsetY < 10) offsetY = 10;
-	}
-
-	//SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
+	// camera movement
+	PlayerCamera();
 }
 
 
@@ -96,6 +97,81 @@ void UpdatePlayer()
 Player* GetPlayer()
 {
 	return player;
+}
+
+bool initCurve;
+bool rotStarted;
+float endZ;
+int rotZ;
+float startY, endY;
+float startSpeed;
+bool Curve()
+{
+	if (!initCurve)
+	{
+		initCurve = true;
+		rotStarted = false;
+		startY = 0;
+		endZ = 45;
+		rotZ = 30;
+		endY = player->transform.rotation.y + 90;
+		startSpeed = player->moveSpeed;
+	}
+
+	// decrease movespeed
+	if (!rotStarted)
+	{
+		player->moveSpeed -= 0.02F;
+
+		if (player->moveSpeed <= 0) 
+			player->moveSpeed = 0;
+
+		if (player->moveSpeed <= 0.2F)
+			rotStarted = true;
+	}
+
+	// rotate if player slowed down
+	if (rotStarted)
+	{
+		// increase speed
+		player->moveSpeed += 0.02F;
+		if (player->moveSpeed >= startSpeed) player->moveSpeed = startSpeed;
+
+		// rotate in z and x
+		if (rotZ < endZ)
+		{
+			//player->transform.rotation.z += 10;
+			player->transform.rotation.x = 40.0F * sinf(D3DXToRadian(player->transform.rotation.y*2-180.0f));
+			player->transform.rotation.z = 90.0F* cosf(D3DXToRadian(player->transform.rotation.y*2-270.0f ));
+			//player->transform.rotation.z = rotZ * player->GetForward().z;
+			//player->transform.rotation.x = rotZ * player->GetForward().x;
+			//rotZ += 5;
+		}
+
+		// rotate in y
+		if (startY < 90)
+		{
+			player->transform.rotation.y += startY;
+			startY += 0.01f;
+
+			if (player->transform.rotation.y >= endY)
+			{
+				player->transform.rotation.y = endY;
+			}
+		}
+		else
+		{
+			if(player->moveSpeed >= startSpeed)
+				return true;
+		}
+	}
+
+	return false;
+}
+
+void MoveForward()
+{
+	player->transform.position += player->GetForward() * player->moveSpeed;
 }
 
 void MoveSideways()
@@ -163,4 +239,21 @@ void Jump()
 			player->PlayAnimation(1);
 		}
 	}
+}
+
+void PlayerCamera()
+{
+	// set camera position
+	static float rotX = 0, rotY = 0;
+	static float offsetY = 30.0F;
+
+	if (playTime > 5.0F)
+	{
+		rotY--;
+		if (rotY <= -45) rotY = -45;
+		offsetY -= 0.1F;
+		if (offsetY < 10) offsetY = 10;
+	}
+
+	SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
 }
