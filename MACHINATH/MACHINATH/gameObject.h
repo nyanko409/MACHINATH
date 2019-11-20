@@ -92,7 +92,11 @@ public:
 	D3DXVECTOR3 GetWorldScale()
 	{
 		if (parent != nullptr)
-			return transform.scale + parent->GetWorldScale();
+		{
+			return D3DXVECTOR3(transform.scale.x * parent->GetWorldScale().x,
+								transform.scale.y * parent->GetWorldScale().y,
+								transform.scale.z * parent->GetWorldScale().z);
+		}
 
 		return transform.scale;
 	}

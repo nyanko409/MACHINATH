@@ -29,7 +29,7 @@ void PlayerCamera();
 // override player draw method
 void Player::Draw()
 {
-	BoneObject::Draw();
+	MeshObject::Draw();
 }
 
 
@@ -39,13 +39,11 @@ void InitPlayer()
 	device = MyDirect3D_GetDevice();
 
 	// create player
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 0.4F, ANIM_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
-	player->SetAnimationSpeed(0.04F);
-	player->PlayAnimation(1);
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(20.0F, 20.0F, 20.0F));
+	player = new Player(trans, 0.4F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 
 	// create skateboard and make player the parent
-	trans = Transform(D3DXVECTOR3(-0.2F, -1.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.2F, 1.2F, 1.2F));
+	trans = Transform(D3DXVECTOR3(-0.2F, -3.5F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(0.05F, 0.05F, 0.05F));
 	skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, player);
 
 	// init player rotation
@@ -99,10 +97,11 @@ Player* GetPlayer()
 	return player;
 }
 
+
 bool initCurve;
 bool rotStarted;
-float endZ;
-int rotZ;
+float endZX;
+int rotZX;
 float startY, endY;
 float startSpeed;
 bool Curve()
@@ -112,8 +111,8 @@ bool Curve()
 		initCurve = true;
 		rotStarted = false;
 		startY = 0;
-		endZ = 45;
-		rotZ = 30;
+		endZX = 45;
+		rotZX = 10;
 		endY = player->transform.rotation.y + 90;
 		startSpeed = player->moveSpeed;
 	}
@@ -138,13 +137,13 @@ bool Curve()
 		if (player->moveSpeed >= startSpeed) player->moveSpeed = startSpeed;
 
 		// rotate in z and x
-		if (rotZ < endZ)
+		if (rotZX < endZX)
 		{
 			//player->transform.rotation.z += 10;
-			player->transform.rotation.x = 40.0F * sinf(D3DXToRadian(player->transform.rotation.y*2-180.0f));
-			player->transform.rotation.z = 90.0F* cosf(D3DXToRadian(player->transform.rotation.y*2-270.0f ));
-			//player->transform.rotation.z = rotZ * player->GetForward().z;
-			//player->transform.rotation.x = rotZ * player->GetForward().x;
+			//player->transform.rotation.x = 40.0F * sinf(D3DXToRadian(player->transform.rotation.y*2-180.0f));
+			//player->transform.rotation.z = 90.0F* cosf(D3DXToRadian(player->transform.rotation.y*2-270.0f ));
+			player->transform.rotation.z = rotZX * player->GetForward().z;
+			player->transform.rotation.x = rotZX * player->GetForward().x;
 			//rotZ += 5;
 		}
 
@@ -215,7 +214,6 @@ void Jump()
 	if (!jumpFrag && Keyboard_IsPress(DIK_J))
 	{
 		jumpFrag = true;
-		player->PlayAnimation(2);
 	}
 
 	//jump
@@ -236,7 +234,6 @@ void Jump()
 			player->transform.rotation.y = 90.0F;
 			//player->transform.rotation.z = 0.0F;
 			player->transform.rotation.x = 0.0F;
-			player->PlayAnimation(1);
 		}
 	}
 }
