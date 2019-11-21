@@ -11,6 +11,7 @@
 #define JumpSpeed (3.0F)
 
 static LPDIRECT3DDEVICE9 device;
+static GameObject* container;
 static Player* player;
 static MeshObject* skateboard;
 
@@ -38,15 +39,19 @@ void InitPlayer()
 	// get device
 	device = MyDirect3D_GetDevice();
 
+	// create container
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
+	container = new GameObject(trans);
+
 	// create player
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.0F, 0.0F), D3DXVECTOR3(0.0F, 90.0F, 0.0F), D3DXVECTOR3(20.0F, 20.0F, 20.0F));
-	player = new Player(trans, 0.4F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
+	trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
+	player = new Player(trans, 0.5F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, container);
 
 	// create skateboard and make player the parent
-	trans = Transform(D3DXVECTOR3(-0.2F, -3.5F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(0.05F, 0.05F, 0.05F));
+	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
 	skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, player);
 
-	// init player rotation
+	// init player rotation speed
 	rotSpeed = 3.0F;
 	rotMax = 10.0F;
 
@@ -64,16 +69,17 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {
+	//player->transform.rotation.y++;
 	if (GetScene() != SCENE_GAMESCREEN) return;
 
 	// move forward
 	MoveForward();
 
-	if (playTime >= 2.5F)
+	if (playTime >= 2.0F)
 	{
 		if (Curve())
 		{
-			playTime = 0.0F;
+			//playTime = 0.0F;
 		}
 	}
 
@@ -110,9 +116,9 @@ bool Curve()
 	{
 		initCurve = true;
 		rotStarted = false;
-		startY = 0;
-		endZX = 45;
+		endZX = 30;
 		rotZX = 10;
+		startY = player->transform.rotation.y;
 		endY = player->transform.rotation.y + 90;
 		startSpeed = player->moveSpeed;
 	}
@@ -120,7 +126,7 @@ bool Curve()
 	// decrease movespeed
 	if (!rotStarted)
 	{
-		player->moveSpeed -= 0.02F;
+		player->moveSpeed -= 0.01F;
 
 		if (player->moveSpeed <= 0) 
 			player->moveSpeed = 0;
@@ -133,35 +139,44 @@ bool Curve()
 	if (rotStarted)
 	{
 		// increase speed
-		player->moveSpeed += 0.02F;
+		player->moveSpeed += 0.01F;
 		if (player->moveSpeed >= startSpeed) player->moveSpeed = startSpeed;
 
-		// rotate in z and x
-		if (rotZX < endZX)
-		{
-			//player->transform.rotation.z += 10;
-			//player->transform.rotation.x = 40.0F * sinf(D3DXToRadian(player->transform.rotation.y*2-180.0f));
-			//player->transform.rotation.z = 90.0F* cosf(D3DXToRadian(player->transform.rotation.y*2-270.0f ));
-			player->transform.rotation.z = rotZX * player->GetForward().z;
-			player->transform.rotation.x = rotZX * player->GetForward().x;
-			//rotZ += 5;
-		}
+		// rotate skateboard in z and x
+		skateboard->transform.rotation.z = rotZX * fabsf(player->GetForward().x);
+		skateboard->transform.rotation.x = rotZX * fabsf(player->GetForward().z);
+
+		//container->transform.rotation.z = (rotZX * fabsf(player->GetForward().x) / 2);
+		//container->transform.rotation.x = (rotZX * fabsf(player->GetForward().z) / 2);
+		
+		if (rotZX > endZX) rotZX = endZX;
+		if (endY - startY <= 10) rotZX -= 1.5F;
+		else rotZX += 1.5F;
+
+		if (skateboard->transform.rotation.z > endZX) skateboard->transform.rotation.z = endZX;
+		if (skateboard->transform.rotation.x > endZX) skateboard->transform.rotation.x = endZX;
+		if (skateboard->transform.rotation.z < 0) skateboard->transform.rotation.z = 0;
+		if (skateboard->transform.rotation.x < 0) skateboard->transform.rotation.x = 0;
 
 		// rotate in y
-		if (startY < 90)
+		if (startY < endY)
 		{
-			player->transform.rotation.y += startY;
-			startY += 0.01f;
+			player->transform.rotation.y = startY;
+			startY += 0.7F;
 
 			if (player->transform.rotation.y >= endY)
-			{
 				player->transform.rotation.y = endY;
-			}
 		}
 		else
 		{
-			if(player->moveSpeed >= startSpeed)
+			if (player->moveSpeed >= startSpeed && rotZX <= 0)
+			{
+				skateboard->transform.rotation.z = 0;
+				skateboard->transform.rotation.x = 0;
+				container->transform.rotation.z = 0;
+				container->transform.rotation.x = 0;
 				return true;
+			}
 		}
 	}
 
@@ -170,7 +185,11 @@ bool Curve()
 
 void MoveForward()
 {
-	player->transform.position += player->GetForward() * player->moveSpeed;
+	D3DXMATRIX rotOffset;
+	D3DXVECTOR3 dir = player->GetForward();
+	D3DXMatrixRotationY(&rotOffset, D3DXToRadian(90));
+	D3DXVec3TransformCoord(&dir, &dir, &rotOffset);
+	player->transform.position += dir * player->moveSpeed;
 }
 
 void MoveSideways()
@@ -242,15 +261,15 @@ void PlayerCamera()
 {
 	// set camera position
 	static float rotX = 0, rotY = 0;
-	static float offsetY = 30.0F;
+	static float offsetY = 10.0F;
 
-	if (playTime > 5.0F)
-	{
-		rotY--;
-		if (rotY <= -45) rotY = -45;
-		offsetY -= 0.1F;
-		if (offsetY < 10) offsetY = 10;
-	}
+	//if (playTime > 5.0F)
+	//{
+	//	rotY--;
+	//	if (rotY <= -45) rotY = -45;
+	//	offsetY -= 0.1F;
+	//	if (offsetY < 10) offsetY = 10;
+	//}
 
-	SetCameraPos(D3DXVECTOR3(0, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -25), 0, rotY);
+	SetCameraPos(D3DXVECTOR3(player->transform.position.x, player->transform.position.y, player->transform.position.z), D3DXVECTOR3(0, offsetY, -10), 0, rotY);
 }

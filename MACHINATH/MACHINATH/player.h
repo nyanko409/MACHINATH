@@ -29,7 +29,7 @@ public:
 		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.rotation.y));
 
 		// apply it to forward vector and return
-		D3DXVECTOR3 f = D3DXVECTOR3(-1, 0, 0);
+		D3DXVECTOR3 f = D3DXVECTOR3(0, 0, 1);
 		D3DXVECTOR3 temp;
 		D3DXVec3TransformCoord(&temp, &f, &(rotX * rotY));
 		return temp;

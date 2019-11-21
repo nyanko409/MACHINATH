@@ -25,12 +25,12 @@ public:
 	{
 		auto device = MyDirect3D_GetDevice();
 
-		// apply world matrix
+		// get world matrix
 		D3DXMATRIX matWorld;
 		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), rotateAtPos);
 
 
-		// set world transform and draw
+		// set world transform
 		if (pShader)
 		{
 			pShader->SetMatrix("World", &matWorld);
@@ -39,7 +39,7 @@ public:
 		else 
 			device->SetTransform(D3DTS_WORLD, &matWorld);
 
-
+		// draw mesh
 		for (DWORD i = 0; i < mesh->numMaterial; i++)
 		{
 			SetMaterial(&(mesh->material[i]));
