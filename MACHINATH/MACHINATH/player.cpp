@@ -19,7 +19,6 @@ static float rotMax;
 static bool jumpFrag;
 static int jumpcnt;
 
-bool Curve();
 void MoveSideways();
 void Jump();
 void PlayerCamera();
@@ -39,7 +38,7 @@ void InitPlayer()
 
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
-	player = new Player(trans, 0.5F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
+	player = new Player(trans, 0.3F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
@@ -63,17 +62,6 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {
-	if (GetScene() != SCENE_GAMESCREEN) return;
-
-	// curve
-	if (playTime >= 2.0F)
-	{
-		if (Curve())
-		{
-			//playTime = 0.0F;
-		}
-	}
-
 	// left and right movement
 	MoveSideways();
 
@@ -81,7 +69,7 @@ void UpdatePlayer()
 	Jump();
 
 	// camera movement
-	PlayerCamera();
+	//PlayerCamera();
 }
 
 
@@ -92,12 +80,6 @@ void UpdatePlayer()
 Player* GetPlayer()
 {
 	return player;
-}
-
-
-bool Curve()
-{
-	return true;
 }
 
 void MoveSideways()
