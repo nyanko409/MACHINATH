@@ -17,8 +17,7 @@ struct EventTime
 	float time;
 };
 
-typedef std::pair<Transform, int> mapPair;
-mapPair GetStartTransform(const Map& prevMap);
+Transform GetStartTransform(const Map& prevMap);
 float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2); // returns the distance between two points
 
 // globals
@@ -52,20 +51,20 @@ void InitMap()
 	// init map
 	map = std::vector<Map*>();
 
-	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-	map.emplace_back(new Map(transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, 0, SHADER_DEFAULT));
+	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
+	map.emplace_back(new Map(transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
 
-	mapPair pair = GetStartTransform(*map[0]);
-	map.emplace_back(new Map(pair.first, MESH_MAP_CURVELEFT, Direction::WEST, pair.second, SHADER_DEFAULT));
+	transform = GetStartTransform(*map[0]);
+	map.emplace_back(new Map(transform, MESH_MAP_CURVELEFT, Direction::WEST, SHADER_DEFAULT));
 
-	pair = GetStartTransform(*map[1]);
-	map.emplace_back(new Map(pair.first, MESH_MAP_CURVELEFT, Direction::SOUTH, pair.second, SHADER_DEFAULT));
+	transform = GetStartTransform(*map[1]);
+	map.emplace_back(new Map(transform, MESH_MAP_CURVELEFT, Direction::SOUTH, SHADER_DEFAULT));
 
-	pair = GetStartTransform(*map[2]);
-	map.emplace_back(new Map(pair.first, MESH_MAP_ROUNDABOUT, Direction::SOUTH, pair.second, SHADER_DEFAULT));
+	transform = GetStartTransform(*map[2]);
+	map.emplace_back(new Map(transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
 
-	pair = GetStartTransform(*map[3]);
-	map.emplace_back(new Map(pair.first, MESH_MAP_ROUND, Direction::WEST, pair.second, SHADER_DEFAULT));
+	transform = GetStartTransform(*map[3]);
+	map.emplace_back(new Map(transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
 
 	// enable draw for drawcount
 	drawIndex = map.size() < drawCount ? map.size() : drawCount;
@@ -152,11 +151,10 @@ void UninitMap()
 }
 
 
-mapPair GetStartTransform(const Map& prevMap)
+Transform GetStartTransform(const Map& prevMap)
 {
 	// cache previous map transform
 	Transform trans = prevMap.transform;
-	int localY = 0;
 
 	// offset to new location
 	if (prevMap.exit == Direction::NORTH)
@@ -166,20 +164,20 @@ mapPair GetStartTransform(const Map& prevMap)
 	else if (prevMap.exit == Direction::EAST)
 	{
 		trans.position.x += mapRadius;
-		localY = 90;
+		trans.localRotation.y = 90;
 	}
 	else if (prevMap.exit == Direction::WEST)
 	{
 		trans.position.x -= mapRadius;
-		localY = 270;
+		trans.localRotation.y = 270;
 	}
 	else if (prevMap.exit == Direction::SOUTH)
 	{
 		trans.position.z -= mapRadius;
-		localY = 180;
+		trans.localRotation.y = 180;
 	}
 
-	return mapPair(trans, localY);
+	return trans;
 }
 
 float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2)
