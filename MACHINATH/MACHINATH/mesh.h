@@ -24,6 +24,8 @@ public:
 	// draw the object
 	virtual void Draw() override
 	{
+		if (!enableDraw) return;
+
 		auto device = MyDirect3D_GetDevice();
 
 		// get world matrix
@@ -72,6 +74,8 @@ public:
 	// draw the object
 	virtual void Draw() override
 	{
+		if (!enableDraw) return;
+
 		auto device = MyDirect3D_GetDevice();
 
 		// get world matrix

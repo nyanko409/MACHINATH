@@ -36,6 +36,7 @@ public:
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
 	GameObject* parent;				// the parent this gameobject is attached to
 	bool rotateAtPos;				// if false, rotates around the origin of the world
+	bool enableDraw;				// if true, draw this object
 
 	// constructor
 	GameObject() {}
@@ -46,6 +47,7 @@ public:
 		pShader = AssignShader(this, shaderType);
 
 		rotateAtPos = true;
+		enableDraw = true;
 	}
 
 	// destructor

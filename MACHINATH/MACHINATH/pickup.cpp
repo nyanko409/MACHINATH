@@ -57,7 +57,7 @@ void UpdatePickup()
 		if (BoxCollider::CheckCollision(*pickup[i], *player))
 		{
 			// collided, delete coin and play effect
-			PlayEffect(EFFECT_PICKUP_MEDAL, pickup[i]->transform.position);
+			PlayEffect(EFFECT_JUMP, pickup[i]->transform.position);
 
 			delete pickup[i];
 			pickup.erase(pickup.begin() + i);

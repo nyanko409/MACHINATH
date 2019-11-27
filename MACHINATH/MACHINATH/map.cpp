@@ -19,21 +19,30 @@ struct EventTime
 
 typedef std::pair<Transform, int> mapPair;
 mapPair GetStartTransform(const Map& prevMap);
+float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2); // returns the distance between two points
 
 // globals
 std::vector<EventTime> event;
 std::vector<Map*> map;
-float mapRadius;
-bool isCurving;
-float curveRot, curveSpeed;
+static float mapRadius;
+static int drawCount;
+static float poolDistance;
+static float curveSpeed;
+
+static int drawIndex;
+static bool isCurving;
+static float curveRot;
 
 
 void InitMap()
 {
 	mapRadius = 90;
+	drawCount = 3;
+	curveSpeed = 1.5F;
+	poolDistance = 80.0F;
+
 	isCurving = false;
 	curveRot = 0;
-	curveSpeed = 1.5F;
 
 	// init event times
 	event = std::vector<EventTime>();
@@ -44,7 +53,6 @@ void InitMap()
 	map = std::vector<Map*>();
 
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-
 	map.emplace_back(new Map(transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, 0, SHADER_DEFAULT));
 
 	mapPair pair = GetStartTransform(*map[0]);
@@ -59,6 +67,12 @@ void InitMap()
 	pair = GetStartTransform(*map[3]);
 	map.emplace_back(new Map(pair.first, MESH_MAP_ROUND, Direction::WEST, pair.second, SHADER_DEFAULT));
 
+	// enable draw for drawcount
+	drawIndex = map.size() < drawCount ? map.size() : drawCount;
+	for (int i = 0; i < drawIndex; ++i)
+	{
+		map[i]->enableDraw = true;
+	}
 }
 
 void UpdateMap()
@@ -113,10 +127,18 @@ void UpdateMap()
 		curveRot += curveSpeed;
 
 	// remove first map from array if out of camera view
-	if (map.size() > 0 && map.front()->transform.position.z < -mapRadius)
+	if (map.size() > 0 && GetDistance(map[0]->transform.position, GetPlayer()->transform.position) > poolDistance)
 	{
+		// display next map
+		if (map.size() > drawIndex)
+		{
+			map[drawIndex]->enableDraw = true;
+		}
+
+		// delete map
 		delete map[0];
 		map.erase(map.begin());
+
 	}
 }
 
@@ -158,4 +180,10 @@ mapPair GetStartTransform(const Map& prevMap)
 	}
 
 	return mapPair(trans, localY);
+}
+
+float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2)
+{
+	D3DXVECTOR3 dist = t1 - t2;
+	return sqrtf(dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);
 }

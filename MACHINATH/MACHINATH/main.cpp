@@ -376,6 +376,7 @@ void InitTest()
 void DrawTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
+	if(Keyboard_IsTrigger(DIK_Y)) PlayEffect(EFFECT_JUMP, { 0, 10, 0 });
 
 	//pDevice->SetTransform(D3DTS_WORLD, D3DXMatrixIdentity(&(D3DXMATRIX())));
 	//pDevice->SetStreamSource(0, vBuffer, 0, 0);

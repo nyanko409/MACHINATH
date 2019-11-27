@@ -6,11 +6,7 @@
 // name of the effect
 enum Effect
 {
-	EFFECT_EXPLOSION,
-	EFFECT_PICKUP_MEDAL,
-	EFFECT_FUCK,
-	EFFECT_SHIELD,
-	EFFECT_BLOW
+	EFFECT_JUMP
 };
 
 // call once at init

@@ -20,13 +20,9 @@
 #define MAX_EFFECTS 10
 
 // path to the effect
-EFK_CHAR* path[5]
+EFK_CHAR* path[1]
 {
-	(EFK_CHAR*)L"asset/shader/effekseer/blow.efk",
-	(EFK_CHAR*)L"asset/shader/effekseer/pickup_medal.efk",
-	(EFK_CHAR*)L"asset/shader/effekseer/fuck.efk",
-	(EFK_CHAR*)L"asset/shader/effekseer/shield.efk",
-	(EFK_CHAR*)L"asset/shader/effekseer/eff.efk"
+	(EFK_CHAR*)L"asset/shader/effekseer/jump.efk"
 };
 
 
@@ -126,6 +122,7 @@ void DrawEffect()
 		if (handle[i] != -1)
 		{
 			manager->AddLocation(handle[i], g_delta[i]);
+			//manager->SetScale(handle[i], 0.1F, 0.1F, 0.1F);
 			manager->SetSpeed(handle[i], g_playSpeed[i]);
 		}
 	}
