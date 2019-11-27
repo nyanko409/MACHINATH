@@ -59,7 +59,7 @@ void LoadMesh()
 			else
 				path = "";
 
-			if (FAILED(D3DXCreateTextureFromFileA(device, path.c_str(), &mesh[i].texture[j])))
+		if (FAILED(D3DXCreateTextureFromFileA(device, path.c_str(), &mesh[i].texture[j])))
 				mesh[i].texture[j] = NULL;
 		}
 	}
