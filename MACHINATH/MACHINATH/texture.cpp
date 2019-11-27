@@ -25,8 +25,8 @@ typedef struct TextureFile_tag
 ------------------------------------------------------------------------------*/
 // 読み込みテクスチャ情報
 static const TextureFile g_TextureFiles[] = {
-    { "asset/texture/qte_outer.png", 512, 512 },
-	{ "asset/texture/qte_inner.png", 512, 512 }
+    { "asset/texture/qte_outer.dds", 512, 512 },
+	{ "asset/texture/qte_inner.dds", 512, 512 }
 };
 
 // 読み込みテクスチャ数

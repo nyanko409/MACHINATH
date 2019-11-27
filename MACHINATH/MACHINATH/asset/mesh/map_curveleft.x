@@ -12,7 +12,7 @@ Frame Root {
       -3.635893,-0.000001, 0.000000, 0.000000,
        0.000001,-2.965166, 0.000000, 0.000000,
        0.000000,-0.000000,-10.249850, 0.000000,
-      -41.230927,10.001216,10.300470, 1.000000;;
+      -40.388126,10.001216,10.300470, 1.000000;;
     }
     Mesh { // Cube mesh
       24;
@@ -104,7 +104,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube material list
     } // End of Cube mesh
@@ -206,7 +206,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_001 material list
     } // End of Cube_001 mesh
@@ -308,7 +308,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_002 material list
     } // End of Cube_002 mesh
@@ -318,7 +318,7 @@ Frame Root {
       -3.635893,-0.000001, 0.000000, 0.000000,
        0.000001,-3.915730, 0.000000, 0.000000,
        0.000000,-0.000000,-5.474062, 0.000000,
-      -41.230919,-11.183677, 5.460948, 1.000000;;
+      -40.280720,-11.183677, 5.460948, 1.000000;;
     }
     Mesh { // Cube_003 mesh
       24;
@@ -410,7 +410,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_003 material list
     } // End of Cube_003 mesh
@@ -512,7 +512,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_004 material list
     } // End of Cube_004 mesh
@@ -614,7 +614,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_005 material list
     } // End of Cube_005 mesh
@@ -716,7 +716,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_006 material list
     } // End of Cube_006 mesh
@@ -818,7 +818,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_007 material list
     } // End of Cube_007 mesh
@@ -920,7 +920,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_008 material list
     } // End of Cube_008 mesh
@@ -1022,7 +1022,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_009 material list
     } // End of Cube_009 mesh
@@ -1208,7 +1208,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"curveMk=2UV2.png";}
+          TextureFilename {"curveMk=2UV2.dds";}
         }
       } // End of Cube_012 material list
     } // End of Cube_012 mesh
@@ -2288,7 +2288,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_014 material list
     } // End of Cube_014 mesh
@@ -2390,7 +2390,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_015 material list
     } // End of Cube_015 mesh
@@ -2400,7 +2400,7 @@ Frame Root {
        0.000000,-4.224030, 0.000000, 0.000000,
        3.625165, 0.000000, 0.000000, 0.000000,
        0.000000, 0.000000,-16.574020, 0.000000,
-      -11.106166,-39.977177,16.469116, 1.000000;;
+      -11.106166,-40.646988,16.469116, 1.000000;;
     }
     Mesh { // Cube_016 mesh
       24;
@@ -2492,7 +2492,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_016 material list
     } // End of Cube_016 mesh
@@ -2502,7 +2502,7 @@ Frame Root {
        0.000000,-9.328867, 0.000000, 0.000000,
        3.959957, 0.000000, 0.000000, 0.000000,
        0.000000, 0.000000,-7.431997, 0.000000,
-      11.538980,-35.254028, 7.466190, 1.000000;;
+      11.538980,-35.607944, 7.466190, 1.000000;;
     }
     Mesh { // Cube_017 mesh
       24;
@@ -2594,7 +2594,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"road-b.png";}
+          TextureFilename {"road-b.dds";}
         }
       } // End of Cube_017 material list
     } // End of Cube_017 mesh
@@ -2636,7 +2636,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"kousaten2.jpg";}
+          TextureFilename {"kousaten2.dds";}
         }
       } // End of Plane material list
     } // End of Plane mesh
@@ -2644,7 +2644,7 @@ Frame Root {
   Frame Plane_000 {
     FrameTransformMatrix {
        0.000000,-7.842831, 0.000000, 0.000000,
-      19.395685, 0.000000, 0.000000, 0.000000,
+      18.105686, 0.000000, 0.000000, 0.000000,
        0.000000, 0.000000, 7.842831, 0.000000,
       -25.980196, 0.037284, 0.021000, 1.000000;;
     }
@@ -2678,7 +2678,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"syadou2.jpg";}
+          TextureFilename {"syadou2.dds";}
         }
       } // End of Plane_000 material list
     } // End of Plane_000 mesh
@@ -2686,7 +2686,7 @@ Frame Root {
   Frame Plane_001 {
     FrameTransformMatrix {
       -7.842831,-0.000003, 0.000000, 0.000000,
-       0.000006,-19.395685, 0.000000, 0.000000,
+       0.000006,-19.415686, 0.000000, 0.000000,
        0.000000, 0.000000, 7.842831, 0.000000,
        0.132017,-25.507416, 0.021000, 1.000000;;
     }
@@ -2720,9 +2720,51 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"syadou2.jpg";}
+          TextureFilename {"syadou2.dds";}
         }
       } // End of Plane_001 material list
     } // End of Plane_001 mesh
   } // End of Plane_001
+  Frame ZImen {
+    FrameTransformMatrix {
+      45.000000, 0.000000, 0.000000, 0.000000,
+       0.000000,45.000000, 0.000000, 0.000000,
+       0.000000, 0.000000, 1.000000, 0.000000,
+       0.794487,-0.092718,-0.313190, 1.000000;;
+    }
+    Mesh { // ZImen mesh
+      4;
+      -1.000000;-1.000000; 0.000000;,
+       1.000000;-1.000000; 0.000000;,
+       1.000000; 1.000000; 0.000000;,
+      -1.000000; 1.000000; 0.000000;;
+      1;
+      4;3,2,1,0;;
+      MeshNormals { // ZImen normals
+        1;
+         0.000000; 0.000000; 1.000000;;
+        1;
+        4;0,0,0,0;;
+      } // End of ZImen normals
+      MeshTextureCoords { // ZImen UV coordinates
+        4;
+         0.000100; 0.999900;,
+         0.999900; 0.999900;,
+         0.999900; 0.000100;,
+         0.000100; 0.000100;;
+      } // End of ZImen UV coordinates
+      MeshMaterialList { // ZImen material list
+        1;
+        1;
+        0;
+        Material zimen {
+           0.640000; 0.640000; 0.640000; 1.000000;;
+           96.078431;
+           0.500000; 0.500000; 0.500000;;
+           0.000000; 0.000000; 0.000000;;
+          TextureFilename {"seramikku.dds";}
+        }
+      } // End of ZImen material list
+    } // End of ZImen mesh
+  } // End of ZImen
 } // End of Root

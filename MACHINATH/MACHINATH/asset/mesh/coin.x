@@ -626,7 +626,7 @@ Frame Root {
            92.156863;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"goldcoin_Base_Color.png";}
+          TextureFilename {"goldcoin_Base_Color.dds";}
         }
       } // End of coin_lowpoly_Cylinder_005 material list
     } // End of coin_lowpoly_Cylinder_005 mesh
