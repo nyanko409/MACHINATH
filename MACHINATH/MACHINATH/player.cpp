@@ -41,7 +41,7 @@ void InitPlayer()
 	player = new Player(trans, 0.3F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 
 	// create skateboard and make player the parent
-	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, player);
 
 	// init player rotation speed

@@ -221,9 +221,9 @@ bool Initialize(void)
 
 	InitQTE();
 	InitScore();
+	InitPickup();
 	InitMap();
 	InitPlayer();
-	InitPickup();
 
 	InitTest();
 

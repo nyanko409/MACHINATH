@@ -5,6 +5,7 @@
 #include "playTime.h"
 #include "sceneManagement.h"
 #include "player.h"
+#include "pickup.h"
 
 enum class MapEvent
 {
@@ -72,6 +73,8 @@ void InitMap()
 	{
 		map[i]->enableDraw = true;
 	}
+
+	SpawnPickup(0, 0, 15, map.front());
 }
 
 void UpdateMap()
@@ -134,10 +137,9 @@ void UpdateMap()
 			map[drawIndex]->enableDraw = true;
 		}
 
-		// delete map
+		// delete map and coin
 		delete map[0];
 		map.erase(map.begin());
-
 	}
 }
 
@@ -184,4 +186,9 @@ float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2)
 {
 	D3DXVECTOR3 dist = t1 - t2;
 	return sqrtf(dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);
+}
+
+std::vector<Map*>* GetMap()
+{
+	return &map;
 }

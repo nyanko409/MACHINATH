@@ -11,7 +11,7 @@ public:
 
 	// constructor
 	Player(Transform transform, float moveSpeed, MESH_NAME name, SHADER_TYPE type, float width, float height, float depth, GameObject* parent = nullptr) :
-		MeshObject(transform, name, type, parent), BoxCollider(&(GameObject::transform), width, height, depth),  moveSpeed(moveSpeed)
+		MeshObject(transform, name, type, parent), BoxCollider(this, width, height, depth),  moveSpeed(moveSpeed)
 	{}
 
 	// destructor
