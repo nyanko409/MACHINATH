@@ -28,7 +28,7 @@ public:
 
 		// get world matrix
 		D3DXMATRIX matWorld;
-		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), transform.localRotation);
+		matWorld = TransformObject(GetCombinedPosition(), GetCombinedRotation(), GetCombinedScale(), GetCombinedLocalRotation());
 
 		// set world transform
 		if (pShader)
@@ -76,7 +76,7 @@ public:
 
 		// get world matrix
 		D3DXMATRIX matWorld;
-		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), transform.localRotation);
+		matWorld = TransformObject(GetCombinedPosition(), GetCombinedRotation(), GetCombinedScale(), GetCombinedLocalRotation());
 
 		// apply world matrix
 		if (pShader)

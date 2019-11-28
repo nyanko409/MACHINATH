@@ -40,6 +40,8 @@ public:
 };
 
 
+std::vector<Map*>* GetMap();
+
 void InitMap();
 void UninitMap();
 void UpdateMap();

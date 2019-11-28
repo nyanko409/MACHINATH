@@ -58,51 +58,66 @@ public:
 	// virtual draw
 	virtual void Draw() {}
 
-	// returns the world space position of this gameobject
-	D3DXVECTOR3 GetWorldPosition()
+	// returns the combined position of this gameobject
+	D3DXVECTOR3 GetCombinedPosition()
 	{
 		if(parent != nullptr)
-			return transform.position + parent->GetWorldPosition();
+			return transform.position + parent->GetCombinedPosition();
 
 		return transform.position;
 	}
 
-	// returns the local space position relative to parent of this gameobject
-	D3DXVECTOR3 GetLocalPosition()
+	// returns the position relative to parent of this gameobject
+	D3DXVECTOR3 GetPosition()
 	{
 		return transform.position;
 	}
 
-	// returns the world space rotation of this gameobject
-	D3DXVECTOR3 GetWorldRotation()
+	// returns the combined rotation of this gameobject
+	D3DXVECTOR3 GetCombinedRotation()
 	{
 		if (parent != nullptr)
-			return transform.rotation + parent->GetWorldRotation();
+			return transform.rotation + parent->GetCombinedRotation();
 
 		return transform.rotation;
 	}
 
-	// returns the local space rotation relative to parent of this gameobject
-	D3DXVECTOR3 GetLocalRotation()
+	// returns the rotation relative to parent of this gameobject
+	D3DXVECTOR3 GetRotation()
 	{
 		return transform.rotation;
 	}
 
-	// returns the world space rotation of this gameobject
-	D3DXVECTOR3 GetWorldScale()
+	// returns the combined rotation of this gameobject
+	D3DXVECTOR3 GetCombinedLocalRotation()
+	{
+		if (parent != nullptr)
+			return transform.localRotation + parent->GetCombinedLocalRotation();
+
+		return transform.localRotation;
+	}
+
+	// returns the rotation relative to parent of this gameobject
+	D3DXVECTOR3 GetLocalRotation()
+	{
+		return transform.localRotation;
+	}
+
+	// returns the combined scale of this gameobject
+	D3DXVECTOR3 GetCombinedScale()
 	{
 		if (parent != nullptr)
 		{
-			return D3DXVECTOR3(transform.scale.x * parent->GetWorldScale().x,
-								transform.scale.y * parent->GetWorldScale().y,
-								transform.scale.z * parent->GetWorldScale().z);
+			return D3DXVECTOR3(transform.scale.x * parent->GetCombinedScale().x,
+								transform.scale.y * parent->GetCombinedScale().y,
+								transform.scale.z * parent->GetCombinedScale().z);
 		}
 
 		return transform.scale;
 	}
 
-	// returns the local space rotation relative to parent of this gameobject
-	D3DXVECTOR3 GetLocalScale()
+	// returns the scale relative to parent of this gameobject
+	D3DXVECTOR3 GetScale()
 	{
 		return transform.scale;
 	}
@@ -116,19 +131,19 @@ private:
 	v3t_float size;
 	v3t_float topLeft;
 
-	Transform* obj_transform;
+	GameObject* obj_transform;
 
 public:
 	// constructor
-	BoxCollider(Transform* transform, float width, float height, float depth) : obj_transform(transform)
+	BoxCollider(GameObject* transform, float width, float height, float depth) : obj_transform(transform)
 	{
-		size.x = width * obj_transform->scale.x;
-		size.y = height * obj_transform->scale.y;
-		size.z = depth * obj_transform->scale.z;
+		size.x = width * obj_transform->GetCombinedScale().x;
+		size.y = height * obj_transform->GetCombinedScale().y;
+		size.z = depth * obj_transform->GetCombinedScale().z;
 		
-		topLeft.x = (-width / 2) + obj_transform->position.x;
-		topLeft.y = (height / 2) + obj_transform->position.y;
-		topLeft.z = (-width / 2) + obj_transform->position.z;
+		topLeft.x = (-width / 2) + obj_transform->GetCombinedPosition().x;
+		topLeft.y = (height / 2) + obj_transform->GetCombinedPosition().y;
+		topLeft.z = (-width / 2) + obj_transform->GetCombinedPosition().z;
 	}
 
 	// destructor
@@ -140,9 +155,9 @@ public:
 	// get current top left position based on object position
 	v3t_float GetTopLeft() const
 	{
-		return v3t_float((-size.x / 2) + obj_transform->position.x, 
-						(size.y / 2) + obj_transform->position.y,
-						(-size.z / 2) + obj_transform->position.z);
+		return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
+						(size.y / 2) + obj_transform->GetCombinedPosition().y,
+						(-size.z / 2) + obj_transform->GetCombinedPosition().z);
 	}
 
 
@@ -156,7 +171,7 @@ public:
 		// check collision
 		if (topLeft1.x < topLeft2.x + size2.x && topLeft1.x + size1.x > topLeft2.x)
 			if (topLeft1.z < topLeft2.z + size2.z && topLeft1.z + size1.z > topLeft2.z)
-				if(topLeft1.y < topLeft2.y + size2.y && topLeft1.y + size1.y > topLeft2.y)
+				//if(topLeft1.y < topLeft2.y + size2.y && topLeft1.y + size1.y > topLeft2.y)
 					return true;
 
 		// no collision occured
