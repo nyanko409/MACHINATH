@@ -134,17 +134,17 @@ void Jump()
 		jumpcnt += JumpSpeed;
 		float finalRot = 360.0F / (180.0F / JumpSpeed);
 
-		player->transform.rotation.y += finalRot;
+		player->transform.localRotation.y += finalRot;
 		//player->transform.rotation.z += finalRot;
-		player->transform.rotation.x += finalRot;
+		player->transform.localRotation.x += finalRot;
 
 		if (jumpcnt > 180)
 		{
 			jumpFrag = false;
 			jumpcnt = 0;
-			player->transform.rotation.y = 90.0F;
+			player->transform.localRotation.y = 90.0F;
 			//player->transform.rotation.z = 0.0F;
-			player->transform.rotation.x = 0.0F;
+			player->transform.localRotation.x = 0.0F;
 		}
 	}
 }
