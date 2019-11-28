@@ -24,7 +24,7 @@ float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2); // returns the distance betwe
 // globals
 std::vector<EventTime> event;
 std::vector<Map*> map;
-static float mapRadius;
+static float mapRadius=0;
 static int drawCount;
 static float poolDistance;
 static float curveSpeed;
@@ -36,7 +36,7 @@ static float curveRot;
 
 void InitMap()
 {
-	mapRadius = 90;
+	mapRadius = 90.0F;
 	drawCount = 3;
 	curveSpeed = 1.5F;
 	poolDistance = 80.0F;

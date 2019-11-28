@@ -74,8 +74,8 @@
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Users\beta_\Desktop\MACHINATH\MACHINATH\effekseer_lib\x86\debug;\\Mac\Home\Desktop\MACHINATH_PROJECT\MACHINATH\effekseer_lib\x86\debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Users\ato\source\repos\MACHINATH\effekseer_include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Users\ato\source\repos\MACHINATH\effekseer_lib\x86\release;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\beta_\Desktop\MACHINATH\MACHINATH\effekseer_include;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;C:\Users\ato\source\repos\MACHINATH\effekseer_include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\beta_\Desktop\MACHINATH\MACHINATH\effekseer_lib\x86\release;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;C:\Users\ato\source\repos\MACHINATH\effekseer_lib\x86\release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

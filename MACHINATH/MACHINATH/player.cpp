@@ -7,13 +7,14 @@
 #include "sceneManagement.h"
 
 // globals
-#define JumpHeight (30.0F)
+#define JumpHeight (10.0F)
 #define JumpSpeed (3.0F)
 
 static LPDIRECT3DDEVICE9 device;
 static Player* player;
 static MeshObject* skateboard;
 
+static float finalposy;
 static float rotSpeed;
 static float rotMax;
 static bool jumpFrag;
@@ -123,12 +124,13 @@ void Jump()
 	if (!jumpFrag && Keyboard_IsPress(DIK_J))
 	{
 		jumpFrag = true;
+		finalposy = player->transform.position.y;
 	}
 
 	//jump
 	if (jumpFrag)
 	{
-		player->transform.position.y = 1.0F + 40.0F*sin(D3DXToRadian(jumpcnt));
+		player->transform.position.y = finalposy + JumpHeight*sin(D3DXToRadian(jumpcnt));
 		jumpcnt += JumpSpeed;
 		float finalRot = 360.0F / (180.0F / JumpSpeed);
 
