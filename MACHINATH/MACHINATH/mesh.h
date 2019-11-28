@@ -9,8 +9,6 @@ class MeshObject : public GameObject
 {
 public:
 	MESH_DATA* mesh;				// data of this mesh
-	D3DXVECTOR3 fixedRot;			// fixed rotation of this mesh
-
 
 	MeshObject(Transform transform, MESH_NAME name, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
 		GameObject(transform, type, parent)
@@ -30,7 +28,7 @@ public:
 
 		// get world matrix
 		D3DXMATRIX matWorld;
-		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), fixedRot, rotateAtPos);
+		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), transform.localRotation);
 
 		// set world transform
 		if (pShader)
@@ -60,8 +58,6 @@ class BoneObject : public GameObject
 {
 public:
 	SkinMeshFile* mesh;				// data of this mesh
-	D3DXVECTOR3 fixedRot;			// fixed rotation of this mesh
-
 
 	BoneObject(Transform transform, ANIMATED_MESH_NAME name, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
 		GameObject(transform, type, parent)
@@ -80,7 +76,7 @@ public:
 
 		// get world matrix
 		D3DXMATRIX matWorld;
-		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), fixedRot, rotateAtPos);
+		matWorld = TransformObject(GetWorldPosition(), GetWorldRotation(), GetWorldScale(), transform.localRotation);
 
 		// apply world matrix
 		if (pShader)

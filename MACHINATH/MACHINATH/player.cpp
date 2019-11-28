@@ -38,11 +38,11 @@ void InitPlayer()
 	device = MyDirect3D_GetDevice();
 
 	// create player
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	player = new Player(trans, 0.3F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 
 	// create skateboard and make player the parent
-	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1.0F, 1.0F, 1.0F));
+	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, player);
 
 	// init player rotation speed
@@ -89,34 +89,34 @@ void MoveSideways()
 	if (Keyboard_IsPress(DIK_F))
 	{
 		player->transform.position.x += -0.5F;
-		player->transform.rotation.z += rotSpeed;
+		player->transform.localRotation.z += rotSpeed;
 	}
 	else if (Keyboard_IsPress(DIK_G))
 	{
 		player->transform.position.x += 0.5F;
-		player->transform.rotation.z += -rotSpeed;
+		player->transform.localRotation.z += -rotSpeed;
 	}
 	else
 	{
-		if (player->transform.rotation.z > 0)
+		if (player->transform.localRotation.z > 0)
 		{
-			player->transform.rotation.z -= rotSpeed;
-			if (player->transform.rotation.z < 0)
-				player->transform.rotation.z = 0;
+			player->transform.localRotation.z -= rotSpeed;
+			if (player->transform.localRotation.z < 0)
+				player->transform.localRotation.z = 0;
 		}
 		else
 		{
-			player->transform.rotation.z += rotSpeed;
-			if (player->transform.rotation.z > 0)
-				player->transform.rotation.z = 0;
+			player->transform.localRotation.z += rotSpeed;
+			if (player->transform.localRotation.z > 0)
+				player->transform.localRotation.z = 0;
 		}
 	}
 
 	// clip rotation
-	if (player->transform.rotation.z > rotMax)
-		player->transform.rotation.z = rotMax;
-	if (player->transform.rotation.z < -rotMax)
-		player->transform.rotation.z = -rotMax;
+	if (player->transform.localRotation.z > rotMax)
+		player->transform.localRotation.z = rotMax;
+	if (player->transform.localRotation.z < -rotMax)
+		player->transform.localRotation.z = -rotMax;
 }
 
 void Jump()

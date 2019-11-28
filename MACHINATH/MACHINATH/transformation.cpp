@@ -4,10 +4,10 @@
 #include "common.h"
 #include "shader.h"
 
-D3DXMATRIX matTranslate, matRotation, matFixedRotation, matScale;
+D3DXMATRIX matTranslate, matRotation, matLocalRotation, matScale;
 D3DXMATRIX matWorld;
 
-D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR3 scale, D3DXVECTOR3 fixedRot, bool rotateAtPosition)
+D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR3 scale, D3DXVECTOR3 localRot)
 {
 	// get device
 	auto device = MyDirect3D_GetDevice();
@@ -25,19 +25,16 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR
 
 	matRotation = xRot * yRot * zRot;
 
-	// set fixed rotation matrix
+	// set local rotation matrix
 	D3DXMATRIX fxRot, fyRot, fzRot;
-	D3DXMatrixRotationX(&fxRot, D3DXToRadian(fixedRot.x));
-	D3DXMatrixRotationY(&fyRot, D3DXToRadian(fixedRot.y));
-	D3DXMatrixRotationZ(&fzRot, D3DXToRadian(fixedRot.z));
+	D3DXMatrixRotationX(&fxRot, D3DXToRadian(localRot.x));
+	D3DXMatrixRotationY(&fyRot, D3DXToRadian(localRot.y));
+	D3DXMatrixRotationZ(&fzRot, D3DXToRadian(localRot.z));
 
-	matFixedRotation = fxRot * fyRot * fzRot;
+	matLocalRotation = fxRot * fyRot * fzRot;
 
 	// calculate world matrix
-	if (!rotateAtPosition)
-		matWorld = (matScale * matFixedRotation * matTranslate * matRotation);
-	else
-		matWorld = (matScale * matFixedRotation * matRotation * matTranslate);
+	matWorld = (matScale * matLocalRotation * matTranslate * matRotation);
 
 	// return world matrix
 	return matWorld;
