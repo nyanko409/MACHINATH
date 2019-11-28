@@ -171,7 +171,7 @@ public:
 		// check collision
 		if (topLeft1.x < topLeft2.x + size2.x && topLeft1.x + size1.x > topLeft2.x)
 			if (topLeft1.z < topLeft2.z + size2.z && topLeft1.z + size1.z > topLeft2.z)
-				//if(topLeft1.y < topLeft2.y + size2.y && topLeft1.y + size1.y > topLeft2.y)
+				if(topLeft1.y > topLeft2.y - size2.y && topLeft1.y - size1.y < topLeft2.y)
 					return true;
 
 		// no collision occured

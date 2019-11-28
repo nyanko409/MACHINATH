@@ -13,10 +13,11 @@ enum class Direction
 class Map : public MeshObject
 {
 public:
+	int id;
 	Direction exit;
 
-	Map(Transform transform, MESH_NAME name, Direction exit, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
-		MeshObject(transform, name, type, parent), exit(exit)
+	Map(int id, Transform transform, MESH_NAME name, Direction exit, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
+		id(id), MeshObject(transform, name, type, parent), exit(exit)
 	{
 		// disable draw
 		enableDraw = false;
@@ -40,7 +41,11 @@ public:
 };
 
 
+// returns the vector of map
 std::vector<Map*>* GetMap();
+
+// return the map with the given mapId
+Map* GetMapById(int mapId);
 
 void InitMap();
 void UninitMap();
