@@ -4,7 +4,9 @@
 #include "mesh.h"
 #include "playTime.h"
 #include "sceneManagement.h"
+#include "customMath.h"
 #include "player.h"
+#include "input.h"
 #include "pickup.h"
 
 enum class MapEvent
@@ -19,16 +21,17 @@ struct EventTime
 };
 
 Transform GetStartTransform(const Map& prevMap);
-float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2); // returns the distance between two points
+void MoveSideways(int index);
 
 // globals
-std::vector<EventTime> event;
+std::vector<EventTime> event; 
 std::vector<Map*> map;
-static float mapRadius=0;
+static float mapRadius = 0;
 static int drawCount;
 static float poolDistance;
 static float curveSpeed;
 
+static int mapId;
 static int drawIndex;
 static bool isCurving;
 static float curveRot;
@@ -36,10 +39,11 @@ static float curveRot;
 
 void InitMap()
 {
+	mapId = 0;
 	mapRadius = 90.0F;
 	drawCount = 3;
 	curveSpeed = 1.5F;
-	poolDistance = 80.0F;
+	poolDistance = 60.0F;
 
 	isCurving = false;
 	curveRot = 0;
@@ -53,19 +57,19 @@ void InitMap()
 	map = std::vector<Map*>();
 
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-	map.emplace_back(new Map(transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
 
 	transform = GetStartTransform(*map[0]);
-	map.emplace_back(new Map(transform, MESH_MAP_CURVELEFT, Direction::WEST, SHADER_DEFAULT));
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::WEST, SHADER_DEFAULT));
 
 	transform = GetStartTransform(*map[1]);
-	map.emplace_back(new Map(transform, MESH_MAP_CURVELEFT, Direction::SOUTH, SHADER_DEFAULT));
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::SOUTH, SHADER_DEFAULT));
 
 	transform = GetStartTransform(*map[2]);
-	map.emplace_back(new Map(transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
 
 	transform = GetStartTransform(*map[3]);
-	map.emplace_back(new Map(transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
 
 	// enable draw for drawcount
 	drawIndex = map.size() < drawCount ? map.size() : drawCount;
@@ -73,8 +77,6 @@ void InitMap()
 	{
 		map[i]->enableDraw = true;
 	}
-
-	SpawnPickup(0, 0, 15, map.front());
 }
 
 void UpdateMap()
@@ -86,6 +88,9 @@ void UpdateMap()
 	{
 		// move map by player speed
 		map[i]->transform.position -= map[i]->GetForward() * GetPlayer()->moveSpeed;
+
+		// move sideways
+		MoveSideways(i);
 
 		// handle events
 		if (event.size() > 0 && event.front().time <= playTime)
@@ -135,9 +140,13 @@ void UpdateMap()
 		if (map.size() > drawIndex)
 		{
 			map[drawIndex]->enableDraw = true;
+			ActivatePickup(map[drawIndex]->id);
 		}
 
-		// delete map and coin
+		// delete pickup
+		CleanPickup(map[0]->id);
+
+		// delete map
 		delete map[0];
 		map.erase(map.begin());
 	}
@@ -152,6 +161,27 @@ void UninitMap()
 	}
 }
 
+
+void MoveSideways(int index)
+{
+	// move left and right
+	if (Keyboard_IsPress(DIK_F))
+	{
+		D3DXMATRIX rot;
+		D3DXVECTOR3 left;
+		D3DXMatrixRotationY(&rot, D3DXToRadian(-90));
+		D3DXVec3TransformCoord(&left, &map[index]->GetForward(), &rot);
+		map[index]->transform.position -= left * GetPlayer()->moveSpeed;
+	}
+	if (Keyboard_IsPress(DIK_G))
+	{
+		D3DXMATRIX rot;
+		D3DXVECTOR3 left;
+		D3DXMatrixRotationY(&rot, D3DXToRadian(90));
+		D3DXVec3TransformCoord(&left, &map[index]->GetForward(), &rot);
+		map[index]->transform.position -= left * GetPlayer()->moveSpeed;
+	}
+}
 
 Transform GetStartTransform(const Map& prevMap)
 {
@@ -182,10 +212,15 @@ Transform GetStartTransform(const Map& prevMap)
 	return trans;
 }
 
-float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2)
+Map* GetMapById(int mapId)
 {
-	D3DXVECTOR3 dist = t1 - t2;
-	return sqrtf(dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);
+	for (int i = 0; i < map.size(); ++i)
+	{
+		if (map[i]->id == mapId) 
+			return map[i];
+	}
+
+	return nullptr;
 }
 
 std::vector<Map*>* GetMap()
