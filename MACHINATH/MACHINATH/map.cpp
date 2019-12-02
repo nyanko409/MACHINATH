@@ -11,17 +11,18 @@
 
 enum class MapEvent
 {
-	CURVE_LEFT, CURVE_RIGHT
+	CURVE
 };
 
 struct EventTime
 {
 	MapEvent mapEvent;
+	float curveDeg;
 	float time;
 };
 
 Transform GetStartTransform(const Map& prevMap);
-void Curve(Map& map);
+void Curve(Map& map, int degree);
 void MoveSideways(int index);
 
 // globals
@@ -51,8 +52,8 @@ void InitMap()
 
 	// init event times
 	event = std::vector<EventTime>();
-	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 4.5F});
-	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 9.5F});
+	event.emplace_back(EventTime {MapEvent::CURVE, 90, 4.5F});
+	event.emplace_back(EventTime {MapEvent::CURVE, 90, 9.5F});
 
 	// init map
 	map = std::vector<Map*>();
@@ -96,9 +97,10 @@ void UpdateMap()
 		// handle events
 		if (event.size() > 0 && event.front().time <= playTime)
 		{
-			if (event.front().mapEvent == MapEvent::CURVE_RIGHT || event.front().mapEvent == MapEvent::CURVE_LEFT)
+			// curve
+			if (event.front().mapEvent == MapEvent::CURVE)
 			{
-				Curve(*map[i]);
+				Curve(*map[i], event.front().curveDeg);
 			}
 		}
 	}
@@ -136,14 +138,12 @@ void UninitMap()
 }
 
 
-void Curve(Map& map)
+void Curve(Map& map, int degree)
 {
-	// curve left / right
+	// curve by given degree
 	isCurving = true;
-	if (curveRot < 90)
-	{
-		map.transform.rotation.y += event.front().mapEvent == MapEvent::CURVE_RIGHT ? -curveSpeed : curveSpeed;
-	}
+	if (curveRot < fabsf(degree))
+		map.transform.rotation.y += degree < 0 ? -curveSpeed : curveSpeed;
 	else
 	{
 		event.erase(event.begin());
