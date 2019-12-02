@@ -21,6 +21,7 @@ struct EventTime
 };
 
 Transform GetStartTransform(const Map& prevMap);
+void Curve(Map& map);
 void MoveSideways(int index);
 
 // globals
@@ -95,36 +96,9 @@ void UpdateMap()
 		// handle events
 		if (event.size() > 0 && event.front().time <= playTime)
 		{
-			// curve right
-			if (event.front().mapEvent == MapEvent::CURVE_RIGHT)
+			if (event.front().mapEvent == MapEvent::CURVE_RIGHT || event.front().mapEvent == MapEvent::CURVE_LEFT)
 			{
-				isCurving = true;
-				if (curveRot < 90)
-				{
-					map[i]->transform.rotation.y -= curveSpeed;
-				}
-				else
-				{
-					event.erase(event.begin());
-					isCurving = false;
-					curveRot = 0;
-				}
-			}
-
-			// curve left
-			else if (event.front().mapEvent == MapEvent::CURVE_LEFT)
-			{
-				isCurving = true;
-				if (curveRot < 90)
-				{
-					map[i]->transform.rotation.y += curveSpeed;
-				}
-				else
-				{
-					event.erase(event.begin());
-					isCurving = false;
-					curveRot = 0;
-				}
+				Curve(*map[i]);
 			}
 		}
 	}
@@ -136,7 +110,7 @@ void UpdateMap()
 	// remove first map from array if out of camera view
 	if (map.size() > 0 && GetDistance(map[0]->transform.position, GetPlayer()->transform.position) > poolDistance)
 	{
-		// display next map
+		// display next map and pickups
 		if (map.size() > drawIndex)
 		{
 			map[drawIndex]->enableDraw = true;
@@ -161,6 +135,22 @@ void UninitMap()
 	}
 }
 
+
+void Curve(Map& map)
+{
+	// curve left / right
+	isCurving = true;
+	if (curveRot < 90)
+	{
+		map.transform.rotation.y += event.front().mapEvent == MapEvent::CURVE_RIGHT ? -curveSpeed : curveSpeed;
+	}
+	else
+	{
+		event.erase(event.begin());
+		isCurving = false;
+		curveRot = 0;
+	}
+}
 
 void MoveSideways(int index)
 {
@@ -192,6 +182,7 @@ Transform GetStartTransform(const Map& prevMap)
 	if (prevMap.exit == Direction::NORTH)
 	{
 		trans.position.z += mapRadius;
+		trans.localRotation.y = 0;
 	}
 	else if (prevMap.exit == Direction::EAST)
 	{
