@@ -113,6 +113,22 @@ void CameraInput()
 		cam->position.y += -cam->moveSpeed;
 		cam->lookDirection.y += -cam->moveSpeed;
 	}
+	if (Keyboard_IsPress(DIK_M))
+	{
+		// fov increase
+		if (cam->fov < 3)
+		{
+			cam->fov += 0.01f;
+		}
+	}
+	if (Keyboard_IsPress(DIK_N))
+	{
+		// fov decrease
+		if (cam->fov > 1)
+		{
+			cam->fov -= 0.01f;
+		}
+	}
 }
 
 Camera* GetCamera()
