@@ -52,6 +52,9 @@ void InitMap()
 	event = std::vector<EventTime>();
 	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 4.5F});
 	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 9.5F});
+	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 24.5F});
+	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 34.5F});
+	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 89.5F});
 
 	// init map
 	map = std::vector<Map*>();
@@ -69,6 +72,51 @@ void InitMap()
 	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
 
 	transform = GetStartTransform(*map[3]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[4]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::EAST, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[5]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::EAST, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[6]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[7]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[8]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[9]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[10]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[11]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[12]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[13]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[14]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[15]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[16]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[17]);
+	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::WEST, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*map[18]);
 	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
 
 	// enable draw for drawcount
@@ -192,6 +240,7 @@ Transform GetStartTransform(const Map& prevMap)
 	if (prevMap.exit == Direction::NORTH)
 	{
 		trans.position.z += mapRadius;
+		trans.localRotation.y = 0;
 	}
 	else if (prevMap.exit == Direction::EAST)
 	{
