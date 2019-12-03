@@ -11,73 +11,74 @@
 
 enum class MapEvent
 {
-	CURVE
+	CURVE, SLOPE
 };
 
 struct EventTime
 {
 	MapEvent mapEvent;
-	float curveDeg;
+	float value;
+	float speed;
 	float time;
 };
 
 Transform GetStartTransform(const Map& prevMap);
-void Curve(Map& map, int degree);
+void Curve(const EventTime& event);
+void Slope(const EventTime& event);
 void MoveSideways(int index);
 
 // globals
-std::vector<EventTime> event; 
-std::vector<Map*> map;
+std::vector<EventTime> g_event; 
+std::vector<Map*> g_map;
 static float mapRadius = 0;
 static int drawCount;
 static float poolDistance;
-static float curveSpeed;
 
-static int mapId;
 static int drawIndex;
-static bool isCurving;
-static float curveRot;
+static float curRot, curHeight;
 
 
 void InitMap()
 {
-	mapId = 0;
 	mapRadius = 90.0F;
 	drawCount = 3;
-	curveSpeed = 1.5F;
 	poolDistance = 60.0F;
 
-	isCurving = false;
-	curveRot = 0;
+	curRot = 0;
+	curHeight = 0;
+	drawIndex = 0;
 
 	// init event times
-	event = std::vector<EventTime>();
-	event.emplace_back(EventTime {MapEvent::CURVE, 90, 4.5F});
-	event.emplace_back(EventTime {MapEvent::CURVE, 90, 9.5F});
+	g_event = std::vector<EventTime>();
+	g_event.emplace_back(EventTime {MapEvent::CURVE, 90, 1.5F, 4.5F});
+	g_event.emplace_back(EventTime {MapEvent::CURVE, 90, 1.5F, 9.5F});
+	g_event.emplace_back(EventTime {MapEvent::SLOPE, -17, 0.18F, 17.0F});
+	g_event.emplace_back(EventTime{ MapEvent::CURVE, 270, 1.0F, 20.0F});
 
 	// init map
-	map = std::vector<Map*>();
+	g_map = std::vector<Map*>();
+	int mapId = 0;
 
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
 
-	transform = GetStartTransform(*map[0]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::WEST, SHADER_DEFAULT));
+	transform = GetStartTransform(*g_map[0]);
+	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::WEST, SHADER_DEFAULT));
 
-	transform = GetStartTransform(*map[1]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::SOUTH, SHADER_DEFAULT));
+	transform = GetStartTransform(*g_map[1]);
+	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::SOUTH, SHADER_DEFAULT));
 
-	transform = GetStartTransform(*map[2]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
+	transform = GetStartTransform(*g_map[2]);
+	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
 
-	transform = GetStartTransform(*map[3]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
+	transform = GetStartTransform(*g_map[3]);
+	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
 
 	// enable draw for drawcount
-	drawIndex = map.size() < drawCount ? map.size() : drawCount;
+	drawIndex = g_map.size() < drawCount ? g_map.size() : drawCount;
 	for (int i = 0; i < drawIndex; ++i)
 	{
-		map[i]->enableDraw = true;
+		g_map[i]->enableDraw = true;
 	}
 }
 
@@ -86,70 +87,94 @@ void UpdateMap()
 	if (GetScene() != SCENE_GAMESCREEN) return;
 
 	// for every map in array
-	for (int i = 0; i < map.size(); ++i)
+	for (int i = 0; i < g_map.size(); ++i)
 	{
 		// move map by player speed
-		map[i]->transform.position -= map[i]->GetForward() * GetPlayer()->moveSpeed;
+		g_map[i]->transform.position -= g_map[i]->GetForward() * GetPlayer()->moveSpeed;
 
 		// move sideways
 		MoveSideways(i);
-
-		// handle events
-		if (event.size() > 0 && event.front().time <= playTime)
-		{
-			// curve
-			if (event.front().mapEvent == MapEvent::CURVE)
-			{
-				Curve(*map[i], event.front().curveDeg);
-			}
-		}
 	}
 
-	// add rotation while curving
-	if (isCurving)
-		curveRot += curveSpeed;
+	// handle events
+	if (g_event.size() > 0 && g_event.front().time <= playTime)
+	{
+		// curve
+		if (g_event.front().mapEvent == MapEvent::CURVE)
+			Curve(g_event.front());
 
-	// remove first map from array if out of camera view
-	if (map.size() > 0 && GetDistance(map[0]->transform.position, GetPlayer()->transform.position) > poolDistance)
+		// slope
+		else if (g_event.front().mapEvent == MapEvent::SLOPE)
+			Slope(g_event.front());
+	}
+
+	// map pooling
+	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->transform.position, true) > poolDistance)
 	{
 		// display next map and pickups
-		if (map.size() > drawIndex)
+		if (g_map.size() > drawIndex)
 		{
-			map[drawIndex]->enableDraw = true;
-			ActivatePickup(map[drawIndex]->id);
+			g_map[drawIndex]->enableDraw = true;
+			ActivatePickup(g_map[drawIndex]->id);
 		}
 
 		// delete pickup
-		CleanPickup(map[0]->id);
+		CleanPickup(g_map[0]->id);
 
 		// delete map
-		delete map[0];
-		map.erase(map.begin());
+		delete g_map[0];
+		g_map.erase(g_map.begin());
 	}
 }
 
 void UninitMap()
 {
 	// free memory
-	for (int i = 0; i < map.size(); ++i)
+	for (int i = 0; i < g_map.size(); ++i)
 	{
-		delete map[i];
+		delete g_map[i];
 	}
 }
 
 
-void Curve(Map& map, int degree)
+void Curve(const EventTime& event)
 {
-	// curve by given degree
-	isCurving = true;
-	if (curveRot < fabsf(degree))
-		map.transform.rotation.y += degree < 0 ? -curveSpeed : curveSpeed;
-	else
+	// loop for every map
+	for (int i = 0; i < g_map.size(); ++i)
 	{
-		event.erase(event.begin());
-		isCurving = false;
-		curveRot = 0;
+		// rotate by curRot
+		if (curRot < fabsf(event.value))
+		{
+			g_map[i]->transform.rotation.y += event.value < 0 ? -event.speed : event.speed;
+		}
+		else
+		{
+			g_event.erase(g_event.begin());
+			curRot = 0;
+		}
 	}
+
+	curRot += event.speed;
+}
+
+void Slope(const EventTime& event)
+{
+	// loop for every map
+	for (int i = 0; i < g_map.size(); ++i)
+	{
+		// move by curHeight
+		if (curHeight < fabsf(event.value))
+		{
+			g_map[i]->transform.position.y += event.value < 0 ? -event.speed : event.speed;
+		}
+		else
+		{
+			g_event.erase(g_event.begin());
+			curHeight = 0;
+		}
+	}
+
+	curHeight += event.speed;
 }
 
 void MoveSideways(int index)
@@ -160,16 +185,16 @@ void MoveSideways(int index)
 		D3DXMATRIX rot;
 		D3DXVECTOR3 left;
 		D3DXMatrixRotationY(&rot, D3DXToRadian(-90));
-		D3DXVec3TransformCoord(&left, &map[index]->GetForward(), &rot);
-		map[index]->transform.position -= left * GetPlayer()->moveSpeed;
+		D3DXVec3TransformCoord(&left, &g_map[index]->GetForward(), &rot);
+		g_map[index]->transform.position -= left * GetPlayer()->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_G))
 	{
 		D3DXMATRIX rot;
 		D3DXVECTOR3 left;
 		D3DXMatrixRotationY(&rot, D3DXToRadian(90));
-		D3DXVec3TransformCoord(&left, &map[index]->GetForward(), &rot);
-		map[index]->transform.position -= left * GetPlayer()->moveSpeed;
+		D3DXVec3TransformCoord(&left, &g_map[index]->GetForward(), &rot);
+		g_map[index]->transform.position -= left * GetPlayer()->moveSpeed;
 	}
 }
 
@@ -205,10 +230,10 @@ Transform GetStartTransform(const Map& prevMap)
 
 Map* GetMapById(int mapId)
 {
-	for (int i = 0; i < map.size(); ++i)
+	for (int i = 0; i < g_map.size(); ++i)
 	{
-		if (map[i]->id == mapId) 
-			return map[i];
+		if (g_map[i]->id == mapId) 
+			return g_map[i];
 	}
 
 	return nullptr;
@@ -216,5 +241,5 @@ Map* GetMapById(int mapId)
 
 std::vector<Map*>* GetMap()
 {
-	return &map;
+	return &g_map;
 }

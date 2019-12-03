@@ -351,33 +351,28 @@ void InitTest()
 void DrawTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
-	//if(Keyboard_IsTrigger(DIK_Y)) PlayEffect(EFFECT_JUMP, { 0, 10, 0 });
 
-	D3DXMATRIX matRot, matTranslate;
-	pDevice->GetTransform(D3DTS_VIEW, &matRot);
-	matRot._14 = matRot._24 = matRot._34 = 0;
-	matRot._41 = matRot._42 = matRot._43 = 0;
-
-	D3DXMatrixTranspose(&matRot, &matRot);
-	D3DXMatrixTranslation(&matTranslate, 0, 20, 0);
-
-	CUSTOM_VERTEX vert[] = 
-	{
-		{5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 1.0F)},
-		{5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 0.0F)},
-		{-5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 0.0F)},
-		{-5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 1.0F)},
-	};
-
-	pDevice->SetTransform(D3DTS_WORLD, &(matRot * matTranslate));
-	pDevice->SetFVF(CUSTOM_FVF);
-	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vert, sizeof(CUSTOM_VERTEX));
+	//D3DXMATRIX matRot, matTranslate;
+	//pDevice->GetTransform(D3DTS_VIEW, &matRot);
+	//matRot._14 = matRot._24 = matRot._34 = 0;
+	//matRot._41 = matRot._42 = matRot._43 = 0;
+	//
+	//D3DXMatrixTranspose(&matRot, &matRot);
+	//D3DXMatrixTranslation(&matTranslate, 0, 20, 0);
+	//
+	//CUSTOM_VERTEX vert[] = 
+	//{
+	//	{5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 1.0F)},
+	//	{5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 0.0F)},
+	//	{-5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 0.0F)},
+	//	{-5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 1.0F)},
+	//};
+	//
+	//pDevice->SetTransform(D3DTS_WORLD, &(matRot * matTranslate));
+	//pDevice->SetFVF(CUSTOM_FVF);
+	//pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vert, sizeof(CUSTOM_VERTEX));
 
 	//// draw text
 	//char f[] = "iuhih";
 	//DrawTextTo(RECT{200, 100, 100, 50}, f, sizeof(f) / sizeof(char));
-
-	//// effect
-	//if (Keyboard_IsTrigger(DIK_V)) 
-	//	PlayEffect(EFFECT_BLOW, 0, 15, 0, 0.1F, 0.1F, 0.2F);
 }
