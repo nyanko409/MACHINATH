@@ -346,41 +346,32 @@ void InitLight()
 void InitTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
-
-	// shinjyuku
-	//shinjyuku = std::vector<MeshObject*>();
-	//shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(35, -1, 80), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(5, 8, 10)), MESH_NEOSHINJYUKU2, SHADER_DEFAULT));
-	//shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 160), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT));
-	//shinjyuku.push_back(new MeshObject(Transform(D3DXVECTOR3(0, -1, 320), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(40, 10, 10)), MESH_NEOSHINJYUKU, SHADER_DEFAULT));
-
-	// ground dx kadai
-	//CUSTOM_VERTEX vert[] = 
-	//{
-	//	// front
-	//	{-1,  1,  -1, D3DVECTOR{0, 0, -1}, D3DCOLOR_RGBA(255, 255, 255, 255), D3DXVECTOR2(0, 0)},
-	//	{ 1,  1,  -1, D3DVECTOR{0, 0, -1}, D3DCOLOR_RGBA(255, 255, 255, 255), D3DXVECTOR2(0, 1)},
-	//	{ 1, -1,  -1, D3DVECTOR{0, 0, -1}, D3DCOLOR_RGBA(255, 255, 255, 255), D3DXVECTOR2(1, 0)},
-	//	{-1, -1,  -1, D3DVECTOR{0, 0, -1}, D3DCOLOR_RGBA(255, 255, 255, 255), D3DXVECTOR2(1, 1)}
-	//};
-	//
-	//short index[] = {0,1,2, 1,2,3};
-	//
-	//pDevice->CreateVertexBuffer(4 * sizeof(CUSTOM_VERTEX), D3DUSAGE_WRITEONLY,
-	//							CUSTOM_FVF, D3DPOOL_MANAGED, &vBuffer, NULL);
-	//void* v;
-	//vBuffer->Lock(0, 0, (void**)&v, 0);
-	//
-	//vBuffer->Unlock();
 }
 
 void DrawTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
-	if(Keyboard_IsTrigger(DIK_Y)) PlayEffect(EFFECT_JUMP, { 0, 10, 0 });
+	//if(Keyboard_IsTrigger(DIK_Y)) PlayEffect(EFFECT_JUMP, { 0, 10, 0 });
 
-	//pDevice->SetTransform(D3DTS_WORLD, D3DXMatrixIdentity(&(D3DXMATRIX())));
-	//pDevice->SetStreamSource(0, vBuffer, 0, 0);
-	//pDevice->SetIndices(iBuffer);
+	D3DXMATRIX matRot, matTranslate;
+	pDevice->GetTransform(D3DTS_VIEW, &matRot);
+	matRot._14 = matRot._24 = matRot._34 = 0;
+	matRot._41 = matRot._42 = matRot._43 = 0;
+
+	D3DXMatrixTranspose(&matRot, &matRot);
+	D3DXMatrixTranslation(&matTranslate, 0, 20, 0);
+
+	CUSTOM_VERTEX vert[] = 
+	{
+		{5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 1.0F)},
+		{5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 0.0F)},
+		{-5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 0.0F)},
+		{-5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 1.0F)},
+	};
+
+	pDevice->SetTransform(D3DTS_WORLD, &(matRot * matTranslate));
+	pDevice->SetFVF(CUSTOM_FVF);
+	pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vert, sizeof(CUSTOM_VERTEX));
 
 	//// draw text
 	//char f[] = "iuhih";

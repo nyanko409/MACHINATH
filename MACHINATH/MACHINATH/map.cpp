@@ -11,16 +11,18 @@
 
 enum class MapEvent
 {
-	CURVE_LEFT, CURVE_RIGHT
+	CURVE
 };
 
 struct EventTime
 {
 	MapEvent mapEvent;
+	float curveDeg;
 	float time;
 };
 
 Transform GetStartTransform(const Map& prevMap);
+void Curve(Map& map, int degree);
 void MoveSideways(int index);
 
 // globals
@@ -50,11 +52,8 @@ void InitMap()
 
 	// init event times
 	event = std::vector<EventTime>();
-	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 4.5F});
-	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 9.5F});
-	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 24.5F});
-	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 34.5F});
-	event.emplace_back(EventTime {MapEvent::CURVE_LEFT, 89.5F});
+	event.emplace_back(EventTime {MapEvent::CURVE, 90, 4.5F});
+	event.emplace_back(EventTime {MapEvent::CURVE, 90, 9.5F});
 
 	// init map
 	map = std::vector<Map*>();
@@ -72,51 +71,6 @@ void InitMap()
 	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
 
 	transform = GetStartTransform(*map[3]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[4]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::EAST, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[5]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::EAST, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[6]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[7]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[8]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[9]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[10]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[11]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[12]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[13]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[14]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[15]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[16]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[17]);
-	map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::WEST, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*map[18]);
 	map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
 
 	// enable draw for drawcount
@@ -143,36 +97,10 @@ void UpdateMap()
 		// handle events
 		if (event.size() > 0 && event.front().time <= playTime)
 		{
-			// curve right
-			if (event.front().mapEvent == MapEvent::CURVE_RIGHT)
+			// curve
+			if (event.front().mapEvent == MapEvent::CURVE)
 			{
-				isCurving = true;
-				if (curveRot < 90)
-				{
-					map[i]->transform.rotation.y -= curveSpeed;
-				}
-				else
-				{
-					event.erase(event.begin());
-					isCurving = false;
-					curveRot = 0;
-				}
-			}
-
-			// curve left
-			else if (event.front().mapEvent == MapEvent::CURVE_LEFT)
-			{
-				isCurving = true;
-				if (curveRot < 90)
-				{
-					map[i]->transform.rotation.y += curveSpeed;
-				}
-				else
-				{
-					event.erase(event.begin());
-					isCurving = false;
-					curveRot = 0;
-				}
+				Curve(*map[i], event.front().curveDeg);
 			}
 		}
 	}
@@ -184,7 +112,7 @@ void UpdateMap()
 	// remove first map from array if out of camera view
 	if (map.size() > 0 && GetDistance(map[0]->transform.position, GetPlayer()->transform.position) > poolDistance)
 	{
-		// display next map
+		// display next map and pickups
 		if (map.size() > drawIndex)
 		{
 			map[drawIndex]->enableDraw = true;
@@ -209,6 +137,20 @@ void UninitMap()
 	}
 }
 
+
+void Curve(Map& map, int degree)
+{
+	// curve by given degree
+	isCurving = true;
+	if (curveRot < fabsf(degree))
+		map.transform.rotation.y += degree < 0 ? -curveSpeed : curveSpeed;
+	else
+	{
+		event.erase(event.begin());
+		isCurving = false;
+		curveRot = 0;
+	}
+}
 
 void MoveSideways(int index)
 {
