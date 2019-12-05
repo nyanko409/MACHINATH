@@ -30,23 +30,24 @@ void MoveSideways(int index);
 // globals
 std::vector<EventTime> g_event; 
 std::vector<Map*> g_map;
-static float mapRadius = 0;
-static int drawCount;
-static float poolDistance;
+static float g_mapRadius = 0;
+static int g_drawCount;
+static float g_poolDistance;
 
-static int drawIndex;
-static float curRot, curHeight;
+static int g_drawIndex;
+static float g_curRot, g_curHeight;
 
 
 void InitMap()
 {
-	mapRadius = 90.0F;
-	drawCount = 3;
-	poolDistance = 60.0F;
+	// init values
+	g_mapRadius = 90.0F;
+	g_drawCount = 3;
+	g_poolDistance = 60.0F;
 
-	curRot = 0;
-	curHeight = 0;
-	drawIndex = 0;
+	g_curRot = 0;
+	g_curHeight = 0;
+	g_drawIndex = 0;
 
 	// init event times
 	g_event = std::vector<EventTime>();
@@ -75,8 +76,8 @@ void InitMap()
 	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
 
 	// enable draw for drawcount
-	drawIndex = g_map.size() < drawCount ? g_map.size() : drawCount;
-	for (int i = 0; i < drawIndex; ++i)
+	g_drawIndex = g_map.size() < g_drawCount ? g_map.size() : g_drawCount;
+	for (int i = 0; i < g_drawIndex; ++i)
 	{
 		g_map[i]->enableDraw = true;
 	}
@@ -109,13 +110,13 @@ void UpdateMap()
 	}
 
 	// map pooling
-	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->transform.position, true) > poolDistance)
+	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->transform.position, true) > g_poolDistance)
 	{
 		// display next map and pickups
-		if (g_map.size() > drawIndex)
+		if (g_map.size() > g_drawIndex)
 		{
-			g_map[drawIndex]->enableDraw = true;
-			ActivatePickup(g_map[drawIndex]->id);
+			g_map[g_drawIndex]->enableDraw = true;
+			ActivatePickup(g_map[g_drawIndex]->id);
 		}
 
 		// delete pickup
@@ -143,18 +144,18 @@ void Curve(const EventTime& event)
 	for (int i = 0; i < g_map.size(); ++i)
 	{
 		// rotate by curRot
-		if (curRot < fabsf(event.value))
+		if (g_curRot < fabsf(event.value))
 		{
 			g_map[i]->transform.rotation.y += event.value < 0 ? -event.speed : event.speed;
 		}
 		else
 		{
 			g_event.erase(g_event.begin());
-			curRot = 0;
+			g_curRot = 0;
 		}
 	}
 
-	curRot += event.speed;
+	g_curRot += event.speed;
 }
 
 void Slope(const EventTime& event)
@@ -163,18 +164,18 @@ void Slope(const EventTime& event)
 	for (int i = 0; i < g_map.size(); ++i)
 	{
 		// move by curHeight
-		if (curHeight < fabsf(event.value))
+		if (g_curHeight < fabsf(event.value))
 		{
 			g_map[i]->transform.position.y += event.value < 0 ? -event.speed : event.speed;
 		}
 		else
 		{
 			g_event.erase(g_event.begin());
-			curHeight = 0;
+			g_curHeight = 0;
 		}
 	}
 
-	curHeight += event.speed;
+	g_curHeight += event.speed;
 }
 
 void MoveSideways(int index)
@@ -206,22 +207,22 @@ Transform GetStartTransform(const Map& prevMap)
 	// offset to new location
 	if (prevMap.exit == Direction::NORTH)
 	{
-		trans.position.z += mapRadius;
+		trans.position.z += g_mapRadius;
 		trans.localRotation.y = 0;
 	}
 	else if (prevMap.exit == Direction::EAST)
 	{
-		trans.position.x += mapRadius;
+		trans.position.x += g_mapRadius;
 		trans.localRotation.y = 90;
 	}
 	else if (prevMap.exit == Direction::WEST)
 	{
-		trans.position.x -= mapRadius;
+		trans.position.x -= g_mapRadius;
 		trans.localRotation.y = 270;
 	}
 	else if (prevMap.exit == Direction::SOUTH)
 	{
-		trans.position.z -= mapRadius;
+		trans.position.z -= g_mapRadius;
 		trans.localRotation.y = 180;
 	}
 

@@ -16,7 +16,7 @@ static std::vector<Pickup*> pickup;
 static std::vector<std::pair<int, D3DXVECTOR3>> spawnPos;
 
 static float rotSpeed = 0;
-static float poolDistance = 0;
+static float g_poolDistance = 0;
 
 
 
@@ -25,7 +25,7 @@ void InitPickup()
 {
 	// init
 	rotSpeed = 10;
-	poolDistance = 100;
+	g_poolDistance = 100;
 	device = MyDirect3D_GetDevice();
 	pickup = std::vector<Pickup*>();  
 	
