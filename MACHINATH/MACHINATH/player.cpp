@@ -28,7 +28,7 @@ void PlayerCamera();
 // override player draw
 void Player::Draw()
 {
-	MeshObject::Draw();
+	BoneObject::Draw();
 }
 
 
@@ -39,7 +39,9 @@ void InitPlayer()
 
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
-	player = new Player(trans, 0.3F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
+	player = new Player(trans, 0.3F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
+	player->PlayAnimation(0);
+	player->SetAnimationSpeed(0.004F);
 
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
