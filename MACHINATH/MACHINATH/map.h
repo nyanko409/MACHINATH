@@ -9,15 +9,39 @@ enum class Direction
 	NORTH, EAST, SOUTH, WEST
 };
 
+enum class MapEvent
+{
+	CURVE, SLOPE
+};
+
+struct EventData
+{
+	MapEvent mapEvent;
+	float distance;
+	bool started;
+	bool finished;
+	float value;
+	float speed;
+};
+
+struct MapData
+{
+	MESH_NAME name;
+	Direction exit;
+	std::vector<EventData> event;
+};
+
+
 // map class
 class Map : public MeshObject
 {
 public:
 	int id;
 	Direction exit;
+	MapData data;
 
-	Map(int id, Transform transform, MESH_NAME name, Direction exit, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
-		id(id), MeshObject(transform, name, type, parent), exit(exit)
+	Map(int id, Transform transform, MapData data, Direction exit, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
+		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data)
 	{
 		// disable draw
 		enableDraw = false;

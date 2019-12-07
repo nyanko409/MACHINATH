@@ -9,30 +9,25 @@
 #include "input.h"
 #include "pickup.h"
 
-enum class MapEvent
-{
-	CURVE, SLOPE
-};
 
-struct EventTime
-{
-	MapEvent mapEvent;
-	float value;
-	float speed;
-	float time;
-};
-
-Transform GetStartTransform(const Map& prevMap);
-void Curve(const EventTime& event);
-void Slope(const EventTime& event);
+Transform GetStartTransform(const Map& prevMap); 
+Direction GetExitDirection(const MapData& data, const Direction& lastExit);
+void Curve(EventData& event);
+void Slope(EventData& event);
 void MoveSideways(int index);
 
 // globals
-std::vector<EventTime> g_event; 
+std::vector<EventData> g_event; 
 std::vector<Map*> g_map;
 static float g_mapRadius = 0;
 static int g_drawCount;
 static float g_poolDistance;
+
+static MapData g_MapData[] =
+{
+	{MESH_MAP_ROUNDABOUT, Direction::NORTH, std::vector<EventData>()},
+	{MESH_MAP_CURVELEFT, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 2.0F, false, false, 90, 1.5F}}},
+};
 
 static int g_drawIndex;
 static float g_curRot, g_curHeight;
@@ -49,31 +44,37 @@ void InitMap()
 	g_curHeight = 0;
 	g_drawIndex = 0;
 
-	// init event times
-	g_event = std::vector<EventTime>();
-	g_event.emplace_back(EventTime {MapEvent::CURVE, 90, 1.5F, 4.5F});
-	g_event.emplace_back(EventTime {MapEvent::CURVE, 90, 1.5F, 9.5F});
-	g_event.emplace_back(EventTime {MapEvent::SLOPE, -17, 0.18F, 17.0F});
-	g_event.emplace_back(EventTime{ MapEvent::CURVE, 270, 1.0F, 20.0F});
-
 	// init map
 	g_map = std::vector<Map*>();
-	int mapId = 0;
+	int id = 0;
 
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::NORTH, SHADER_DEFAULT));
+	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
+	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, SHADER_DEFAULT));
 
-	transform = GetStartTransform(*g_map[0]);
-	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::WEST, SHADER_DEFAULT));
+	transform = GetStartTransform(*g_map[id - 1]);
+	dir = GetExitDirection(g_MapData[1], dir);
+	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
 
-	transform = GetStartTransform(*g_map[1]);
-	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_CURVELEFT, Direction::SOUTH, SHADER_DEFAULT));
+	transform = GetStartTransform(*g_map[id - 1]);
+	dir = GetExitDirection(g_MapData[1], dir);
+	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
 
-	transform = GetStartTransform(*g_map[2]);
-	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUNDABOUT, Direction::SOUTH, SHADER_DEFAULT));
+	transform = GetStartTransform(*g_map[id - 1]);
+	dir = GetExitDirection(g_MapData[0], dir);
+	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, SHADER_DEFAULT));
 
-	transform = GetStartTransform(*g_map[3]);
-	g_map.emplace_back(new Map(mapId++, transform, MESH_MAP_ROUND, Direction::WEST, SHADER_DEFAULT));
+	transform = GetStartTransform(*g_map[id - 1]);
+	dir = GetExitDirection(g_MapData[1], dir);
+	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*g_map[id - 1]);
+	dir = GetExitDirection(g_MapData[1], dir);
+	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
+
+	transform = GetStartTransform(*g_map[id - 1]);
+	dir = GetExitDirection(g_MapData[1], dir);
+	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
 
 	// enable draw for drawcount
 	g_drawIndex = g_map.size() < g_drawCount ? g_map.size() : g_drawCount;
@@ -98,15 +99,29 @@ void UpdateMap()
 	}
 
 	// handle events
-	if (g_event.size() > 0 && g_event.front().time <= playTime)
+	if (g_map.size() > 0 && g_map.front()->data.event.size() > 0)
 	{
-		// curve
-		if (g_event.front().mapEvent == MapEvent::CURVE)
-			Curve(g_event.front());
+		// check x or z distance based on local map rotation
+		float check = (g_map.front()->GetLocalRotation().y == 90 || g_map.front()->GetLocalRotation().y == 270) ?
+					  g_map.front()->GetCombinedPosition().x : g_map.front()->GetCombinedPosition().z;
 
-		// slope
-		else if (g_event.front().mapEvent == MapEvent::SLOPE)
-			Slope(g_event.front());
+		for (int i = 0; i < g_map.front()->data.event.size(); ++i)
+		{
+			// start event based on distance
+			if (!g_map.front()->data.event[i].started && g_map.front()->data.event[i].distance >= fabsf(check))
+			{
+				g_map.front()->data.event[i].started = true;
+			}
+
+			// update events
+			if (g_map.front()->data.event[i].started && !g_map.front()->data.event[i].finished)
+			{
+				if (g_map.front()->data.event[i].mapEvent == MapEvent::CURVE)
+					Curve(g_map.front()->data.event[i]);
+				else if (g_map.front()->data.event[i].mapEvent == MapEvent::SLOPE)
+					Slope(g_map.front()->data.event[i]);
+			}
+		}
 	}
 
 	// map pooling
@@ -138,7 +153,7 @@ void UninitMap()
 }
 
 
-void Curve(const EventTime& event)
+void Curve(EventData& event)
 {
 	// loop for every map
 	for (int i = 0; i < g_map.size(); ++i)
@@ -150,7 +165,7 @@ void Curve(const EventTime& event)
 		}
 		else
 		{
-			g_event.erase(g_event.begin());
+			event.finished = true;
 			g_curRot = 0;
 		}
 	}
@@ -158,7 +173,7 @@ void Curve(const EventTime& event)
 	g_curRot += event.speed;
 }
 
-void Slope(const EventTime& event)
+void Slope(EventData& event)
 {
 	// loop for every map
 	for (int i = 0; i < g_map.size(); ++i)
@@ -170,7 +185,7 @@ void Slope(const EventTime& event)
 		}
 		else
 		{
-			g_event.erase(g_event.begin());
+			event.finished = true;
 			g_curHeight = 0;
 		}
 	}
@@ -227,6 +242,32 @@ Transform GetStartTransform(const Map& prevMap)
 	}
 
 	return trans;
+}
+
+Direction GetExitDirection(const MapData& data, const Direction& lastExit)
+{
+	if (data.exit == Direction::NORTH)
+		return lastExit;
+	if (lastExit == Direction::NORTH)
+		return data.exit;
+
+	if (lastExit == Direction::EAST)
+	{
+		if (data.exit == Direction::WEST) return Direction::NORTH;
+		if (data.exit == Direction::EAST) return Direction::SOUTH;
+	}
+
+	if (lastExit == Direction::WEST)
+	{
+		if (data.exit == Direction::WEST) return Direction::SOUTH;
+		if (data.exit == Direction::EAST) return Direction::NORTH;
+	}
+
+	if (lastExit == Direction::SOUTH)
+	{
+		if (data.exit == Direction::WEST) return Direction::EAST;
+		if (data.exit == Direction::EAST) return Direction::WEST;
+	}
 }
 
 Map* GetMapById(int mapId)
