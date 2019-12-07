@@ -1,5 +1,7 @@
 #include <vector>
 #include <tuple>
+#include <fstream>
+#include <iostream>
 #include "map.h"
 #include "mesh.h"
 #include "playTime.h"
@@ -9,25 +11,23 @@
 #include "input.h"
 #include "pickup.h"
 
-
+void LoadMapFromFile(char* path);
 Transform GetStartTransform(const Map& prevMap); 
 Direction GetExitDirection(const MapData& data, const Direction& lastExit);
 void Curve(EventData& event);
 void Slope(EventData& event);
-void MoveSideways(int index);
 
 // globals
+static MapData g_MapData[] =
+{
+	{MESH_MAP_STRAIGHT, Direction::NORTH, std::vector<EventData>()},
+	{MESH_MAP_CURVELEFT, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 2.0F, false, false, 90, 1.5F}}},
+};
 std::vector<EventData> g_event; 
 std::vector<Map*> g_map;
 static float g_mapRadius = 0;
 static int g_drawCount;
 static float g_poolDistance;
-
-static MapData g_MapData[] =
-{
-	{MESH_MAP_ROUNDABOUT, Direction::NORTH, std::vector<EventData>()},
-	{MESH_MAP_CURVELEFT, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 2.0F, false, false, 90, 1.5F}}},
-};
 
 static int g_drawIndex;
 static float g_curRot, g_curHeight;
@@ -45,36 +45,8 @@ void InitMap()
 	g_drawIndex = 0;
 
 	// init map
-	g_map = std::vector<Map*>();
-	int id = 0;
-
-	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
-	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*g_map[id - 1]);
-	dir = GetExitDirection(g_MapData[1], dir);
-	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*g_map[id - 1]);
-	dir = GetExitDirection(g_MapData[1], dir);
-	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*g_map[id - 1]);
-	dir = GetExitDirection(g_MapData[0], dir);
-	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*g_map[id - 1]);
-	dir = GetExitDirection(g_MapData[1], dir);
-	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*g_map[id - 1]);
-	dir = GetExitDirection(g_MapData[1], dir);
-	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
-
-	transform = GetStartTransform(*g_map[id - 1]);
-	dir = GetExitDirection(g_MapData[1], dir);
-	g_map.emplace_back(new Map(id++, transform, g_MapData[1], dir, SHADER_DEFAULT));
+	char path[] = "asset/data/map.txt";
+	LoadMapFromFile(path);
 
 	// enable draw for drawcount
 	g_drawIndex = g_map.size() < g_drawCount ? g_map.size() : g_drawCount;
@@ -93,9 +65,6 @@ void UpdateMap()
 	{
 		// move map by player speed
 		g_map[i]->transform.position -= g_map[i]->GetForward() * GetPlayer()->moveSpeed;
-
-		// move sideways
-		MoveSideways(i);
 	}
 
 	// handle events
@@ -155,22 +124,24 @@ void UninitMap()
 
 void Curve(EventData& event)
 {
-	// loop for every map
+	// get degree to turn this frame
+	g_curRot += event.speed;
+
+	float rotBy = g_curRot > fabsf(event.value) ? 
+		g_curRot - fabsf(event.value) : event.speed;
+
+	// rotate map
 	for (int i = 0; i < g_map.size(); ++i)
 	{
-		// rotate by curRot
-		if (g_curRot < fabsf(event.value))
-		{
-			g_map[i]->transform.rotation.y += event.value < 0 ? -event.speed : event.speed;
-		}
-		else
-		{
-			event.finished = true;
-			g_curRot = 0;
-		}
+		g_map[i]->transform.rotation.y += event.value < 0 ? -rotBy : rotBy;
 	}
 
-	g_curRot += event.speed;
+	// event finished
+	if (g_curRot >= fabsf(event.value))
+	{
+		event.finished = true;
+		g_curRot = 0;
+	}
 }
 
 void Slope(EventData& event)
@@ -193,24 +164,56 @@ void Slope(EventData& event)
 	g_curHeight += event.speed;
 }
 
-void MoveSideways(int index)
+void LoadMapFromFile(char* path)
 {
-	// move left and right
-	if (Keyboard_IsPress(DIK_F))
+	std::ifstream in(path);
+	g_map = std::vector<Map*>();
+	int id = 0;
+	char c;
+
+	// first map is always straight road
+	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
+	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
+	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, SHADER_DEFAULT));
+	while (true)
 	{
-		D3DXMATRIX rot;
-		D3DXVECTOR3 left;
-		D3DXMatrixRotationY(&rot, D3DXToRadian(-90));
-		D3DXVec3TransformCoord(&left, &g_map[index]->GetForward(), &rot);
-		g_map[index]->transform.position -= left * GetPlayer()->moveSpeed;
-	}
-	if (Keyboard_IsPress(DIK_G))
-	{
-		D3DXMATRIX rot;
-		D3DXVECTOR3 left;
-		D3DXMatrixRotationY(&rot, D3DXToRadian(90));
-		D3DXVec3TransformCoord(&left, &g_map[index]->GetForward(), &rot);
-		g_map[index]->transform.position -= left * GetPlayer()->moveSpeed;
+		try
+		{
+			// read next byte
+			in.read(&c, 1);
+
+			// if c == #, loop till next line to skip comment
+			if (c == 35)
+			{
+				do in.read(&c, 1);
+				while (!(c == 10));
+			}
+
+			// continue if c == \n, break if EOF
+			if (c == 10) continue;
+			if (in.eof())
+			{
+				in.close();
+				break;
+			}
+
+			// cast data to int
+			int ci = c - '0';
+			if (ci < 0 || ci > 9) throw std::runtime_error("Failed to parse map.txt!");
+
+			// populate map
+			transform = GetStartTransform(*g_map[id - 1]);
+			dir = GetExitDirection(g_MapData[ci], dir);
+			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, SHADER_DEFAULT));
+		}
+		catch (std::runtime_error& e)
+		{
+			// display error box
+			MessageBox(NULL,
+				e.what(),
+				"Error!",
+				MB_ICONEXCLAMATION | MB_OK);
+		}
 	}
 }
 

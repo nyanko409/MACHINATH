@@ -155,9 +155,19 @@ public:
 	// get current top left position based on object position
 	v3t_float GetTopLeft() const
 	{
-		return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
-						(size.y / 2) + obj_transform->GetCombinedPosition().y,
-						(-size.z / 2) + obj_transform->GetCombinedPosition().z);
+		D3DXMATRIX mRot;
+		D3DXMatrixRotationY(&mRot, obj_transform->GetCombinedRotation().y);
+
+		D3DXVECTOR3 finalPos = obj_transform->GetCombinedPosition();
+		D3DXVec3TransformCoord(&finalPos, &finalPos, &mRot);
+
+		return v3t_float((-size.x / 2) + finalPos.x,
+						(size.y / 2) + finalPos.y,
+						(-size.z / 2) + finalPos.z);
+
+		//return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
+		//				(size.y / 2) + obj_transform->GetCombinedPosition().y,
+		//				(-size.z / 2) + obj_transform->GetCombinedPosition().z);
 	}
 
 

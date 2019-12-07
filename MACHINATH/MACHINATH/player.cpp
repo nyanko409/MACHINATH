@@ -20,7 +20,7 @@ static float rotMax;
 static bool jumpFrag;
 static int jumpcnt;
 
-void RotateSideways();
+void MoveSideways();
 void Jump();
 void PlayerCamera();
 
@@ -65,8 +65,8 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {
-	// rotate locally while moving sideways
-	RotateSideways();
+	// move left and right
+	MoveSideways();
 
 	// handle jumping
 	Jump();
@@ -85,17 +85,21 @@ Player* GetPlayer()
 	return player;
 }
 
-void RotateSideways()
+void MoveSideways()
 {
 	// move player and rotate in z axis
 	if (Keyboard_IsPress(DIK_F))
 	{
 		player->transform.localRotation.z += rotSpeed;
+		player->transform.position.x -= player->moveSpeed;
 	}
 	else if (Keyboard_IsPress(DIK_G))
 	{
 		player->transform.localRotation.z += -rotSpeed;
+		player->transform.position.x += player->moveSpeed;
 	}
+
+	// else rotate back to original position
 	else
 	{
 		if (player->transform.localRotation.z > 0)
