@@ -15,7 +15,7 @@ static LPDIRECT3DDEVICE9 device;
 static std::vector<Pickup*> pickup;
 static std::vector<std::pair<int, D3DXVECTOR3>> spawnPos;
 
-static float rotSpeed = 0;
+static float g_zRotSpeed = 0;
 static float g_poolDistance = 0;
 
 
@@ -24,7 +24,7 @@ static float g_poolDistance = 0;
 void InitPickup()
 {
 	// init
-	rotSpeed = 10;
+	g_zRotSpeed = 10;
 	g_poolDistance = 100;
 	device = MyDirect3D_GetDevice();
 	pickup = std::vector<Pickup*>();  
@@ -49,7 +49,7 @@ void UpdatePickup()
 	for (int i = 0; i < pickup.size(); i++)
 	{
 		// rotate pickup
-		pickup[i]->transform.localRotation.y += rotSpeed;
+		pickup[i]->transform.localRotation.y += g_zRotSpeed;
 
 		// check for collision with player
 		if (BoxCollider::CheckCollision(*pickup[i], *GetPlayer()))

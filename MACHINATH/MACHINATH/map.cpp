@@ -14,14 +14,12 @@
 void LoadMapFromFile(char* path);
 Transform GetStartTransform(const Map& prevMap); 
 Direction GetExitDirection(const MapData& data, const Direction& lastExit);
-void Curve(EventData& event);
-void Slope(EventData& event);
 
 // globals
 static MapData g_MapData[] =
 {
-	{MESH_MAP_STRAIGHT, Direction::NORTH, std::vector<EventData>()},
-	{MESH_MAP_CURVELEFT, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 2.0F, false, false, 90, 1.5F}}},
+	{MESH_MAP_STRAIGHT, Direction::NORTH, std::vector<EventData>({EventData{MapEvent::NONE}})},
+	{MESH_MAP_CURVELEFT, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, -90, 1.5F}}},
 };
 std::vector<EventData> g_event; 
 std::vector<Map*> g_map;
@@ -30,7 +28,6 @@ static int g_drawCount;
 static float g_poolDistance;
 
 static int g_drawIndex;
-static float g_curRot, g_curHeight;
 
 
 void InitMap()
@@ -40,8 +37,6 @@ void InitMap()
 	g_drawCount = 3;
 	g_poolDistance = 60.0F;
 
-	g_curRot = 0;
-	g_curHeight = 0;
 	g_drawIndex = 0;
 
 	// init map
@@ -58,41 +53,6 @@ void InitMap()
 
 void UpdateMap()
 {
-	if (GetScene() != SCENE_GAMESCREEN) return;
-
-	// for every map in array
-	for (int i = 0; i < g_map.size(); ++i)
-	{
-		// move map by player speed
-		g_map[i]->transform.position -= g_map[i]->GetForward() * GetPlayer()->moveSpeed;
-	}
-
-	// handle events
-	if (g_map.size() > 0 && g_map.front()->data.event.size() > 0)
-	{
-		// check x or z distance based on local map rotation
-		float check = (g_map.front()->GetLocalRotation().y == 90 || g_map.front()->GetLocalRotation().y == 270) ?
-					  g_map.front()->GetCombinedPosition().x : g_map.front()->GetCombinedPosition().z;
-
-		for (int i = 0; i < g_map.front()->data.event.size(); ++i)
-		{
-			// start event based on distance
-			if (!g_map.front()->data.event[i].started && g_map.front()->data.event[i].distance >= fabsf(check))
-			{
-				g_map.front()->data.event[i].started = true;
-			}
-
-			// update events
-			if (g_map.front()->data.event[i].started && !g_map.front()->data.event[i].finished)
-			{
-				if (g_map.front()->data.event[i].mapEvent == MapEvent::CURVE)
-					Curve(g_map.front()->data.event[i]);
-				else if (g_map.front()->data.event[i].mapEvent == MapEvent::SLOPE)
-					Slope(g_map.front()->data.event[i]);
-			}
-		}
-	}
-
 	// map pooling
 	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->transform.position, true) > g_poolDistance)
 	{
@@ -122,47 +82,6 @@ void UninitMap()
 }
 
 
-void Curve(EventData& event)
-{
-	// get degree to turn this frame
-	g_curRot += event.speed;
-
-	float rotBy = g_curRot > fabsf(event.value) ? 
-		g_curRot - fabsf(event.value) : event.speed;
-
-	// rotate map
-	for (int i = 0; i < g_map.size(); ++i)
-	{
-		g_map[i]->transform.rotation.y += event.value < 0 ? -rotBy : rotBy;
-	}
-
-	// event finished
-	if (g_curRot >= fabsf(event.value))
-	{
-		event.finished = true;
-		g_curRot = 0;
-	}
-}
-
-void Slope(EventData& event)
-{
-	// loop for every map
-	for (int i = 0; i < g_map.size(); ++i)
-	{
-		// move by curHeight
-		if (g_curHeight < fabsf(event.value))
-		{
-			g_map[i]->transform.position.y += event.value < 0 ? -event.speed : event.speed;
-		}
-		else
-		{
-			event.finished = true;
-			g_curHeight = 0;
-		}
-	}
-
-	g_curHeight += event.speed;
-}
 
 void LoadMapFromFile(char* path)
 {

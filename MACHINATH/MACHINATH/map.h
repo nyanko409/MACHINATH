@@ -1,7 +1,7 @@
 #pragma once
 
+#include <vector>
 #include "mesh.h"
-
 
 // exit direction of the map
 enum class Direction
@@ -11,7 +11,7 @@ enum class Direction
 
 enum class MapEvent
 {
-	CURVE, SLOPE
+	NONE, CURVE, SLOPE
 };
 
 struct EventData
@@ -45,20 +45,6 @@ public:
 	{
 		// disable draw
 		enableDraw = false;
-	}
-
-	// return forward vector
-	D3DXVECTOR3 GetForward()
-	{
-		// create y rotation matrix
-		D3DXMATRIX rotY;
-		D3DXMatrixRotationY(&rotY, D3DXToRadian(-transform.rotation.y));
-
-		// apply it to forward vector and return
-		D3DXVECTOR3 f = D3DXVECTOR3(0, 0, 1);
-		D3DXVECTOR3 temp;
-		D3DXVec3TransformCoord(&temp, &f, &rotY);
-		return temp;
 	}
 
 	~Map() {}
