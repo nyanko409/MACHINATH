@@ -54,7 +54,7 @@ void InitMap()
 void UpdateMap()
 {
 	// map pooling
-	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->transform.position, true) > g_poolDistance)
+	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->GetCombinedPosition(), true) > g_poolDistance)
 	{
 		// display next map and pickups
 		if (g_map.size() > g_drawIndex)

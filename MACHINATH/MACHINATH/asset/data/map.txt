@@ -1,6 +1,5 @@
 # 0 == MAP_STRAIGHT
 # 1 == MAP_CURVELEFT
-0
 1
 0
 1

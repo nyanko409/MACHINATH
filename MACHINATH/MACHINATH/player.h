@@ -19,20 +19,6 @@ public:
 
 	// draw
 	void Draw() override;
-
-	// return forward vector
-	D3DXVECTOR3 GetForward(int yOffset = 0)
-	{
-		// create y rotation matrix
-		D3DXMATRIX rotY;
-		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.localRotation.y + yOffset));
-
-		// apply it to forward vector and return
-		D3DXVECTOR3 f = D3DXVECTOR3(0, 0, 1);
-		D3DXVECTOR3 temp;
-		D3DXVec3TransformCoord(&temp, &f, &rotY);
-		return temp;
-	}
 };
 
 

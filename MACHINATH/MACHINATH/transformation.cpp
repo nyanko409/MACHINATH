@@ -23,16 +23,18 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot, 
 	D3DXMatrixRotationX(&xRot, D3DXToRadian(rot.x));
 	D3DXMatrixRotationY(&yRot, D3DXToRadian(rot.y));
 	D3DXMatrixRotationZ(&zRot, D3DXToRadian(rot.z));
+	//D3DXMatrixRotationYawPitchRoll(&matRotation, D3DXToRadian(rot.y), D3DXToRadian(rot.x), D3DXToRadian(rot.z));
 
-	matRotation = xRot * yRot * zRot;
+	matRotation = yRot * zRot * xRot;
 
 	// set local rotation matrix
 	D3DXMATRIX fxRot, fyRot, fzRot;
 	D3DXMatrixRotationX(&fxRot, D3DXToRadian(localRot.x));
 	D3DXMatrixRotationY(&fyRot, D3DXToRadian(localRot.y));
 	D3DXMatrixRotationZ(&fzRot, D3DXToRadian(localRot.z));
+	//D3DXMatrixRotationYawPitchRoll(&matLocalRotation, D3DXToRadian(localRot.y), D3DXToRadian(localRot.x), D3DXToRadian(localRot.z));
 
-	matLocalRotation = fxRot * fyRot * fzRot;
+	matLocalRotation = fyRot * fzRot * fxRot;
 
 	// rotate local based on pivot
 	D3DXMatrixTranslation(&matPivot, pivot.x, pivot.y, pivot.z);
