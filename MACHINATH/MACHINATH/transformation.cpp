@@ -4,24 +4,25 @@
 #include "common.h"
 #include "shader.h"
 
-D3DXMATRIX matTranslate, matRotation, matLocalRotation, matScale;
+D3DXMATRIX matTranslate, matRotation, matLocalRotation, matScale, matPivot;
 D3DXMATRIX matWorld;
 
-D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR3 scale, D3DXVECTOR3 localRot)
+D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot, D3DXVECTOR3 localRot, D3DXVECTOR3 pivot)
 {
 	// get device
 	auto device = MyDirect3D_GetDevice();
+	pos -= pivot;
 
 	// set translation and scaling matrix
-	D3DXMatrixTranslation(&matTranslate, translate.x, translate.y, translate.z);
+	D3DXMatrixTranslation(&matTranslate, pos.x, pos.y, pos.z);
 	D3DXMatrixScaling(&matScale, scale.x, scale.y, scale.z);
 	
 	// set rotation matrix
 	D3DXMATRIX xRot, yRot, zRot;
 
-	D3DXMatrixRotationX(&xRot, D3DXToRadian(rotate.x));
-	D3DXMatrixRotationY(&yRot, D3DXToRadian(rotate.y));
-	D3DXMatrixRotationZ(&zRot, D3DXToRadian(rotate.z));
+	D3DXMatrixRotationX(&xRot, D3DXToRadian(rot.x));
+	D3DXMatrixRotationY(&yRot, D3DXToRadian(rot.y));
+	D3DXMatrixRotationZ(&zRot, D3DXToRadian(rot.z));
 
 	matRotation = xRot * yRot * zRot;
 
@@ -33,8 +34,12 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 translate, D3DXVECTOR3 rotate, D3DXVECTOR
 
 	matLocalRotation = fxRot * fyRot * fzRot;
 
+	// rotate local based on pivot
+	D3DXMatrixTranslation(&matPivot, pivot.x, pivot.y, pivot.z);
+	matPivot *= matLocalRotation;
+
 	// calculate world matrix
-	matWorld = (matScale * matLocalRotation * matTranslate * matRotation);
+	matWorld = (matScale * matPivot * matTranslate * matRotation);
 
 	// return world matrix
 	return matWorld;

@@ -34,6 +34,7 @@ private:
 public:
 	LPD3DXEFFECT pShader;			// pointer to the shader
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
+	D3DXVECTOR3 pivot;				// pivot point for rotation, default is 0
 	GameObject* parent;				// the parent this gameobject is attached to
 	bool enableDraw;				// if true, draw this object
 
@@ -45,6 +46,7 @@ public:
 		shaderType = type;
 		pShader = AssignShader(this, shaderType);
 
+		pivot = D3DXVECTOR3(0, 0, 0);
 		enableDraw = true;
 	}
 

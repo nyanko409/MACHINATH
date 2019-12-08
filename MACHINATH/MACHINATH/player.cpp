@@ -55,6 +55,7 @@ void InitPlayer()
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_player = new Player(trans, 0.3F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
+	g_player->pivot.y += 3;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.004F);
 
@@ -189,40 +190,50 @@ Player* GetPlayer()
 
 void MoveSideways()
 {
-	// move player and rotate in z axis
+	// move player and rotate parent in z axis
 	if (Keyboard_IsPress(DIK_F))
 	{
-		g_player->transform.localRotation.z += g_zRotSpeed;
-		g_player->transform.position.x -= g_player->moveSpeed;
+		D3DXMATRIX mRot;
+		D3DXVECTOR3 left(0,0,1);
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.localRotation.y));
+		D3DXVec3TransformCoord(&left, &left, &mRot);
+
+		g_player->transform.position += left * g_player->moveSpeed;
+		g_parent->transform.localRotation -= g_player->GetForward(90) * g_zRotSpeed;
 	}
 	else if (Keyboard_IsPress(DIK_G))
 	{
-		g_player->transform.localRotation.z += -g_zRotSpeed;
-		g_player->transform.position.x += g_player->moveSpeed;
+		D3DXMATRIX mRot;
+		D3DXVECTOR3 left(0, 0, 1);
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.localRotation.y + 180));
+		D3DXVec3TransformCoord(&left, &left, &mRot);
+
+		g_player->transform.position += left * g_player->moveSpeed;
+		g_parent->transform.localRotation += g_player->GetForward(90) * g_zRotSpeed;
 	}
 
 	// else rotate back to original position
 	else
 	{
-		if (g_player->transform.localRotation.z > 0)
-		{
-			g_player->transform.localRotation.z -= g_zRotSpeed;
-			if (g_player->transform.localRotation.z < 0)
-				g_player->transform.localRotation.z = 0;
-		}
-		else
-		{
-			g_player->transform.localRotation.z += g_zRotSpeed;
-			if (g_player->transform.localRotation.z > 0)
-				g_player->transform.localRotation.z = 0;
-		}
+		//if (g_parent->transform.localRotation.z > 0)
+		//{
+		//	g_parent->transform.localRotation.z -= g_zRotSpeed;
+		//	if (g_parent->transform.localRotation.z < 0)
+		//		g_parent->transform.localRotation.z = 0;
+		//}
+		//else
+		//{
+		//	g_parent->transform.localRotation.z += g_zRotSpeed;
+		//	if (g_parent->transform.localRotation.z > 0)
+		//		g_parent->transform.localRotation.z = 0;
+		//}
 	}
 
 	// clip rotation
-	if (g_player->transform.localRotation.z > g_zRotMax)
-		g_player->transform.localRotation.z = g_zRotMax;
-	if (g_player->transform.localRotation.z < -g_zRotMax)
-		g_player->transform.localRotation.z = -g_zRotMax;
+	//if (g_parent->transform.localRotation.z > g_zRotMax)
+	//	g_parent->transform.localRotation.z = g_zRotMax;
+	//if (g_parent->transform.localRotation.z < -g_zRotMax)
+	//	g_parent->transform.localRotation.z = -g_zRotMax;
 }
 
 void Jump()
