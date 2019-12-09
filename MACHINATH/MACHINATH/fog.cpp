@@ -21,7 +21,7 @@ static bool jumpFrag;
 static int jumpcnt;
 
 void RotateSideways();
-void Jump();
+void JumpFog();
 void FogCamera();
 
 
@@ -38,36 +38,36 @@ void InitFog()
 	device = MyDirect3D_GetDevice();
 
 	// create fog
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
-	fog = new Fog(trans, 0.3F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
+	//Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	//fog = new Fog(trans, 0.3F, MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 
 	// create skateboard and make fog the parent
-	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
-	skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, fog);
+	//trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	// = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, fog);
 
 	// init fog rotation speed
 	rotSpeed = 3.0F;
 	rotMax = 10.0F;
 
 	//reset jumpfrag and jumpcnt
-	jumpFrag = false;
-	jumpcnt = 0;
+	//jumpFrag = false;
+	//jumpcnt = 0;
 }
 
 void UninitFog()
 {
 	// free memory
-	delete skateboard;
-	delete fog;
+	///delete skateboard;
+	//delete fog;
 }
 
 void UpdateFog()
 {
 	// rotate locally while moving sideways
-	RotateSideways();
+	//RotateSideways();
 
 	// handle jumping
-	Jump();
+	//Jump();
 
 	// camera movement
 	//FogCamera();
@@ -114,7 +114,7 @@ void RotateSideways()
 		fog->transform.localRotation.z = -rotMax;
 }
 
-void Jump()
+void JumpFog()
 {
 	if (!jumpFrag && Keyboard_IsPress(DIK_J))
 	{
