@@ -75,9 +75,6 @@ void UpdatePlayer()
 
 
 
-
-
-
 Player* GetPlayer()
 {
 	return player;
@@ -140,7 +137,7 @@ void Jump()
 		{
 			jumpFrag = false;
 			jumpcnt = 0;
-			player->transform.localRotation.y = 90.0F;
+			player->transform.localRotation.y = -90.0F;		//最終着地時点の角度
 			//player->transform.localRotation.z = 0.0F;
 			player->transform.localRotation.x = 0.0F;
 		}

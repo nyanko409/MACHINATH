@@ -17,6 +17,8 @@ struct Effect_Data
 static std::vector<std::pair<Effect_Data, std::vector<GameObject*>>> effect
 {
 	std::pair<Effect_Data,std::vector<GameObject*>>(Effect_Data{"asset/shader/custom/vertex.fx"}, std::vector<GameObject*>()),
+	
+	std::pair<Effect_Data,std::vector<GameObject*>>(Effect_Data{"asset/shader/custom/fog.fx"}, std::vector<GameObject*>()),
 
 	std::pair<Effect_Data,std::vector<GameObject*>>(Effect_Data{""}, std::vector<GameObject*>())
 };
