@@ -76,7 +76,7 @@ void CameraInput()
 	POINT diffPoint = current - last;
 	cam->Rotate(diffPoint.x, diffPoint.y);
 
-	// camera pos
+	// camera movement
 	if (Keyboard_IsPress(DIK_W))
 	{
 		// move cam forward
@@ -113,21 +113,17 @@ void CameraInput()
 		cam->position.y += -cam->moveSpeed;
 		cam->lookDirection.y += -cam->moveSpeed;
 	}
-	if (Keyboard_IsPress(DIK_M))
+
+	// fov
+	if (Keyboard_IsPress(DIK_M) && cam->fov < 3)
 	{
 		// fov increase
-		if (cam->fov < 3)
-		{
-			cam->fov += 0.01f;
-		}
+		cam->fov += 0.01f;
 	}
-	if (Keyboard_IsPress(DIK_N))
+	if (Keyboard_IsPress(DIK_N) && cam->fov > 1)
 	{
 		// fov decrease
-		if (cam->fov > 1)
-		{
-			cam->fov -= 0.01f;
-		}
+		cam->fov -= 0.01f;
 	}
 }
 

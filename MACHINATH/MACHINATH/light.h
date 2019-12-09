@@ -5,6 +5,9 @@
 // add a new directional light to the scene
 void AddDirectionalLight(int index, D3DXVECTOR3 direction, D3DXCOLOR diffuse);
 
+// add a new spot light to the scene
+void AddSpotLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffuse);
+
 // add a new point light to the scene
 void AddPointLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffuse);
 

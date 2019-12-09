@@ -93,7 +93,7 @@
     <ClCompile Include="customMath.cpp">
       <Filter>ソース ファイル\Library</Filter>
     </ClCompile>
-    <ClCompile Include="fog.cpp">
+    <ClCompile Include="billboard.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,7 +173,7 @@
     <ClInclude Include="customMath.h">
       <Filter>ヘッダー ファイル\Library</Filter>
     </ClInclude>
-    <ClInclude Include="fog.h">
+    <ClInclude Include="billboard.h">
       <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
   </ItemGroup>

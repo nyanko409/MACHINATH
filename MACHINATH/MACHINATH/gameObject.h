@@ -9,7 +9,7 @@
 #include "shader.h"
 
 
-// simple vector 2 template struct
+// simple vector 3 template struct
 template<typename T>
 struct v3t
 {
@@ -34,6 +34,7 @@ private:
 public:
 	LPD3DXEFFECT pShader;			// pointer to the shader
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
+	D3DXVECTOR3 pivot;				// pivot point for rotation, default is 0
 	GameObject* parent;				// the parent this gameobject is attached to
 	bool enableDraw;				// if true, draw this object
 
@@ -45,6 +46,7 @@ public:
 		shaderType = type;
 		pShader = AssignShader(this, shaderType);
 
+		pivot = D3DXVECTOR3(0, 0, 0);
 		enableDraw = true;
 	}
 
@@ -57,6 +59,20 @@ public:
 
 	// virtual draw
 	virtual void Draw() {}
+
+	// return forward vector
+	D3DXVECTOR3 GetForward(int yOffset = 0)
+	{
+		// create y rotation matrix
+		D3DXMATRIX rotY;
+		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.localRotation.y + yOffset));
+
+		// apply it to forward vector and return
+		D3DXVECTOR3 f = D3DXVECTOR3(0, 0, 1);
+		D3DXVECTOR3 temp;
+		D3DXVec3TransformCoord(&temp, &f, &rotY);
+		return temp;
+	}
 
 	// returns the combined position of this gameobject
 	D3DXVECTOR3 GetCombinedPosition()
@@ -155,9 +171,19 @@ public:
 	// get current top left position based on object position
 	v3t_float GetTopLeft() const
 	{
-		return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
-						(size.y / 2) + obj_transform->GetCombinedPosition().y,
-						(-size.z / 2) + obj_transform->GetCombinedPosition().z);
+		D3DXMATRIX mRot;
+		D3DXMatrixRotationY(&mRot, obj_transform->GetCombinedRotation().y);
+
+		D3DXVECTOR3 finalPos = obj_transform->GetCombinedPosition();
+		D3DXVec3TransformCoord(&finalPos, &finalPos, &mRot);
+
+		return v3t_float((-size.x / 2) + finalPos.x,
+						(size.y / 2) + finalPos.y,
+						(-size.z / 2) + finalPos.z);
+
+		//return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
+		//				(size.y / 2) + obj_transform->GetCombinedPosition().y,
+		//				(-size.z / 2) + obj_transform->GetCombinedPosition().z);
 	}
 
 
