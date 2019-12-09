@@ -93,6 +93,9 @@
     <ClCompile Include="customMath.cpp">
       <Filter>ソース ファイル\Library</Filter>
     </ClCompile>
+    <ClCompile Include="billboard.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="customMath.h">
       <Filter>ヘッダー ファイル\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="billboard.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

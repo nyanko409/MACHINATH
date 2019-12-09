@@ -35,6 +35,7 @@
 #include "qte.h"
 #include "score.h"
 #include "map.h"
+#include "billboard.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -219,6 +220,7 @@ bool Initialize(void)
 	InitSprite();
 	InitLight();
 
+	InitBillboard();
 	InitQTE();
 	InitScore();
 	InitMap();
@@ -241,6 +243,7 @@ void Update(void)
 	UpdatePlayer();
 	UpdatePickup();
 	UpdateQTE();
+	UpdateBillboard();
 
 	UpdateCamera();
 	//std::thread t_input(Keyboard_Update);
@@ -262,6 +265,7 @@ void Draw(void)
 
 	DrawObjects();
 	DrawTest();
+	DrawBillboard();
 	DrawEffect();
 
 	// draw 2d sprites
@@ -283,6 +287,7 @@ void Draw(void)
 //終了処理
 void Finalize(void)
 {
+	UninitBillboard();
 	UninitQTE();
 	UninitPlayer();
 	UninitMap();
@@ -313,6 +318,10 @@ void InitRenderState()
 	device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
+	device->SetRenderState(D3DRS_ALPHATESTENABLE, true);
+	device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
+	device->SetRenderState(D3DRS_ALPHAREF, 0x80);
+
 	// set source of color and alpha
 	device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 	device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
@@ -332,7 +341,8 @@ void InitRenderState()
 // init lighting
 void InitLight()
 {
-	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 1.0F), D3DXCOLOR(.5F, .5F, .5F, 1.0F));
+	//AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 1.0F), D3DXCOLOR(0.1F, 0.1F, 0.1F, 1.0F));
+	AddPointLight(1, D3DXVECTOR3(0, 5, 0), 100, D3DXCOLOR(0.0F, 1.0F, 1.0F, 1.0F));
 }
 
 
@@ -346,33 +356,15 @@ void InitLight()
 void InitTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
+	//SetMaterial();
 }
 
 void DrawTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
+	//MoveLight(1, 0, 0, GetPlayer()->moveSpeed, false);
 
-	//D3DXMATRIX matRot, matTranslate;
-	//pDevice->GetTransform(D3DTS_VIEW, &matRot);
-	//matRot._14 = matRot._24 = matRot._34 = 0;
-	//matRot._41 = matRot._42 = matRot._43 = 0;
-	//
-	//D3DXMatrixTranspose(&matRot, &matRot);
-	//D3DXMatrixTranslation(&matTranslate, 0, 20, 0);
-	//
-	//CUSTOM_VERTEX vert[] = 
-	//{
-	//	{5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 1.0F)},
-	//	{5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 0.0F)},
-	//	{-5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 0.0F)},
-	//	{-5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 1.0F)},
-	//};
-	//
-	//pDevice->SetTransform(D3DTS_WORLD, &(matRot * matTranslate));
-	//pDevice->SetFVF(CUSTOM_FVF);
-	//pDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vert, sizeof(CUSTOM_VERTEX));
-
-	//// draw text
-	//char f[] = "iuhih";
-	//DrawTextTo(RECT{200, 100, 100, 50}, f, sizeof(f) / sizeof(char));
+	// draw text
+	char f[] = "fuck";
+	DrawTextTo(RECT{300, 100, 100, 50}, f, sizeof(f) / sizeof(char));
 }

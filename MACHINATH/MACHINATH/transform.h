@@ -1,7 +1,6 @@
 #pragma once
 
 #include <d3dx9.h>
-#include "common.h"
 
 class Transform
 {

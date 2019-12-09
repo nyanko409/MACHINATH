@@ -19,7 +19,7 @@ void AddDirectionalLight(int index, D3DXVECTOR3 direction, D3DXCOLOR diffuse)
 	device->LightEnable(index, true);
 }
 
-void AddPointLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffuse)
+void AddSpotLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffuse)
 {
 	// get device and init light
 	auto device = MyDirect3D_GetDevice();
@@ -31,6 +31,28 @@ void AddPointLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffu
 	light.Position = position;
 	light.Diffuse = diffuse;
 	light.Ambient = D3DXCOLOR(0.5F, 0.5F, 0.5F, 1.0F);
+	light.Range = range;
+	light.Attenuation0 = 0.0F;
+	light.Attenuation1 = 0.125F;
+	light.Attenuation2 = 0.0F;
+
+	device->SetLight(index, &light);
+	device->LightEnable(index, true);
+}
+
+void AddPointLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffuse)
+{
+	// get device and init light
+	auto device = MyDirect3D_GetDevice();
+
+	D3DLIGHT9 light;
+	ZeroMemory(&light, sizeof(D3DLIGHT9));
+
+	light.Type = D3DLIGHT_POINT;
+	light.Position = position;
+	light.Diffuse = diffuse;
+	//light.Ambient = D3DXCOLOR(0.5F, 0.5F, 0.5F, 1.0F);
+	light.Ambient = D3DXCOLOR(1.0F, 1.0F, 1.0F, 1.0F);
 	light.Range = range;
 	light.Attenuation0 = 0.0F;
 	light.Attenuation1 = 0.125F;
