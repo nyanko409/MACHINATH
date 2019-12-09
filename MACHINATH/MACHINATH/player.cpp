@@ -98,7 +98,7 @@ void UpdatePlayer()
 	Jump();
 
 	// camera movement
-	//PlayerCamera();
+	PlayerCamera();
 }
 
 
@@ -286,5 +286,5 @@ void PlayerCamera()
 	//	if (offsetY < 10) offsetY = 10;
 	//}
 
-	SetCameraPos(D3DXVECTOR3(0, g_player->transform.position.y, g_player->transform.position.z), D3DXVECTOR3(0, offsetY, -10), 0, 0);
+	//jSetCameraPos(D3DXVECTOR3(0, g_player->transform.position.y, g_player->transform.position.z), D3DXVECTOR3(0, offsetY, -10), 0, 0);
 }
