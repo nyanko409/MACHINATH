@@ -53,8 +53,8 @@ void InitPlayer()
 	g_parent = new GameObject(Transform());
 
 	// create player
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, -90.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
-	g_player = new Player(trans, 0.3F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	g_player = new Player(trans, 0.5F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.004F);
@@ -74,7 +74,10 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {
-	//g_player->transform.localRotation.x++;
+	//g_player->transform.localRotation.z++;
+	g_player->transform.localRotation.y++;
+	//auto a = g_player->GetUp();
+
 	if (GetScene() != SCENE_GAMESCREEN) return;
 
 	// clamp rotation between 0-360
@@ -104,7 +107,7 @@ void UpdatePlayer()
 
 void MovePlayer()
 {
-	g_parent->transform.position += g_parent->GetForward() * g_player->moveSpeed;
+	//g_player->transform.position += g_player->GetForward() * g_player->moveSpeed;
 }
 
 void HandleMapEvent()
@@ -176,12 +179,12 @@ void Curve(EventData& event)
 	}
 
 	// add rotation to player
-	g_parent->transform.localRotation.y += frameRot;
+	g_player->transform.localRotation.y += frameRot;
 
 	// adjust x and z rotation ratio
-	auto forw = g_parent->GetForward();
-	g_parent->transform.localRotation.x *= fabsf(forw.x);
-	g_parent->transform.localRotation.z *= fabsf(forw.z);
+	//auto forw = g_parent->GetForward();
+	//g_parent->transform.localRotation.x *= fabsf(forw.x);
+	//g_parent->transform.localRotation.z *= fabsf(forw.z);
 }
 
 void Slope(EventData& event)
@@ -201,21 +204,21 @@ void MoveSideways()
 	{
 		D3DXMATRIX mRot;
 		D3DXVECTOR3 left(0,0,1);
-		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.localRotation.y - 90));
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.localRotation.y + 180));
 		D3DXVec3TransformCoord(&left, &left, &mRot);
 
-		g_parent->transform.position += left * g_player->moveSpeed;
-		g_parent->transform.localRotation += g_parent->GetForward() * g_zRotSpeed;
+		g_player->transform.position += -g_player->right * g_player->moveSpeed;
+		g_player->transform.localRotation.z -= g_zRotSpeed;
 	}
 	else if (Keyboard_IsPress(DIK_G))
 	{
 		D3DXMATRIX mRot;
 		D3DXVECTOR3 right(0, 0, 1);
-		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.localRotation.y + 90));
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.localRotation.y));
 		D3DXVec3TransformCoord(&right, &right, &mRot);
 
-		g_parent->transform.position += right * g_player->moveSpeed;
-		g_parent->transform.localRotation -= g_parent->GetForward() * g_zRotSpeed;
+		g_player->transform.position += g_player->right * g_player->moveSpeed;
+		g_player->transform.localRotation.z += g_zRotSpeed;
 	}
 
 	// else rotate back to original position

@@ -31,23 +31,35 @@ class GameObject
 private:
 	SHADER_TYPE shaderType;
 
+protected:
+	D3DXMATRIX m_matOrientation;	// orienration matrix for local axis rotation
+	D3DXVECTOR3 m_prevRotation;		// previous frame rotation of this object
+
 public:
 	LPD3DXEFFECT pShader;			// pointer to the shader
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
+	D3DXVECTOR3 forward, up, right;
 	D3DXVECTOR3 pivot;				// pivot point for rotation, default is 0
 	GameObject* parent;				// the parent this gameobject is attached to
 	bool enableDraw;				// if true, draw this object
+	bool rotLocalAxis;				// if true, rotates around the local axis of this object
 
 	// constructor
 	GameObject() {}
-	GameObject(Transform transform, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) : transform(transform), parent(parent) 
+	GameObject(Transform transform, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) : 
+		transform(transform), parent(parent)
 	{
 		// assign the shader at creation
 		shaderType = type;
 		pShader = AssignShader(this, shaderType);
 
+		D3DXMatrixIdentity(&m_matOrientation);
 		pivot = D3DXVECTOR3(0, 0, 0);
+		forward = D3DXVECTOR3(0, 0, 1);
+		up = D3DXVECTOR3(0, 1, 0);
+		right = D3DXVECTOR3(1, 0, 0);
 		enableDraw = true;
+		rotLocalAxis = true;
 	}
 
 	// destructor
@@ -60,18 +72,24 @@ public:
 	// virtual draw
 	virtual void Draw() {}
 
-	// return forward vector
+	// returns the local forward vector
 	D3DXVECTOR3 GetForward(int yOffset = 0)
 	{
 		// create y rotation matrix
-		D3DXMATRIX rotY;
+		D3DXMATRIX rotX, rotY, rotZ;
+		//D3DXMatrixRotationX(&rotX, D3DXToRadian(transform.localRotation.x + yOffset));
 		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.localRotation.y + yOffset));
+		//D3DXMatrixRotationZ(&rotZ, D3DXToRadian(transform.localRotation.z + yOffset));
+
+		// rotate y, z then x
+		//rotY *= rotZ;
+		//rotY *= rotX;
 
 		// apply it to forward vector and return
 		D3DXVECTOR3 f = D3DXVECTOR3(0, 0, 1);
 		D3DXVECTOR3 temp;
 		D3DXVec3TransformCoord(&temp, &f, &rotY);
-		return temp;
+		return forward;
 	}
 
 	// returns the combined position of this gameobject
@@ -96,6 +114,21 @@ public:
 			return transform.rotation + parent->GetCombinedRotation();
 
 		return transform.rotation;
+	}
+
+	// returns the combined orientation matrix
+	D3DXMATRIX GetCombinedOrientationMatrix()
+	{
+		if (parent != nullptr)
+			return m_matOrientation * parent->GetCombinedOrientationMatrix();
+
+		return m_matOrientation;
+	}
+
+	// returns the combined orientation matrix
+	D3DXMATRIX GetOrientationMatrix()
+	{
+		return m_matOrientation;
 	}
 
 	// returns the rotation relative to parent of this gameobject

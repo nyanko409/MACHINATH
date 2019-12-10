@@ -8,10 +8,9 @@ class GameObject;
 enum SHADER_TYPE
 {
 	SHADER_SIMPLE,
-
 	SHADER_FOG,
 
-	SHADER_DEFAULT,
+	SHADER_DEFAULT
 };
 
 // assigns the given object to shader
