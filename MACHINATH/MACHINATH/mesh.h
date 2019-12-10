@@ -32,7 +32,8 @@ public:
 		{
 			D3DXVECTOR3 diff = m_prevRotation - transform.localRotation;
 			m_prevRotation = transform.localRotation;
-			matWorld = TransformObjectLocalAxis(GetCombinedPosition(), GetCombinedScale(), diff, m_matOrientation, GetCombinedOrientationMatrix(), forward, up, right, pivot);
+			matWorld = TransformObjectLocalAxis(GetCombinedPosition(), GetCombinedScale(), diff, 
+				m_matOrientation, GetCombinedOrientationMatrix(), GetCombinedRotation(), forward, up, right, pivot);
 		}
 		else
 		{
@@ -90,7 +91,7 @@ public:
 			D3DXVECTOR3 diff = m_prevRotation - transform.localRotation;
 			m_prevRotation = transform.localRotation;
 			matWorld = TransformObjectLocalAxis(GetCombinedPosition(), GetCombinedScale(), diff, 
-				m_matOrientation, GetCombinedOrientationMatrix(), forward, up, right, pivot);
+				m_matOrientation, GetCombinedOrientationMatrix(), GetCombinedRotation(), forward, up, right, pivot);
 		}
 		else
 		{

@@ -14,9 +14,9 @@
 static LPDIRECT3DDEVICE9 device;
 static std::vector<Pickup*> pickup;
 static std::vector<std::pair<int, D3DXVECTOR3>> spawnPos;
-
 static float g_zRotSpeed = 0;
 static float g_poolDistance = 0;
+
 
 
 

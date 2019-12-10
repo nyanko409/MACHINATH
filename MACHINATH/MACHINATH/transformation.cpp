@@ -49,7 +49,7 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot, 
 
 
 D3DXMATRIX TransformObjectLocalAxis(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot,
-	D3DXMATRIX& matOrientation, D3DXMATRIX matCombinedOrientation,
+	D3DXMATRIX& matOrientation, D3DXMATRIX matCombinedOrientation, D3DXVECTOR3 worldRot,
 	D3DXVECTOR3& forward, D3DXVECTOR3& up, D3DXVECTOR3& right, D3DXVECTOR3 pivot)
 {
 	// get device
@@ -60,12 +60,15 @@ D3DXMATRIX TransformObjectLocalAxis(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECT
 	D3DXMatrixTranslation(&matTranslate, pos.x, pos.y, pos.z);
 	D3DXMatrixScaling(&matScale, scale.x, scale.y, scale.z);
 
-	// set rotation matrix
+	// world space rotation
 	D3DXMATRIX xRot, yRot, zRot;
+	D3DXMatrixRotationX(&xRot, D3DXToRadian(worldRot.x));
+	D3DXMatrixRotationY(&yRot, D3DXToRadian(worldRot.y));
+	D3DXMatrixRotationZ(&zRot, D3DXToRadian(worldRot.z));
 
-	//D3DXMatrixRotationX(&xRot, D3DXToRadian(rot.x));
-	//D3DXMatrixRotationY(&yRot, D3DXToRadian(rot.y));
-	//D3DXMatrixRotationZ(&zRot, D3DXToRadian(rot.z));
+	matRotation = xRot * yRot * zRot;
+
+	// set local axis rotation matrix
 	D3DXMatrixRotationAxis(&yRot, &up, D3DXToRadian(rot.y));
 	D3DXVec3TransformCoord(&forward, &forward, &yRot); D3DXVec3TransformCoord(&right, &right, &yRot);
 
@@ -75,16 +78,16 @@ D3DXMATRIX TransformObjectLocalAxis(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECT
 	D3DXMatrixRotationAxis(&zRot, &forward, D3DXToRadian(rot.z));
 	D3DXVec3TransformCoord(&right, &right, &zRot); D3DXVec3TransformCoord(&up, &up, &zRot);
 
-	matRotation = xRot * yRot * zRot;
+	matLocalRotation = xRot * yRot * zRot;
 
 	// update the orientation matrix
-	matOrientation = matOrientation * matRotation;
-	matCombinedOrientation = matCombinedOrientation * matRotation;
+	matOrientation = matOrientation * matLocalRotation;
+	matCombinedOrientation = matCombinedOrientation * matLocalRotation;
 
 	// rotate locally based on pivot
 	D3DXMATRIX matFinalRot;
 	D3DXMatrixTranslation(&matPivot, pivot.x, pivot.y, pivot.z);
-	matFinalRot = matPivot * matCombinedOrientation;
+	matFinalRot = matPivot * matCombinedOrientation * matRotation;
 
 	// calculate world matrix
 	matWorld = (matScale * matFinalRot * matTranslate);

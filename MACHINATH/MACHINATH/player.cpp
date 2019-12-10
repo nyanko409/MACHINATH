@@ -8,17 +8,15 @@
 #include "map.h"
 
 // globals
-#define JumpHeight	10.0F
-#define JumpSpeed	3.0F
-
-static GameObject* g_parent;
 static Player* g_player;
 static MeshObject* g_skateboard;
 static float g_zRotSpeed;
 static float g_zRotMax;
+static float g_jumpHeight;
+static float g_jumpSpeed;
 
 static float g_finalYPos;
-static bool g_jumping;
+static bool g_isJumping;
 static int g_jumpCnt;
 static float g_curRot, g_curSlope;
 
@@ -42,19 +40,18 @@ void InitPlayer()
 {	
 	// init
 	g_zRotSpeed = 3.0F;
-	g_zRotMax = 10.0F;
+	g_zRotMax = 20.0F;
+	g_jumpHeight = 10.0F;
+	g_jumpSpeed = 3.0F;
 
-	g_jumping = false;
+	g_isJumping = false;
 	g_jumpCnt = 0;
 	g_curRot = 0;
 	g_curSlope = 0;
 
-	// parent object for posing etc
-	g_parent = new GameObject(Transform());
-
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
-	g_player = new Player(trans, 0.5F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
+	g_player = new Player(trans, 0.2F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.004F);
@@ -69,24 +66,11 @@ void UninitPlayer()
 	// free memory
 	delete g_skateboard;
 	delete g_player;
-	delete g_parent;
 }
 
 void UpdatePlayer()
 {
-	//g_player->transform.localRotation.z++;
-	g_player->transform.localRotation.y++;
-	//auto a = g_player->GetUp();
-
 	if (GetScene() != SCENE_GAMESCREEN) return;
-
-	// clamp rotation between 0-360
-	if (g_player->transform.localRotation.x >= 360.0F)
-		g_player->transform.localRotation.x -= 360.0F;
-	if (g_player->transform.localRotation.y >= 360.0F)
-		g_player->transform.localRotation.y -= 360.0F;
-	if (g_player->transform.localRotation.z >= 360.0F)
-		g_player->transform.localRotation.z -= 360.0F;
 
 	// map events
 	HandleMapEvent();
@@ -107,7 +91,7 @@ void UpdatePlayer()
 
 void MovePlayer()
 {
-	//g_player->transform.position += g_player->GetForward() * g_player->moveSpeed;
+	g_player->transform.position += g_player->GetForward() * g_player->moveSpeed;
 }
 
 void HandleMapEvent()
@@ -126,10 +110,10 @@ void HandleMapEvent()
 		}
 	}
 	if (front == nullptr) return;
-
+	
 	// handle events
 	// check x or z distance based on local map rotation
-	float mapPos = (front->GetLocalRotation().y == 90 || front->GetLocalRotation().y == 270) ?
+	float mapPos = (front->GetCombinedRotation().y == 90 || front->GetCombinedRotation().y == 270) ?
 		front->GetCombinedPosition().x : front->GetCombinedPosition().z;
 
 	for (int i = 0; i < front->data.event.size(); ++i)
@@ -137,19 +121,19 @@ void HandleMapEvent()
 		// start event
 		if (!front->data.event[i].started)
 		{
-			if (front->GetLocalRotation().y == 90 &&
+			if (front->GetCombinedRotation().y == 90 &&
 				mapPos - front->data.event[i].distance <= g_player->GetCombinedPosition().x)
 				front->data.event[i].started = true;
 
-			else if (front->GetLocalRotation().y == 270 &&
+			else if (front->GetCombinedRotation().y == 270 &&
 				mapPos + front->data.event[i].distance >= g_player->GetCombinedPosition().x)
 				front->data.event[i].started = true;
 
-			else if (front->GetLocalRotation().y == 0 &&
+			else if (front->GetCombinedRotation().y == 0 &&
 				mapPos - front->data.event[i].distance <= g_player->GetCombinedPosition().z)
 				front->data.event[i].started = true;
 
-			else if (front->GetLocalRotation().y == 180 &&
+			else if (front->GetCombinedRotation().y == 180 &&
 				mapPos + front->data.event[i].distance >= g_player->GetCombinedPosition().z)
 				front->data.event[i].started = true;
 		}
@@ -179,12 +163,7 @@ void Curve(EventData& event)
 	}
 
 	// add rotation to player
-	g_player->transform.localRotation.y += frameRot;
-
-	// adjust x and z rotation ratio
-	//auto forw = g_parent->GetForward();
-	//g_parent->transform.localRotation.x *= fabsf(forw.x);
-	//g_parent->transform.localRotation.z *= fabsf(forw.z);
+	g_player->transform.rotation.y += frameRot;
 }
 
 void Slope(EventData& event)
@@ -199,78 +178,78 @@ Player* GetPlayer()
 
 void MoveSideways()
 {
-	// move player and rotate parent in z axis
+	// move player and rotate in z axis
 	if (Keyboard_IsPress(DIK_F))
 	{
 		D3DXMATRIX mRot;
 		D3DXVECTOR3 left(0,0,1);
-		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.localRotation.y + 180));
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.rotation.y - 90));
 		D3DXVec3TransformCoord(&left, &left, &mRot);
 
-		g_player->transform.position += -g_player->right * g_player->moveSpeed;
+		g_player->transform.position += left * g_player->moveSpeed;
+
 		g_player->transform.localRotation.z -= g_zRotSpeed;
+		if (g_player->transform.localRotation.z < -g_zRotMax)
+			g_player->transform.localRotation.z = -g_zRotMax;
 	}
 	else if (Keyboard_IsPress(DIK_G))
 	{
 		D3DXMATRIX mRot;
 		D3DXVECTOR3 right(0, 0, 1);
-		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.localRotation.y));
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.rotation.y + 90));
 		D3DXVec3TransformCoord(&right, &right, &mRot);
 
-		g_player->transform.position += g_player->right * g_player->moveSpeed;
+		g_player->transform.position += right * g_player->moveSpeed;
+
 		g_player->transform.localRotation.z += g_zRotSpeed;
+		if (g_player->transform.localRotation.z > g_zRotMax)
+			g_player->transform.localRotation.z = g_zRotMax;
 	}
 
 	// else rotate back to original position
 	else
 	{
-		//if (g_parent->transform.localRotation.z > 0)
-		//{
-		//	g_parent->transform.localRotation.z -= g_zRotSpeed;
-		//	if (g_parent->transform.localRotation.z < 0)
-		//		g_parent->transform.localRotation.z = 0;
-		//}
-		//else
-		//{
-		//	g_parent->transform.localRotation.z += g_zRotSpeed;
-		//	if (g_parent->transform.localRotation.z > 0)
-		//		g_parent->transform.localRotation.z = 0;
-		//}
+		if (g_player->transform.localRotation.z > 0)
+		{
+			g_player->transform.localRotation.z -= g_zRotSpeed;
+			if (g_player->transform.localRotation.z < 0)
+				g_player->transform.localRotation.z = 0;
+		}
+		else
+		{
+			g_player->transform.localRotation.z += g_zRotSpeed;
+			if (g_player->transform.localRotation.z > 0)
+				g_player->transform.localRotation.z = 0;
+		}
 	}
-
-	// clip rotation
-	//if (g_parent->transform.localRotation.z > g_zRotMax)
-	//	g_parent->transform.localRotation.z = g_zRotMax;
-	//if (g_parent->transform.localRotation.z < -g_zRotMax)
-	//	g_parent->transform.localRotation.z = -g_zRotMax;
 }
 
 void Jump()
 {
-	if (!g_jumping && Keyboard_IsPress(DIK_J))
+	if (!g_isJumping && Keyboard_IsPress(DIK_J))
 	{
-		g_jumping = true;
+		g_isJumping = true;
 		g_finalYPos = g_player->transform.position.y;
 	}
 
 	//jump
-	if (g_jumping)
+	if (g_isJumping)
 	{
-		g_player->transform.position.y = g_finalYPos + JumpHeight * sin(D3DXToRadian(g_jumpCnt));
-		g_jumpCnt += JumpSpeed;
-		float finalRot = 360.0F / (180.0F / JumpSpeed);
+		g_player->transform.position.y = g_finalYPos + g_jumpHeight * sin(D3DXToRadian(g_jumpCnt));
+		g_jumpCnt += g_jumpSpeed;
+		float finalRot = 360.0F / (180.0F / g_jumpSpeed);
 
-		g_player->transform.localRotation.y += finalRot;
-		g_player->transform.localRotation.z += finalRot;
-		g_player->transform.localRotation.x += finalRot;
+		//g_player->transform.localRotation.y += finalRot;
+		//g_player->transform.localRotation.z += finalRot;
+		//g_player->transform.localRotation.x += finalRot;
 
 		if (g_jumpCnt > 180)
 		{
-			g_jumping = false;
+			g_isJumping = false;
 			g_jumpCnt = 0;
-			g_player->transform.localRotation.y = -90.0F;
-			g_player->transform.localRotation.z = 0.0F;
-			g_player->transform.localRotation.x = 0.0F;
+			//g_player->transform.localRotation.y = 0.0F;
+			//g_player->transform.localRotation.z = 0.0F;
+			//g_player->transform.localRotation.x = 0.0F;
 		}
 	}
 }
@@ -289,5 +268,5 @@ void PlayerCamera()
 	//	if (offsetY < 10) offsetY = 10;
 	//}
 
-	//jSetCameraPos(D3DXVECTOR3(0, g_player->transform.position.y, g_player->transform.position.z), D3DXVECTOR3(0, offsetY, -10), 0, 0);
+	//SetCameraPos(D3DXVECTOR3(0, g_player->transform.position.y, g_player->transform.position.z), D3DXVECTOR3(0, offsetY, -10), 0, 0);
 }

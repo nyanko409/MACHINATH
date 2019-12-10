@@ -1,5 +1,6 @@
 #include "customMath.h"
 
+
 float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2, bool ignoreYAxis)
 {
 	D3DXVECTOR3 dist = t1 - t2;

@@ -90,7 +90,7 @@ void LoadMapFromFile(char* path)
 	int id = 0;
 	char c;
 
-	// first map is always straight road
+	// first map is always a straight road
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
 	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
 	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, SHADER_DEFAULT));
@@ -145,22 +145,22 @@ Transform GetStartTransform(const Map& prevMap)
 	if (prevMap.exit == Direction::NORTH)
 	{
 		trans.position.z += g_mapRadius;
-		trans.localRotation.y = 0;
+		trans.rotation.y = 0;
 	}
 	else if (prevMap.exit == Direction::EAST)
 	{
 		trans.position.x += g_mapRadius;
-		trans.localRotation.y = 90;
+		trans.rotation.y = 90;
 	}
 	else if (prevMap.exit == Direction::WEST)
 	{
 		trans.position.x -= g_mapRadius;
-		trans.localRotation.y = 270;
+		trans.rotation.y = 270;
 	}
 	else if (prevMap.exit == Direction::SOUTH)
 	{
 		trans.position.z -= g_mapRadius;
-		trans.localRotation.y = 180;
+		trans.rotation.y = 180;
 	}
 
 	return trans;

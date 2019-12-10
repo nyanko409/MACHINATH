@@ -72,24 +72,21 @@ public:
 	// virtual draw
 	virtual void Draw() {}
 
-	// returns the local forward vector
-	D3DXVECTOR3 GetForward(int yOffset = 0)
+	// returns the final forward vector of both local and world rotation
+	D3DXVECTOR3 GetForward()
 	{
 		// create y rotation matrix
 		D3DXMATRIX rotX, rotY, rotZ;
-		//D3DXMatrixRotationX(&rotX, D3DXToRadian(transform.localRotation.x + yOffset));
-		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.localRotation.y + yOffset));
-		//D3DXMatrixRotationZ(&rotZ, D3DXToRadian(transform.localRotation.z + yOffset));
+		D3DXMatrixRotationX(&rotX, D3DXToRadian(transform.rotation.x));
+		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.rotation.y));
+		D3DXMatrixRotationZ(&rotZ, D3DXToRadian(transform.rotation.z));
 
-		// rotate y, z then x
-		//rotY *= rotZ;
-		//rotY *= rotX;
+		D3DXVECTOR3 newForward = forward;
+		D3DXVec3TransformCoord(&newForward, &newForward, &rotX);
+		D3DXVec3TransformCoord(&newForward, &newForward, &rotY);
+		D3DXVec3TransformCoord(&newForward, &newForward, &rotZ);
 
-		// apply it to forward vector and return
-		D3DXVECTOR3 f = D3DXVECTOR3(0, 0, 1);
-		D3DXVECTOR3 temp;
-		D3DXVec3TransformCoord(&temp, &f, &rotY);
-		return forward;
+		return newForward;
 	}
 
 	// returns the combined position of this gameobject
@@ -204,19 +201,19 @@ public:
 	// get current top left position based on object position
 	v3t_float GetTopLeft() const
 	{
-		D3DXMATRIX mRot;
-		D3DXMatrixRotationY(&mRot, obj_transform->GetCombinedRotation().y);
+		//D3DXMATRIX mRot;
+		//D3DXMatrixRotationY(&mRot, obj_transform->GetCombinedRotation().y);
+		//
+		//D3DXVECTOR3 finalPos = obj_transform->GetCombinedPosition();
+		//D3DXVec3TransformCoord(&finalPos, &finalPos, &mRot);
+		//
+		//return v3t_float((-size.x / 2) + finalPos.x,
+		//				(size.y / 2) + finalPos.y,
+		//				(-size.z / 2) + finalPos.z);
 
-		D3DXVECTOR3 finalPos = obj_transform->GetCombinedPosition();
-		D3DXVec3TransformCoord(&finalPos, &finalPos, &mRot);
-
-		return v3t_float((-size.x / 2) + finalPos.x,
-						(size.y / 2) + finalPos.y,
-						(-size.z / 2) + finalPos.z);
-
-		//return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
-		//				(size.y / 2) + obj_transform->GetCombinedPosition().y,
-		//				(-size.z / 2) + obj_transform->GetCombinedPosition().z);
+		return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
+						(size.y / 2) + obj_transform->GetCombinedPosition().y,
+						(-size.z / 2) + obj_transform->GetCombinedPosition().z);
 	}
 
 
