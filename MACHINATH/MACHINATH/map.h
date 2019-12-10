@@ -45,7 +45,6 @@ public:
 	{
 		// disable draw
 		enableDraw = false;
-		//rotLocalAxis = false;
 	}
 
 	~Map() {}

@@ -3,24 +3,24 @@
 #include "font.h"
 #include "score.h"
 
+// score
+static int g_score;
 
-static int score;
 
-void AddScore(int sc)
+void AddScore(int value)
 {
-	score += sc;
+	g_score += value;
 }
-
 
 
 void InitScore()
 {
-	score = 0;
+	g_score = 0;
 }
 
 void DrawScore()
 {
 	// draw text
-	std::string str = std::to_string(score);
+	std::string str = std::to_string(g_score);
 	DrawTextTo(RECT{ 200, 100, 100, 50 }, str.c_str(), str.length());
 }

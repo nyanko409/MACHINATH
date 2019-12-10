@@ -4,12 +4,8 @@
 #include <string>
 #include <map>
 #include "mydirect3d.h"
-#include "gameObject.h"
 #include "common.h"
 
-
-class SkinMeshFile;
-struct MESH_DATA;
 
 // add mesh name to this enum
 enum MESH_NAME
@@ -26,22 +22,6 @@ enum ANIMATED_MESH_NAME
 	A_MESH_ROBOT
 };
 
-
-// call once to load every mesh into memory
-void LoadMesh();
-
-// get unanimted mesh
-MESH_DATA* GetMesh(MESH_NAME name);
-
-// get animated mesh
-SkinMeshFile* GetAnimatedMesh(ANIMATED_MESH_NAME name);
-
-
-
-
-
-
-
 // data struct for unanimated meshes
 struct MESH_DATA
 {
@@ -51,6 +31,22 @@ struct MESH_DATA
 	LPDIRECT3DTEXTURE9* texture;
 	DWORD numMaterial;
 };
+
+
+// call once to load every mesh into memory
+void LoadMesh();
+
+// get unanimted mesh
+MESH_DATA* GetMesh(MESH_NAME name);
+
+// get animated mesh
+class SkinMeshFile;
+SkinMeshFile* GetAnimatedMesh(ANIMATED_MESH_NAME name);
+
+
+
+
+
 
 
 

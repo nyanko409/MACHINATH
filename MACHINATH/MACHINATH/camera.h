@@ -1,7 +1,7 @@
 #pragma once
 
 #include <d3dx9.h>
-#include "gameObject.h"
+#include "common.h"
 
 // camera class
 class Camera

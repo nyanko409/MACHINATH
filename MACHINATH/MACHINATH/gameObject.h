@@ -4,7 +4,6 @@
 #include "transform.h"
 #include "transformation.h"
 #include "mydirect3d.h"
-#include "meshLoader.h"
 #include "material.h"
 #include "shader.h"
 
@@ -38,11 +37,10 @@ protected:
 public:
 	LPD3DXEFFECT pShader;			// pointer to the shader
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
-	D3DXVECTOR3 forward, up, right;
+	D3DXVECTOR3 forward, up, right;	// forward, up and right vector
 	D3DXVECTOR3 pivot;				// pivot point for rotation, default is 0
 	GameObject* parent;				// the parent this gameobject is attached to
 	bool enableDraw;				// if true, draw this object
-	bool rotLocalAxis;				// if true, rotates around the local axis of this object
 
 	// constructor
 	GameObject() {}
@@ -59,7 +57,6 @@ public:
 		up = D3DXVECTOR3(0, 1, 0);
 		right = D3DXVECTOR3(1, 0, 0);
 		enableDraw = true;
-		rotLocalAxis = true;
 	}
 
 	// destructor
