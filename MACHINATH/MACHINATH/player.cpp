@@ -50,7 +50,7 @@ void InitPlayer()
 	g_curSlope = 0;
 
 	// create player
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_player = new Player(trans, 0.2F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(0);
