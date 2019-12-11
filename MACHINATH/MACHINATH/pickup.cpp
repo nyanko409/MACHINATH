@@ -8,6 +8,7 @@
 #include "player.h"
 #include "effect.h"
 #include "map.h"
+#include "score.h"
 
 
 // globals
@@ -57,6 +58,7 @@ void UpdatePickup()
 			// collided, play effect and delete pickup
 			//PlayEffect(EFFECT_JUMP, pickup[i]->transform.position);
 			delete pickup[i];
+			AddScore(100);
 			pickup.erase(pickup.begin() + i);
 		}
 	}

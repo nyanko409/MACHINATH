@@ -25,7 +25,7 @@ public:
 
 
 // draw sprite
-void SpriteDraw(const Sprite& sp, bool rotateAtPos = true);
+void SpriteDraw(const Sprite& sp, bool rotateAtPos = true, const RECT *pSrcRect = NULL);
 
 // call once at start
 void InitSprite();

@@ -272,11 +272,11 @@ void Draw(void)
 	SpriteStart();
 
 	DrawQTE();
+	DrawScore();
 
 	SpriteEnd();
 
 	// display text and finish
-	DrawScore();
 	DrawTimer();
 	pDevice->EndScene();
 
