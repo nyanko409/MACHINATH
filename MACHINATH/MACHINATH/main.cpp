@@ -1,14 +1,6 @@
-/*=======================================================================
-
-  windowsの表示[main.cpp]
-			 Author : Ato
-			 Date   : 2018/4/22
--------------------------------------------------------------------------
-
-========================================================================*/
-#include<Windows.h>
-#include<d3d9.h>		//DirectXの奴を選ぶ
-#include<d3dx9.h>		//この二つは最低限必要
+#include <Windows.h>
+#include <d3d9.h>
+#include <d3dx9.h>
 #include <thread>
 #include <time.h>
 #include <vector>
@@ -43,29 +35,20 @@
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib, "dinput8.lib")
 
+
+// globals
 #define CLASS_NAME      "GameWindow"
 #define WINDOW_CAPTION  "MACHINATH"
 
+static HWND g_hWnd;
 
-/*-----------------------------------------------------------------------
-   プロトタイプ宣言
-------------------------------------------------------------------------*/
+// プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-//ゲーム関係初期化関数
 static bool Initialize(void);
-
-//ゲーム更新関数
 static void Update(void);
-
-//ゲーム描画関数
 static void Draw(void);
-
-//ゲーム終了の関数
 static void Finalize(void);
-
-// window
-static HWND g_hWnd;
 
 void InitRenderState();
 void InitLight();
@@ -73,9 +56,6 @@ void InitLight();
 // TEST
 void DrawTest();
 void InitTest();
-std::vector<MeshObject*> shinjyuku;
-LPDIRECT3DVERTEXBUFFER9 vBuffer;
-LPDIRECT3DINDEXBUFFER9 iBuffer;
 
 
 /*-----------------------------------------------------------------------
@@ -297,7 +277,7 @@ void Finalize(void)
 	UninitShader();
 
 	Texture_Release();
-	MyDirect3D_Finalize();//DirectXの終了
+	MyDirect3D_Finalize();
 }
 
 // init render state

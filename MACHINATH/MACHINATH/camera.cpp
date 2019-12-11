@@ -6,30 +6,32 @@
 #include "shader.h"
 
 
-// operator overload
-POINT operator - (POINT o1, POINT o2) { return POINT{ o1.x - o2.x, o1.y - o2.y }; }
+
+// globals
+POINT g_lastPos; POINT g_curPos;
+Camera* g_pCam;
 
 // function def
 void CameraInput();
 
-// variables
-POINT last; POINT current;
-Camera* cam;
+// operator overload
+POINT operator - (POINT o1, POINT o2) { return POINT{ o1.x - o2.x, o1.y - o2.y }; }
+
 
 void InitCamera()
 {
 	// init camera
-	cam = new Camera(D3DXVECTOR3(0, 0, -10), D3DXVECTOR3(0, 0, 1));
+	g_pCam = new Camera(D3DXVECTOR3(0, 0, -10), D3DXVECTOR3(0, 0, 1));
 
 	// init cursor pos
-	GetCursorPos(&current);
-	last = current;
+	GetCursorPos(&g_curPos);
+	g_lastPos = g_curPos;
 }
 
 void SetCameraPos(D3DXVECTOR3 position, D3DXVECTOR3 offset, float rotX, float rotY)
 {
 	// look at position by setting forward vector
-	cam->LookAt(position);
+	g_pCam->LookAt(position);
 
 	// rotate offset pos
 	D3DXMATRIX xRot, yRot;
@@ -41,12 +43,12 @@ void SetCameraPos(D3DXVECTOR3 position, D3DXVECTOR3 offset, float rotX, float ro
 	D3DXVec3TransformCoord(&temp, &offset, &(xRot * yRot));
 
 	// set camera position
-	cam->position = position + temp;
+	g_pCam->position = position + temp;
 }
 
 void UpdateCamera()
 {
-	// move camera with WASD and mouse
+	// move camera with WASD and mouse for debug purposes
 	CameraInput();
 
 	// init matrix and get device
@@ -54,80 +56,80 @@ void UpdateCamera()
 	D3DXMATRIX matView, matProjection;
 
 	// set view
-	D3DXMatrixLookAtLH(&matView, &cam->position, &(cam->forward + cam->position), &cam->up);
+	D3DXMatrixLookAtLH(&matView, &g_pCam->position, &(g_pCam->forward + g_pCam->position), &g_pCam->up);
 	device->SetTransform(D3DTS_VIEW, &matView);
 
 	// set projection
-	D3DXMatrixPerspectiveFovLH(&matProjection, cam->fov, cam->aspect, cam->nearClip, cam->farClip);
+	D3DXMatrixPerspectiveFovLH(&matProjection, g_pCam->fov, g_pCam->aspect, g_pCam->nearClip, g_pCam->farClip);
 	device->SetTransform(D3DTS_PROJECTION, &matProjection);
 }
 
 void UninitCamera()
 {
-	if (cam) delete cam;
+	if (g_pCam) delete g_pCam;
 }
 
 void CameraInput()
 { 
 	// camera mouse look
-	last = current;
+	g_lastPos = g_curPos;
 	
-	GetCursorPos(&current);
-	POINT diffPoint = current - last;
-	cam->Rotate(diffPoint.x, diffPoint.y);
+	GetCursorPos(&g_curPos);
+	POINT diffPoint = g_curPos - g_lastPos;
+	g_pCam->Rotate(diffPoint.x, diffPoint.y);
 
 	// camera movement
 	if (Keyboard_IsPress(DIK_W))
 	{
 		// move cam forward
-		cam->position += cam->forward * cam->moveSpeed;
-		cam->lookDirection += cam->forward * cam->moveSpeed;
+		g_pCam->position += g_pCam->forward * g_pCam->moveSpeed;
+		g_pCam->lookDirection += g_pCam->forward * g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_A))
 	{
 		// move cam left
-		cam->position += -cam->right * cam->moveSpeed;
-		cam->lookDirection += -cam->right * cam->moveSpeed;
+		g_pCam->position += -g_pCam->right * g_pCam->moveSpeed;
+		g_pCam->lookDirection += -g_pCam->right * g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_S))
 	{
 		// move cam backward
-		cam->position += -cam->forward * cam->moveSpeed;
-		cam->lookDirection += -cam->forward * cam->moveSpeed;
+		g_pCam->position += -g_pCam->forward * g_pCam->moveSpeed;
+		g_pCam->lookDirection += -g_pCam->forward * g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_D))
 	{
 		// move cam right
-		cam->position += cam->right * cam->moveSpeed;
-		cam->lookDirection += cam->right * cam->moveSpeed;
+		g_pCam->position += g_pCam->right * g_pCam->moveSpeed;
+		g_pCam->lookDirection += g_pCam->right * g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_Q))
 	{
 		// move cam up
-		cam->position.y += cam->moveSpeed;
-		cam->lookDirection.y += cam->moveSpeed;
+		g_pCam->position.y += g_pCam->moveSpeed;
+		g_pCam->lookDirection.y += g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_E))
 	{
 		// move cam down
-		cam->position.y += -cam->moveSpeed;
-		cam->lookDirection.y += -cam->moveSpeed;
+		g_pCam->position.y += -g_pCam->moveSpeed;
+		g_pCam->lookDirection.y += -g_pCam->moveSpeed;
 	}
 
 	// fov
-	if (Keyboard_IsPress(DIK_M) && cam->fov < 3)
+	if (Keyboard_IsPress(DIK_M) && g_pCam->fov < 3)
 	{
 		// fov increase
-		cam->fov += 0.01f;
+		g_pCam->fov += 0.01f;
 	}
-	if (Keyboard_IsPress(DIK_N) && cam->fov > 1)
+	if (Keyboard_IsPress(DIK_N) && g_pCam->fov > 1)
 	{
 		// fov decrease
-		cam->fov -= 0.01f;
+		g_pCam->fov -= 0.01f;
 	}
 }
 
 Camera* GetCamera()
 {
-	return cam;
+	return g_pCam;
 }

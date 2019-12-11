@@ -6,19 +6,18 @@
 #include "texture.h"
 
 static float ScoreScale = 1.0F;
-static int score;
+static int g_score;
 static Sprite A;
 
-void AddScore(int sc)
+void AddScore(int value)
 {
-	score += sc;
+	g_score += value;
 }
-
 
 
 void InitScore()
 {
-	score = 0;
+	g_score = 0;
 
 	A = Sprite(Texture_GetTexture(TEXTURE_INDEX_SCORE), D3DXVECTOR3(200, 200, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_SCORE) / 2, Texture_GetHeight(TEXTURE_INDEX_SCORE) / 2, 0),
@@ -28,24 +27,24 @@ void InitScore()
 void DrawScore()
 {
 	// draw text
-	std::string str = std::to_string(score);
+	std::string str = std::to_string(g_score);
 	RECT ScoreRect;
 	SpriteDraw(A);
 	DrawTextTo(RECT{ 200, 100, 100, 50 }, str.c_str(), str.length());
 
 	/*do
 	{
-		//•\¦‚·‚éˆÊ‚Ì”š‚ğæ‚èo‚·
+		//ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê‚Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½
 		int n = s % 10;
 		DrawSprite(x, 400, 80, 80,
-			n % 5 * 0.2f,//uÀ•W
-			n / 5 * 0.2f,//vÀ•W
+			n % 5 * 0.2f,//uï¿½ï¿½ï¿½W
+			n / 5 * 0.2f,//vï¿½ï¿½ï¿½W
 			0.2f, 0.2f,
 			MakeFloat4(1, 1, 1, 1));
 
-		//Ÿ‚ÌˆÊ‚ğ•\¦‚·‚é‚½‚ß10‚ÅŠ„‚é
+		//ï¿½ï¿½ï¿½ÌˆÊ‚ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ï¿½10ï¿½ÅŠï¿½ï¿½ï¿½
 		s /= 10;
-		//•\¦ˆÊ’u‚ğ¶‚É‚¸‚ç‚·
+		//ï¿½\ï¿½ï¿½ï¿½Ê’uï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ç‚·
 		x -= 40.0f;
 
 		fig++;

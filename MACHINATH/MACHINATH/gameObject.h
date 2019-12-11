@@ -4,7 +4,6 @@
 #include "transform.h"
 #include "transformation.h"
 #include "mydirect3d.h"
-#include "meshLoader.h"
 #include "material.h"
 #include "shader.h"
 
@@ -31,22 +30,32 @@ class GameObject
 private:
 	SHADER_TYPE shaderType;
 
+protected:
+	D3DXMATRIX m_matOrientation;	// orienration matrix for local axis rotation
+	D3DXVECTOR3 m_prevRotation;		// previous frame rotation of this object
+
 public:
 	LPD3DXEFFECT pShader;			// pointer to the shader
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
+	D3DXVECTOR3 forward, up, right;	// forward, up and right vector
 	D3DXVECTOR3 pivot;				// pivot point for rotation, default is 0
 	GameObject* parent;				// the parent this gameobject is attached to
 	bool enableDraw;				// if true, draw this object
 
 	// constructor
 	GameObject() {}
-	GameObject(Transform transform, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) : transform(transform), parent(parent) 
+	GameObject(Transform transform, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) : 
+		transform(transform), parent(parent)
 	{
 		// assign the shader at creation
 		shaderType = type;
 		pShader = AssignShader(this, shaderType);
 
+		D3DXMatrixIdentity(&m_matOrientation);
 		pivot = D3DXVECTOR3(0, 0, 0);
+		forward = D3DXVECTOR3(0, 0, 1);
+		up = D3DXVECTOR3(0, 1, 0);
+		right = D3DXVECTOR3(1, 0, 0);
 		enableDraw = true;
 	}
 
@@ -60,18 +69,21 @@ public:
 	// virtual draw
 	virtual void Draw() {}
 
-	// return forward vector
-	D3DXVECTOR3 GetForward(int yOffset = 0)
+	// returns the final forward vector of both local and world rotation
+	D3DXVECTOR3 GetForward()
 	{
 		// create y rotation matrix
-		D3DXMATRIX rotY;
-		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.localRotation.y + yOffset));
+		D3DXMATRIX rotX, rotY, rotZ;
+		D3DXMatrixRotationX(&rotX, D3DXToRadian(transform.rotation.x));
+		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.rotation.y));
+		D3DXMatrixRotationZ(&rotZ, D3DXToRadian(transform.rotation.z));
 
-		// apply it to forward vector and return
-		D3DXVECTOR3 f = D3DXVECTOR3(0, 0, 1);
-		D3DXVECTOR3 temp;
-		D3DXVec3TransformCoord(&temp, &f, &rotY);
-		return temp;
+		D3DXVECTOR3 newForward = forward;
+		D3DXVec3TransformCoord(&newForward, &newForward, &rotX);
+		D3DXVec3TransformCoord(&newForward, &newForward, &rotY);
+		D3DXVec3TransformCoord(&newForward, &newForward, &rotZ);
+
+		return newForward;
 	}
 
 	// returns the combined position of this gameobject
@@ -96,6 +108,21 @@ public:
 			return transform.rotation + parent->GetCombinedRotation();
 
 		return transform.rotation;
+	}
+
+	// returns the combined orientation matrix
+	D3DXMATRIX GetCombinedOrientationMatrix()
+	{
+		if (parent != nullptr)
+			return m_matOrientation * parent->GetCombinedOrientationMatrix();
+
+		return m_matOrientation;
+	}
+
+	// returns the combined orientation matrix
+	D3DXMATRIX GetOrientationMatrix()
+	{
+		return m_matOrientation;
 	}
 
 	// returns the rotation relative to parent of this gameobject
@@ -171,19 +198,19 @@ public:
 	// get current top left position based on object position
 	v3t_float GetTopLeft() const
 	{
-		D3DXMATRIX mRot;
-		D3DXMatrixRotationY(&mRot, obj_transform->GetCombinedRotation().y);
+		//D3DXMATRIX mRot;
+		//D3DXMatrixRotationY(&mRot, obj_transform->GetCombinedRotation().y);
+		//
+		//D3DXVECTOR3 finalPos = obj_transform->GetCombinedPosition();
+		//D3DXVec3TransformCoord(&finalPos, &finalPos, &mRot);
+		//
+		//return v3t_float((-size.x / 2) + finalPos.x,
+		//				(size.y / 2) + finalPos.y,
+		//				(-size.z / 2) + finalPos.z);
 
-		D3DXVECTOR3 finalPos = obj_transform->GetCombinedPosition();
-		D3DXVec3TransformCoord(&finalPos, &finalPos, &mRot);
-
-		return v3t_float((-size.x / 2) + finalPos.x,
-						(size.y / 2) + finalPos.y,
-						(-size.z / 2) + finalPos.z);
-
-		//return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
-		//				(size.y / 2) + obj_transform->GetCombinedPosition().y,
-		//				(-size.z / 2) + obj_transform->GetCombinedPosition().z);
+		return v3t_float((-size.x / 2) + obj_transform->GetCombinedPosition().x, 
+						(size.y / 2) + obj_transform->GetCombinedPosition().y,
+						(-size.z / 2) + obj_transform->GetCombinedPosition().z);
 	}
 
 

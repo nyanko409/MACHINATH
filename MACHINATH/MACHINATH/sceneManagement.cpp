@@ -3,39 +3,39 @@
 
 
 // current scene
-SceneType scene = SCENE_STARTSCREEN;
+SceneType g_scene = SCENE_STARTSCREEN;
 
 
 void SetScene(SceneType sc)
 {
-	scene = sc;
+	g_scene = sc;
 }
 
 SceneType GetScene()
 {
-	return scene;
+	return g_scene;
 }
 
 void UpdateScene()
 {
 	// return when in game screen
-	if (scene == SCENE_GAMESCREEN) return;
+	if (g_scene == SCENE_GAMESCREEN) return;
 
-	if (scene == SCENE_STARTSCREEN)
+	if (g_scene == SCENE_STARTSCREEN)
 	{
 		// change to game scene when button is pressed
 		if (Keyboard_IsTrigger(DIK_SPACE))
 		{
-			scene = SCENE_GAMESCREEN;
+			g_scene = SCENE_GAMESCREEN;
 			return;
 		}
 	}
-	else if (scene == SCENE_RESULTSCREEN)
+	else if (g_scene == SCENE_RESULTSCREEN)
 	{
 		// go back to start screen when button is pressed
 		if (Keyboard_IsTrigger(DIK_SPACE))
 		{
-			scene = SCENE_STARTSCREEN;
+			g_scene = SCENE_STARTSCREEN;
 			return;
 		}
 	}
