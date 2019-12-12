@@ -219,6 +219,7 @@ void Update(void)
 
 	UpdateScene();
 	UpdateTimer();
+	UpdateScore();
 	UpdateMap();
 	UpdatePlayer();
 	UpdatePickup();

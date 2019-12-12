@@ -5,4 +5,5 @@
 void AddScore(int value);
 
 void InitScore();
+void UpdateScore();
 void DrawScore();
