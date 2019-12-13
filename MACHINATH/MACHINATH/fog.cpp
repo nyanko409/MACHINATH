@@ -158,5 +158,5 @@ void FogCamera()
 	//	if (offsetY < 10) offsetY = 10;
 	//}
 
-	SetCameraPos(D3DXVECTOR3(0, fog->transform.position.y, fog->transform.position.z), D3DXVECTOR3(0, offsetY, -10), 0, 0);
+	//SetCameraPos(D3DXVECTOR3(0, fog->transform.position.y, fog->transform.position.z), D3DXVECTOR3(0, offsetY, -10), 0, 0);
 }

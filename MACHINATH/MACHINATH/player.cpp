@@ -51,7 +51,7 @@ void InitPlayer()
 
 	// create player
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
-	g_player = new Player(trans, 0.2F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
+	g_player = new Player(trans, 0.6F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(1);
 	g_player->SetAnimationSpeed(0.005F);
@@ -258,16 +258,31 @@ void PlayerCamera()
 {
 	// set camera position
 	static float rotX = 0, rotY = 0;
-	static float offsetY = 10.0F;
+	float offsetY = 10.0F;
+	float offsetZ = -10;
 
-	if (playTime > 5.0F)
-	{
-		rotY--;
-		if (rotY <= -45) rotY = -45;
-		offsetY -= 0.1F;
-		if (offsetY < 10) offsetY = 10;
-	}
+	//if (playTime > 5.0F)
+	//{
+	//	rotY--;
+	//	if (rotY <= -90) rotY = -90;
+	//	offsetY -= 0.1F;
+	//	if (offsetY < 10) offsetY = 10;
+	//}
 
-	SetCameraPos(D3DXVECTOR3(0, g_player->transform.position.y, g_player->transform.position.z),
-				D3DXVECTOR3(0, offsetY, -10), 0, rotY);
+	D3DXVECTOR3 lookAt = g_player->transform.position;
+	D3DXVECTOR3 pos = g_player->transform.position;
+
+	D3DXVECTOR3 forward = g_player->GetForward();
+	
+
+	float offsetX = offsetZ;
+
+	offsetZ *= forward.z;
+	offsetX *= forward.x;
+
+	pos.y += offsetY;
+	pos.z += offsetZ;
+	pos.x += offsetX;
+
+	SetCameraPos(lookAt, pos, 0, 0);
 }

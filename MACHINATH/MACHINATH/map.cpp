@@ -18,8 +18,12 @@ Direction GetExitDirection(const MapData& data, const Direction& lastExit);
 // globals
 static MapData g_MapData[] =
 {
-	{MESH_MAP_STRAIGHT, Direction::NORTH, std::vector<EventData>({EventData{MapEvent::NONE}})},
+	{MESH_MAP_STRAIGHT, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_CURVELEFT, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, -90, 1.5F}}},
+	{MESH_MAP_CURVERIGHT, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, 90, 1.5F}}},
+	{MESH_MAP_STRAIGHT_BRIDGE, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_STRAIGHT_UP, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_STRAIGHT_TUNNEL_DOWN, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 };
 std::vector<EventData> g_event; 
 std::vector<Map*> g_map;
@@ -62,10 +66,10 @@ void UpdateMap()
 			g_map[g_drawIndex]->enableDraw = true;
 			ActivatePickup(g_map[g_drawIndex]->id);
 		}
-
+	
 		// delete pickup
 		CleanPickup(g_map[0]->id);
-
+	
 		// delete map
 		delete g_map[0];
 		g_map.erase(g_map.begin());

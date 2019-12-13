@@ -145,7 +145,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		else
 		{
 			// update and draw every frame
-			Sleep(10);
+			Sleep(7);
 			Update();
 			Draw();
 		}
@@ -322,7 +322,7 @@ void InitRenderState()
 // init lighting
 void InitLight()
 {
-	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 1.0F), D3DXCOLOR(0.1F, 0.1F, 0.1F, 1.0F));
+	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 1.0F), D3DXCOLOR(0.0F, 1.0F, 1.0F, 1.0F));
 	AddPointLight(1, D3DXVECTOR3(0, 5, 0), 100, D3DXCOLOR(0.0F, 1.0F, 1.0F, 1.0F));
 }
 

@@ -90,7 +90,7 @@ public:
 
 
 // set camera pos to given value
-void SetCameraPos(D3DXVECTOR3 position, D3DXVECTOR3 offset, float rotX, float rotY);
+void SetCameraPos(D3DXVECTOR3 lookAt, D3DXVECTOR3 position, float rotX, float rotY);
 
 // return address of camera
 Camera* GetCamera();

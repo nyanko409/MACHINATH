@@ -52,6 +52,8 @@ public:
 
 			if (mesh->texture[i] != NULL)
 				device->SetTexture(0, mesh->texture[i]);
+			else
+				device->SetTexture(0, NULL);
 
 			mesh->mesh->DrawSubset(i);
 		}
