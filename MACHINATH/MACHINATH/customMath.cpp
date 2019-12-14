@@ -10,3 +10,8 @@ float GetDistance(D3DXVECTOR3 t1, D3DXVECTOR3 t2, bool ignoreYAxis)
 	else
 		return sqrtf(dist.x * dist.x + dist.z * dist.z);
 }
+
+D3DXVECTOR3 Lerp(D3DXVECTOR3 a, D3DXVECTOR3 b, float t)
+{
+	return a * (1 - t) + b * t;
+}
