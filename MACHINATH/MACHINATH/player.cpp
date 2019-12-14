@@ -6,6 +6,7 @@
 #include "playTime.h"
 #include "sceneManagement.h"
 #include "map.h"
+#include "customMath.h"
 
 // globals
 static Player* g_player;
@@ -15,6 +16,7 @@ static float g_zRotMax;
 static float g_jumpHeight;
 static float g_jumpSpeed;
 
+static D3DXVECTOR3 g_camPos;
 static float g_finalYPos;
 static bool g_isJumping;
 static int g_jumpCnt;
@@ -56,6 +58,8 @@ void InitPlayer()
 	g_player->PlayAnimation(1);
 	g_player->SetAnimationSpeed(0.005F);
 
+	g_camPos = trans.position;
+
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, g_player);
@@ -91,7 +95,10 @@ void UpdatePlayer()
 
 void MovePlayer()
 {
-	g_player->transform.position += g_player->GetForward() * g_player->moveSpeed;
+	D3DXVECTOR3 forward = g_player->GetForward();
+
+	// move player
+	g_player->transform.position += forward * g_player->moveSpeed;
 }
 
 void HandleMapEvent()
@@ -269,11 +276,11 @@ void PlayerCamera()
 	//	if (offsetY < 10) offsetY = 10;
 	//}
 
-	D3DXVECTOR3 lookAt = g_player->transform.position;
-	D3DXVECTOR3 pos = g_player->transform.position;
+	g_camPos = Lerp(g_camPos, g_player->GetCombinedPosition(), 0.1F);
 
+	D3DXVECTOR3 lookAt = g_camPos;
+	D3DXVECTOR3 pos = g_camPos;
 	D3DXVECTOR3 forward = g_player->GetForward();
-	
 
 	float offsetX = offsetZ;
 
@@ -284,5 +291,5 @@ void PlayerCamera()
 	pos.z += offsetZ;
 	pos.x += offsetX;
 
-	SetCameraPos(lookAt, pos, 0, 0);
+	SetCameraPos(lookAt, pos, rotX, rotY);
 }

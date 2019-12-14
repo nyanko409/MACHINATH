@@ -62,8 +62,8 @@ int Texture_Load(void)
 
 	for( int i = 0; i < TEXTURE_FILE_COUNT; i++ ) {
 		
-		if( FAILED(D3DXCreateTextureFromFile(pDevice, g_TextureFiles[i].filename, &g_pTextures[i])) ) {
-            // DebugPrintf("テクスチャの読み込みに失敗 ... %s\n", g_TextureFiles[i].filename);
+		if( FAILED(D3DXCreateTextureFromFile(pDevice, g_TextureFiles[i].filename, &g_pTextures[i])) ) 
+		{
 			failed_count++;
 		}
 	}
