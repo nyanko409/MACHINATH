@@ -29,6 +29,8 @@ struct EventData
 struct MapData
 {
 	MESH_NAME name;
+	float scale;
+	float yOffset;
 	Direction exit;
 	std::vector<EventData> event;
 };

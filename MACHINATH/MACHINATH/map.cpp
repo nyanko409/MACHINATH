@@ -18,12 +18,12 @@ Direction GetExitDirection(const MapData& data, const Direction& lastExit);
 // globals
 static MapData g_MapData[] =
 {
-	{MESH_MAP_STRAIGHT, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_CURVELEFT, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, -90, 1.5F}}},
-	{MESH_MAP_CURVERIGHT, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, 90, 1.5F}}},
-	{MESH_MAP_STRAIGHT_BRIDGE, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_STRAIGHT_UP, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 45.0F, false, false, -20, 5.0F, 8, 0.05F}}},
-	{MESH_MAP_STRAIGHT_TUNNEL_DOWN, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 0.0F, false, false, 20, 5.0F, -8, 0.05F}}},
+	{MESH_MAP_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, -90, 1.5F}}},
+	{MESH_MAP_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, 90, 1.5F}}},
+	{MESH_MAP_STRAIGHT_BRIDGE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 45.0F, false, false, -20, 5.0F, 8, 0.05F}}},
+	{MESH_MAP_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 6.0F, false, false, 20, 5.0F, -12.5F, 0.05F}}},
 };
 std::vector<EventData> g_event; 
 std::vector<Map*> g_map;
@@ -37,9 +37,9 @@ static int g_drawIndex;
 void InitMap()
 {
 	// init values
-	g_drawCount = 3;
+	g_drawCount = 4;
 	g_mapRadius = 90.0F;
-	g_poolDistance = 60.0F;
+	g_poolDistance = 160.0F;
 
 	g_drawIndex = 0;
 
@@ -92,7 +92,6 @@ void LoadMapFromFile(char* path)
 {
 	std::ifstream in(path);
 	g_map = std::vector<Map*>();
-	float offsetY = 0;
 	int id = 0;
 	char c;
 
@@ -128,21 +127,10 @@ void LoadMapFromFile(char* path)
 
 			// get data for next map
 			transform = GetStartTransform(*g_map[id - 1]);
-			transform.position.y += offsetY;
 			dir = GetExitDirection(g_MapData[ci], dir);
 
 			// populate map
 			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, SHADER_DEFAULT));
-
-			// add height offset for slopes
-			if (ci == 4)
-			{
-				offsetY += 33.0F;
-			}
-			else if (ci == 5)
-			{
-				offsetY -= 33.0F;
-			}
 		}
 		catch (std::runtime_error& e)
 		{
@@ -159,26 +147,29 @@ Transform GetStartTransform(const Map& prevMap)
 {
 	// cache previous map transform
 	Transform trans = prevMap.transform;
+	float scale = prevMap.data.scale;
 
 	// offset to new location
+	trans.position.y += prevMap.data.yOffset;
+
 	if (prevMap.exit == Direction::NORTH)
 	{
-		trans.position.z += g_mapRadius;
+		trans.position.z += g_mapRadius * scale;
 		trans.rotation.y = 0;
 	}
 	else if (prevMap.exit == Direction::EAST)
 	{
-		trans.position.x += g_mapRadius;
+		trans.position.x += g_mapRadius * scale;
 		trans.rotation.y = 90;
 	}
 	else if (prevMap.exit == Direction::WEST)
 	{
-		trans.position.x -= g_mapRadius;
+		trans.position.x -= g_mapRadius * scale;
 		trans.rotation.y = 270;
 	}
 	else if (prevMap.exit == Direction::SOUTH)
 	{
-		trans.position.z -= g_mapRadius;
+		trans.position.z -= g_mapRadius * scale;
 		trans.rotation.y = 180;
 	}
 

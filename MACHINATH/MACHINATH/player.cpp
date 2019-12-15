@@ -116,7 +116,8 @@ void HandleMapEvent()
 	Map* front = nullptr;
 	for (int i = 0; i < map->size(); i++)
 	{
-		if (!((*map)[i]->data.event.front().mapEvent == MapEvent::NONE))
+		if (!(*map)[i]->data.event.front().finished && 
+			!((*map)[i]->data.event.front().mapEvent == MapEvent::NONE))
 		{
 			front = (*map)[i];
 			break;
