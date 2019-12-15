@@ -9,6 +9,7 @@
 #include "customMath.h"
 
 // globals
+static GameObject* g_parent;
 static Player* g_player;
 static MeshObject* g_skateboard;
 static float g_zRotSpeed;
@@ -51,9 +52,13 @@ void InitPlayer()
 	g_curRot = 0;
 	g_curSlope = 0;
 
-	// create player
+	// create parent
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
-	g_player = new Player(trans, 0.6F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5);
+	g_parent = new GameObject(trans);
+
+	// create player
+	trans.position = { 0, 0, 0 };
+	g_player = new Player(trans, 0.6F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(1);
 	g_player->SetAnimationSpeed(0.005F);
@@ -95,10 +100,10 @@ void UpdatePlayer()
 
 void MovePlayer()
 {
-	D3DXVECTOR3 forward = g_player->GetForward();
+	D3DXVECTOR3 forward = g_parent->GetForward();
 
-	// move player
-	g_player->transform.position += forward * g_player->moveSpeed;
+	// move parent
+	g_parent->transform.position += forward * g_player->moveSpeed;
 }
 
 void HandleMapEvent()
@@ -170,7 +175,7 @@ void Curve(EventData& event)
 	}
 
 	// add rotation to player
-	g_player->transform.rotation.y += frameRot;
+	g_parent->transform.rotation.y += frameRot;
 }
 
 void Slope(EventData& event)
@@ -190,10 +195,10 @@ void MoveSideways()
 	{
 		D3DXMATRIX mRot;
 		D3DXVECTOR3 left(0,0,1);
-		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.rotation.y - 90));
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y - 90));
 		D3DXVec3TransformCoord(&left, &left, &mRot);
 
-		g_player->transform.position += left * g_player->moveSpeed;
+		g_parent->transform.position += left * g_player->moveSpeed;
 
 		g_player->transform.localRotation.z -= g_zRotSpeed;
 		if (g_player->transform.localRotation.z < -g_zRotMax)
@@ -203,10 +208,10 @@ void MoveSideways()
 	{
 		D3DXMATRIX mRot;
 		D3DXVECTOR3 right(0, 0, 1);
-		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_player->transform.rotation.y + 90));
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y + 90));
 		D3DXVec3TransformCoord(&right, &right, &mRot);
 
-		g_player->transform.position += right * g_player->moveSpeed;
+		g_parent->transform.position += right * g_player->moveSpeed;
 
 		g_player->transform.localRotation.z += g_zRotSpeed;
 		if (g_player->transform.localRotation.z > g_zRotMax)
@@ -246,17 +251,17 @@ void Jump()
 		g_jumpCnt += g_jumpSpeed;
 		float finalRot = 360.0F / (180.0F / g_jumpSpeed);
 
-		//g_player->transform.localRotation.y += finalRot;
-		//g_player->transform.localRotation.z += finalRot;
-		//g_player->transform.localRotation.x += finalRot;
+		g_player->transform.rotation.y += finalRot;
+		//g_player->transform.rotation.z += finalRot;
+		g_player->transform.rotation.x += finalRot;
 
 		if (g_jumpCnt > 180)
 		{
 			g_isJumping = false;
 			g_jumpCnt = 0;
-			//g_player->transform.localRotation.y = 0.0F;
-			//g_player->transform.localRotation.z = 0.0F;
-			//g_player->transform.localRotation.x = 0.0F;
+			g_player->transform.rotation.y = 0.0F;
+			//g_player->transform.rotation.z = 0.0F;
+			g_player->transform.rotation.x = 0.0F;
 		}
 	}
 }
@@ -280,7 +285,7 @@ void PlayerCamera()
 
 	D3DXVECTOR3 lookAt = g_camPos;
 	D3DXVECTOR3 pos = g_camPos;
-	D3DXVECTOR3 forward = g_player->GetForward();
+	D3DXVECTOR3 forward = g_parent->GetForward();
 
 	float offsetX = offsetZ;
 
