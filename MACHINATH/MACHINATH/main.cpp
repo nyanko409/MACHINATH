@@ -203,8 +203,8 @@ bool Initialize(void)
 	InitBillboard();
 	InitQTE();
 	InitScore();
-	InitMap();
 	InitPickup();
+	InitMap();
 	InitPlayer();
 
 	InitTest();
