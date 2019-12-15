@@ -22,6 +22,8 @@ struct EventData
 	bool finished;
 	float value;
 	float speed;
+	float value2;
+	float speed2;
 };
 
 struct MapData
