@@ -21,7 +21,7 @@ static D3DXVECTOR3 g_camPos;
 static float g_finalYPos;
 static bool g_isJumping;
 static int g_jumpCnt;
-static float g_curRot, g_curSlope;
+static float g_curRot, g_curSlopeRot, g_curSlopeHeight;
 
 void MovePlayer();
 void MoveSideways();
@@ -50,7 +50,8 @@ void InitPlayer()
 	g_isJumping = false;
 	g_jumpCnt = 0;
 	g_curRot = 0;
-	g_curSlope = 0;
+	g_curSlopeRot = 0;
+	g_curSlopeHeight = 0;
 
 	// create parent
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
@@ -115,7 +116,8 @@ void HandleMapEvent()
 	Map* front = nullptr;
 	for (int i = 0; i < map->size(); i++)
 	{
-		if (!((*map)[i]->data.event.front().mapEvent == MapEvent::NONE))
+		if (!(*map)[i]->data.event.front().finished && 
+			!((*map)[i]->data.event.front().mapEvent == MapEvent::NONE))
 		{
 			front = (*map)[i];
 			break;
@@ -180,7 +182,40 @@ void Curve(EventData& event)
 
 void Slope(EventData& event)
 {
+	// while hight is not reached
+	if (g_curSlopeHeight < fabsf(event.value2))
+	{
+		// move up
+		g_curSlopeHeight += event.speed2;
 
+		// rotate to climb slope
+		if (g_curSlopeRot < fabsf(event.value))
+		{
+			g_curSlopeRot += event.speed;
+			float frameRot = g_curSlopeRot > fabsf(event.value) ? g_curSlopeRot - event.speed : event.speed;
+			if (event.value < 0) frameRot *= -1;
+
+			// add rotation to player
+			g_parent->transform.rotation.x += frameRot;
+		}
+	}
+	else
+	{
+		// height is reached, rotate back
+		g_curSlopeRot -= event.speed;
+		float frameRot = g_curSlopeRot < 0 ? g_curSlopeRot + event.speed : event.speed;
+		if (event.value < 0) frameRot *= -1;
+
+		// add rotation to player
+		g_parent->transform.rotation.x -= frameRot;
+
+		if (g_curSlopeRot <= 0)
+		{
+			event.finished = true;
+			g_curSlopeRot = 0;
+			g_curSlopeHeight = 0;
+		}
+	}
 }
 
 Player* GetPlayer()
@@ -269,7 +304,7 @@ void Jump()
 void PlayerCamera()
 {
 	// set camera position
-	static float rotX = 0, rotY = 0;
+	static int rotX = 0, rotY = 0;
 	float offsetY = 10.0F;
 	float offsetZ = -10;
 
@@ -296,5 +331,5 @@ void PlayerCamera()
 	pos.z += offsetZ;
 	pos.x += offsetX;
 
-	SetCameraPos(lookAt, pos, rotX, rotY);
+	SetCameraPos(lookAt, pos, rotX, rotY, 0);
 }

@@ -22,11 +22,15 @@ struct EventData
 	bool finished;
 	float value;
 	float speed;
+	float value2;
+	float speed2;
 };
 
 struct MapData
 {
 	MESH_NAME name;
+	float scale;
+	float yOffset;
 	Direction exit;
 	std::vector<EventData> event;
 };

@@ -28,20 +28,21 @@ void InitCamera()
 	g_lastPos = g_curPos;
 }
 
-void SetCameraPos(D3DXVECTOR3 lookAt, D3DXVECTOR3 position, float rotX, float rotY)
+void SetCameraPos(D3DXVECTOR3 lookAt, D3DXVECTOR3 position, int rotX, int rotY, int rotZ)
 {
 	// look at position by setting forward vector
 	g_pCam->LookAt(lookAt);
 
 	// rotate offset pos
-	D3DXMATRIX xRot, yRot;
+	D3DXMATRIX xRot, yRot, zRot;
 
 	D3DXMatrixRotationX(&xRot, D3DXToRadian(rotX));
 	D3DXMatrixRotationY(&yRot, D3DXToRadian(rotY));
+	D3DXMatrixRotationZ(&zRot, D3DXToRadian(rotZ));
 
 	D3DXVECTOR3 temp;
 	D3DXVECTOR3 diff = position - lookAt;
-	D3DXVec3TransformCoord(&temp, &diff, &(xRot * yRot));
+	D3DXVec3TransformCoord(&temp, &diff, &(xRot * yRot * zRot));
 
 	// set camera position
 	g_pCam->position = lookAt + temp;
