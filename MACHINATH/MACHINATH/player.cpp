@@ -308,14 +308,6 @@ void PlayerCamera()
 	float offsetY = 10.0F;
 	float offsetZ = -10;
 
-	//if (playTime > 5.0F)
-	//{
-	//	rotY--;
-	//	if (rotY <= -90) rotY = -90;
-	//	offsetY -= 0.1F;
-	//	if (offsetY < 10) offsetY = 10;
-	//}
-
 	g_camPos = Lerp(g_camPos, g_player->GetCombinedPosition(), 0.1F);
 
 	D3DXVECTOR3 lookAt = g_camPos;

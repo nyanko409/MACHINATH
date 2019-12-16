@@ -1,29 +1,21 @@
-
-
-
 #include <d3dx9.h>
 #include "mydirect3d.h"
 #include "texture.h"
 
 
-/*------------------------------------------------------------------------------
-   �\���̐錾
-------------------------------------------------------------------------------*/
-#define TEXTURE_FILENAME_MAX (64) // �e�N�X�`���t�@�C�����ő啶�����i�p�X�ANULL�����܂ށj
+// globals
+#define TEXTURE_FILENAME_MAX (64)
 
-// �e�N�X�`���t�@�C���Ǘ��\����
+// texture data struct
 typedef struct TextureFile_tag
 {
-	char filename[TEXTURE_FILENAME_MAX]; // �e�N�X�`���t�@�C����
-	int width;  // �e�N�X�`���𑜓x����
-	int height; // �e�N�X�`���𑜓x�c��
+	char filename[TEXTURE_FILENAME_MAX];  // path to the texture
+	int width;  // width of texture
+	int height; // height of texture
 } TextureFile;
 
 
-/*------------------------------------------------------------------------------
-   �萔��`
-------------------------------------------------------------------------------*/
-// �ǂݍ��݃e�N�X�`�����
+// texture path
 static const TextureFile g_TextureFiles[] = {
     { "asset/texture/qte_outer.dds", 512, 512 },
 	{ "asset/texture/QTEUI_IN_1.png", 512, 512 },
@@ -32,25 +24,22 @@ static const TextureFile g_TextureFiles[] = {
 
 };
 
-// �ǂݍ��݃e�N�X�`����
+// texture file count
 static const int TEXTURE_FILE_COUNT = sizeof(g_TextureFiles) / sizeof(g_TextureFiles[0]);
 // static const int TEXTURE_FILE_COUNT = ARRAYSIZE(g_TextureFiles); // required Windows.h
 
-// �ǂݍ��݃e�N�X�`�����ƃe�N�X�`���Ǘ��ԍ��񋓐��ɍ����������ꍇ�R���p�C���G���[�Ƃ���
+// check if texture enum length == texture file count
 static_assert(TEXTURE_INDEX_MAX == TEXTURE_FILE_COUNT, "TEXTURE_INDEX_MAX != TEXTURE_FILE_COUNT");
 
 
-/*------------------------------------------------------------------------------
-   �O���[�o���ϐ��錾
-------------------------------------------------------------------------------*/
-static LPDIRECT3DTEXTURE9 g_pTextures[TEXTURE_FILE_COUNT] = {}; // �e�N�X�`���C���^�[�t�F�[�X�Ǘ��z��
+
+// stores texture data
+static LPDIRECT3DTEXTURE9 g_pTextures[TEXTURE_FILE_COUNT] = {};
 
 
-/*------------------------------------------------------------------------------
-   �֐���`
-------------------------------------------------------------------------------*/
 
-// �e�N�X�`���̓ǂݍ���
+
+// load textures
 int Texture_Load(void)
 {   
     LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
@@ -71,7 +60,7 @@ int Texture_Load(void)
 	return failed_count;
 }
 
-// �e�N�X�`���̉��
+// release memory
 void Texture_Release(void)
 {
 	for( int i = 0; i < TEXTURE_FILE_COUNT; i++ ) {
@@ -83,7 +72,7 @@ void Texture_Release(void)
 	}
 }
 
-// �e�N�X�`���C���^�[�t�F�[�X�̎擾
+// retuen texture of given index
 LPDIRECT3DTEXTURE9 Texture_GetTexture(TextureIndex index)
 {
     if( index < 0 || index >= TEXTURE_INDEX_MAX ) {
@@ -93,7 +82,7 @@ LPDIRECT3DTEXTURE9 Texture_GetTexture(TextureIndex index)
 	return g_pTextures[index];
 }
 
-// �e�N�X�`���𑜓x���̎擾
+// return width
 int Texture_GetWidth(TextureIndex index)
 {
     if( index < 0 || index >= TEXTURE_INDEX_MAX ) {
@@ -103,7 +92,7 @@ int Texture_GetWidth(TextureIndex index)
 	return g_TextureFiles[index].width;
 }
 
-// �e�N�X�`���𑜓x�����̎擾
+// return height
 int Texture_GetHeight(TextureIndex index)
 {
     if( index < 0 || index >= TEXTURE_INDEX_MAX ) {
