@@ -31,7 +31,7 @@ void InitScore()
 
 	scoreSprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_SCORE), D3DXVECTOR3(400, 200, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_SCORE) / 2, Texture_GetHeight(TEXTURE_INDEX_SCORE) / 2, 0),
-		0, D3DXVECTOR2(ScoreScale, ScoreScale), D3DCOLOR_RGBA(255, 255, 255, 255));
+		0, D3DXVECTOR2(ScoreScale, ScoreScale*0.628), D3DCOLOR_RGBA(255, 255, 255, 255));
 }
 
 void UpdateScore()
@@ -53,7 +53,7 @@ void DrawScore()
 	int s = g_score;
 
 	// draw text
-	std::string str = std::to_string(g_score);
+	std::string str = std::to_string(finalscore);
 	RECT ScoreRect;
 	DrawTextTo(RECT{ 200, 100, 100, 50 }, str.c_str(), str.length());
 
@@ -73,7 +73,7 @@ void DrawScore()
 		s /= 10;
 
 		//表示位置を左にずらす
-		scoreSprite.position.x -= 0.2*width /2;
+		scoreSprite.position.x -= 0.2*width*ScoreScale*0.7;
 
 		fig++;
 	} 
