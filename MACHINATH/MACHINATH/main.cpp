@@ -203,9 +203,9 @@ bool Initialize(void)
 	InitBillboard();
 	InitQTE();
 	InitScore();
+	InitPlayer();
 	InitPickup();
 	InitMap();
-	InitPlayer();
 
 	InitTest();
 
@@ -246,7 +246,9 @@ void Draw(void)
 
 	DrawObjects();
 	DrawTest();
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	DrawBillboard();
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 	DrawEffect();
 
 	// draw 2d sprites
@@ -305,12 +307,12 @@ void InitRenderState()
 
 	// set source of color and alpha
 	device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-	device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
-	device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TEXTURE);
+	device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
 
 	device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-	device->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);
-	device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TEXTURE);
+	device->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
 
 	// set texture sampling
 	device->SetSamplerState(0, D3DSAMP_MAXANISOTROPY, 8);

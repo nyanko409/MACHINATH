@@ -7,50 +7,50 @@
 
 
 /*------------------------------------------------------------------------------
-   \‘¢‘ÌéŒ¾
+   ï¿½\ï¿½ï¿½ï¿½ÌéŒ¾
 ------------------------------------------------------------------------------*/
-#define TEXTURE_FILENAME_MAX (64) // ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼Å‘å•¶š”iƒpƒXANULL•¶šŠÜ‚Şj
+#define TEXTURE_FILENAME_MAX (64) // ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Å‘å•¶ï¿½ï¿½ï¿½ï¿½ï¿½iï¿½pï¿½Xï¿½ANULLï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Şj
 
-// ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹ŠÇ—\‘¢‘Ì
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ç—ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½
 typedef struct TextureFile_tag
 {
-	char filename[TEXTURE_FILENAME_MAX]; // ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-	int width;  // ƒeƒNƒXƒ`ƒƒ‰ğ‘œ“x‰¡•
-	int height; // ƒeƒNƒXƒ`ƒƒ‰ğ‘œ“xc•
+	char filename[TEXTURE_FILENAME_MAX]; // ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½
+	int width;  // ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ğ‘œ“xï¿½ï¿½ï¿½ï¿½
+	int height; // ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ğ‘œ“xï¿½cï¿½ï¿½
 } TextureFile;
 
 
 /*------------------------------------------------------------------------------
-   ’è”’è‹`
+   ï¿½è”ï¿½ï¿½`
 ------------------------------------------------------------------------------*/
-// “Ç‚İ‚İƒeƒNƒXƒ`ƒƒî•ñ
+// ï¿½Ç‚İï¿½ï¿½İƒeï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½
 static const TextureFile g_TextureFiles[] = {
     { "asset/texture/qte_outer.dds", 512, 512 },
 	{ "asset/texture/QTEUI_IN_1.png", 512, 512 },
-	{ "asset/texture/fuck.png", 512, 512 },
+	{ "asset/texture/fuck.png", 256, 256 },
 	{ "asset/texture/score.png", 512, 512 }
 
 };
 
-// “Ç‚İ‚İƒeƒNƒXƒ`ƒƒ”
+// ï¿½Ç‚İï¿½ï¿½İƒeï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½
 static const int TEXTURE_FILE_COUNT = sizeof(g_TextureFiles) / sizeof(g_TextureFiles[0]);
 // static const int TEXTURE_FILE_COUNT = ARRAYSIZE(g_TextureFiles); // required Windows.h
 
-// “Ç‚İ‚İƒeƒNƒXƒ`ƒƒ”‚ÆƒeƒNƒXƒ`ƒƒŠÇ—”Ô†—ñ‹“”‚É·‚ª‚ ‚Á‚½ê‡ƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚Æ‚·‚é
+// ï¿½Ç‚İï¿½ï¿½İƒeï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½Æƒeï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ç—ï¿½ï¿½Ôï¿½ï¿½ñ‹“ï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‡ï¿½Rï¿½ï¿½ï¿½pï¿½Cï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½[ï¿½Æ‚ï¿½ï¿½ï¿½
 static_assert(TEXTURE_INDEX_MAX == TEXTURE_FILE_COUNT, "TEXTURE_INDEX_MAX != TEXTURE_FILE_COUNT");
 
 
 /*------------------------------------------------------------------------------
-   ƒOƒ[ƒoƒ‹•Ï”éŒ¾
+   ï¿½Oï¿½ï¿½ï¿½[ï¿½oï¿½ï¿½ï¿½Ïï¿½ï¿½éŒ¾
 ------------------------------------------------------------------------------*/
-static LPDIRECT3DTEXTURE9 g_pTextures[TEXTURE_FILE_COUNT] = {}; // ƒeƒNƒXƒ`ƒƒƒCƒ“ƒ^[ƒtƒF[ƒXŠÇ—”z—ñ
+static LPDIRECT3DTEXTURE9 g_pTextures[TEXTURE_FILE_COUNT] = {}; // ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½[ï¿½Xï¿½Ç—ï¿½ï¿½zï¿½ï¿½
 
 
 /*------------------------------------------------------------------------------
-   ŠÖ”’è‹`
+   ï¿½Öï¿½ï¿½ï¿½`
 ------------------------------------------------------------------------------*/
 
-// ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ì“Ç‚İï¿½ï¿½ï¿½
 int Texture_Load(void)
 {   
     LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
@@ -71,7 +71,7 @@ int Texture_Load(void)
 	return failed_count;
 }
 
-// ƒeƒNƒXƒ`ƒƒ‚Ì‰ğ•ú
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ì‰ï¿½ï¿½
 void Texture_Release(void)
 {
 	for( int i = 0; i < TEXTURE_FILE_COUNT; i++ ) {
@@ -83,7 +83,7 @@ void Texture_Release(void)
 	}
 }
 
-// ƒeƒNƒXƒ`ƒƒƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìæ“¾
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½[ï¿½Xï¿½Ìæ“¾
 LPDIRECT3DTEXTURE9 Texture_GetTexture(TextureIndex index)
 {
     if( index < 0 || index >= TEXTURE_INDEX_MAX ) {
@@ -93,7 +93,7 @@ LPDIRECT3DTEXTURE9 Texture_GetTexture(TextureIndex index)
 	return g_pTextures[index];
 }
 
-// ƒeƒNƒXƒ`ƒƒ‰ğ‘œ“x•‚Ìæ“¾
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ğ‘œ“xï¿½ï¿½ï¿½Ìæ“¾
 int Texture_GetWidth(TextureIndex index)
 {
     if( index < 0 || index >= TEXTURE_INDEX_MAX ) {
@@ -103,7 +103,7 @@ int Texture_GetWidth(TextureIndex index)
 	return g_TextureFiles[index].width;
 }
 
-// ƒeƒNƒXƒ`ƒƒ‰ğ‘œ“x‚‚³‚Ìæ“¾
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ğ‘œ“xï¿½ï¿½ï¿½ï¿½ï¿½Ìæ“¾
 int Texture_GetHeight(TextureIndex index)
 {
     if( index < 0 || index >= TEXTURE_INDEX_MAX ) {

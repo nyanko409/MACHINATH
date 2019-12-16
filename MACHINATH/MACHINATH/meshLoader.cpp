@@ -7,7 +7,7 @@
 // unanimated mesh data, add path to x file
 std::vector<MESH_DATA> g_mesh
 {
-	{"asset/mesh/coin.x"},
+	{"asset/mesh/medal_gold.x"},
 	{"asset/mesh/skateboard.x" },
 	{"asset/mesh/map_straight.x" },
 	{"asset/mesh/map_curve_left.x" },

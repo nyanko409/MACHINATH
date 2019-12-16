@@ -19,8 +19,8 @@ Direction GetExitDirection(const MapData& data, const Direction& lastExit);
 static MapData g_MapData[] =
 {
 	{MESH_MAP_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, -90, 1.5F}}},
-	{MESH_MAP_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 11.0F, false, false, 90, 1.5F}}},
+	{MESH_MAP_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, 20.0F, false, false, -90, 1.5F}}},
+	{MESH_MAP_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 20.0F, false, false, 90, 1.5F}}},
 	{MESH_MAP_STRAIGHT_BRIDGE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 45.0F, false, false, -20, 5.0F, 8, 0.05F}}},
 	{MESH_MAP_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 6.0F, false, false, 20, 5.0F, -12.5F, 0.05F}}},

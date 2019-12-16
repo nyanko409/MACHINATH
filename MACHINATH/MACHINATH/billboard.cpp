@@ -3,7 +3,7 @@
 #include "texture.h"
 
 
-#define PARTICLE_COUNT 20
+#define PARTICLE_COUNT 30
 
 BillBoard g_particle[PARTICLE_COUNT];
 float g_lifeCycleSpeed;
@@ -14,8 +14,8 @@ float g_curSpawnInterval;
 
 void InitBillboard()
 {
-	g_particleSpawnInterval = 0.1F;
-	g_lifeCycleSpeed = 1.0F;
+	g_particleSpawnInterval = 0.05F;
+	g_lifeCycleSpeed = 0.2F;
 
 	g_curSpawnInterval = 0;
 
@@ -34,31 +34,31 @@ void UninitBillboard()
 void UpdateBillboard()
 {
 	// activate particle
-	//g_curSpawnInterval += TIME_PER_FRAME;
-	//if (g_curSpawnInterval >= g_particleSpawnInterval)
-	//{
-	//	g_curSpawnInterval -= g_particleSpawnInterval;
-	//	for (int i = 0; i < PARTICLE_COUNT; i++)
-	//	{
-	//		if (g_particle[i].isActive) continue;
-	//		else
-	//		{
-	//			g_particle[i] = BillBoard();
-	//			g_particle[i].transform.scale = D3DXVECTOR3(0.4F, 0.4F, 0.4F);
-	//			g_particle[i].xVel = (rand() % 11) / 20.0F;
-	//			g_particle[i].zVel = (rand() % 11) / 20.0F;
-	//
-	//			if (rand() % 2 == 0)
-	//				g_particle[i].xVel *= -1;
-	//
-	//			if (rand() % 2 == 0)
-	//				g_particle[i].zVel *= -1;
-	//
-	//			g_particle[i].isActive = true;
-	//			break;
-	//		}
-	//	}
-	//}
+	g_curSpawnInterval += TIME_PER_FRAME;
+	if (g_curSpawnInterval >= g_particleSpawnInterval)
+	{
+		g_curSpawnInterval -= g_particleSpawnInterval;
+		for (int i = 0; i < PARTICLE_COUNT; i++)
+		{
+			if (g_particle[i].isActive) continue;
+			else
+			{
+				g_particle[i] = BillBoard();
+				g_particle[i].transform.scale = D3DXVECTOR3(0.4F, 0.4F, 0.4F);
+				g_particle[i].xVel = (rand() % 11) / 20.0F;
+				g_particle[i].zVel = (rand() % 11) / 20.0F;
+	
+				if (rand() % 2 == 0)
+					g_particle[i].xVel *= -1;
+	
+				if (rand() % 2 == 0)
+					g_particle[i].zVel *= -1;
+	
+				g_particle[i].isActive = true;
+				break;
+			}
+		}
+	}
 
 	// loop for every particle
 	for (int i = 0; i < PARTICLE_COUNT; i++)
@@ -113,10 +113,10 @@ void DrawBillboard()
 
 		CUSTOM_VERTEX vert[] =
 		{
-			{5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 1.0F)},
-			{5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 1.0F)},
-			{-5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(0.0F, 0.0F)},
-			{-5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 255, 255), D3DXVECTOR2(1.0F, 0.0F)},
+			{5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 0, 255), D3DXVECTOR2(0.0F, 1.0F)},
+			{5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 0, 255), D3DXVECTOR2(1.0F, 1.0F)},
+			{-5, 5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 0, 255), D3DXVECTOR2(0.0F, 0.0F)},
+			{-5, -5, 0, D3DXVECTOR3(0, 0, -1), D3DCOLOR_RGBA(255, 0, 0, 255), D3DXVECTOR2(1.0F, 0.0F)},
 		};
 
 		// draw to screen
