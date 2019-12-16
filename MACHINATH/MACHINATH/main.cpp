@@ -246,9 +246,9 @@ void Draw(void)
 
 	DrawObjects();
 	DrawTest();
-	//pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	DrawBillboard();
-	//pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 	DrawEffect();
 
 	// draw 2d sprites

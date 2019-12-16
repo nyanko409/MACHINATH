@@ -27,7 +27,7 @@ typedef struct TextureFile_tag
 static const TextureFile g_TextureFiles[] = {
     { "asset/texture/qte_outer.dds", 512, 512 },
 	{ "asset/texture/qte_inner.dds", 512, 512 },
-	{ "asset/texture/fuck.png", 512, 512 },
+	{ "asset/texture/fuck.png", 256, 256 },
 	{ "asset/texture/score.png", 512, 512 }
 
 };
