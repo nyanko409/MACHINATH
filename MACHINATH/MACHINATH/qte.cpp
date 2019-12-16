@@ -117,6 +117,7 @@ void qteDefault()
 {
 	// reduce scale, rotate and increase alpha
 	g_outer.scale -= {0.02F, 0.02F};
+	g_inner.rotZ += 10;
 	g_outer.rotZ += 10;
 
 	if (g_outer.color.a < 1.0F)

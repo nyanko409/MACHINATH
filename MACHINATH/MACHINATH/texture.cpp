@@ -26,7 +26,7 @@ typedef struct TextureFile_tag
 // 読み込みテクスチャ情報
 static const TextureFile g_TextureFiles[] = {
     { "asset/texture/qte_outer.dds", 512, 512 },
-	{ "asset/texture/qte_inner.dds", 512, 512 },
+	{ "asset/texture/QTEUI_IN_1.png", 512, 512 },
 	{ "asset/texture/fuck.png", 512, 512 },
 	{ "asset/texture/score.png", 512, 512 }
 
