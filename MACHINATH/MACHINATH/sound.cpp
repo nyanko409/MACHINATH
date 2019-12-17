@@ -37,7 +37,8 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 // 各音素材のパラメータ ここを各自の環境用に書き換える
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
-	{"asset/sound/main_bgm.wav", -1}			// BGM0
+	{"asset/sound/main_bgm.wav", -1},			// BGM0
+	{"asset/sound/test.wav", -1},			// BGM1
 };
 
 //=============================================================================
@@ -371,5 +372,11 @@ HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwB
 		return HRESULT_FROM_WIN32(GetLastError());
 	}
 	
+	return S_OK;
+}
+
+HRESULT SetVolume(SOUND_LABEL LABEL,float volume,UINT32 OperationSet)
+{
+	g_apSourceVoice[LABEL]->SetVolume(volume, OperationSet);
 	return S_OK;
 }
