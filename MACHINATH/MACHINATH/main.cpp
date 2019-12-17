@@ -29,6 +29,7 @@
 #include "map.h"
 #include "billboard.h"
 #include "Title.h"
+#include "sound.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -189,6 +190,8 @@ bool Initialize(void)
 	{
 		return false;
 	}
+	InitSound(g_hWnd);
+
 	InitRenderState();
 	
 	InitShader();
@@ -277,6 +280,7 @@ void Draw(void)
 //終了処理
 void Finalize(void)
 {
+	UninitSound();
 	UninitBillboard();
 	UninitQTE();
 	UninitPlayer();
