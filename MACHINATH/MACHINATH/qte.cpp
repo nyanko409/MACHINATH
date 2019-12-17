@@ -6,6 +6,7 @@
 #include "score.h"
 #include "playTime.h"
 #include "qte.h"
+#include"common.h"
 
 // performance threshold
 #define PERFECT 0.1F
@@ -60,11 +61,11 @@ void InitQTE()
 	// initialize
 	g_active = false;
 
-	g_inner = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_INNER), D3DXVECTOR3(500, 500, 0), 
+	g_inner = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_INNER), D3DXVECTOR3(SCREEN_WIDTH/2, SCREEN_HEIGHT-200, 0), 
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_INNER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_INNER) / 2, 0),
 		0, D3DXVECTOR2(g_innerScale, g_innerScale), D3DCOLOR_RGBA(255, 255, 255, 255));
 
-	g_outer = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(500, 500, 0),
+	g_outer = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(SCREEN_WIDTH/2, SCREEN_HEIGHT-200, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_OUTER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_OUTER) / 2, 0),
 		0, D3DXVECTOR2(g_outerScale, g_outerScale), D3DCOLOR_RGBA(255, 255, 255, 255));
 }
@@ -117,7 +118,7 @@ void qteDefault()
 {
 	// reduce scale, rotate and increase alpha
 	g_outer.scale -= {0.02F, 0.02F};
-	g_inner.rotZ += 10;
+	//g_inner.rotZ += 10;
 	g_outer.rotZ += 10;
 
 	if (g_outer.color.a < 1.0F)
