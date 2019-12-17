@@ -72,10 +72,9 @@ void DrawScore()
 		s /= 10;
 
 		//表示位置を左にずらす
-		scoreSprite.position.x -= 0.2* width * 0.7;
+		scoreSprite.position.x -= 0.2 * width * 0.7;
 
 		fig++;
 	} 
 	while (fig < FIGURE_NUM);
 }
-
