@@ -21,8 +21,7 @@ static const TextureFile g_TextureFiles[] = {
 	{ "asset/texture/QTEUI_IN_1.png", 512, 512 },
 	{ "asset/texture/fuck.png", 256, 256 },
 	{ "asset/texture/score.png", 512, 512 },
-	{"asset/texture/title.png",1920,1080},
-
+	{ "asset/texture/title.png",1920,1080},
 };
 
 // texture file count

@@ -2,11 +2,14 @@
 
 enum SceneType
 {
-	SCENE_STARTSCREEN,
 	SCENE_TITLESCREEN,
+	SCENE_STARTSCREEN,
 	SCENE_GAMESCREEN,
 	SCENE_RESULTSCREEN
 };
+
+// call once at start
+void InitScene();
 
 // call every frame
 void UpdateScene();

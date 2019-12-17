@@ -200,6 +200,7 @@ bool Initialize(void)
 	InitSprite();
 	InitLight();
 
+	InitScene();
 	InitBillboard();
 	InitQTE();
 	InitTitle();
@@ -250,9 +251,9 @@ void Draw(void)
 
 	DrawObjects();
 	DrawTest();
-	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
-	DrawBillboard();
-	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+	//pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+	//DrawBillboard();
+	//pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 	DrawEffect();
 
 	// draw 2d sprites
@@ -284,6 +285,7 @@ void Finalize(void)
 	UninitCamera();
 	UninitEffect();
 	UninitShader();
+	FinalizeTitle();
 
 	Texture_Release();
 	MyDirect3D_Finalize();

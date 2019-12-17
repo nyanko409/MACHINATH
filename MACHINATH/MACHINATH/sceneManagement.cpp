@@ -15,6 +15,11 @@ SceneType GetScene()
 	return g_scene;
 }
 
+void InitScene()
+{
+	g_scene = SCENE_TITLESCREEN;
+}
+
 void UpdateScene()
 {
 	// return when in game screen
