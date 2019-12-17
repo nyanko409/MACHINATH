@@ -38,7 +38,7 @@ static int g_drawIndex;
 void InitMap()
 {
 	// init values
-	g_drawCount = 4;
+	g_drawCount = 5;
 	g_mapRadius = 90.0F;
 	g_poolDistance = 160.0F;
 

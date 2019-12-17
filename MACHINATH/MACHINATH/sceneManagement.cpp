@@ -10,7 +10,6 @@ void SetScene(SceneType sc)
 {
 	g_scene = sc;
 }
-
 SceneType GetScene()
 {
 	return g_scene;
