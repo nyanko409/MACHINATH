@@ -28,6 +28,7 @@
 #include "score.h"
 #include "map.h"
 #include "billboard.h"
+#include "Title.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -188,7 +189,6 @@ bool Initialize(void)
 	{
 		return false;
 	}
-
 	InitRenderState();
 	
 	InitShader();
@@ -202,6 +202,7 @@ bool Initialize(void)
 
 	InitBillboard();
 	InitQTE();
+	InitTitle();
 	InitScore();
 	InitPlayer();
 	InitPickup();
@@ -216,6 +217,8 @@ bool Initialize(void)
 void Update(void)
 {
 	Keyboard_Update();
+
+	UpdateTitle();
 
 	UpdateScene();
 	UpdateTimer();
@@ -244,6 +247,7 @@ void Draw(void)
 	// draw 3d meshes
 	pDevice->BeginScene();
 
+
 	DrawObjects();
 	DrawTest();
 	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
@@ -253,6 +257,8 @@ void Draw(void)
 
 	// draw 2d sprites
 	SpriteStart();
+
+	DrawTitle();
 
 	DrawQTE();
 	DrawScore();
