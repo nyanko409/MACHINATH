@@ -17,11 +17,11 @@ typedef struct TextureFile_tag
 
 // texture path
 static const TextureFile g_TextureFiles[] = {
-	{ "asset/texture/qte_outer.dds", 512, 512 },
-	{ "asset/texture/QTEUI_IN_1.png", 512, 512 },
-	{ "asset/texture/fuck.png", 256, 256 },
-	{ "asset/texture/score.png", 512, 512 },
-	{ "asset/texture/title.png",1920,1080},
+	{ "asset/texture/qte_outer.dds",	512, 512 },
+	{ "asset/texture/qte_inner.dds",	512, 512 },
+	{ "asset/texture/fuck.png",			256, 256 },
+	{ "asset/texture/score.png",		506, 317 },
+	{ "asset/texture/title.dds",		1920, 1080},
 };
 
 // texture file count
@@ -51,10 +51,12 @@ int Texture_Load(void)
 
 	for( int i = 0; i < TEXTURE_FILE_COUNT; i++ ) {
 		
-		if( FAILED(D3DXCreateTextureFromFile(pDevice, g_TextureFiles[i].filename, &g_pTextures[i])) ) 
-		{
+		//if( FAILED(D3DXCreateTextureFromFile(pDevice, g_TextureFiles[i].filename, &g_pTextures[i])) ) 
+		if (D3DXCreateTextureFromFileEx(pDevice, g_TextureFiles[i].filename, 
+			0, 0, 
+			0, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, 
+			D3DCOLOR_ARGB(150, 100, 100, 100), NULL, NULL, &g_pTextures[i]))
 			failed_count++;
-		}
 	}
 
 	return failed_count;

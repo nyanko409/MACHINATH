@@ -8,9 +8,8 @@ static LPD3DXSPRITE sprite;
 
 
 
-void SpriteDraw(const Sprite& sp, bool rotateAtPos,const RECT *pSrcRect)
+void SpriteDraw(const Sprite& sp, bool rotateAtPos, const RECT* pSrcRect)
 {
-	//sprite->SetTransform(&TransformSprite(sp.position, sp.rotZ, sp.scale, rotateAtPos));
 	sprite->SetTransform(&TransformSprite(sp.position, sp.rotZ, sp.scale, rotateAtPos));
 	sprite->Draw(sp.sprite, pSrcRect, &sp.center, NULL, sp.color);
 }
