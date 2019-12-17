@@ -59,7 +59,7 @@ void InitPlayer()
 
 	// create player
 	trans.position = { 0, 0, 0 };
-	g_player = new Player(trans, 0.6F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
+	g_player = new Player(trans,0.6F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(1);
 	g_player->SetAnimationSpeed(0.005F);
@@ -304,7 +304,7 @@ void Jump()
 void PlayerCamera()
 {
 	// set camera position
-	static int rotX = 0, rotY = 0;
+	static int rotX = -45, rotY = 0;
 	float offsetY = 10.0F;
 	float offsetZ = -10;
 
