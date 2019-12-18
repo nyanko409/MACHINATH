@@ -4,7 +4,7 @@
 
 
 // MASTER AUDIO VOLUME
-#define AUDIO_MASTER 1
+#define AUDIO_MASTER 0
 
 
 
@@ -22,7 +22,7 @@ typedef enum
 //*****************************************************************************
 HRESULT InitSound(HWND hWnd);
 void UninitSound(void);
-HRESULT PlaySound(SOUND_LABEL label);
+HRESULT PlaySound(SOUND_LABEL label, float volume = 1.0F);
 void StopSound(SOUND_LABEL label);
 void UpdateSound(void);
 void StopSound(void);
