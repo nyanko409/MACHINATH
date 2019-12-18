@@ -219,7 +219,7 @@ void UninitSound(void)
 //=============================================================================
 // ƒZƒOƒƒ“ƒgÄ¶(Ä¶’†‚È‚ç’âŽ~)
 //=============================================================================
-HRESULT PlaySound(SOUND_LABEL label)
+HRESULT PlaySound(SOUND_LABEL label, float volume)
 {
 	XAUDIO2_VOICE_STATE xa2state;
 	XAUDIO2_BUFFER buffer;
@@ -247,6 +247,9 @@ HRESULT PlaySound(SOUND_LABEL label)
 
 	// Ä¶
 	g_apSourceVoice[label]->Start(0);
+
+	// set volume
+	SetVolume(label, volume);
 
 	return S_OK;
 }
