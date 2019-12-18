@@ -59,7 +59,7 @@ void InitPlayer()
 
 	// create player
 	trans.position = { 0, 0, 0 };
-	g_player = new Player(trans,0.6F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
+	g_player = new Player(trans, 2.0F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(1);
 	g_player->SetAnimationSpeed(0.005F);
@@ -165,9 +165,11 @@ void HandleMapEvent()
 
 void Curve(EventData& event)
 {
+	float speed = event.speed * g_player->moveSpeed;
+
 	// get rotation to add
-	g_curRot += event.speed;
-	float frameRot = g_curRot > fabsf(event.value) ? g_curRot - event.speed : event.speed;
+	g_curRot += speed;
+	float frameRot = g_curRot > fabsf(event.value) ? g_curRot - speed : speed;
 	if (event.value < 0) frameRot *= -1;
 
 	if (g_curRot >= fabsf(event.value))
@@ -182,18 +184,27 @@ void Curve(EventData& event)
 
 void Slope(EventData& event)
 {
+	float speed = event.speed * g_player->moveSpeed;
+	float speed2 = event.speed2 * g_player->moveSpeed;
+
 	// while hight is not reached
 	if (g_curSlopeHeight < fabsf(event.value2))
 	{
 		// move up
-		g_curSlopeHeight += event.speed2;
+		g_curSlopeHeight += speed2;
 
 		// rotate to climb slope
 		if (g_curSlopeRot < fabsf(event.value))
 		{
-			g_curSlopeRot += event.speed;
-			float frameRot = g_curSlopeRot > fabsf(event.value) ? g_curSlopeRot - event.speed : event.speed;
+			g_curSlopeRot += speed;
+
+			float frameRot = g_curSlopeRot > fabsf(event.value) ? 
+				fabsf(event.value) - (g_curSlopeRot - speed) : speed;
 			if (event.value < 0) frameRot *= -1;
+
+			// clamp
+			if (g_curSlopeRot > fabsf(event.value)) 
+				g_curSlopeRot = fabsf(event.value);
 
 			// add rotation to player
 			g_parent->transform.rotation.x += frameRot;
@@ -202,8 +213,10 @@ void Slope(EventData& event)
 	else
 	{
 		// height is reached, rotate back
-		g_curSlopeRot -= event.speed;
-		float frameRot = g_curSlopeRot < 0 ? g_curSlopeRot + event.speed : event.speed;
+		g_curSlopeRot -= speed;
+
+		float frameRot = g_curSlopeRot < 0 ? 
+			g_curSlopeRot + speed : speed;
 		if (event.value < 0) frameRot *= -1;
 
 		// add rotation to player
@@ -304,7 +317,7 @@ void Jump()
 void PlayerCamera()
 {
 	// set camera position
-	static int rotX = -45, rotY = 0;
+	static int rotX = 0, rotY = 0;
 	float offsetY = 10.0F;
 	float offsetZ = -10;
 
