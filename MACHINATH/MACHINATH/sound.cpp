@@ -6,6 +6,7 @@
 #include <XAudio2.h>
 #include <mmsystem.h>
 #include "sound.h"
+#include "common.h"
 
 #pragma comment (lib, "xaudio2.lib") 
 #pragma comment (lib, "winmm.lib") 
@@ -33,11 +34,14 @@ IXAudio2MasteringVoice *g_pMasteringVoice = NULL;			// マスターボイス
 IXAudio2SourceVoice *g_apSourceVoice[SOUND_LABEL_MAX] = {};	// ソースボイス
 BYTE *g_apDataAudio[SOUND_LABEL_MAX] = {};					// オーディオデータ
 DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
+float g_DeltaTime;
+bool g_FadeFlag;
+float nowvolume;
 
 // 各音素材のパラメータ ここを各自の環境用に書き換える
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
-	{"asset/sound/test.wav", -1},			// BGM1
+	{"asset/sound/test_.wav", -1},			// BGM1
 };
 
 //=============================================================================
@@ -45,6 +49,9 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 //=============================================================================
 HRESULT InitSound(HWND hWnd)
 {
+	g_DeltaTime = 0;
+	g_FadeFlag = false;
+
 	HRESULT hr;
 
 	// COMライブラリの初期化
@@ -217,6 +224,14 @@ void UninitSound(void)
 }
 
 //=============================================================================
+// 更新処理
+//=============================================================================
+
+void UpdateSound(void)
+{
+
+}
+//=============================================================================
 // セグメント再生(再生中なら停止)
 //=============================================================================
 HRESULT PlaySound(SOUND_LABEL label)
@@ -379,4 +394,30 @@ HRESULT SetVolume(SOUND_LABEL LABEL,float volume,UINT32 OperationSet)
 {
 	g_apSourceVoice[LABEL]->SetVolume(volume * AUDIO_MASTER, OperationSet);
 	return S_OK;
+}
+
+void UpdateFadeSound(SOUND_LABEL LABEL, float TargetVolume, float TargetTime)
+{
+	if (g_DeltaTime < TargetTime)
+	{
+		SetVolume(LABEL, TargetVolume*(g_DeltaTime/TargetTime) + nowvolume * ((TargetTime - g_DeltaTime )/ TargetTime));
+		g_DeltaTime += (1.0f / 60.0f);
+	}
+	else
+	{
+		SetVolume(LABEL, TargetVolume);
+		g_DeltaTime = 0;
+		g_FadeFlag = false;
+	}
+}
+
+void StartFade(SOUND_LABEL LABEL)
+{
+	g_apSourceVoice[LABEL]->GetVolume(&nowvolume);
+	g_FadeFlag= true;
+}
+
+bool GetFadeFlag()
+{
+	return g_FadeFlag;
 }
