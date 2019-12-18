@@ -9,7 +9,7 @@
 #include "common.h"
 #include "sound.h"
 
-static Sprite titleSprite;
+static Sprite g_title;
 
 
 void InitTitle()
@@ -17,7 +17,7 @@ void InitTitle()
 	PlaySound(SOUND_LABEL_BGM_TITLE);
 
 	// init title sprite
-	titleSprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE), D3DXVECTOR3(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 0),
+	g_title = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE), D3DXVECTOR3(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE) / 2 ,0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 }
@@ -39,7 +39,7 @@ void DrawTitle()
 	// draw if in title screen
 	if (GetScene() == SCENE_TITLESCREEN)
 	{
-		SpriteDraw(titleSprite);
+		SpriteDraw(g_title);
 	}
 }
 

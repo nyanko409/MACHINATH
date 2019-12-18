@@ -59,7 +59,7 @@ void InitPlayer()
 
 	// create player
 	trans.position = { 0, 0, 0 };
-	g_player = new Player(trans, 2.0F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
+	g_player = new Player(trans, 2.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(1);
 	g_player->SetAnimationSpeed(0.005F);
@@ -246,7 +246,7 @@ void MoveSideways()
 		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y - 90));
 		D3DXVec3TransformCoord(&left, &left, &mRot);
 
-		g_parent->transform.position += left * g_player->moveSpeed;
+		g_parent->transform.position += left * g_player->sideSpeed;
 
 		g_player->transform.localRotation.z -= g_zRotSpeed;
 		if (g_player->transform.localRotation.z < -g_zRotMax)
@@ -259,7 +259,7 @@ void MoveSideways()
 		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y + 90));
 		D3DXVec3TransformCoord(&right, &right, &mRot);
 
-		g_parent->transform.position += right * g_player->moveSpeed;
+		g_parent->transform.position += right * g_player->sideSpeed;
 
 		g_player->transform.localRotation.z += g_zRotSpeed;
 		if (g_player->transform.localRotation.z > g_zRotMax)
