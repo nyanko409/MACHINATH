@@ -27,8 +27,12 @@ void UpdateTitle()
 	// switch to game screen when key is pressed
 	if (Keyboard_IsPress(DIK_SPACE))
 	{
-		SetVolume(SOUND_LABEL_BGM_TITLE, 0.5f);
+		StartFade(SOUND_LABEL_BGM_TITLE);
 		SetScene(SCENE_GAMESCREEN);
+	}
+	if (GetFadeFlag())
+	{
+		UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0.0f, 10.0f);
 	}
 }
 
