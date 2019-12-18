@@ -37,7 +37,7 @@ DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// オーディオデータサイズ
 // 各音素材のパラメータ ここを各自の環境用に書き換える
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
-	{"asset/sound/test.wav", -1},			// BGM1
+	{"asset/sound/title.wav", -1},			// BGM1
 };
 
 //=============================================================================
