@@ -221,6 +221,7 @@ bool Initialize(void)
 void Update(void)
 {
 	Keyboard_Update();
+	UpdateSound();
 
 	UpdateTitle();
 

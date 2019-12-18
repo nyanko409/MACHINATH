@@ -30,10 +30,8 @@ void UpdateTitle()
 		StartFade(SOUND_LABEL_BGM_TITLE);
 		SetScene(SCENE_GAMESCREEN);
 	}
-	if (GetFadeFlag())
-	{
-		UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0.0f, 10.0f);
-	}
+ 
+	UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0.0f, 10.0f);
 }
 
 void DrawTitle()

@@ -224,15 +224,15 @@ void UninitSound(void)
 }
 
 //=============================================================================
-// �X�V����
+// Update Sound
 //=============================================================================
-
 void UpdateSound(void)
 {
 
 }
+
 //=============================================================================
-// �Z�O�����g�Đ�(�Đ����Ȃ��~)
+// Play Sound
 //=============================================================================
 HRESULT PlaySound(SOUND_LABEL label, float volume)
 {
@@ -270,7 +270,7 @@ HRESULT PlaySound(SOUND_LABEL label, float volume)
 }
 
 //=============================================================================
-// �Z�O�����g��~(���x���w��)
+// Stop Sound
 //=============================================================================
 void StopSound(SOUND_LABEL label)
 {
@@ -289,7 +289,7 @@ void StopSound(SOUND_LABEL label)
 }
 
 //=============================================================================
-// �Z�O�����g��~(�S��)
+// Stop all sound
 //=============================================================================
 void StopSound(void)
 {
@@ -305,7 +305,7 @@ void StopSound(void)
 }
 
 //=============================================================================
-// �`�����N�̃`�F�b�N
+// check chunk
 //=============================================================================
 HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition)
 {
@@ -373,7 +373,7 @@ HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkD
 }
 
 //=============================================================================
-// �`�����N�f�[�^�̓ǂݍ���
+// read cunk data
 //=============================================================================
 HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset)
 {
@@ -401,9 +401,11 @@ HRESULT SetVolume(SOUND_LABEL LABEL,float volume,UINT32 OperationSet)
 
 void UpdateFadeSound(SOUND_LABEL LABEL, float TargetVolume, float TargetTime)
 {
+	if (!g_FadeFlag) return;
+
 	if (g_DeltaTime < TargetTime)
 	{
-		SetVolume(LABEL, TargetVolume*(g_DeltaTime/TargetTime) + nowvolume * ((TargetTime - g_DeltaTime )/ TargetTime));
+		SetVolume(LABEL, TargetVolume * (g_DeltaTime/TargetTime) + nowvolume * ((TargetTime - g_DeltaTime )/ TargetTime));
 		g_DeltaTime += (1.0f / 60.0f);
 	}
 	else
@@ -417,10 +419,5 @@ void UpdateFadeSound(SOUND_LABEL LABEL, float TargetVolume, float TargetTime)
 void StartFade(SOUND_LABEL LABEL)
 {
 	g_apSourceVoice[LABEL]->GetVolume(&nowvolume);
-	g_FadeFlag= true;
-}
-
-bool GetFadeFlag()
-{
-	return g_FadeFlag;
+	g_FadeFlag = true;
 }
