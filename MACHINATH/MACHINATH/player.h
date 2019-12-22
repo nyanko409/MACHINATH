@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gameObject.h"
+#include "collider.h"
 #include "mesh.h"
 
 // player class

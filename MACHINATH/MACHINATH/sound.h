@@ -4,7 +4,7 @@
 
 
 // MASTER AUDIO VOLUME
-#define AUDIO_MASTER 1
+#define AUDIO_MASTER 0
 
 
 

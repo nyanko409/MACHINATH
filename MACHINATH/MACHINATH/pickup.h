@@ -1,5 +1,6 @@
 #pragma once
 
+#include "collider.h"
 #include "mesh.h"
 
 // pickup class - medals, powerups etc

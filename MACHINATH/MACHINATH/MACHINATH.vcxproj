@@ -129,9 +129,9 @@
   <ItemGroup>
     <ClCompile Include="billboard.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="collider.cpp" />
     <ClCompile Include="customMath.cpp" />
     <ClCompile Include="effect.cpp" />
-    <ClCompile Include="fog.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
@@ -156,10 +156,10 @@
   <ItemGroup>
     <ClInclude Include="billboard.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="collider.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="customMath.h" />
     <ClInclude Include="effect.h" />
-    <ClInclude Include="fog.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="input.h" />

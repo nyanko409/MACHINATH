@@ -31,7 +31,7 @@ void UpdateTitle()
 		SetScene(SCENE_GAMESCREEN);
 	}
  
-	UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0.0f, 10.0f);
+	//UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0.0f, 10.0f);
 }
 
 void DrawTitle()
