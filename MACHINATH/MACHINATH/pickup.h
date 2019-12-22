@@ -17,10 +17,7 @@ public:
 	~Pickup() {}
 
 	// draw
-	void Draw() override
-	{
-		MeshObject::Draw();
-	}
+	void Draw() override;
 };
 
 

@@ -35,6 +35,7 @@ void Slope(EventData& event);
 // override player draw
 void Player::Draw()
 {
+	BoxCollider::DrawCollider(*GetPlayer());
 	BoneObject::Draw();
 }
 
@@ -59,7 +60,7 @@ void InitPlayer()
 
 	// create player
 	trans.position = { 0, 0, 0 };
-	g_player = new Player(trans, 1.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 5, 5, 5, g_parent);
+	g_player = new Player(trans, 1.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(1);
 	g_player->SetAnimationSpeed(0.005F);
@@ -81,7 +82,7 @@ void UninitPlayer()
 void UpdatePlayer()
 {
 	if (GetScene() != SCENE_GAMESCREEN) return;
-
+	
 	// map events
 	HandleMapEvent();
 

@@ -1,5 +1,4 @@
 #include <Windows.h>
-#include <d3d9.h>
 #include <d3dx9.h>
 #include <thread>
 #include <time.h>
@@ -30,6 +29,7 @@
 #include "billboard.h"
 #include "Title.h"
 #include "sound.h"
+#include "collider.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -190,10 +190,10 @@ bool Initialize(void)
 	{
 		return false;
 	}
-	InitSound(g_hWnd);
 
 	InitRenderState();
 	
+	InitSound(g_hWnd);
 	InitShader();
 	InitCamera();
 	InitFont();
@@ -252,7 +252,6 @@ void Draw(void)
 	// draw 3d meshes
 	pDevice->BeginScene();
 
-
 	DrawObjects();
 	DrawTest();
 	//pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
@@ -264,7 +263,6 @@ void Draw(void)
 	SpriteStart();
 
 	DrawTitle();
-
 	DrawQTE();
 	DrawScore();
 

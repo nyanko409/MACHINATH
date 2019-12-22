@@ -17,6 +17,7 @@ struct v3t
 	v3t() {}
 	v3t(T x, T y, T z) : x(x), y(y), z(z) {}
 	~v3t() {}
+
 };
 
 // type definition of v3t struct for convenience

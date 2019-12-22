@@ -1,4 +1,18 @@
+#include "common.h"
 #include "collider.h"
+
+// color of the collider
+#define COL_COLOR D3DCOLOR(D3DCOLOR_RGBA(0, 0, 0, 255))
+
+// fvf for linestrip
+#define FVF_LINE (D3DFVF_XYZ | D3DFVF_DIFFUSE)
+
+// vertices for linestrip
+struct LINE_VERTEX
+{
+	v3t_float pos;
+	D3DCOLOR color;
+};
 
 
 bool BoxCollider::CheckCollision(const BoxCollider& col1, const BoxCollider& col2)
@@ -19,4 +33,47 @@ bool BoxCollider::CheckCollision(const BoxCollider& col1, const BoxCollider& col
 
 	// no collision occured
 	return false;
+}
+
+
+void BoxCollider::DrawCollider(const BoxCollider& col)
+{
+	// init
+	auto device = MyDirect3D_GetDevice();
+
+	D3DXMATRIX matIdentity;
+	D3DXMatrixIdentity(&matIdentity);
+	device->SetTransform(D3DTS_WORLD, &matIdentity);
+	device->SetTexture(0, NULL);
+	device->SetRenderState(D3DRS_LIGHTING, false);
+
+	// get size and current top left position
+	v3t_float size = col.GetSize();
+	v3t_float topLeft = col.isStatic ? col.m_topLeft : col.GetTopLeft();
+
+	LINE_VERTEX vert[] =
+	{
+		// back
+		{topLeft, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, COL_COLOR},
+		{topLeft, COL_COLOR}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, COL_COLOR},
+		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, COL_COLOR},
+		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, COL_COLOR},
+
+		// front
+		{v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, COL_COLOR},
+		{v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, COL_COLOR}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR},
+		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR},
+		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR},
+
+		// center
+		{v3t_float{topLeft.x, topLeft.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, COL_COLOR},
+		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, COL_COLOR},
+		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR},
+		{v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR}
+	};
+
+	device->SetFVF(FVF_LINE);
+	device->DrawPrimitiveUP(D3DPT_LINELIST, 12, vert, sizeof(LINE_VERTEX));
+
+	device->SetRenderState(D3DRS_LIGHTING, true);
 }

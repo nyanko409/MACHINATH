@@ -13,7 +13,7 @@ private:
 	GameObject* m_objTransform;
 
 public:
-	bool isStatic;
+	bool isStatic;		// set it to true if the object does not move to skip unnessacery calculations
 
 	// constructor
 	BoxCollider(GameObject* transform, float width, float height, float depth, bool isStatic = false) :
@@ -45,4 +45,7 @@ public:
 
 	// calculate collision between two box colliders
 	static bool CheckCollision(const BoxCollider& col1, const BoxCollider& col2);
+
+	// draw the collider on screen
+	static void DrawCollider(const BoxCollider& col);
 };

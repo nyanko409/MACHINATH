@@ -18,6 +18,13 @@ static float g_zRotSpeed = 0;
 static float g_poolDistance = 0;
 
 
+void Pickup::Draw()
+{
+	for (int i = 0; i < g_pickup.size(); ++i)
+		BoxCollider::DrawCollider(*g_pickup[i]);
+	MeshObject::Draw();
+}
+
 void InitPickup()
 {
 	// init
@@ -37,7 +44,6 @@ void InitPickup()
 void UninitPickup()
 {
 	// free memory
-		// delete all pickups with the given mapId
 	for (int i = 0; i < g_pickup.size(); ++i)
 	{
 		if (g_pickup[i] != nullptr)
@@ -102,7 +108,7 @@ void SpawnPickup(int mapId, D3DXVECTOR3 position, GameObject* parent)
 void SpawnPickup(int mapId, float posX, float posY, float posZ, GameObject* parent)
 {
 	Transform trans(D3DXVECTOR3(posX, posY, posZ), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(0.2F, 0.2F, 0.2F));
-	g_pickup.emplace_back(new Pickup(mapId, trans, MESH_COIN, SHADER_DEFAULT, 3, 3, 3, true, parent));
+	g_pickup.emplace_back(new Pickup(mapId, trans, MESH_COIN, SHADER_DEFAULT, 12, 12, 12, true, parent));
 }
 
 std::vector<Pickup*>* GetPickup()
