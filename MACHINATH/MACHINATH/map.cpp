@@ -38,6 +38,12 @@ static float g_poolDistance;
 static int g_drawIndex;
 
 
+void Map::Draw()
+{
+	MeshObject::Draw();
+}
+
+
 void InitMap()
 {
 	// init values

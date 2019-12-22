@@ -52,6 +52,8 @@ public:
 	}
 
 	~Map() {}
+
+	void Draw() override;
 };
 
 
