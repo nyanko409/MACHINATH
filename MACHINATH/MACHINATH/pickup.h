@@ -10,8 +10,8 @@ public:
 	int mapId;
 
 	// constructor
-	Pickup(int mapId, Transform trans, MESH_NAME mesh, SHADER_TYPE type, float width, float height, float depth, GameObject* parent = nullptr) :
-		mapId(mapId), MeshObject(trans, mesh, type, parent), BoxCollider(this, width, height, depth) {}
+	Pickup(int mapId, Transform trans, MESH_NAME mesh, SHADER_TYPE type, float width, float height, float depth, bool isStatic = true, GameObject* parent = nullptr) :
+		mapId(mapId), MeshObject(trans, mesh, type, parent), BoxCollider(this, width, height, depth, isStatic) {}
 	
 	// destructor
 	~Pickup() {}
@@ -21,8 +21,6 @@ public:
 	{
 		MeshObject::Draw();
 	}
-
-	
 };
 
 
