@@ -21,7 +21,7 @@ static float g_poolDistance = 0;
 void Pickup::Draw()
 {
 	for (int i = 0; i < g_pickup.size(); ++i)
-		BoxCollider::DrawCollider(*g_pickup[i]);
+		BoxCollider::DrawCollider(g_pickup[i]->col);
 	MeshObject::Draw();
 }
 
@@ -60,7 +60,7 @@ void UpdatePickup()
 		g_pickup[i]->transform.localRotation.y += g_zRotSpeed;
 
 		// check for collision with player
-		if (BoxCollider::CheckCollision(*g_pickup[i], *GetPlayer()))
+		if (BoxCollider::CheckCollision(g_pickup[i]->col, GetPlayer()->col))
 		{
 			// collided, play effect and delete pickup
 			//PlayEffect(EFFECT_JUMP, pickup[i]->transform.position);

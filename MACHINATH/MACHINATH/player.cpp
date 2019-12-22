@@ -35,7 +35,7 @@ void Slope(EventData& event);
 // override player draw
 void Player::Draw()
 {
-	BoxCollider::DrawCollider(*GetPlayer());
+	BoxCollider::DrawCollider(GetPlayer()->col);
 	BoneObject::Draw();
 }
 

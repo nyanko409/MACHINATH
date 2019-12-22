@@ -3,7 +3,7 @@
 #include "gameObject.h"
 
 
-// AABB (axis aligned bounding box collision), inherit if needed
+// AABB Collider (axis aligned bounding box)
 class BoxCollider
 {
 private:
