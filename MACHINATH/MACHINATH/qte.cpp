@@ -14,7 +14,7 @@
 #define BAD		0.3F
 
 // globals
-static Sprite g_inner, g_outer, g_after;
+static Sprite g_inner, g_outer, g_press;
 
 static float g_outerScale = 1.0F;
 static float g_innerScale = 0.4F;
@@ -73,7 +73,7 @@ void InitQTE()
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_OUTER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_OUTER) / 2, 0),
 		0, D3DXVECTOR2(g_outerScale, g_outerScale), D3DCOLOR_RGBA(255, 255, 255, 255));
 
-	g_after = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_AFTER), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200, 0),
+	g_press = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_AFTER), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_INNER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_INNER) / 2, 0),
 		0, D3DXVECTOR2(g_innerScale, g_innerScale), D3DCOLOR_RGBA(255, 255, 255, 255));
 }
@@ -87,7 +87,7 @@ void UpdateQTE()
 {
 	// start qte when its not active for test
 	if (!g_active)
-		StartQTE(QTE_DEFAULT);
+		StartQTE(QTE_MULTIPRESS);
 
 	// update active qte
 	if (g_active)
@@ -107,6 +107,9 @@ void DrawQTE()
 	{
 		SpriteDraw(g_inner);
 
+		if (Keyboard_IsPress(DIK_L))
+			SpriteDraw(g_press);
+
 		if(g_activeQTE == QTE_DEFAULT)
 			SpriteDraw(g_outer);
 
@@ -119,11 +122,6 @@ void DrawQTE()
 		}
 	}
 
-	if (Keyboard_IsPress(DIK_L))
-	{
-		SpriteDraw(g_after);
-	}
-	
 }
 
 
@@ -158,9 +156,6 @@ void qteDefault()
 
 		// add to score and finish qte
 		AddScore(score);
-
-
-
 		g_active = false;
 	}
 
@@ -185,7 +180,7 @@ void qteMultiPress()
 			return;
 		}
 
-		g_outerMultiSprite.push_back(Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(500, 500, 0),
+		g_outerMultiSprite.push_back(Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200, 0),
 			D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_OUTER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_OUTER) / 2, 0),
 			0, D3DXVECTOR2(g_outerScale, g_outerScale), D3DXCOLOR(1.0F, 1.0F, 1.0F, 0.0F)));
 	}
@@ -215,4 +210,3 @@ void qteMultiPress()
 			g_outerMultiSprite.erase(g_outerMultiSprite.begin());
 	}
 }
-

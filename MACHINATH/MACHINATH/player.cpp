@@ -62,7 +62,7 @@ void InitPlayer()
 	trans.position = { 0, 0, 0 };
 	g_player = new Player(trans, 1.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 3;
-	g_player->PlayAnimation(1);
+	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
 
 	g_camPos = trans.position;
