@@ -22,6 +22,7 @@ static const TextureFile g_TextureFiles[] = {
 	{ "asset/texture/fuck.png",			256, 256 },
 	{ "asset/texture/score.png",		506, 317 },
 	{ "asset/texture/title.dds",		1920, 1080},
+	{"asset/texture/qte_after.dds",		512,512},
 };
 
 // texture file count

@@ -14,10 +14,13 @@
 #define BAD		0.3F
 
 // globals
-static Sprite g_inner, g_outer;
+static Sprite g_inner, g_outer, g_after;
+
 static float g_outerScale = 1.0F;
 static float g_innerScale = 0.4F;
+
 static float g_multiDelay = 0.3F;
+
 static int g_multiCount = 5;
 
 static std::vector<Sprite> g_outerMultiSprite;
@@ -25,6 +28,7 @@ static QTE g_activeQTE;
 static bool g_active;
 static int g_curCount;
 static float g_curTime;
+
 
 void qteDefault();
 void qteMultiPress();
@@ -68,6 +72,10 @@ void InitQTE()
 	g_outer = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(SCREEN_WIDTH/2, SCREEN_HEIGHT-200, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_OUTER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_OUTER) / 2, 0),
 		0, D3DXVECTOR2(g_outerScale, g_outerScale), D3DCOLOR_RGBA(255, 255, 255, 255));
+
+	g_after = Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_AFTER), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200, 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_INNER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_INNER) / 2, 0),
+		0, D3DXVECTOR2(g_innerScale, g_innerScale), D3DCOLOR_RGBA(255, 255, 255, 255));
 }
 
 void UninitQTE()
@@ -110,6 +118,12 @@ void DrawQTE()
 			}
 		}
 	}
+
+	if (Keyboard_IsPress(DIK_L))
+	{
+		SpriteDraw(g_after);
+	}
+	
 }
 
 
@@ -144,6 +158,9 @@ void qteDefault()
 
 		// add to score and finish qte
 		AddScore(score);
+
+
+
 		g_active = false;
 	}
 
@@ -198,3 +215,4 @@ void qteMultiPress()
 			g_outerMultiSprite.erase(g_outerMultiSprite.begin());
 	}
 }
+
