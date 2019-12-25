@@ -11,9 +11,6 @@
 #include "input.h"
 #include "pickup.h"
 
-void LoadMapFromFile(char* path);
-Transform GetStartTransform(const Map& prevMap); 
-Direction GetExitDirection(const MapData& data, const Direction& lastExit);
 
 // globals
 // EVENTDATA
@@ -36,6 +33,11 @@ static int g_drawCount;
 static float g_poolDistance;
 
 static int g_drawIndex;
+
+void LoadMapFromFile(char* path);
+Transform GetStartTransform(const Map& prevMap);
+Direction GetExitDirection(const MapData& data, const Direction& lastExit);
+std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, Direction exit);
 
 
 void Map::Draw()
@@ -107,9 +109,7 @@ void LoadMapFromFile(char* path)
 {
 	std::ifstream in(path);
 	g_map = std::vector<Map*>();
-	std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> collider;
-	collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({10, 10, 20}, {10, 5, 0}));
-	collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 20 }, { -10, 5, 0 }));
+
 	int id = 0;
 	char c;
 
@@ -117,7 +117,7 @@ void LoadMapFromFile(char* path)
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
 	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
 
-	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, collider));
+	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, GetMapCollider(g_MapData[0].name, dir)));
 	while (true)
 	{
 		try
@@ -143,7 +143,7 @@ void LoadMapFromFile(char* path)
 			// cast data to int
 			int ci = c - '0';
 
-			// check for exception
+			// check for invalid data
 			if (ci < 0 || ci > 9) throw std::runtime_error("Failed to parse map.txt!");
 
 			// get data for next map
@@ -151,7 +151,7 @@ void LoadMapFromFile(char* path)
 			dir = GetExitDirection(g_MapData[ci], dir);
 
 			// populate map
-			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, collider));
+			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, GetMapCollider(g_MapData[ci].name, dir)));
 		}
 		catch (std::runtime_error& e)
 		{
@@ -195,6 +195,20 @@ Transform GetStartTransform(const Map& prevMap)
 	}
 
 	return trans;
+}
+
+// return a list of collider of given map
+std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, Direction exit)
+{
+	auto collider = std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>();
+
+	if (mesh == MESH_NAME::MESH_MAP_STRAIGHT)
+	{
+		collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 20 }, { 10, 5, 0 }));
+		collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 20 }, { -10, 5, 0 }));
+	}
+
+	return collider;
 }
 
 Direction GetExitDirection(const MapData& data, const Direction& lastExit)
