@@ -40,6 +40,11 @@ static int g_drawIndex;
 
 void Map::Draw()
 {
+	for (int i = 0; i < col.size(); ++i)
+	{
+		BoxCollider::DrawCollider(col[i]);
+	}
+
 	MeshObject::Draw();
 }
 
@@ -102,13 +107,17 @@ void LoadMapFromFile(char* path)
 {
 	std::ifstream in(path);
 	g_map = std::vector<Map*>();
+	std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> collider;
+	collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({10, 10, 20}, {10, 5, 0}));
+	collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 20 }, { -10, 5, 0 }));
 	int id = 0;
 	char c;
 
 	// first map is always a straight road
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
 	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
-	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, SHADER_DEFAULT));
+
+	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, collider));
 	while (true)
 	{
 		try
@@ -133,6 +142,8 @@ void LoadMapFromFile(char* path)
 
 			// cast data to int
 			int ci = c - '0';
+
+			// check for exception
 			if (ci < 0 || ci > 9) throw std::runtime_error("Failed to parse map.txt!");
 
 			// get data for next map
@@ -140,7 +151,7 @@ void LoadMapFromFile(char* path)
 			dir = GetExitDirection(g_MapData[ci], dir);
 
 			// populate map
-			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, SHADER_DEFAULT));
+			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, collider));
 		}
 		catch (std::runtime_error& e)
 		{

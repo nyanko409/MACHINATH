@@ -87,7 +87,7 @@ void UpdatePlayer()
 	HandleMapEvent();
 
 	// move player forward
-	MovePlayer();
+	//MovePlayer();
 
 	// move left and right
 	MoveSideways();
@@ -96,7 +96,7 @@ void UpdatePlayer()
 	Jump();
 
 	// camera movement
-	PlayerCamera();
+	//PlayerCamera();
 }
 
 

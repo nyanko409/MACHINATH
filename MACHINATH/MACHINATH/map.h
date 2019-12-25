@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "mesh.h"
+#include "collider.h"
 
 // exit direction of the map
 enum class Direction
@@ -41,14 +42,26 @@ class Map : public MeshObject
 {
 public:
 	int id;
+	std::vector<BoxCollider> col;
 	Direction exit;
 	MapData data;
 
-	Map(int id, Transform transform, MapData data, Direction exit, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
-		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data)
+	Map(int id, Transform transform, MapData data, Direction exit, 
+		std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> collider, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
+		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data), col(col)
 	{
 		// disable draw
 		enableDraw = false;
+
+		// init collider
+		col = std::vector<BoxCollider>();
+
+		for (int i = 0; i < collider.size(); ++i)
+		{
+			col.emplace_back((BoxCollider(this, 
+				collider[i].first.x, collider[i].first.y, collider[i].first.z, 
+				collider[i].second)));
+		}
 	}
 
 	~Map() {}
