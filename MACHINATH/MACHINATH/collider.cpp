@@ -2,7 +2,7 @@
 #include "collider.h"
 
 // color of the collider
-#define COL_COLOR D3DCOLOR(D3DCOLOR_RGBA(0, 0, 0, 255))
+#define COL_COLOR D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255))
 
 // fvf for linestrip
 #define FVF_LINE (D3DFVF_XYZ | D3DFVF_DIFFUSE)
