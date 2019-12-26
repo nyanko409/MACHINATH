@@ -48,10 +48,10 @@ public:
 		// draw mesh
 		for (DWORD i = 0; i < mesh->numMaterial; i++)
 		{
-			SetMaterial(&(mesh->material[i]));
+			SetMaterial(&(mesh->pMaterial[i]));
 
-			if (mesh->texture[i] != NULL)
-				device->SetTexture(0, mesh->texture[i]);
+			if (mesh->pTexture[i] != NULL)
+				device->SetTexture(0, mesh->pTexture[i]);
 			else
 				device->SetTexture(0, NULL);
 

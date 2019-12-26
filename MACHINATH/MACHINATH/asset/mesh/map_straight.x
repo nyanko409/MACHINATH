@@ -28,6 +28,17 @@ Frame Root {
         1;
         4;0,0,0,0;;
       } // End of _26 normals
+      MeshMaterialList { // _26 material list
+        1;
+        1;
+        0;
+        Material Material_001 {
+           0.000000; 0.640000; 0.295253; 1.000000;;
+           96.078431;
+           0.500000; 0.500000; 0.500000;;
+           0.000000; 0.000000; 0.000000;;
+        }
+      } // End of _26 material list
     } // End of _26 mesh
   } // End of _26
   Frame Cube {

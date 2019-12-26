@@ -64,7 +64,7 @@ void InitPlayer()
 	g_parent = new GameObject(trans);
 
 	// create player
-	trans.position = { 0, 0, 0 };
+	trans.position = { 0, -1.5, 0 };
 	g_player = new Player(trans, 1.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 3;
 	g_player->PlayAnimation(0);
@@ -73,7 +73,7 @@ void InitPlayer()
 	g_camPos = trans.position;
 
 	// create skateboard and make player the parent
-	trans = Transform(D3DXVECTOR3(-0.2F, -2.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, g_player);
 }
 
@@ -92,7 +92,7 @@ void UpdatePlayer()
 	HandleMapEvent();
 
 	// move player forward
-	MovePlayer();
+	//MovePlayer();
 
 	// move left and right
 	MoveSideways();
@@ -101,7 +101,7 @@ void UpdatePlayer()
 	Jump();
 
 	// camera movement
-	PlayerCamera();
+	//PlayerCamera();
 }
 
 

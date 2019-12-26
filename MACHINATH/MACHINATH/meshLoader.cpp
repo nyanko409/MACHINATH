@@ -35,6 +35,8 @@ void LoadMesh()
 {
 	// get device
 	auto device = MyDirect3D_GetDevice();
+	auto paths = std::vector<std::string>();
+	auto tex = std::vector<LPDIRECT3DTEXTURE9>();
 
 	// load every unanimated mesh
 	for (int i = 0; i < g_mesh.size(); i++)
@@ -45,26 +47,64 @@ void LoadMesh()
 
 		// set materials and textures
 		D3DXMATERIAL* temp = (D3DXMATERIAL*)matBuffer->GetBufferPointer();
-		g_mesh[i].material = new D3DMATERIAL9[g_mesh[i].numMaterial];
-		g_mesh[i].texture = new LPDIRECT3DTEXTURE9[g_mesh[i].numMaterial];
+		g_mesh[i].pMaterial = new D3DMATERIAL9[g_mesh[i].numMaterial];
+		g_mesh[i].pTexture = new LPDIRECT3DTEXTURE9[g_mesh[i].numMaterial];
 		std::string path;
 
 		// loop for every material and set material and texture
 		for (DWORD j = 0; j < g_mesh[i].numMaterial; j++)
 		{
-			g_mesh[i].material[j] = temp[j].MatD3D;
-			g_mesh[i].material[j].Ambient = g_mesh[i].material[j].Diffuse;
+			g_mesh[i].pMaterial[j] = temp[j].MatD3D;
+			g_mesh[i].pMaterial[j].Ambient = g_mesh[i].pMaterial[j].Diffuse;
 
 			if (temp[j].pTextureFilename != NULL)
 			{
-				path = "asset/texture/";
+				path = "asset/texture/_mesh/";
 				path += temp[j].pTextureFilename;
 			}
 			else
 				path = "";
 
-		if (FAILED(D3DXCreateTextureFromFileA(device, path.c_str(), &g_mesh[i].texture[j])))
-				g_mesh[i].texture[j] = NULL;
+			// always load first texture
+			if (paths.size() == 0)
+			{
+
+				if (FAILED(D3DXCreateTextureFromFileA(device, path.c_str(), &g_mesh[i].pTexture[j])))
+					g_mesh[i].pTexture[j] = NULL;
+				else
+				{
+					paths.emplace_back(path);
+					tex.emplace_back(g_mesh[i].pTexture[j]);
+				}
+			}
+
+			// check if the texture is already created, when true point it to the texture
+			else
+			{
+				bool exists = false;
+				for (int k = 0; k < paths.size(); ++k)
+				{
+					if (path == paths[k])
+					{
+						// texture already exists, point to it
+						exists = true;
+						g_mesh[i].pTexture[j] = tex[k];
+						break;
+					}
+				}
+
+				// create new from path
+				if (!exists)
+				{
+					if (FAILED(D3DXCreateTextureFromFileA(device, path.c_str(), &g_mesh[i].pTexture[j])))
+						g_mesh[i].pTexture[j] = NULL;
+					else
+					{
+						paths.emplace_back(path);
+						tex.emplace_back(g_mesh[i].pTexture[j]);
+					}
+				}
+			}
 		}
 	}
 

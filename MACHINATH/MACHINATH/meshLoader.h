@@ -33,8 +33,8 @@ struct MESH_DATA
 {
 	std::string meshPath;
 	LPD3DXMESH mesh;
-	D3DMATERIAL9* material;
-	LPDIRECT3DTEXTURE9* texture;
+	D3DMATERIAL9* pMaterial;
+	LPDIRECT3DTEXTURE9* pTexture;
 	DWORD numMaterial;
 };
 
@@ -185,7 +185,7 @@ public:
 					if (g_TextureList[container->pMaterials[i].pTextureFilename] == NULL)
 					{
 						LPDIRECT3DTEXTURE9 texture;
-						path = "asset/texture/";
+						path = "asset/texture/_bone_mesh/";
 						path += container->pMaterials[i].pTextureFilename;
 
 						if (SUCCEEDED(D3DXCreateTextureFromFileA(
