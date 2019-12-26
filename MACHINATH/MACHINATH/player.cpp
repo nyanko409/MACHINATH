@@ -36,7 +36,12 @@ void Slope(EventData& event);
 void Player::Draw()
 {
 	BoxCollider::DrawCollider(GetPlayer()->col);
+
+	auto device = MyDirect3D_GetDevice();
+	//device->SetRenderState(D3DRS_LIGHTING, false);
 	BoneObject::Draw();
+	//device->SetRenderState(D3DRS_LIGHTING, true);
+
 }
 
 
@@ -87,7 +92,7 @@ void UpdatePlayer()
 	HandleMapEvent();
 
 	// move player forward
-	//MovePlayer();
+	MovePlayer();
 
 	// move left and right
 	MoveSideways();
@@ -96,7 +101,7 @@ void UpdatePlayer()
 	Jump();
 
 	// camera movement
-	//PlayerCamera();
+	PlayerCamera();
 }
 
 

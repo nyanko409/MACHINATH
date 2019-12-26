@@ -25,6 +25,7 @@ static MapData g_MapData[] =
 	{MESH_MAP_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 46.0F, false, false, -20, 5.0F, 8, 0.083F}}},
 	{MESH_MAP_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 6.0F, false, false, 20, 5.0F, -7.5F, 0.05F}}},
 	{MESH_MAP_CLIFF, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_START, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 };
 std::vector<EventData> g_event; 
 std::vector<Map*> g_map;
@@ -115,9 +116,9 @@ void LoadMapFromFile(char* path)
 
 	// first map is always a straight road
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
+	Direction dir = GetExitDirection(g_MapData[7], Direction::NORTH);
 
-	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, GetMapCollider(g_MapData[0].name, dir)));
+	g_map.emplace_back(new Map(id++, transform, g_MapData[7], dir, GetMapCollider(g_MapData[0].name, dir)));
 	while (true)
 	{
 		try
