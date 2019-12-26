@@ -92,7 +92,7 @@ void UpdatePlayer()
 	HandleMapEvent();
 
 	// move player forward
-	//MovePlayer();
+	MovePlayer();
 
 	// move left and right
 	MoveSideways();
@@ -101,7 +101,7 @@ void UpdatePlayer()
 	Jump();
 
 	// camera movement
-	//PlayerCamera();
+	PlayerCamera();
 }
 
 
@@ -307,7 +307,7 @@ void Jump()
 
 		g_player->transform.rotation.y += finalRot;
 		//g_player->transform.rotation.z += finalRot;
-		g_player->transform.rotation.x += finalRot;
+		//g_player->transform.rotation.x += finalRot;
 
 		if (g_jumpCnt > 180)
 		{
