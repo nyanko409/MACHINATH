@@ -19,9 +19,9 @@ static Sprite g_inner, g_outer, g_press;
 static float g_outerScale = 1.0F;
 static float g_innerScale = 0.4F;
 
-static float g_multiDelay = 0.3F;
+static float g_multiDelay = 0.1F;
 
-static int g_multiCount = 5;
+static int g_multiCount = 20;
 
 static std::vector<Sprite> g_outerMultiSprite;
 static QTE g_activeQTE;
@@ -180,7 +180,7 @@ void qteMultiPress()
 			return;
 		}
 
-		g_outerMultiSprite.push_back(Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200, 0),
+		g_outerMultiSprite.push_back(Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200, 0.1),
 			D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_OUTER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_OUTER) / 2, 0),
 			0, D3DXVECTOR2(g_outerScale, g_outerScale), D3DXCOLOR(1.0F, 1.0F, 1.0F, 0.0F)));
 	}
