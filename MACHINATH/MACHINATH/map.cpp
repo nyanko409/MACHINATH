@@ -207,13 +207,33 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 40 }, { 20, 5, 0 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 40 }, { -20, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 90 }, { 30, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 90 }, { -30, 5, 0 }));
 		}
 		else
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 10, 10 }, { 10, 5, 0 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 10, 10 }, { -10, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 10, 10 }, { 0, 5, 30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 10, 10 }, { 0, 5, -30 }));
+		}
+	}
+	else if (mesh == MESH_NAME::MESH_MAP_CURVELEFT)
+	{
+		if (exit == Direction::WEST)
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 65 }, { 30, 5, -15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 10, 10 }, { 20, 5, 20 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 10, 10 }, { -20, 5, 30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 10 }, { -30, 5, -40 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 25, 10, 10 }, { -37.5F, 5, -30 }));
+		}
+		else if (exit == Direction::SOUTH)
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 10, 10 }, { 20, 5, 30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 30 }, { -10, 5, 20 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 60 }, { -25, 5, -15 }));
+
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 25, 10, 10 }, { 32.5F, 5, -30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 10, 10 }, { 25, 5, -40 }));
 		}
 	}
 

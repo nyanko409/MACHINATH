@@ -66,7 +66,7 @@ void InitPlayer()
 
 	// create player
 	trans.position = { 0, -1.5, 0 };
-	g_player = new Player(trans, 0.4F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
+	g_player = new Player(trans, 2.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
@@ -93,7 +93,7 @@ void UpdatePlayer()
 	MovePlayer();
 	MoveSideways();
 	Jump();
-	//PlayerCamera();
+	PlayerCamera();
 
 	CheckMapCollision();
 }
@@ -341,6 +341,10 @@ void CheckMapCollision()
 {
 	// get the map array
 	auto map = GetMap();
+	auto forward = g_parent->GetForward();
+
+	// get the direction to check first
+	bool nsFirst = (forward.x < 0.45F && forward.x > -0.45F) ? false : true;
 
 	// loop for every map and every attached collider
 	for (Map* m : *map)
@@ -349,16 +353,16 @@ void CheckMapCollision()
 
 		for (BoxCollider col : m->col)
 		{
-			switch (g_player->col.CheckCollision(col))
+			switch (g_player->col.CheckCollision(col, nsFirst))
 			{
 			case 1: 
 			case 2: 
 				g_parent->transform.position.x = g_parent->GetPreviousPosition().x;
-				return;
+				break;
 			case 3:	
 			case 4: 
 				g_parent->transform.position.z = g_parent->GetPreviousPosition().z;
-				return;
+				break;
 			default: continue;
 			}
 		}
