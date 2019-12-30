@@ -43,6 +43,8 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 
 void Map::Draw()
 {
+	if (!enableDraw) return;
+
 	for (int i = 0; i < col.size(); ++i)
 	{
 		BoxCollider::DrawCollider(col[i]);
