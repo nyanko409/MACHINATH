@@ -12,7 +12,7 @@ public:
 
 	// constructor
 	Pickup(int mapId, Transform trans, MESH_NAME mesh, SHADER_TYPE type, float width, float height, float depth, bool isStatic = true, GameObject* parent = nullptr) :
-		mapId(mapId), MeshObject(trans, mesh, type, parent), col(BoxCollider(this, width, height, depth, {0,0,0}, isStatic)) {}
+		mapId(mapId), MeshObject(trans, mesh, type, parent), col(BoxCollider(this, width, height, depth, {0,0,0}, isStatic, true)) {}
 	
 	// destructor
 	~Pickup() {}

@@ -86,8 +86,8 @@ void UninitQTE()
 void UpdateQTE()
 {
 	// start qte when its not active for test
-	if (!g_active)
-		StartQTE(QTE_MULTIPRESS);
+	//if (!g_active)
+	//	StartQTE(QTE_MULTIPRESS);
 
 	// update active qte
 	if (g_active)

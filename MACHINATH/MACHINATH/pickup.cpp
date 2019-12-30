@@ -60,7 +60,7 @@ void UpdatePickup()
 		g_pickup[i]->transform.localRotation.y += g_zRotSpeed;
 
 		// check for collision with player
-		if (BoxCollider::CheckCollision(g_pickup[i]->col, GetPlayer()->col))
+		if (g_pickup[i]->col.CheckCollision(GetPlayer()->col))
 		{
 			// collided, play effect and delete pickup
 			//PlayEffect(EFFECT_JUMP, pickup[i]->transform.position);

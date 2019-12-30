@@ -101,7 +101,7 @@ void UpdatePlayer()
 	Jump();
 
 	// camera movement
-	PlayerCamera();
+	//PlayerCamera();
 }
 
 

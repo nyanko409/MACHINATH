@@ -34,6 +34,7 @@ private:
 protected:
 	D3DXMATRIX m_matOrientation;	// orienration matrix for local axis rotation
 	D3DXVECTOR3 m_prevRotation;		// previous frame rotation of this object
+	D3DXVECTOR3 m_prevPosition;
 	D3DXVECTOR3 forward, up, right;	// forward, up and right vector
 
 public:

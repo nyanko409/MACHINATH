@@ -15,15 +15,15 @@ struct LINE_VERTEX
 };
 
 
-bool BoxCollider::CheckCollision(const BoxCollider& col1, const BoxCollider& col2)
+bool BoxCollider::CheckCollision(const BoxCollider& other)
 {
 	// get size
-	v3t_float size1 = col1.GetSize();
-	v3t_float size2 = col2.GetSize();
+	v3t_float size1 = GetSize();
+	v3t_float size2 = other.GetSize();
 
 	// get current top left position
-	v3t_float topLeft1 = col1.isStatic ? col1.m_topLeft : col1.GetTopLeft();
-	v3t_float topLeft2 = col2.isStatic ? col2.m_topLeft : col2.GetTopLeft();
+	v3t_float topLeft1 = isStatic ? m_topLeft : GetTopLeft();
+	v3t_float topLeft2 = other.isStatic ? other.m_topLeft : other.GetTopLeft();
 
 	// check collision
 	if ((topLeft1.x < topLeft2.x + size2.x && topLeft1.x + size1.x > topLeft2.x)

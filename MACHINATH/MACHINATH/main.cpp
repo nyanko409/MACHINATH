@@ -146,10 +146,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		else
 		{
-			// update and draw every frame
-			Sleep(7);
+			Keyboard_Update();
 			Update();
 			Draw();
+			Sleep(7);
 		}
 	}
 
@@ -220,7 +220,6 @@ bool Initialize(void)
 //ÉQÅ[ÉÄçXêVä÷êî
 void Update(void)
 {
-	Keyboard_Update();
 	UpdateSound();
 
 	UpdateTitle();

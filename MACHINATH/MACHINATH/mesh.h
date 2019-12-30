@@ -26,12 +26,14 @@ public:
 
 		auto device = MyDirect3D_GetDevice();
 
-		// get world matrix
-		D3DXMATRIX matWorld;
-
+		// update
 		D3DXVECTOR3 diff = m_prevRotation - transform.localRotation;
 		m_prevRotation = transform.localRotation;
 
+		m_prevPosition = GetCombinedPosition();
+
+		// get world matrix
+		D3DXMATRIX matWorld;
 		matWorld = TransformObject(GetCombinedPosition(), GetCombinedScale(), diff, 
 			m_matOrientation, GetCombinedOrientationMatrix(), GetCombinedRotation(), forward, up, right, pivot);
 
@@ -82,11 +84,14 @@ public:
 
 		auto device = MyDirect3D_GetDevice();
 
-		// get world matrix
-		D3DXMATRIX matWorld;
-
+		// update
 		D3DXVECTOR3 diff = m_prevRotation - transform.localRotation;
 		m_prevRotation = transform.localRotation;
+
+		m_prevPosition = GetCombinedPosition();
+
+		// get world matrix
+		D3DXMATRIX matWorld;
 		matWorld = TransformObject(GetCombinedPosition(), GetCombinedScale(), diff, 
 			m_matOrientation, GetCombinedOrientationMatrix(), GetCombinedRotation(), forward, up, right, pivot);
 
