@@ -30,6 +30,7 @@ void PlayerCamera();
 void HandleMapEvent();
 void Curve(EventData& event);
 void Slope(EventData& event);
+void CheckMapCollision();
 
 
 // override player draw
@@ -65,7 +66,7 @@ void InitPlayer()
 
 	// create player
 	trans.position = { 0, -1.5, 0 };
-	g_player = new Player(trans, 1.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
+	g_player = new Player(trans, 0.4F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
@@ -88,29 +89,20 @@ void UpdatePlayer()
 {
 	if (GetScene() != SCENE_GAMESCREEN) return;
 	
-	// map events
 	HandleMapEvent();
-
-	// move player forward
 	MovePlayer();
-
-	// move left and right
 	MoveSideways();
-
-	// handle jumping
 	Jump();
-
-	// camera movement
 	//PlayerCamera();
+
+	CheckMapCollision();
 }
 
 
 void MovePlayer()
 {
-	D3DXVECTOR3 forward = g_parent->GetForward();
-
 	// move parent
-	g_parent->transform.position += forward * g_player->moveSpeed;
+	g_parent->transform.position += g_parent->GetForward() * g_player->moveSpeed;
 }
 
 void HandleMapEvent()
@@ -343,4 +335,32 @@ void PlayerCamera()
 	pos.x += offsetX;
 
 	SetCameraPos(lookAt, pos, rotX, rotY, 0);
+}
+
+void CheckMapCollision()
+{
+	// get the map array
+	auto map = GetMap();
+
+	// loop for every map and every attached collider
+	for (Map* m : *map)
+	{
+		if (!m->enableDraw) continue;
+
+		for (BoxCollider col : m->col)
+		{
+			switch (g_player->col.CheckCollision(col))
+			{
+			case 1: 
+			case 2: 
+				g_parent->transform.position.x = g_parent->GetPreviousPosition().x;
+				return;
+			case 3:	
+			case 4: 
+				g_parent->transform.position.z = g_parent->GetPreviousPosition().z;
+				return;
+			default: continue;
+			}
+		}
+	}
 }

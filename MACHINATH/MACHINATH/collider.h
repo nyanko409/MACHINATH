@@ -14,11 +14,10 @@ private:
 
 public:
 	bool isStatic;		// set it to true if the object does not move to skip unnessacery calculations
-	bool isTrigger;		// disable physics if true
 
 	// constructor
-	BoxCollider(GameObject* transform, float width, float height, float depth, D3DXVECTOR3 offset = {0, 0, 0}, bool isStatic = false, bool isTrigger = false) :
-		m_objTransform(transform), isStatic(isStatic), isTrigger(isTrigger), m_xOffset(offset.x), m_yOffset(offset.y), m_zOffset(offset.z)
+	BoxCollider(GameObject* transform, float width, float height, float depth, D3DXVECTOR3 offset = {0, 0, 0}, bool isStatic = false) :
+		m_objTransform(transform), isStatic(isStatic), m_xOffset(offset.x), m_yOffset(offset.y), m_zOffset(offset.z)
 	{
 		// calculate the size of the collider
 		m_size.x = width * m_objTransform->GetCombinedScale().x;
@@ -45,7 +44,12 @@ public:
 	}
 
 	// calculate collision between two box colliders
-	bool CheckCollision(const BoxCollider& other);
+	// returns 0 if no collision occured
+	// returns 1 if collided on the right side
+	// returns 2 if collided on the left side
+	// returns 3 if collided on the top side
+	// returns 4 if collided on the bottom side
+	int CheckCollision(const BoxCollider& other);
 
 	// draw the collider on screen
 	static void DrawCollider(const BoxCollider& col);

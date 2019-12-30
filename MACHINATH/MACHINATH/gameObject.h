@@ -34,7 +34,7 @@ private:
 protected:
 	D3DXMATRIX m_matOrientation;	// orienration matrix for local axis rotation
 	D3DXVECTOR3 m_prevRotation;		// previous frame rotation of this object
-	D3DXVECTOR3 m_prevPosition;
+	D3DXVECTOR3 m_prevPosition;		// previous frame position of this object
 	D3DXVECTOR3 forward, up, right;	// forward, up and right vector
 
 public:
@@ -69,7 +69,10 @@ public:
 	}
 
 	// virtual draw
-	virtual void Draw() {}
+	virtual void Draw() 
+	{
+		m_prevPosition = transform.position;
+	}
 
 	// returns the final forward vector of both local and world rotation
 	D3DXVECTOR3 GetForward()
@@ -165,5 +168,11 @@ public:
 	D3DXVECTOR3 GetScale()
 	{
 		return transform.scale;
+	}
+
+	// returns the scale relative to parent of this gameobject
+	D3DXVECTOR3 GetPreviousPosition()
+	{
+		return m_prevPosition;
 	}
 };

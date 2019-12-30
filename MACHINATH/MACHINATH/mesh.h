@@ -30,7 +30,7 @@ public:
 		D3DXVECTOR3 diff = m_prevRotation - transform.localRotation;
 		m_prevRotation = transform.localRotation;
 
-		m_prevPosition = GetCombinedPosition();
+		m_prevPosition = transform.position;
 
 		// get world matrix
 		D3DXMATRIX matWorld;
@@ -88,7 +88,7 @@ public:
 		D3DXVECTOR3 diff = m_prevRotation - transform.localRotation;
 		m_prevRotation = transform.localRotation;
 
-		m_prevPosition = GetCombinedPosition();
+		m_prevPosition = transform.position;
 
 		// get world matrix
 		D3DXMATRIX matWorld;

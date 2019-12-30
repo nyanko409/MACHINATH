@@ -15,7 +15,7 @@ struct LINE_VERTEX
 };
 
 
-bool BoxCollider::CheckCollision(const BoxCollider& other)
+int BoxCollider::CheckCollision(const BoxCollider& other)
 {
 	// get size
 	v3t_float size1 = GetSize();
@@ -28,11 +28,27 @@ bool BoxCollider::CheckCollision(const BoxCollider& other)
 	// check collision
 	if ((topLeft1.x < topLeft2.x + size2.x && topLeft1.x + size1.x > topLeft2.x)
 		&& (topLeft1.z < topLeft2.z + size2.z && topLeft1.z + size1.z > topLeft2.z)
-			&& (topLeft1.y > topLeft2.y - size2.y && topLeft1.y - size1.y < topLeft2.y))
-				return true;
+		&& (topLeft1.y > topLeft2.y - size2.y && topLeft1.y - size1.y < topLeft2.y))
+	{
+		// collision on right side
+		if (topLeft1.x + size1.x > topLeft2.x && topLeft1.x < topLeft2.x)
+			return 1;
+
+		// collision on left side
+		if (topLeft1.x < topLeft2.x + size2.x && topLeft1.x + size1.x > topLeft2.x + size2.x)
+			return 2;
+
+		// collision on top side
+		if (topLeft1.z + size1.z > topLeft2.z && topLeft1.z < topLeft2.z)
+			return 3;
+
+		// collision on bottom side
+		if (topLeft1.z < topLeft2.z + size2.z && topLeft1.z + size1.z > topLeft2.z + size2.z)
+			return 4;
+	}
 
 	// no collision occured
-	return false;
+	return 0;
 }
 
 
