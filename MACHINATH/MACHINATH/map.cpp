@@ -126,6 +126,13 @@ void LoadMapFromFile(char* path)
 			// read next byte
 			in.read(&c, 1);
 
+			// break if end of file is reached
+			if (in.eof())
+			{
+				in.close();
+				break;
+			}
+
 			// if c == #, loop till next line to skip comment
 			if (c == 35)
 			{
@@ -133,13 +140,8 @@ void LoadMapFromFile(char* path)
 				while (!(c == 10));
 			}
 
-			// continue if c == \n, break if EOF
+			// continue if c == \n
 			if (c == 10) continue;
-			if (in.eof())
-			{
-				in.close();
-				break;
-			}
 
 			// cast data to int
 			int ci = c - '0';
