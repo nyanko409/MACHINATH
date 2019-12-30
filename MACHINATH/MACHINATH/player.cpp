@@ -93,7 +93,7 @@ void UpdatePlayer()
 	MovePlayer();
 	MoveSideways();
 	Jump();
-	//PlayerCamera();
+	PlayerCamera();
 
 	CheckMapCollision();
 }

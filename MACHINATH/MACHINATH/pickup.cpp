@@ -20,8 +20,6 @@ static float g_poolDistance = 0;
 
 void Pickup::Draw()
 {
-	for (int i = 0; i < g_pickup.size(); ++i)
-		BoxCollider::DrawCollider(g_pickup[i]->col);
 	MeshObject::Draw();
 }
 
