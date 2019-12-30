@@ -61,7 +61,7 @@ void InitPlayer()
 	g_curSlopeHeight = 0;
 
 	// create parent
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_parent = new GameObject(trans);
 
 	// create player
