@@ -334,22 +334,43 @@ void InitRenderState()
 // init lighting
 void InitLight()
 {
-	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 1.0F), D3DXCOLOR(0.0F, 1.0F, 1.0F, 1.0F));
-	AddPointLight(1, D3DXVECTOR3(0, 5, 0), 100, D3DXCOLOR(0.0F, 1.0F, 1.0F, 1.0F));
+	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 0.0F), D3DXCOLOR(0.0F, 1.0F, 1.0F, 1.0F));
 }
 
 
 
 
 
+class Water : public MeshObject
+{
+public:
 
+	// constructor
+	Water(Transform trans, MESH_NAME mesh, SHADER_TYPE type, GameObject* parent = nullptr) :
+		 MeshObject(trans, mesh, type, parent) {}
 
+	// destructor
+	~Water() {}
 
+	// draw
+	void Draw() override
+	{
+		//pShader->SetTexture("tex", Texture_GetTexture(TEXTURE_INDEX_WATER));
+		//pShader->SetFloat("test", 0.5F);
+		auto device = MyDirect3D_GetDevice();
+		device->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_WATER));
+		MeshObject::Draw();
+	}
+};
+
+Water* water;
 
 void InitTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
-	//SetMaterial();
+	
+	Transform trans({0, 10, 0});
+	water = new Water(trans, MESH_WATER, SHADER_SIMPLE);
 }
 
 void DrawTest()
@@ -358,6 +379,6 @@ void DrawTest()
 	//MoveLight(1, 0, 0, GetPlayer()->moveSpeed, false);
 
 	// draw text
-	char f[] = "fuck";
-	DrawTextTo(RECT{300, 100, 100, 50}, f, sizeof(f) / sizeof(char));
+	//char f[] = "fuck";
+	//DrawTextTo(RECT{300, 100, 100, 50}, f, sizeof(f) / sizeof(char));
 }

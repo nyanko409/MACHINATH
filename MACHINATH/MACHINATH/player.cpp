@@ -90,10 +90,10 @@ void UpdatePlayer()
 	if (GetScene() != SCENE_GAMESCREEN) return;
 	
 	HandleMapEvent();
-	MovePlayer();
+	//MovePlayer();
 	MoveSideways();
 	Jump();
-	PlayerCamera();
+	//PlayerCamera();
 
 	CheckMapCollision();
 }

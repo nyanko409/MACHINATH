@@ -16,7 +16,7 @@ struct Effect_Data
 // stores every shader and pointer to a list of gameobject to apply the shader to
 static std::vector<std::pair<Effect_Data, std::vector<GameObject*>>> effect
 {
-	std::pair<Effect_Data,std::vector<GameObject*>>(Effect_Data{"asset/shader/custom/vertex.fx"}, std::vector<GameObject*>()),
+	std::pair<Effect_Data,std::vector<GameObject*>>(Effect_Data{"asset/shader/custom/water.fx"}, std::vector<GameObject*>()),
 	std::pair<Effect_Data,std::vector<GameObject*>>(Effect_Data{"asset/shader/custom/fog.fx"}, std::vector<GameObject*>()),
 
 	std::pair<Effect_Data,std::vector<GameObject*>>(Effect_Data{""}, std::vector<GameObject*>())
@@ -33,6 +33,14 @@ void InitShader()
 	{
 		D3DXCreateEffectFromFile(pDevice, effect[i].first.path.c_str(), 0, 0, 
 			D3DXSHADER_ENABLE_BACKWARDS_COMPATIBILITY, 0, &effect[i].first.effect, &errorlog);
+
+		if (errorlog)
+		{
+			MessageBox(NULL, (char*)errorlog->GetBufferPointer(),
+				"failed at compiling shader file", 0);
+			errorlog->Release();
+			std::exit(0);
+		}
 
 		effect[i].first.effect->FindNextValidTechnique(NULL, &effect[i].first.technique);
 	}
