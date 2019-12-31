@@ -4,7 +4,10 @@ float4x4 View;
 float4x4 Projection;
 
 // water sampler
-sampler s1 : register(s1);  
+sampler s1 : register(s1); 
+
+float time;
+
 
 struct VS_IN 
 {
@@ -35,7 +38,6 @@ VS_OUT VShader(VS_IN In)
 
 	return Out;
 
-
     // init 
 	//VS_OUT Vert = (VS_OUT)0;
 
@@ -62,7 +64,18 @@ VS_OUT VShader(VS_IN In)
 
 float4 PShader(VS_OUT In) : COLOR0
 {
-	return tex2D(s1, In.uv);
+	// uv scroll
+	float2 uv = In.uv;
+	uv.y -= time;
+	uv.x += time * 0.5F;
+
+	// get pixel color from texture sampler
+	float4 temp = tex2D(s1, uv);
+
+	// set alpha
+	temp.a = 0.5F;
+
+	return temp;
 }
 
 technique FirstTechnique
@@ -72,15 +85,15 @@ technique FirstTechnique
         //Lighting = TRUE;
         ZEnable = TRUE;
 
-        //NormalizeNormals = TRUE;
+        NormalizeNormals = TRUE;
 
         // texture stages
-		//ColorOp[0] = MODULATE;
-		//ColorArg1[0] = TEXTURE;
-		//ColorArg2[0] = DIFFUSE;
-		//AlphaOp[0] = MODULATE;
-		//AlphaArg1[0] = TEXTURE;
-		//AlphaArg2[0] = DIFFUSE;
+		ColorOp[0] = MODULATE;
+		ColorArg1[0] = TEXTURE;
+		ColorArg2[0] = DIFFUSE;
+		AlphaOp[0] = MODULATE;
+		AlphaArg1[0] = TEXTURE;
+		AlphaArg2[0] = DIFFUSE;
 
         AlphaBlendEnable = TRUE;
 

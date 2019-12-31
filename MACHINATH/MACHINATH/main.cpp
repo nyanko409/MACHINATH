@@ -355,10 +355,10 @@ public:
 	// draw
 	void Draw() override
 	{
-		//pShader->SetTexture("tex", Texture_GetTexture(TEXTURE_INDEX_WATER));
-		//pShader->SetFloat("test", 0.5F);
 		auto device = MyDirect3D_GetDevice();
+
 		device->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_WATER));
+		pShader->SetFloat("time", playTime * 0.1F);
 		MeshObject::Draw();
 	}
 };
@@ -369,7 +369,7 @@ void InitTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 	
-	Transform trans({0, 10, 0});
+	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {10, 1, 10});
 	water = new Water(trans, MESH_WATER, SHADER_SIMPLE);
 }
 

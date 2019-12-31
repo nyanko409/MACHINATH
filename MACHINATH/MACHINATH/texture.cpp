@@ -53,7 +53,6 @@ int Texture_Load(void)
 
 	for( int i = 0; i < TEXTURE_FILE_COUNT; i++ ) {
 		
-		//if( FAILED(D3DXCreateTextureFromFile(pDevice, g_TextureFiles[i].filename, &g_pTextures[i])) ) 
 		if (D3DXCreateTextureFromFileEx(pDevice, g_TextureFiles[i].filename, 
 			0, 0, 
 			0, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, 
