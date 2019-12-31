@@ -30,6 +30,7 @@
 #include "Title.h"
 #include "sound.h"
 #include "collider.h"
+#include "water.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -341,27 +342,6 @@ void InitLight()
 
 
 
-class Water : public MeshObject
-{
-public:
-
-	// constructor
-	Water(Transform trans, MESH_NAME mesh, SHADER_TYPE type, GameObject* parent = nullptr) :
-		 MeshObject(trans, mesh, type, parent) {}
-
-	// destructor
-	~Water() {}
-
-	// draw
-	void Draw() override
-	{
-		auto device = MyDirect3D_GetDevice();
-
-		device->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_WATER));
-		pShader->SetFloat("time", playTime * 0.1F);
-		MeshObject::Draw();
-	}
-};
 
 Water* water;
 
@@ -370,7 +350,7 @@ void InitTest()
 	auto pDevice = MyDirect3D_GetDevice();
 	
 	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {10, 1, 10});
-	water = new Water(trans, MESH_WATER, SHADER_SIMPLE);
+	water = new Water(trans, MESH_WATER, SHADER_WATER);
 }
 
 void DrawTest()

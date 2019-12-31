@@ -7,7 +7,7 @@ class GameObject;
 // shader types
 enum SHADER_TYPE
 {
-	SHADER_SIMPLE,
+	SHADER_WATER,
 	SHADER_FOG,
 
 	SHADER_DEFAULT
