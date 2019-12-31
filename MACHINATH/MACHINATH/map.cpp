@@ -207,7 +207,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 {
 	auto collider = std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>();
 
-	if (mesh == MESH_NAME::MESH_MAP_STRAIGHT)
+	if (mesh == MESH_MAP_STRAIGHT)
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
@@ -220,7 +220,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 20, 10 }, { 0, 5, -30 }));
 		}
 	}
-	else if (mesh == MESH_NAME::MESH_MAP_CURVELEFT)
+	else if (mesh == MESH_MAP_CURVELEFT)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -255,7 +255,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 10 }, { -30, 5, 40 }));
 		}
 	}
-	else if (mesh == MESH_NAME::MESH_MAP_CURVERIGHT)
+	else if (mesh == MESH_MAP_CURVERIGHT)
 	{
 		if (exit == Direction::SOUTH)
 		{
@@ -288,6 +288,42 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 20, 10 }, { -20, 5, -30 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 10 }, { -30, 5, 40 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 25, 20, 10 }, { -37.5F, 5, 30 }));
+		}
+	}
+	else if (mesh == MESH_MAP_STRAIGHT_UP)
+	{
+		if (exit == Direction::NORTH || exit == Direction::SOUTH)
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 80, 90 }, { 30, 25, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 80, 90 }, { -30, 25, 0 }));
+		}
+		else
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 80, 10 }, { 0, 25, 30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 80, 10 }, { 0, 25, -30 }));
+		}
+	}
+	else if (mesh == MESH_MAP_STRAIGHT_TUNNEL_DOWN)
+	{
+		if (exit == Direction::NORTH)
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 80, 190 }, { 30, -10, 50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 80, 190 }, { -30, -10, 50 }));
+		}
+		else if(exit == Direction::SOUTH)
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 80, 190 }, { 30, -10, -50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 80, 190 }, { -30, -10, -50 }));
+		}
+		else if (exit == Direction::WEST)
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 190, 80, 10 }, { -50, -10, 30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 190, 80, 10 }, { -50, -10, -30 }));
+		}
+		else if (exit == Direction::EAST)
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 190, 80, 10 }, { 50, -10, 30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 190, 80, 10 }, { 50, -10, -30 }));
 		}
 	}
 
