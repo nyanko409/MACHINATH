@@ -5,6 +5,16 @@ float4x4 Projection;
 
 // water sampler
 sampler s1 : register(s1); 
+//sampler s1 = sampler_state
+//{
+//	Texture = register(s1);
+//	MinFilter = LINEAR;
+//	MagFilter = LINEAR;
+//	MipFilter = NONE;
+//
+//	AddressU = Clamp;
+//	AddressV = Clamp;
+//};
 
 float time;
 
