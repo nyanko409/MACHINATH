@@ -336,14 +336,19 @@ void CheckMapCollision()
 	auto map = GetMap();
 	auto forward = g_parent->GetForward();
 
+	int curMapId = GetCurrentMapId();
+
 	// get the direction to check first
 	bool nsFirst = (forward.x < 0.45F && forward.x > -0.45F) ? false : true;
 
 	// loop for every active map and every attached collider
 	for (Map* m : *map)
 	{
-		if (!m->enableDraw) continue;
+		// check collision only for current and next map
+		if (m->id < curMapId) continue;
+		if (m->id > curMapId + 1) break;
 
+		// loop for every collider attached to the map
 		for (BoxCollider col : m->col)
 		{
 			switch (g_player->col.CheckCollision(col, nsFirst))

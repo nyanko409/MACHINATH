@@ -40,12 +40,14 @@ class Map : public MeshObject
 {
 public:
 	int id;								// id of the map
+	BoxCollider entrance;				// entrance collider of the map
 	std::vector<BoxCollider> col;		// list of colliders attached to the map
 	Direction exit;						// exit direction of the map
 	MapData data;						// data of the map like events
 
 	// costructor
 	Map(int id, Transform transform, MapData data, Direction exit, 
+		std::pair<D3DXVECTOR3, D3DXVECTOR3> entranceCollider,
 		std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> mapCollider,
 		std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> eventCollider,
 		SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
@@ -53,6 +55,11 @@ public:
 	{
 		// disable draw
 		enableDraw = false;
+
+		// set entrance collider
+		entrance = BoxCollider(this,
+			entranceCollider.first.x, entranceCollider.first.y, entranceCollider.first.z,
+			entranceCollider.second);
 
 		// populate map collider
 		col = std::vector<BoxCollider>();
@@ -83,8 +90,11 @@ public:
 // returns the vector of map
 std::vector<Map*>* GetMap();
 
-// return the map with the given mapId
+// returns the map with the given mapId
 Map* GetMapById(int mapId);
+
+// returns the current map id the player is on
+int GetCurrentMapId();
 
 void InitMap();
 void UninitMap();
