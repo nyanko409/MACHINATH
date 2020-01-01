@@ -64,7 +64,7 @@ void InitPlayer()
 	g_parent = new GameObject(trans);
 
 	// create player
-	trans.position = { 0, -1.5, 0 };
+	trans.position = { 0, -1.5F, 0 };
 	g_player = new Player(trans, 2.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
@@ -139,6 +139,7 @@ void HandleMapEvent()
 			if (g_player->col.CheckCollision(front->data.event[i].trigger))
 			{
 				front->data.event[i].started = true;
+				g_player->inEvent = true;
 			}
 		}
 
@@ -165,6 +166,7 @@ void Curve(EventData& event)
 	if (g_curRot >= fabsf(event.value))
 	{
 		event.finished = true;
+		g_player->inEvent = false;
 		g_curRot = 0;
 	}
 
@@ -195,6 +197,7 @@ void Slope(EventData& event)
 	else
 	{
 		event.finished = true;
+		g_player->inEvent = false;
 		g_curSlopeRot = 0;
 	}
 
@@ -336,7 +339,7 @@ void CheckMapCollision()
 	// get the direction to check first
 	bool nsFirst = (forward.x < 0.45F && forward.x > -0.45F) ? false : true;
 
-	// loop for every map and every attached collider
+	// loop for every active map and every attached collider
 	for (Map* m : *map)
 	{
 		if (!m->enableDraw) continue;
