@@ -16,6 +16,7 @@ public:
 	bool isStatic;		// set it to true if the object does not move to skip unnessacery calculations
 
 	// constructor
+	BoxCollider() {}
 	BoxCollider(GameObject* transform, float width, float height, float depth, D3DXVECTOR3 offset = {0, 0, 0}, bool isStatic = false) :
 		m_objTransform(transform), isStatic(isStatic), m_xOffset(offset.x), m_yOffset(offset.y), m_zOffset(offset.z)
 	{

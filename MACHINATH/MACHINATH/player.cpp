@@ -21,7 +21,7 @@ static D3DXVECTOR3 g_camPos;
 static float g_finalYPos;
 static bool g_isJumping;
 static int g_jumpCnt;
-static float g_curRot, g_curSlopeRot, g_curSlopeHeight;
+static float g_curRot, g_curSlopeRot;
 
 void MovePlayer();
 void MoveSideways();
@@ -58,7 +58,6 @@ void InitPlayer()
 	g_jumpCnt = 0;
 	g_curRot = 0;
 	g_curSlopeRot = 0;
-	g_curSlopeHeight = 0;
 
 	// create parent
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
@@ -112,42 +111,35 @@ void HandleMapEvent()
 	if (!(map->size() > 0)) return;
 
 	Map* front = nullptr;
-	for (int i = 0; i < map->size(); i++)
+	for (int i = 0; i < map->size(); ++i)
 	{
-		if (!(*map)[i]->data.event.front().finished && 
-			!((*map)[i]->data.event.front().mapEvent == MapEvent::NONE))
+		for (int j = 0; j < (*map)[i]->data.event.size(); ++j)
 		{
-			front = (*map)[i];
-			break;
+			if (!(*map)[i]->data.event[j].finished &&
+				!((*map)[i]->data.event[j].mapEvent == MapEvent::NONE))
+			{
+				front = (*map)[i];
+				break;
+			}
 		}
+
+		// break if front map with event is found
+		if (front != nullptr) break;
 	}
+
+	// return if no event is found
 	if (front == nullptr) return;
 	
 	// handle events
-	// check x or z distance based on local map rotation
-	float mapPos = (front->GetCombinedRotation().y == 90 || front->GetCombinedRotation().y == 270) ?
-		front->GetCombinedPosition().x : front->GetCombinedPosition().z;
-
 	for (int i = 0; i < front->data.event.size(); ++i)
 	{
-		// start event
+		// start event if collied with event trigger
 		if (!front->data.event[i].started)
 		{
-			if (front->GetCombinedRotation().y == 90 &&
-				mapPos - front->data.event[i].distance <= g_player->GetCombinedPosition().x)
+			if (g_player->col.CheckCollision(front->data.event[i].trigger))
+			{
 				front->data.event[i].started = true;
-
-			else if (front->GetCombinedRotation().y == 270 &&
-				mapPos + front->data.event[i].distance >= g_player->GetCombinedPosition().x)
-				front->data.event[i].started = true;
-
-			else if (front->GetCombinedRotation().y == 0 &&
-				mapPos - front->data.event[i].distance <= g_player->GetCombinedPosition().z)
-				front->data.event[i].started = true;
-
-			else if (front->GetCombinedRotation().y == 180 &&
-				mapPos + front->data.event[i].distance >= g_player->GetCombinedPosition().z)
-				front->data.event[i].started = true;
+			}
 		}
 
 		// update events
@@ -183,50 +175,48 @@ void Curve(EventData& event)
 void Slope(EventData& event)
 {
 	float speed = event.speed * g_player->moveSpeed;
-	float speed2 = event.speed2 * g_player->moveSpeed;
 
-	// while hight is not reached
-	if (g_curSlopeHeight < fabsf(event.value2))
+	// rotate to climb slope
+	if (g_curSlopeRot < fabsf(event.value))
 	{
-		// move up
-		g_curSlopeHeight += speed2;
+		g_curSlopeRot += speed;
 
-		// rotate to climb slope
-		if (g_curSlopeRot < fabsf(event.value))
-		{
-			g_curSlopeRot += speed;
+		float frameRot = g_curSlopeRot > fabsf(event.value) ? 
+			fabsf(event.value) - (g_curSlopeRot - speed) : speed;
+		if (event.value < 0) frameRot *= -1;
 
-			float frameRot = g_curSlopeRot > fabsf(event.value) ? 
-				fabsf(event.value) - (g_curSlopeRot - speed) : speed;
-			if (event.value < 0) frameRot *= -1;
+		// clamp
+		if (g_curSlopeRot > fabsf(event.value)) 
+			g_curSlopeRot = fabsf(event.value);
 
-			// clamp
-			if (g_curSlopeRot > fabsf(event.value)) 
-				g_curSlopeRot = fabsf(event.value);
-
-			// add rotation to player
-			g_parent->transform.rotation.x += frameRot;
-		}
+		// add rotation to player
+		g_parent->transform.rotation.x += frameRot;
 	}
 	else
 	{
-		// height is reached, rotate back
-		g_curSlopeRot -= speed;
-
-		float frameRot = g_curSlopeRot < 0 ? 
-			g_curSlopeRot + speed : speed;
-		if (event.value < 0) frameRot *= -1;
-
-		// add rotation to player
-		g_parent->transform.rotation.x -= frameRot;
-
-		if (g_curSlopeRot <= 0)
-		{
-			event.finished = true;
-			g_curSlopeRot = 0;
-			g_curSlopeHeight = 0;
-		}
+		event.finished = true;
+		g_curSlopeRot = 0;
 	}
+
+	//else
+	//{
+	//	// height is reached, rotate back
+	//	g_curSlopeRot -= speed;
+	//
+	//	float frameRot = g_curSlopeRot < 0 ? 
+	//		g_curSlopeRot + speed : speed;
+	//	if (event.value < 0) frameRot *= -1;
+	//
+	//	// add rotation to player
+	//	g_parent->transform.rotation.x -= frameRot;
+	//
+	//	if (g_curSlopeRot <= 0)
+	//	{
+	//		event.finished = true;
+	//		g_curSlopeRot = 0;
+	//		g_curSlopeHeight = 0;
+	//	}
+	//}
 }
 
 Player* GetPlayer()
