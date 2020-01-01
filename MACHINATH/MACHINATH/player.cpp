@@ -102,6 +102,14 @@ void MovePlayer()
 {
 	// move parent
 	g_parent->transform.position += g_parent->GetForward() * g_player->moveSpeed;
+
+	// offset player y position to active map
+	if (g_parent->transform.rotation.x == 0.0F)
+	{
+		Map* map = GetMapById(GetCurrentMapId());
+		g_parent->transform.position.y = Lerp(g_parent->transform.position.y, 
+											map->transform.position.y + 3.0F, 0.1F);
+	}
 }
 
 void HandleMapEvent()
@@ -200,26 +208,6 @@ void Slope(EventData& event)
 		g_player->inEvent = false;
 		g_curSlopeRot = 0;
 	}
-
-	//else
-	//{
-	//	// height is reached, rotate back
-	//	g_curSlopeRot -= speed;
-	//
-	//	float frameRot = g_curSlopeRot < 0 ? 
-	//		g_curSlopeRot + speed : speed;
-	//	if (event.value < 0) frameRot *= -1;
-	//
-	//	// add rotation to player
-	//	g_parent->transform.rotation.x -= frameRot;
-	//
-	//	if (g_curSlopeRot <= 0)
-	//	{
-	//		event.finished = true;
-	//		g_curSlopeRot = 0;
-	//		g_curSlopeHeight = 0;
-	//	}
-	//}
 }
 
 Player* GetPlayer()
