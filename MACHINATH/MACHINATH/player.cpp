@@ -36,7 +36,7 @@ void CheckMapCollision();
 // override player draw
 void Player::Draw()
 {
-	BoxCollider::DrawCollider(GetPlayer()->col);
+	BoxCollider::DrawCollider(GetPlayer()->col, D3DCOLOR(D3DCOLOR_RGBA(0, 0, 0, 255)));
 
 	auto device = MyDirect3D_GetDevice();
 	//device->SetRenderState(D3DRS_LIGHTING, false);

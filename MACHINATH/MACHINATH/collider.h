@@ -50,8 +50,8 @@ public:
 	// returns 2 if collided on the left side
 	// returns 3 if collided on the top side
 	// returns 4 if collided on the bottom side
-	int CheckCollision(const BoxCollider& other, bool nsFirst = false);
+	int CheckCollision(const BoxCollider& other, const bool nsFirst = false) const;
 
 	// draw the collider on screen
-	static void DrawCollider(const BoxCollider& col);
+	static void DrawCollider(const BoxCollider& col, const D3DCOLOR& color);
 };

@@ -48,13 +48,13 @@ void Map::Draw()
 	// draw map collider
 	for (int i = 0; i < col.size(); ++i)
 	{
-		BoxCollider::DrawCollider(col[i]);
+		BoxCollider::DrawCollider(col[i], D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255)));
 	}
 
 	// draw trigger collider
 	for (int i = 0; i < data.event.size(); ++i)
 	{
-		BoxCollider::DrawCollider(data.event[i].trigger);
+		BoxCollider::DrawCollider(data.event[i].trigger, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 0, 255)));
 	}
 
 	MeshObject::Draw();
