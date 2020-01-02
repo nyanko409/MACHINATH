@@ -20,6 +20,12 @@ void InitSprite()
 	D3DXCreateSprite(device, &sprite);
 }
 
+void UninitSprite()
+{
+	if(sprite != nullptr)
+		sprite->Release();
+}
+
 void SpriteStart()
 {
 	sprite->Begin(D3DXSPRITE_ALPHABLEND);

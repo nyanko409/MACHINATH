@@ -43,6 +43,9 @@ struct MESH_DATA
 // call once to load every mesh into memory
 void LoadMesh();
 
+// free mesh from memory
+void UninitMesh();
+
 // get unanimted mesh
 MESH_DATA* GetMesh(MESH_NAME name);
 

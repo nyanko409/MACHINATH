@@ -1,6 +1,5 @@
 #include <Windows.h>
 #include <d3dx9.h>
-#include <thread>
 #include <time.h>
 #include <vector>
 #include "common.h"
@@ -47,16 +46,24 @@ static HWND g_hWnd;
 
 // プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-static bool Initialize(void);
-static void Update(void);
-static void Draw(void);
-static void Finalize(void);
-
 void InitRenderState();
-void InitLight();
+
+static bool InitLibrary();
+static void FinalizeLibrary();
+
+static bool InitTitle();
+static void UpdateTitle();
+static void DrawTitle();
+static void FinalizeTitle();
+
+static bool InitGame();
+static void UpdateGame();
+static void DrawGame();
+static void FinalizeGame();
+
 
 // TEST
+void InitLight();
 void DrawTest();
 void InitTest();
 
@@ -127,8 +134,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ShowWindow(g_hWnd, nCmdShow);
 	UpdateWindow(g_hWnd);
 
-	// init
-	if (!Initialize())
+	// init library once
+	if (!InitLibrary())
 	{
 		//初期化失敗
 		return -1;
@@ -137,6 +144,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	Keyboard_Initialize(hInstance, g_hWnd);
 
 	MSG msg = {};
+	bool init_title = false;
+	bool init_game = false;
 
 	while (WM_QUIT != msg.message) 
 	{
@@ -147,15 +156,47 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		else
 		{
-			Keyboard_Update();
-			Update();
-			Draw();
 			Sleep(7);
+			Keyboard_Update();
+
+			// update title
+			if (GetScene() == SCENE_TITLESCREEN)
+			{
+				// free memory used in game and init title screen
+				if (!init_title)
+				{
+					FinalizeGame();
+					InitTitle();
+					init_game = false;
+					init_title = true;
+				}
+
+				UpdateTitle();
+				DrawTitle();
+			}
+
+			// update game
+			else if (GetScene() == SCENE_GAMESCREEN)
+			{
+				// free memory used in title and init title screen
+				if (!init_game)
+				{
+					FinalizeTitle();
+					InitGame();
+					init_title = false;
+					init_game = true;
+				}
+
+				UpdateGame();
+				DrawGame();
+			}
 		}
 	}
 
 	//ゲームの終了処理
-	Finalize();
+	FinalizeTitle();
+	FinalizeGame();
+	FinalizeLibrary();
 	return (int)msg.wParam;
 }
 
@@ -183,8 +224,8 @@ LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(g_hWnd, uMsg, wParam, lParam);
 }
 
-// ゲームの初期化
-bool Initialize(void)
+// init background tasks
+bool InitLibrary()
 {
 	//Direct3Dインターフェイス作成
 	if (!MyDirect3D_Initialize(g_hWnd))
@@ -193,82 +234,124 @@ bool Initialize(void)
 	}
 
 	InitRenderState();
-	
 	InitSound(g_hWnd);
-	InitShader();
-	InitCamera();
 	InitFont();
+	InitCamera();
 	InitEffect();
 	Texture_Load();
 	LoadMesh();
 	InitSprite();
-	InitLight();
-
 	InitScene();
-	InitBillboard();
 	InitQTE();
-	InitTitle();
-	InitScore();
-	InitPlayer();
-	InitPickup();
-	InitMap();
-
-	InitTest();
+	InitTitleScreen();
+	InitShader();
 
 	return true;
 }
 
-//ゲーム更新関数
-void Update(void)
+// free memory used in library
+void FinalizeLibrary()
 {
-	UpdateSound();
-
-	UpdateTitle();
-
-	UpdateScene();
-	UpdateTimer();
-	UpdateScore();
-	UpdateMap();
-	UpdatePlayer();
-	UpdatePickup();
-	UpdateQTE();
-	UpdateBillboard();
-
-	UpdateCamera();
-	//std::thread t_input(Keyboard_Update);
-	//std::thread t_camera(UpdateCamera);
-	//t_input.join();
-	//t_camera.join();
+	UninitQTE();
+	FinalizeTitle();
+	UninitEffect();
+	UninitShader();
+	UninitCamera();
+	UninitFont();
+	UninitSound();
+	UninitSprite();
+	UninitMesh();
+	Texture_Release();
+	MyDirect3D_Finalize();
 }
 
-//ゲームの描画処理
-void Draw(void)
+// init title screen
+bool InitTitle()
+{
+	return true;
+}
+
+// update title
+void UpdateTitle()
+{
+	UpdateTitleScreen();
+}
+
+// draw title
+void DrawTitle()
 {
 	LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
-	
+
 	//バックバッファーのクリア 紫色は230，0，255，255
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(80, 80, 255), 1.0F, 0);
 
 	// draw 3d meshes
 	pDevice->BeginScene();
 
-	DrawObjects();
-	DrawTest();
-	//pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
-	//DrawBillboard();
-	//pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
-	DrawEffect();
 
 	// draw 2d sprites
 	SpriteStart();
 
-	DrawTitle();
+	DrawTitleScreen();
+
+	SpriteEnd();
+	pDevice->EndScene();
+
+	// draw to screen
+	pDevice->Present(NULL, NULL, NULL, NULL);
+}
+
+// free memory used in title screen
+void FinalizeTitle()
+{
+
+}
+
+// init game screen
+bool InitGame()
+{
+	InitScore();
+	InitPlayer();
+	InitPickup();
+	InitMap();
+
+	return true;
+}
+
+// update game
+void UpdateGame()
+{
+	UpdateTimer();
+	UpdateScore();
+	UpdateMap();
+	UpdatePlayer();
+	UpdatePickup();
+	UpdateQTE();
+	UpdateCamera();
+}
+
+// draw game
+void DrawGame()
+{
+	LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
+	
+	//バックバッファーのクリア 紫色は230，0，255，255
+	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(80, 80, 255), 1.0F, 0);
+	pDevice->BeginScene();
+
+	// draw 3d meshes
+	DrawObjects();
+	DrawTest();
+	DrawEffect();
+
+	SpriteStart();
+
+	// draw 2d sprites
 	DrawQTE();
 	DrawScore();
 
-	SpriteEnd();
-
 	// display text and finish
+	SpriteEnd();
 	DrawTimer();
 	pDevice->EndScene();
 
@@ -276,22 +359,12 @@ void Draw(void)
 	pDevice->Present(NULL, NULL, NULL, NULL);
 }
 
-//終了処理
-void Finalize(void)
+// free memory used in game screen
+void FinalizeGame()
 {
-	UninitSound();
-	UninitBillboard();
-	UninitQTE();
 	UninitPlayer();
 	UninitMap();
 	UninitPickup();
-	UninitCamera();
-	UninitEffect();
-	UninitShader();
-	FinalizeTitle();
-
-	Texture_Release();
-	MyDirect3D_Finalize();
 }
 
 // init render state
@@ -332,16 +405,17 @@ void InitRenderState()
 	device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 }	
 
+
+
+
+
+
+
 // init lighting
 void InitLight()
 {
 	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 0.0F), D3DXCOLOR(0.0F, 1.0F, 1.0F, 1.0F));
 }
-
-
-
-
-
 
 Water* water;
 

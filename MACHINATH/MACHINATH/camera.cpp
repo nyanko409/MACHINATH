@@ -120,15 +120,10 @@ void CameraInput()
 
 	// fov
 	if (Keyboard_IsPress(DIK_M) && g_pCam->fov < 3)
-	{
-		// fov increase
 		g_pCam->fov += 0.01f;
-	}
+
 	if (Keyboard_IsPress(DIK_N) && g_pCam->fov > 1)
-	{
-		// fov decrease
 		g_pCam->fov -= 0.01f;
-	}
 }
 
 Camera* GetCamera()

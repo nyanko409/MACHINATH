@@ -1,7 +1,7 @@
 #pragma once
 
 
-void InitTitle();
-void UpdateTitle();
-void DrawTitle();
-void FinalizeTitle();
+void InitTitleScreen();
+void UpdateTitleScreen();
+void DrawTitleScreen();
+void FinalizeTitleScreen();

@@ -13,9 +13,12 @@
 
 // globals
 static std::vector<Pickup*> g_pickup;
-static std::vector<std::pair<int, D3DXVECTOR3>> g_spawnPos;
+static std::vector<std::pair<int, D3DXVECTOR3>> g_spawnPos =
+{
+	{1, D3DXVECTOR3(0, 1, 10)}, {1, D3DXVECTOR3(0, 1, 0)}, {2, D3DXVECTOR3(0, 1, 0)},
+	{3, D3DXVECTOR3(0, 1, 0)}, {4, D3DXVECTOR3(0, 1, 0)}, {5, D3DXVECTOR3(0, 1, 0)}
+};;
 static float g_zRotSpeed = 0;
-static float g_poolDistance = 0;
 
 
 void Pickup::Draw()
@@ -27,16 +30,7 @@ void InitPickup()
 {
 	// init
 	g_zRotSpeed = 10;
-	g_poolDistance = 100;
-	g_pickup = std::vector<Pickup*>();  
-	
-	// init spawn points
-	g_spawnPos = std::vector<std::pair<int, D3DXVECTOR3>>();
-	g_spawnPos = 
-	{
-		{1, D3DXVECTOR3(0, 1, 10)}, {1, D3DXVECTOR3(0, 1, 0)}, {2, D3DXVECTOR3(0, 1, 0)},
-		{3, D3DXVECTOR3(0, 1, 0)}, {4, D3DXVECTOR3(0, 1, 0)}, {5, D3DXVECTOR3(0, 1, 0)}
-	};
+	g_pickup = std::vector<Pickup*>();
 }
 
 void UninitPickup()

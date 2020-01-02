@@ -127,3 +127,8 @@ SkinMeshFile* GetAnimatedMesh(ANIMATED_MESH_NAME name)
 {
 	return g_boneMesh[name];
 }
+
+void UninitMesh()
+{
+
+}

@@ -25,7 +25,6 @@ static MapData g_MapData[] =
 	{MESH_MAP_CLIFF, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_START, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 };
-std::vector<EventData> g_event; 
 std::vector<Map*> g_map;
 static float g_mapRadius = 0;
 static int g_drawCount;
@@ -90,6 +89,12 @@ void UpdateMap()
 {
 	// update the current map the player is on
 	UpdateCurrentMap();
+
+	if (g_map.size() < 10)
+	{
+		SetScene(SCENE_TITLESCREEN);
+		return;
+	}
 
 	// map pooling
 	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->GetCombinedPosition(), true) > g_poolDistance)

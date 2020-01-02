@@ -17,6 +17,12 @@ HRESULT InitFont()
 	return S_OK;
 }
 
+void UninitFont()
+{
+	if (g_pFont)
+		g_pFont->Release();
+}
+
 void DrawTextTo(RECT pos, const char* text, int textLength)
 {
 	g_pFont->DrawTextA(NULL, text, textLength, &pos, DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 255, 255, 50));

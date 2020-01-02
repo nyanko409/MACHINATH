@@ -11,19 +11,6 @@ bool isPlaying = false;
 
 void UpdateTimer()
 {
-	// start game timer when in game screen
-	if (!isPlaying && GetScene() == SCENE_GAMESCREEN)
-	{
-		ResetTimer();
-		StartTimer();
-	}
-
-	// stop timer when not in game screen
-	if (isPlaying && GetScene() == !SCENE_GAMESCREEN)
-	{
-		StopTimer();
-	}
-
 	// add playtime every frame
 	if(isPlaying)
 		playTime += TIME_PER_FRAME;

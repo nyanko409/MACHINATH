@@ -30,6 +30,9 @@ void SpriteDraw(const Sprite& sp, bool rotateAtPos = true, const RECT *pSrcRect 
 // call once at start
 void InitSprite();
 
+// free sprite
+void UninitSprite();
+
 // call every frame before drawing sprites
 void SpriteStart();
 

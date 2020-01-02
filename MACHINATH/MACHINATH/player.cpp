@@ -81,12 +81,11 @@ void UninitPlayer()
 	// free memory
 	delete g_skateboard;
 	delete g_player;
+	delete g_parent;
 }
 
 void UpdatePlayer()
-{
-	if (GetScene() != SCENE_GAMESCREEN) return;
-	
+{	
 	HandleMapEvent();
 	MovePlayer();
 	MoveSideways();
