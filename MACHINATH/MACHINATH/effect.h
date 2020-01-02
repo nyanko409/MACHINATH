@@ -1,7 +1,7 @@
 #pragma once
 
-#include <d3d9.h>
 #include <d3dx9.h>
+
 
 // name of the effect
 enum Effect
@@ -15,9 +15,10 @@ void InitEffect();
 // call once at uninit
 void UninitEffect();
 
-// play effect
-void PlayEffect(Effect type, float posX, float posY, float posZ, float deltaX = 0, float deltaY = 0, float deltaZ = 0, float playSpeed = 1.0F);
-void PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 delta = {0, 0, 0}, float speed = 1.0F);
+// play given effect
+void PlayEffect(Effect type, D3DXVECTOR3 position, 
+	D3DXVECTOR3 deltaPos = { 0, 0, 0 }, D3DXVECTOR3 rotation = {0, 0, 0}, 
+	D3DXVECTOR3 scale = {1, 1, 1}, float playSpeed = 1.0F);
 
 // call every draw frame
 void DrawEffect();

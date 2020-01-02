@@ -119,9 +119,9 @@ void UninitMap()
 {
 	// free memory
 	for (int i = 0; i < g_map.size(); ++i)
-	{
 		delete g_map[i];
-	}
+
+	g_map.clear();
 }
 
 

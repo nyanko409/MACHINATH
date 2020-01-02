@@ -324,10 +324,12 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateQTE();
 	UpdateCamera();
+
+	DrawTest();
 }
 
 // draw game
@@ -341,7 +343,6 @@ void DrawGame()
 
 	// draw 3d meshes
 	DrawObjects();
-	DrawTest();
 	DrawEffect();
 
 	SpriteStart();
@@ -431,6 +432,9 @@ void DrawTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 	//MoveLight(1, 0, 0, GetPlayer()->moveSpeed, false);
+
+	if(Keyboard_IsTrigger(DIK_Z))
+		PlayEffect(EFFECT_JUMP, { 0, 10, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, {0.1,0.1,0.1});
 
 	// draw text
 	//char f[] = "fuck";

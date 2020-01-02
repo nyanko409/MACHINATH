@@ -55,7 +55,7 @@ void UpdatePickup()
 		if (g_pickup[i]->col.CheckCollision(GetPlayer()->col))
 		{
 			// collided, play effect and delete pickup
-			//PlayEffect(EFFECT_JUMP, pickup[i]->transform.position);
+			//PlayEffect(EFFECT_JUMP, g_pickup[i]->transform.position);
 			delete g_pickup[i];
 			AddScore(100);
 			g_pickup.erase(g_pickup.begin() + i);

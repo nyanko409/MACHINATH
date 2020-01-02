@@ -17,7 +17,17 @@
 #pragma comment(lib,"EffekseerSoundXAudio2.Release.lib")
 #endif
 
-#define MAX_EFFECTS 10
+
+// struct of effect data
+struct EffectData
+{
+	Effekseer::Handle handle;
+	Effekseer::Effect* effect;
+	Effekseer::Vector3D deltaPos;
+	Effekseer::Vector3D rotation;
+	Effekseer::Vector3D scale;
+	float playSpeed;
+};
 
 // path to the effect
 EFK_CHAR* path[1]
@@ -25,34 +35,19 @@ EFK_CHAR* path[1]
 	(EFK_CHAR*)L"asset/shader/effekseer/jump.efk"
 };
 
-
-LPDIRECT3DDEVICE9 device = NULL;
-Camera* camera = NULL;
-
 EffekseerRenderer::Renderer* renderer = NULL;
 Effekseer::Manager* manager = NULL;
-std::vector<Effekseer::Handle> handle;
 
-Effekseer::Effect* effect[MAX_EFFECTS] = { };
-Effekseer::Vector3D g_delta[MAX_EFFECTS] = { };
-float g_playSpeed[MAX_EFFECTS] = { };
+std::vector<EffectData> g_effect;
 
 
 void InitEffect()
 {
-	// get device and camera
-	device = MyDirect3D_GetDevice();
-	camera = GetCamera();
-
-	// init effect and handle
-	for (int i = 0; i < MAX_EFFECTS; i++)
-	{
-		effect[i] = NULL;
-		handle.push_back(Effekseer::Handle(-1));
-	}
+	// get device
+	auto pDevice = MyDirect3D_GetDevice();
 
 	// init effect interface
-	renderer = EffekseerRendererDX9::Renderer::Create(device, 5000);
+	renderer = EffekseerRendererDX9::Renderer::Create(pDevice, 5000);
 	manager = Effekseer::Manager::Create(5000);
 
 	// 描画方法を指定します。独自に拡張することもできます。
@@ -68,63 +63,59 @@ void InitEffect()
 	// 座標系の指定
 	manager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
 
-	// set projection
-	renderer->SetProjectionMatrix(
-		::Effekseer::Matrix44().PerspectiveFovLH(camera->fov, camera->aspect, camera->nearClip, camera->farClip));
+	// set projection matrix
+	auto pCamera = GetCamera();
+	renderer->SetProjectionMatrix(Effekseer::Matrix44().PerspectiveFovLH(
+				pCamera->fov, pCamera->aspect, pCamera->nearClip, pCamera->farClip));
 }
 
-void PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 delta, float speed)
+void PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 deltaPos, D3DXVECTOR3 rotation, D3DXVECTOR3 scale, float playSpeed)
 {
-	PlayEffect(type, position.x, position.y, position.z, delta.x, delta.y, delta.z, speed);
+	Effekseer::Effect* effect = Effekseer::Effect::Create(manager, path[type]);
+	Effekseer::Handle handle = manager->Play(effect, position.x, position.y, position.z);
+
+	g_effect.emplace_back(
+		EffectData{ handle, effect, Effekseer::Vector3D(deltaPos.x, deltaPos.y, deltaPos.z),
+		Effekseer::Vector3D(rotation.x, rotation.y, rotation.z),
+		Effekseer::Vector3D(scale.x, scale.y, scale.z), playSpeed });
 }
 
-void PlayEffect(Effect type, float posX, float posY, float posZ, float deltaX, float deltaY, float deltaZ, float playSpeed)
-{
-	// エフェクトの読込
-	for (int i = 0; i < MAX_EFFECTS; i++)
-	{
-		if (!effect[i])
-		{
-			effect[i] = Effekseer::Effect::Create(manager, path[type]);
-			g_delta[i] = Effekseer::Vector3D(deltaX, deltaY, deltaZ);
-			g_playSpeed[i] = playSpeed;
-
-			Effekseer::Handle _handle = manager->Play(effect[i], posX, posY, posZ);
-			handle[i] = _handle;
-			
-			return;
-		}
-	}
-}
 
 void DrawEffect()
 {
 	// update camera matrix
+	auto pCamera = GetCamera();
 	renderer->SetCameraMatrix(
-		::Effekseer::Matrix44().LookAtLH(Effekseer::Vector3D(camera->position.x, camera->position.y, camera->position.z),
-			Effekseer::Vector3D(camera->forward.x + camera->position.x, camera->forward.y + camera->position.y, camera->forward.z + camera->position.z),
-			Effekseer::Vector3D(0, 1, 0)));
+		Effekseer::Matrix44().LookAtLH(
+			Effekseer::Vector3D(pCamera->position.x, pCamera->position.y, pCamera->position.z),
+			Effekseer::Vector3D(pCamera->forward.x + pCamera->position.x, 
+				pCamera->forward.y + pCamera->position.y, pCamera->forward.z + pCamera->position.z),
+			Effekseer::Vector3D(pCamera->up.x, pCamera->up.y, pCamera->up.z)));
 
 	// update effects
-	for (int i = 0; i < MAX_EFFECTS; i++)
+	for (int i = 0; i < g_effect.size(); ++i)
 	{
-		// set handle and effect to null after draw
-		if (effect[i] && !manager->Exists(handle[i]))
+		// remove effect from vector if finished playing the effect
+		if (g_effect[i].effect && !manager->Exists(g_effect[i].handle))
 		{
-			effect[i]->UnloadResources();
-			effect[i]->Release();
+			g_effect[i].effect->UnloadResources();
+			g_effect[i].effect->Release();
+			g_effect[i].effect = NULL;
 
-			handle[i] = -1;
-			effect[i] = NULL;
+			g_effect.erase(g_effect.begin() + i);
+			--i;
+			continue;
 		}
-		
-		// update drawing effects
-		if (handle[i] != -1)
-		{
-			manager->AddLocation(handle[i], g_delta[i]);
-			//manager->SetScale(handle[i], 0.1F, 0.1F, 0.1F);
-			manager->SetSpeed(handle[i], g_playSpeed[i]);
-		}
+
+		// update active effects
+		manager->AddLocation(g_effect[i].handle, g_effect[i].deltaPos);
+		manager->SetSpeed(g_effect[i].handle, g_effect[i].playSpeed);
+		manager->SetScale(g_effect[i].handle, 
+			g_effect[i].scale.X, g_effect[i].scale.Y, g_effect[i].scale.Z);
+		manager->SetRotation(g_effect[i].handle, 
+			D3DXToRadian(g_effect[i].rotation.X), 
+			D3DXToRadian(g_effect[i].rotation.Y),
+			D3DXToRadian(g_effect[i].rotation.Z));
 	}
 
 	manager->Update();
@@ -137,9 +128,10 @@ void DrawEffect()
 
 void UninitEffect()
 {
-	for (int i = 0; i < MAX_EFFECTS; i++)
+	// free unreleased effect from memory
+	for (auto data : g_effect)
 	{
-		ES_SAFE_RELEASE(effect[i]);
+		ES_SAFE_RELEASE(data.effect);
 	}
 
 	manager->Destroy();
