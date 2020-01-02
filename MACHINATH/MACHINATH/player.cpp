@@ -60,12 +60,11 @@ void InitPlayer()
 	g_curSlopeRot = 0;
 
 	// create parent
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_parent = new GameObject(trans);
 
 	// create player
-	trans.position = { 0, -1.5F, 0 };
-	g_player = new Player(trans, 2.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
+	g_player = new Player(trans, 2.0F, 1.0F, 1.5F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
@@ -108,7 +107,7 @@ void MovePlayer()
 	{
 		Map* map = GetMapById(GetCurrentMapId());
 		g_parent->transform.position.y = Lerp(g_parent->transform.position.y, 
-											map->transform.position.y + 3.0F, 0.1F);
+											map->transform.position.y + g_player->heightOffset, 0.1F);
 	}
 }
 
@@ -147,7 +146,6 @@ void HandleMapEvent()
 			if (g_player->col.CheckCollision(front->data.event[i].trigger))
 			{
 				front->data.event[i].started = true;
-				g_player->inEvent = true;
 			}
 		}
 
@@ -174,7 +172,6 @@ void Curve(EventData& event)
 	if (g_curRot >= fabsf(event.value))
 	{
 		event.finished = true;
-		g_player->inEvent = false;
 		g_curRot = 0;
 	}
 
@@ -205,7 +202,6 @@ void Slope(EventData& event)
 	else
 	{
 		event.finished = true;
-		g_player->inEvent = false;
 		g_curSlopeRot = 0;
 	}
 }

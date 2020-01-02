@@ -10,12 +10,12 @@ public:
 	BoxCollider col;
 	float moveSpeed;
 	float sideSpeed;
-	bool inEvent;
+	float heightOffset;
 
 	// constructor
-	Player(Transform transform, float moveSpeed, float sideSpeed, ANIMATED_MESH_NAME name, SHADER_TYPE type, float width, float height, float depth, GameObject* parent = nullptr) :
+	Player(Transform transform, float moveSpeed, float sideSpeed, float heightOffset, ANIMATED_MESH_NAME name, SHADER_TYPE type, float width, float height, float depth, GameObject* parent = nullptr) :
 		BoneObject(transform, name, type, parent), col(BoxCollider(this, width, height, depth)),  
-		moveSpeed(moveSpeed), sideSpeed(sideSpeed), inEvent(false)
+		moveSpeed(moveSpeed), sideSpeed(sideSpeed), heightOffset(heightOffset)
 	{}
 
 	// destructor
