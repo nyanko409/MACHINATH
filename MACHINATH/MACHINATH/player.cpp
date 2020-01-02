@@ -105,8 +105,10 @@ void MovePlayer()
 	if (g_parent->transform.rotation.x == 0.0F)
 	{
 		Map* map = GetMapById(GetCurrentMapId());
-		g_parent->transform.position.y = Lerp(g_parent->transform.position.y, 
-											map->transform.position.y + g_player->heightOffset, 0.1F);
+
+		if(map != nullptr)
+			g_parent->transform.position.y = Lerp(g_parent->transform.position.y, 
+										map->transform.position.y + g_player->heightOffset, 0.1F);
 	}
 }
 

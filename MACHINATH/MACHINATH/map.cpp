@@ -90,7 +90,7 @@ void UpdateMap()
 	// update the current map the player is on
 	UpdateCurrentMap();
 
-	if (g_map.size() < 10)
+	if (g_map.size() < 1)
 	{
 		SetScene(SCENE_TITLESCREEN);
 		return;
