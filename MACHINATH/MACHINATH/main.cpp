@@ -224,7 +224,7 @@ LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(g_hWnd, uMsg, wParam, lParam);
 }
 
-// init background tasks
+// load tasks that only need to be initialized once
 bool InitLibrary()
 {
 	//Direct3Dインターフェイス作成
