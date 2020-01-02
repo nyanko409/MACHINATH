@@ -1,8 +1,6 @@
 #include "common.h"
 #include "collider.h"
 
-// color of the collider
-#define COL_COLOR D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255))
 
 // fvf for linestrip
 #define FVF_LINE (D3DFVF_XYZ | D3DFVF_DIFFUSE)
@@ -15,7 +13,7 @@ struct LINE_VERTEX
 };
 
 
-int BoxCollider::CheckCollision(const BoxCollider& other, bool nsFirst)
+int BoxCollider::CheckCollision(const BoxCollider& other, const bool nsFirst) const
 {
 	// get size
 	v3t_float size1 = GetSize();
@@ -71,7 +69,7 @@ int BoxCollider::CheckCollision(const BoxCollider& other, bool nsFirst)
 }
 
 
-void BoxCollider::DrawCollider(const BoxCollider& col)
+void BoxCollider::DrawCollider(const BoxCollider& col, const D3DCOLOR& color)
 {
 	// init
 	auto device = MyDirect3D_GetDevice();
@@ -89,22 +87,22 @@ void BoxCollider::DrawCollider(const BoxCollider& col)
 	LINE_VERTEX vert[] =
 	{
 		// back
-		{topLeft, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, COL_COLOR},
-		{topLeft, COL_COLOR}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, COL_COLOR},
-		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, COL_COLOR},
-		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, COL_COLOR},
+		{topLeft, color}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, color},
+		{topLeft, color}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, color},
+		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, color}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, color},
+		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, color}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, color},
 
 		// front
-		{v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, COL_COLOR},
-		{v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, COL_COLOR}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR},
-		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR},
-		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR},
+		{v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, color}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, color},
+		{v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, color}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, color},
+		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, color}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, color},
+		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, color}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, color},
 
 		// center
-		{v3t_float{topLeft.x, topLeft.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, COL_COLOR},
-		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, COL_COLOR},
-		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR},
-		{v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, COL_COLOR}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, COL_COLOR}
+		{v3t_float{topLeft.x, topLeft.y, topLeft.z}, color}, {v3t_float{topLeft.x, topLeft.y, topLeft.z + size.z}, color},
+		{v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z}, color}, {v3t_float{topLeft.x + size.x, topLeft.y, topLeft.z + size.z}, color},
+		{v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z}, color}, {v3t_float{topLeft.x, topLeft.y - size.y, topLeft.z + size.z}, color},
+		{v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z}, color}, {v3t_float{topLeft.x + size.x, topLeft.y - size.y, topLeft.z + size.z}, color}
 	};
 
 	device->SetFVF(FVF_LINE);

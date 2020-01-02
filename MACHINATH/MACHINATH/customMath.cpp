@@ -15,3 +15,8 @@ D3DXVECTOR3 Lerp(D3DXVECTOR3 a, D3DXVECTOR3 b, float t)
 {
 	return a * (1 - t) + b * t;
 }
+
+float Lerp(float a, float b, float t)
+{
+	return a * (1 - t) + b * t;
+}

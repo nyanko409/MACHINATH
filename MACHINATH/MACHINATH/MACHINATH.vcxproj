@@ -153,6 +153,7 @@
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="transformation.cpp" />
+    <ClCompile Include="water.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="billboard.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="transformation.h" />
+    <ClInclude Include="water.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

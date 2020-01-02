@@ -102,7 +102,7 @@
     <ClCompile Include="collider.cpp">
       <Filter>ソース ファイル\Library</Filter>
     </ClCompile>
-    <ClCompile Include="Result.cpp">
+    <ClCompile Include="water.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -191,8 +191,8 @@
     <ClInclude Include="collider.h">
       <Filter>ヘッダー ファイル\Library</Filter>
     </ClInclude>
-    <ClInclude Include="Result.h">
-      <Filter>ソース ファイル\Library</Filter>
+    <ClInclude Include="water.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

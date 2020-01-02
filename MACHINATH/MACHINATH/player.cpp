@@ -21,7 +21,7 @@ static D3DXVECTOR3 g_camPos;
 static float g_finalYPos;
 static bool g_isJumping;
 static int g_jumpCnt;
-static float g_curRot, g_curSlopeRot, g_curSlopeHeight;
+static float g_curRot, g_curSlopeRot;
 
 void MovePlayer();
 void MoveSideways();
@@ -36,7 +36,7 @@ void CheckMapCollision();
 // override player draw
 void Player::Draw()
 {
-	BoxCollider::DrawCollider(GetPlayer()->col);
+	BoxCollider::DrawCollider(GetPlayer()->col, D3DCOLOR(D3DCOLOR_RGBA(0, 0, 0, 255)));
 
 	auto device = MyDirect3D_GetDevice();
 	//device->SetRenderState(D3DRS_LIGHTING, false);
@@ -58,15 +58,13 @@ void InitPlayer()
 	g_jumpCnt = 0;
 	g_curRot = 0;
 	g_curSlopeRot = 0;
-	g_curSlopeHeight = 0;
 
 	// create parent
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 3.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_parent = new GameObject(trans);
 
 	// create player
-	trans.position = { 0, -1.5, 0 };
-	g_player = new Player(trans, 2.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
+	g_player = new Player(trans, 2.0F, 1.0F, 1.5F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
@@ -103,6 +101,14 @@ void MovePlayer()
 {
 	// move parent
 	g_parent->transform.position += g_parent->GetForward() * g_player->moveSpeed;
+
+	// offset player y position to active map
+	if (g_parent->transform.rotation.x == 0.0F)
+	{
+		Map* map = GetMapById(GetCurrentMapId());
+		g_parent->transform.position.y = Lerp(g_parent->transform.position.y, 
+											map->transform.position.y + g_player->heightOffset, 0.1F);
+	}
 }
 
 void HandleMapEvent()
@@ -112,42 +118,35 @@ void HandleMapEvent()
 	if (!(map->size() > 0)) return;
 
 	Map* front = nullptr;
-	for (int i = 0; i < map->size(); i++)
+	for (int i = 0; i < map->size(); ++i)
 	{
-		if (!(*map)[i]->data.event.front().finished && 
-			!((*map)[i]->data.event.front().mapEvent == MapEvent::NONE))
+		for (int j = 0; j < (*map)[i]->data.event.size(); ++j)
 		{
-			front = (*map)[i];
-			break;
+			if (!(*map)[i]->data.event[j].finished &&
+				!((*map)[i]->data.event[j].mapEvent == MapEvent::NONE))
+			{
+				front = (*map)[i];
+				break;
+			}
 		}
+
+		// break if front map with event is found
+		if (front != nullptr) break;
 	}
+
+	// return if no event is found
 	if (front == nullptr) return;
 	
 	// handle events
-	// check x or z distance based on local map rotation
-	float mapPos = (front->GetCombinedRotation().y == 90 || front->GetCombinedRotation().y == 270) ?
-		front->GetCombinedPosition().x : front->GetCombinedPosition().z;
-
 	for (int i = 0; i < front->data.event.size(); ++i)
 	{
-		// start event
+		// start event if collied with event trigger
 		if (!front->data.event[i].started)
 		{
-			if (front->GetCombinedRotation().y == 90 &&
-				mapPos - front->data.event[i].distance <= g_player->GetCombinedPosition().x)
+			if (g_player->col.CheckCollision(front->data.event[i].trigger))
+			{
 				front->data.event[i].started = true;
-
-			else if (front->GetCombinedRotation().y == 270 &&
-				mapPos + front->data.event[i].distance >= g_player->GetCombinedPosition().x)
-				front->data.event[i].started = true;
-
-			else if (front->GetCombinedRotation().y == 0 &&
-				mapPos - front->data.event[i].distance <= g_player->GetCombinedPosition().z)
-				front->data.event[i].started = true;
-
-			else if (front->GetCombinedRotation().y == 180 &&
-				mapPos + front->data.event[i].distance >= g_player->GetCombinedPosition().z)
-				front->data.event[i].started = true;
+			}
 		}
 
 		// update events
@@ -183,49 +182,27 @@ void Curve(EventData& event)
 void Slope(EventData& event)
 {
 	float speed = event.speed * g_player->moveSpeed;
-	float speed2 = event.speed2 * g_player->moveSpeed;
 
-	// while hight is not reached
-	if (g_curSlopeHeight < fabsf(event.value2))
+	// rotate to climb slope
+	if (g_curSlopeRot < fabsf(event.value))
 	{
-		// move up
-		g_curSlopeHeight += speed2;
+		g_curSlopeRot += speed;
 
-		// rotate to climb slope
-		if (g_curSlopeRot < fabsf(event.value))
-		{
-			g_curSlopeRot += speed;
+		float frameRot = g_curSlopeRot > fabsf(event.value) ? 
+			fabsf(event.value) - (g_curSlopeRot - speed) : speed;
+		if (event.value < 0) frameRot *= -1;
 
-			float frameRot = g_curSlopeRot > fabsf(event.value) ? 
-				fabsf(event.value) - (g_curSlopeRot - speed) : speed;
-			if (event.value < 0) frameRot *= -1;
+		// clamp
+		if (g_curSlopeRot > fabsf(event.value)) 
+			g_curSlopeRot = fabsf(event.value);
 
-			// clamp
-			if (g_curSlopeRot > fabsf(event.value)) 
-				g_curSlopeRot = fabsf(event.value);
-
-			// add rotation to player
-			g_parent->transform.rotation.x += frameRot;
-		}
+		// add rotation to player
+		g_parent->transform.rotation.x += frameRot;
 	}
 	else
 	{
-		// height is reached, rotate back
-		g_curSlopeRot -= speed;
-
-		float frameRot = g_curSlopeRot < 0 ? 
-			g_curSlopeRot + speed : speed;
-		if (event.value < 0) frameRot *= -1;
-
-		// add rotation to player
-		g_parent->transform.rotation.x -= frameRot;
-
-		if (g_curSlopeRot <= 0)
-		{
-			event.finished = true;
-			g_curSlopeRot = 0;
-			g_curSlopeHeight = 0;
-		}
+		event.finished = true;
+		g_curSlopeRot = 0;
 	}
 }
 
@@ -343,14 +320,19 @@ void CheckMapCollision()
 	auto map = GetMap();
 	auto forward = g_parent->GetForward();
 
+	int curMapId = GetCurrentMapId();
+
 	// get the direction to check first
 	bool nsFirst = (forward.x < 0.45F && forward.x > -0.45F) ? false : true;
 
-	// loop for every map and every attached collider
+	// loop for every active map and every attached collider
 	for (Map* m : *map)
 	{
-		if (!m->enableDraw) continue;
+		// check collision only for current and next map
+		if (m->id < curMapId) continue;
+		if (m->id > curMapId + 1) break;
 
+		// loop for every collider attached to the map
 		for (BoxCollider col : m->col)
 		{
 			switch (g_player->col.CheckCollision(col, nsFirst))
