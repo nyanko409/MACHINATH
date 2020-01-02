@@ -24,22 +24,17 @@ void InitResult()
 void UpdateResult()
 {
 	// switch to game screen when key is pressed
-	if (Keyboard_IsPress(DIK_SPACE))
-	{
-		SetScene(SCENE_TITLESCREEN);
-	}
+	//if (Keyboard_IsPress(DIK_SPACE))
+	//{
+	//	SetScene(SCENE_TITLESCREEN);
+	//}
 
 	//UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0.0f, 10.0f);
 }
 
 void DrawResult()
 {
-	// draw if in result screen
-	if (GetScene() == SCENE_RESULTSCREEN)
-	{
-		
-
-	}
+	
 }
 
 void FinalizeResult()

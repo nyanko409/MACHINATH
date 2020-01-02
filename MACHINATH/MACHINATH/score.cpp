@@ -44,42 +44,36 @@ void UpdateScore()
 
 void DrawScore()
 {
-	// draw if in game screen
-	if (GetScene() == SCENE_GAMESCREEN)
+	scoreSprite.position.x = 800.0f;
+	int fig = 0;
+	int s = g_score;
+
+	int width = Texture_GetWidth(TEXTURE_INDEX_SCORE);
+	int height = Texture_GetHeight(TEXTURE_INDEX_SCORE);
+
+	// draw text
+	std::string str = std::to_string(finalscore);
+	RECT ScoreRect;
+	DrawTextTo(RECT{ 200, 100, 100, 50 }, str.c_str(), str.length());
+
+	do
 	{
+		//表示する位の数字を取り出す
+		int n = s % 10;
 
+		ScoreRect.left = n % 5 * 0.2f * width;	//u座標
+		ScoreRect.top = n / 5 * 0.5f * height;	//v座標
+		ScoreRect.right = ScoreRect.left + 0.2f * width;
+		ScoreRect.bottom = ScoreRect.top + 0.5f * height;
 
-		scoreSprite.position.x = 800.0f;
-		int fig = 0;
-		int s = g_score;
+		SpriteDraw(scoreSprite, true, &ScoreRect);
 
-		int width = Texture_GetWidth(TEXTURE_INDEX_SCORE);
-		int height = Texture_GetHeight(TEXTURE_INDEX_SCORE);
+		//次の位を表示するため10で割る
+		s /= 10;
 
-		// draw text
-		std::string str = std::to_string(finalscore);
-		RECT ScoreRect;
-		DrawTextTo(RECT{ 200, 100, 100, 50 }, str.c_str(), str.length());
+		//表示位置を左にずらす
+		scoreSprite.position.x -= 0.2 * width * 0.7;
 
-		do
-		{
-			//表示する位の数字を取り出す
-			int n = s % 10;
-
-			ScoreRect.left = n % 5 * 0.2f * width;	//u座標
-			ScoreRect.top = n / 5 * 0.5f * height;	//v座標
-			ScoreRect.right = ScoreRect.left + 0.2f * width;
-			ScoreRect.bottom = ScoreRect.top + 0.5f * height;
-
-			SpriteDraw(scoreSprite, true, &ScoreRect);
-
-			//次の位を表示するため10で割る
-			s /= 10;
-
-			//表示位置を左にずらす
-			scoreSprite.position.x -= 0.2 * width * 0.7;
-
-			fig++;
-		} while (fig < FIGURE_NUM);
-	}
+		fig++;
+	} while (fig < FIGURE_NUM);
 }

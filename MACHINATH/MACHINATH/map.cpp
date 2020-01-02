@@ -197,11 +197,13 @@ void LoadMapFromFile(char* path)
 		}
 		catch (std::runtime_error& e)
 		{
-			// display error box
+			// display error box and exit program
 			MessageBox(NULL,
 				e.what(),
 				"Error!",
 				MB_ICONEXCLAMATION | MB_OK);
+			
+			std::exit(0);
 		}
 	}
 }
