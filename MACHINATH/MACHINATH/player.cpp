@@ -74,6 +74,9 @@ void InitPlayer()
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, g_player);
+
+	ResetTimer();
+	StartTimer();
 }
 
 void UninitPlayer()

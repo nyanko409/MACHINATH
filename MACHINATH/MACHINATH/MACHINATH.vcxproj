@@ -144,7 +144,6 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playTime.cpp" />
     <ClCompile Include="qte.cpp" />
-    <ClCompile Include="Result.cpp" />
     <ClCompile Include="sceneManagement.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -175,7 +174,6 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="playTime.h" />
     <ClInclude Include="qte.h" />
-    <ClInclude Include="Result.h" />
     <ClInclude Include="sceneManagement.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="shader.h" />

@@ -4,6 +4,7 @@
 #include "font.h"
 #include "playTime.h"
 
+
 // game time passed in seconds
 float playTime = 0.0F;
 bool isPlaying = false;
