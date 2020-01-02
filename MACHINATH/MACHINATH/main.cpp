@@ -324,12 +324,10 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	//UpdatePlayer();
+	UpdatePlayer();
 	UpdatePickup();
 	UpdateQTE();
 	UpdateCamera();
-
-	DrawTest();
 }
 
 // draw game
