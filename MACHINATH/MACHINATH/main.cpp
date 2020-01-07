@@ -16,6 +16,7 @@
 #include "transform.h"
 #include "transformation.h"
 #include "gameObject.h"
+#include "lighting.h"
 #include "player.h"
 #include "pickup.h"
 #include "playTime.h"
@@ -314,10 +315,12 @@ void FinalizeTitle()
 // init game screen
 bool InitGame()
 {
+	InitLighting();
 	InitScore();
 	InitPlayer();
 	InitPickup();
 	InitMap();
+
 	InitTest();
 
 	return true;
@@ -331,8 +334,9 @@ void UpdateGame()
 	UpdateMap();
 	//UpdatePlayer();
 	UpdatePickup();
-	UpdateQTE();
+	UpdateLighting();
 	UpdateCamera();
+	UpdateQTE();
 }
 
 // draw game
@@ -369,6 +373,7 @@ void FinalizeGame()
 	UninitPlayer();
 	UninitMap();
 	UninitPickup();
+	UninitLighting();
 }
 
 // init render state
@@ -415,11 +420,7 @@ void InitRenderState()
 
 
 
-// init lighting
-void InitLight()
-{
-	AddDirectionalLight(0, D3DXVECTOR3(0.0F, -1.0F, 0.0F), D3DXCOLOR(0.0F, 1.0F, 1.0F, 1.0F));
-}
+
 
 Water* water;
 MeshObject* boss;
