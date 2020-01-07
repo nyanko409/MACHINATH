@@ -1,10 +1,6 @@
 #pragma once
 
-#include <string>
 #include "transform.h"
-#include "transformation.h"
-#include "mydirect3d.h"
-#include "material.h"
 #include "shader.h"
 
 

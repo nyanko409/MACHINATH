@@ -1,10 +1,8 @@
 #include <vector>
-#include "pickup.h"
 #include "common.h"
+#include "pickup.h"
 #include "customMath.h"
-#include "material.h"
 #include "mydirect3d.h"
-#include "transformation.h"
 #include "player.h"
 #include "effect.h"
 #include "map.h"

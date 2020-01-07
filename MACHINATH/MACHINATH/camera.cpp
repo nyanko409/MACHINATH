@@ -1,10 +1,6 @@
 #include "camera.h"
-#include "common.h"
 #include "mydirect3d.h"
 #include "input.h"
-#include "font.h"
-#include "shader.h"
-
 
 
 // globals

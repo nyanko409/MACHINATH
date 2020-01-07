@@ -2,6 +2,8 @@
 
 #include "gameObject.h"
 #include "meshLoader.h"
+#include "transformation.h"
+#include "material.h"
 
 
 // inherit this class if the object has unanimated mesh

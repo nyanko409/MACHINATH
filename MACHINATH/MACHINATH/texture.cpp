@@ -1,6 +1,5 @@
-#include <d3dx9.h>
-#include "mydirect3d.h"
 #include "texture.h"
+#include "mydirect3d.h"
 
 
 // globals

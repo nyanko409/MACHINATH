@@ -318,6 +318,7 @@ bool InitGame()
 	InitPlayer();
 	InitPickup();
 	InitMap();
+	InitTest();
 
 	return true;
 }
@@ -328,7 +329,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateQTE();
 	UpdateCamera();

@@ -1,4 +1,4 @@
-#include "common.h"
+#include "mydirect3d.h"
 #include "collider.h"
 
 

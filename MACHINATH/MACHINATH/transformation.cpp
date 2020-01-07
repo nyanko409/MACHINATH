@@ -1,8 +1,7 @@
-#include <d3dx9.h>
 #include "transformation.h"
 #include "mydirect3d.h"
 #include "common.h"
-#include "shader.h"
+
 
 D3DXMATRIX matTranslate, matRotation, matLocalRotation, matScale, matPivot;
 D3DXMATRIX matWorld;
