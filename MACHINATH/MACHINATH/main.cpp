@@ -328,7 +328,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	//UpdatePlayer();
+	UpdatePlayer();
 	UpdatePickup();
 	UpdateQTE();
 	UpdateCamera();

@@ -39,7 +39,7 @@ void UninitPickup()
 	for (int i = 0; i < g_pickup.size(); ++i)
 	{
 		if (g_pickup[i] != nullptr)
-			delete g_pickup[i];
+			SAFE_DELETE(g_pickup[i]);
 	}
 }
 
@@ -56,7 +56,7 @@ void UpdatePickup()
 		{
 			// collided, play effect and delete pickup
 			PlayEffect(EFFECT_JUMP, g_pickup[i]->GetCombinedPosition(), { 0, 0, 0 }, { 0, 0, 0 }, {50, 50, 50});
-			delete g_pickup[i];
+			SAFE_DELETE(g_pickup[i]);
 			AddScore(100);
 			g_pickup.erase(g_pickup.begin() + i);
 		}

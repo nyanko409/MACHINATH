@@ -1,5 +1,5 @@
-#include <d3dx9.h>
 #include <vector>
+#include "common.h"
 #include "mydirect3d.h"
 #include "texture.h"
 #include "meshLoader.h"
@@ -133,13 +133,14 @@ void UninitMesh()
 	// free unanimated mesh
 	for (auto data : g_mesh)
 	{
-		if(data.mesh != nullptr)
-			data.mesh->Release();
+		SAFE_RELEASE(data.mesh);
+		SAFE_DELETE_ARRAY(data.pMaterial);
+		SAFE_DELETE_ARRAY(data.pTexture);
 	}
 
 	// free animated mesh
 	for (auto data : g_boneMesh)
-		delete data;
+		SAFE_DELETE(data);
 
 	g_mesh.clear();
 	g_boneMesh.clear();

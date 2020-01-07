@@ -7,8 +7,9 @@
 #include "sceneManagement.h"
 #include "map.h"
 #include "customMath.h"
+#include "common.h"
 
-// globals
+// globals 
 static GameObject* g_parent;
 static Player* g_player;
 static MeshObject* g_skateboard;
@@ -82,9 +83,9 @@ void InitPlayer()
 void UninitPlayer()
 {
 	// free memory
-	delete g_skateboard;
-	delete g_player;
-	delete g_parent;
+	SAFE_DELETE(g_skateboard);
+	SAFE_DELETE(g_player);
+	SAFE_DELETE(g_parent);
 }
 
 void UpdatePlayer()
