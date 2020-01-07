@@ -68,7 +68,7 @@ public:
 		D3DXVec3TransformCoord(&right, &(D3DXVECTOR3(forward.x, 0, forward.z)), &(nRot));
 	}
 
-	void LookAt(D3DXVECTOR3 objPos)
+	D3DXVECTOR3 LookAt(D3DXVECTOR3 objPos)
 	{
 		// vector between camera pos and object pos
 		D3DXVECTOR3 diff = objPos - position;
@@ -79,12 +79,15 @@ public:
 
 		// set forward vector
 		forward = res;
+		return forward;
 	}
 };
 
 
+D3DXVECTOR3 SetCameraForward(D3DXVECTOR3 lookAt);
+
 // set camera pos to given value
-void SetCameraPos(D3DXVECTOR3 lookAt, D3DXVECTOR3 position, int rotX, int rotY, int rotZ);
+void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, int rotY);
 
 // return address of camera
 Camera* GetCamera();

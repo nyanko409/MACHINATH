@@ -296,27 +296,22 @@ void Jump()
 
 void PlayerCamera()
 {
-	// set camera position
-	static int rotX = 0, rotY = 0;
-	float offsetY = 10.0F;
+	static int rotY = 0;
+	rotY++;
 	float offsetZ = -10;
-
-	g_camPos = Lerp(g_camPos, g_player->GetCombinedPosition(), 0.1F);
-
-	D3DXVECTOR3 lookAt = g_camPos;
-	D3DXVECTOR3 pos = g_camPos;
-	D3DXVECTOR3 forward = g_parent->GetForward();
+	float offsetY = 5;
 
 	float offsetX = offsetZ;
+
+	D3DXVECTOR3 forward = g_parent->GetForward();
 
 	offsetZ *= forward.z;
 	offsetX *= forward.x;
 
-	pos.y += offsetY;
-	pos.z += offsetZ;
-	pos.x += offsetX;
+	g_camPos = Lerp(g_camPos, g_player->GetCombinedPosition(), 0.1F);
 
-	SetCameraPos(lookAt, pos, rotX, rotY++, 0);
+	auto v = SetCameraForward(g_player->GetCombinedPosition());
+	SetCameraPos(g_camPos, offsetX, offsetY, offsetZ, rotY);
 }
 
 void CheckMapCollision()

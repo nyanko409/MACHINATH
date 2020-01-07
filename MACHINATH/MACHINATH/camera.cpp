@@ -24,24 +24,25 @@ void InitCamera()
 	g_curPos = g_fixedPos;
 }
 
-void SetCameraPos(D3DXVECTOR3 lookAt, D3DXVECTOR3 position, int rotX, int rotY, int rotZ)
+D3DXVECTOR3 SetCameraForward(D3DXVECTOR3 lookAt)
 {
 	// look at position by setting forward vector
-	g_pCam->LookAt(lookAt);
+	return g_pCam->LookAt(lookAt);
+}
 
-	// rotate offset pos
-	D3DXMATRIX xRot, yRot, zRot;
-
-	D3DXMatrixRotationX(&xRot, D3DXToRadian(rotX));
+void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, int rotY)
+{
+	// get rotation matrix
+	D3DXMATRIX yRot;
 	D3DXMatrixRotationY(&yRot, D3DXToRadian(rotY));
-	D3DXMatrixRotationZ(&zRot, D3DXToRadian(rotZ));
 
-	D3DXVECTOR3 temp;
-	D3DXVECTOR3 diff = position - lookAt;
-	D3DXVec3TransformCoord(&temp, &diff, &(xRot * yRot * zRot));
+	// get position matrix
+	D3DXMATRIX mPosOffset, mPosFinal;
+	D3DXMatrixTranslation(&mPosOffset, offsetX, offsetY, offsetZ);
+	D3DXMatrixTranslation(&mPosFinal, position.x, position.y, position.z);
 
-	// set camera position
-	g_pCam->position = lookAt + temp;
+	// set camera to new position
+	D3DXVec3TransformCoord(&g_pCam->position, &D3DXVECTOR3{0,0,0}, &(mPosOffset * yRot * mPosFinal));
 }
 
 void UpdateCamera()
