@@ -433,7 +433,7 @@ void InitTest()
 	water = new Water(trans, MESH_WATER, SHADER_WATER);
 
 	trans.position.y += 10;
-	trans.position.z += 50;
+	trans.position.z += 110;
 	trans.scale = { 1,1,1 };
 	boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT);
 }
