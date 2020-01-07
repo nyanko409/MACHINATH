@@ -8,7 +8,7 @@
 
 
 // globals
-POINT g_lastPos; POINT g_curPos;
+POINT g_curPos, g_fixedPos = {500, 500};
 Camera* g_pCam;
 
 // function def
@@ -25,7 +25,7 @@ void InitCamera()
 
 	// init cursor pos
 	GetCursorPos(&g_curPos);
-	g_lastPos = g_curPos;
+	g_curPos = g_fixedPos;
 }
 
 void SetCameraPos(D3DXVECTOR3 lookAt, D3DXVECTOR3 position, int rotX, int rotY, int rotZ)
@@ -74,11 +74,12 @@ void UninitCamera()
 void CameraInput()
 { 
 	// camera mouse look
-	g_lastPos = g_curPos;
-	
 	GetCursorPos(&g_curPos);
-	POINT diffPoint = g_curPos - g_lastPos;
+	POINT diffPoint = g_curPos - g_fixedPos;
 	g_pCam->Rotate(diffPoint.x, diffPoint.y);
+
+	SetCursorPos(g_fixedPos.x, g_fixedPos.y);
+	g_curPos = g_fixedPos;
 
 	// camera movement
 	if (Keyboard_IsPress(DIK_W))

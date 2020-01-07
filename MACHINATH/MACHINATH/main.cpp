@@ -143,6 +143,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	Keyboard_Initialize(hInstance, g_hWnd);
 
+	ShowCursor(false);
+
 	MSG msg = {};
 	bool init_title = false;
 	bool init_game = false;
@@ -206,7 +208,9 @@ LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_KEYDOWN:
 		if (wParam == VK_ESCAPE) {
+			ShowCursor(true);
 			SendMessage(g_hWnd, WM_CLOSE, 0, 0);
+			ShowCursor(false);
 		}
 		break;
 
@@ -324,7 +328,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateQTE();
 	UpdateCamera();
