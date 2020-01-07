@@ -8,7 +8,6 @@ class Camera
 {
 public:
 	D3DXVECTOR3 position;								// position of the camera
-	D3DXVECTOR3 lookDirection;							// position where camera should be looking
 
 	D3DXVECTOR3 up;										// current up vector
 	D3DXVECTOR3 forward;								// current forward vector
@@ -24,20 +23,15 @@ public:
 	float lookSensivity;								// sensivity of mouse look
 
 	// constructor
-	Camera(D3DXVECTOR3 pos, D3DXVECTOR3 lookDir) :
-		position(pos), lookDirection(lookDir)
-	{
-		up = D3DXVECTOR3(0.0F, 1.0F, 0.0F);
-		forward = D3DXVECTOR3(0.0F, 0.0F, 1.0F);
-		right = D3DXVECTOR3(1.0F, 0.0F, 0.0F);
-
-		aspect = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
-		nearClip = 1.0F;
-		farClip = 200.0F;
-		fov = D3DXToRadian(90);
-		moveSpeed = 0.6F;
-		lookSensivity = 1.0F;
-	}
+	Camera(D3DXVECTOR3 pos) : 
+		position(pos),
+		up(D3DXVECTOR3(0.0F, 1.0F, 0.0F)), 
+		forward(D3DXVECTOR3(0.0F, 0.0F, 1.0F)), 
+		right(D3DXVECTOR3(1.0F, 0.0F, 0.0F)),
+		aspect((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT),
+		nearClip(1.0F), farClip(200.0F), fov(D3DXToRadian(90)),
+		moveSpeed(0.6F), lookSensivity(1.0F)
+	{}
 
 	// destructor
 	~Camera() {}

@@ -316,7 +316,7 @@ void PlayerCamera()
 	pos.z += offsetZ;
 	pos.x += offsetX;
 
-	SetCameraPos(lookAt, pos, rotX, rotY, 0);
+	SetCameraPos(lookAt, pos, rotX, rotY++, 0);
 }
 
 void CheckMapCollision()
