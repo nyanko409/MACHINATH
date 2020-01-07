@@ -158,7 +158,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		else
 		{
-			Sleep(7);
+			Sleep(6);
 			Keyboard_Update();
 
 			// update title
@@ -422,6 +422,7 @@ void InitLight()
 }
 
 Water* water;
+MeshObject* boss;
 
 void InitTest()
 {
@@ -429,6 +430,11 @@ void InitTest()
 	
 	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {10, 1, 10});
 	water = new Water(trans, MESH_WATER, SHADER_WATER);
+
+	trans.position.y += 10;
+	trans.position.z += 50;
+	trans.scale = { 1,1,1 };
+	boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT);
 }
 
 void DrawTest()
