@@ -6,8 +6,6 @@
 // sprite device
 static LPD3DXSPRITE sprite;
 
-
-
 void SpriteDraw(const Sprite& sp, bool rotateAtPos, const RECT* pSrcRect)
 {
 	sprite->SetTransform(&TransformSprite(sp.position, sp.rotZ, sp.scale, rotateAtPos));

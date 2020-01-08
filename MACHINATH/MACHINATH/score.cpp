@@ -27,11 +27,13 @@ void InitScore()
 
 	scoreSprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_SCORE), D3DXVECTOR3(400, 200, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_SCORE) / 2, Texture_GetHeight(TEXTURE_INDEX_SCORE) / 2, 0),
-		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
+		0, D3DXVECTOR2(0.5f, 0.5f), D3DCOLOR_RGBA(255,255,255, 255));
 }
 
 void UpdateScore()
 {
+
+
 	if (g_score < finalscore)
 	{
 		g_score += SCORE_SPEED;
@@ -44,7 +46,7 @@ void UpdateScore()
 
 void DrawScore()
 {
-	scoreSprite.position.x = 800.0f;
+	scoreSprite.position.x = 600.0f;
 	int fig = 0;
 	int s = g_score;
 
@@ -66,13 +68,15 @@ void DrawScore()
 		ScoreRect.right = ScoreRect.left + 0.2f * width;
 		ScoreRect.bottom = ScoreRect.top + 0.5f * height;
 
+		scoreSprite.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand()%122+122, 60, 255);
+
 		SpriteDraw(scoreSprite, true, &ScoreRect);
 
 		//次の位を表示するため10で割る
 		s /= 10;
 
 		//表示位置を左にずらす
-		scoreSprite.position.x -= 0.2 * width * 0.7;
+		scoreSprite.position.x -= 0.2 * width*0.3;
 
 		fig++;
 	} while (fig < FIGURE_NUM);

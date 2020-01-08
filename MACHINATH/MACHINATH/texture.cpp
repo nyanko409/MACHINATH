@@ -19,7 +19,7 @@ static const TextureFile g_TextureFiles[] = {
 	{ "asset/texture/qte_outer.dds",	512, 512 },
 	{ "asset/texture/qte_inner.png",	512, 512 },
 	{ "asset/texture/fuck.png",			256, 256 },
-	{ "asset/texture/score.png",		506, 317 },
+	{ "asset/texture/score_2.png",		1025, 503 },
 	{ "asset/texture/title.dds",		1920, 1080},
 	{"asset/texture/qte_after.dds",		512,512},
 	{"asset/texture/water.png",		1024,1024},
