@@ -10,53 +10,47 @@
 #define SCORE_SPEED 3.0f
 
 static int g_score;
-static Sprite scoreSprite;
-static int finalscore;
+static Sprite g_scoreSprite;
+static int g_finalScore;
 
 
 void AddScore(int value)
 {
-	finalscore += value;
+	g_finalScore += value;
 }
 
 
 void InitScore()
 {
 	g_score = 0;
-	finalscore = 0;
+	g_finalScore = 0;
 
-	scoreSprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_SCORE), D3DXVECTOR3(400, 200, 0),
+	g_scoreSprite = Sprite(Texture_GetTexture(TEXTURE_INDEX_SCORE), D3DXVECTOR3(400, 200, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_SCORE) / 2, Texture_GetHeight(TEXTURE_INDEX_SCORE) / 2, 0),
 		0, D3DXVECTOR2(0.5f, 0.5f), D3DCOLOR_RGBA(255,255,255, 255));
 }
 
 void UpdateScore()
 {
-
-
-	if (g_score < finalscore)
+	if (g_score < g_finalScore)
 	{
 		g_score += SCORE_SPEED;
 	}
 	else
 	{
-		g_score = finalscore;
+		g_score = g_finalScore;
 	}
 }
 
 void DrawScore()
 {
-	scoreSprite.position.x = 600.0f;
-	int fig = 0;
-	int s = g_score;
-
 	int width = Texture_GetWidth(TEXTURE_INDEX_SCORE);
 	int height = Texture_GetHeight(TEXTURE_INDEX_SCORE);
 
-	// draw text
-	std::string str = std::to_string(finalscore);
 	RECT ScoreRect;
-	DrawTextTo(RECT{ 200, 100, 100, 50 }, str.c_str(), str.length());
+	g_scoreSprite.position.x = 600.0f;
+	int fig = 0;
+	int s = g_score;
 
 	do
 	{
@@ -68,15 +62,15 @@ void DrawScore()
 		ScoreRect.right = ScoreRect.left + 0.2f * width;
 		ScoreRect.bottom = ScoreRect.top + 0.5f * height;
 
-		scoreSprite.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand()%122+122, 60, 255);
+		//g_scoreSprite.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand()%122 + 122, 60, 255);
 
-		SpriteDraw(scoreSprite, true, &ScoreRect);
+		SpriteDraw(g_scoreSprite, true, &ScoreRect);
 
 		//次の位を表示するため10で割る
-		s /= 10;
+		s *= 0.1F;
 
 		//表示位置を左にずらす
-		scoreSprite.position.x -= 0.2 * width*0.3;
+		g_scoreSprite.position.x -= 0.2F * width * 0.3F;
 
 		fig++;
 	} while (fig < FIGURE_NUM);

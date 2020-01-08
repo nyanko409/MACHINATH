@@ -23,7 +23,7 @@ void InitTitleScreen()
 void UpdateTitleScreen()
 {
 	// switch to game screen when key is pressed
-	if (Keyboard_IsPress(DIK_SPACE))
+	if (Keyboard_IsTrigger(DIK_SPACE))
 	{
 		SetScene(SCENE_GAMESCREEN);
 	}
