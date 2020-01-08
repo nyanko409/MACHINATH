@@ -8,7 +8,6 @@ class Camera
 {
 public:
 	D3DXVECTOR3 position;								// position of the camera
-	D3DXVECTOR3 lookDirection;							// position where camera should be looking
 
 	D3DXVECTOR3 up;										// current up vector
 	D3DXVECTOR3 forward;								// current forward vector
@@ -24,20 +23,15 @@ public:
 	float lookSensivity;								// sensivity of mouse look
 
 	// constructor
-	Camera(D3DXVECTOR3 pos, D3DXVECTOR3 lookDir) :
-		position(pos), lookDirection(lookDir)
-	{
-		up = D3DXVECTOR3(0.0F, 1.0F, 0.0F);
-		forward = D3DXVECTOR3(0.0F, 0.0F, 1.0F);
-		right = D3DXVECTOR3(1.0F, 0.0F, 0.0F);
-
-		aspect = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
-		nearClip = 1.0F;
-		farClip = 200.0F;
-		fov = D3DXToRadian(90);
-		moveSpeed = 0.6F;
-		lookSensivity = 1.0F;
-	}
+	Camera(D3DXVECTOR3 pos) : 
+		position(pos),
+		up(D3DXVECTOR3(0.0F, 1.0F, 0.0F)), 
+		forward(D3DXVECTOR3(0.0F, 0.0F, 1.0F)), 
+		right(D3DXVECTOR3(1.0F, 0.0F, 0.0F)),
+		aspect((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT),
+		nearClip(1.0F), farClip(200.0F), fov(D3DXToRadian(90)),
+		moveSpeed(0.6F), lookSensivity(1.0F)
+	{}
 
 	// destructor
 	~Camera() {}
@@ -74,7 +68,7 @@ public:
 		D3DXVec3TransformCoord(&right, &(D3DXVECTOR3(forward.x, 0, forward.z)), &(nRot));
 	}
 
-	void LookAt(D3DXVECTOR3 objPos)
+	D3DXVECTOR3 LookAt(D3DXVECTOR3 objPos)
 	{
 		// vector between camera pos and object pos
 		D3DXVECTOR3 diff = objPos - position;
@@ -85,12 +79,15 @@ public:
 
 		// set forward vector
 		forward = res;
+		return forward;
 	}
 };
 
 
+D3DXVECTOR3 SetCameraForward(D3DXVECTOR3 lookAt);
+
 // set camera pos to given value
-void SetCameraPos(D3DXVECTOR3 lookAt, D3DXVECTOR3 position, int rotX, int rotY, int rotZ);
+void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, int rotY);
 
 // return address of camera
 Camera* GetCamera();

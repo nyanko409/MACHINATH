@@ -17,31 +17,32 @@ POINT operator - (POINT o1, POINT o2) { return POINT{ o1.x - o2.x, o1.y - o2.y }
 void InitCamera()
 {
 	// init camera
-	g_pCam = new Camera(D3DXVECTOR3(0, 0, -10), D3DXVECTOR3(0, 0, 1));
+	g_pCam = new Camera(D3DXVECTOR3(0, 0, -10));
 
 	// init cursor pos
 	GetCursorPos(&g_curPos);
 	g_curPos = g_fixedPos;
 }
 
-void SetCameraPos(D3DXVECTOR3 lookAt, D3DXVECTOR3 position, int rotX, int rotY, int rotZ)
+D3DXVECTOR3 SetCameraForward(D3DXVECTOR3 lookAt)
 {
 	// look at position by setting forward vector
-	g_pCam->LookAt(lookAt);
+	return g_pCam->LookAt(lookAt);
+}
 
-	// rotate offset pos
-	D3DXMATRIX xRot, yRot, zRot;
-
-	D3DXMatrixRotationX(&xRot, D3DXToRadian(rotX));
+void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, int rotY)
+{
+	// get rotation matrix
+	D3DXMATRIX yRot;
 	D3DXMatrixRotationY(&yRot, D3DXToRadian(rotY));
-	D3DXMatrixRotationZ(&zRot, D3DXToRadian(rotZ));
 
-	D3DXVECTOR3 temp;
-	D3DXVECTOR3 diff = position - lookAt;
-	D3DXVec3TransformCoord(&temp, &diff, &(xRot * yRot * zRot));
+	// get position matrix
+	D3DXMATRIX mPosOffset, mPosFinal;
+	D3DXMatrixTranslation(&mPosOffset, offsetX, offsetY, offsetZ);
+	D3DXMatrixTranslation(&mPosFinal, position.x, position.y, position.z);
 
-	// set camera position
-	g_pCam->position = lookAt + temp;
+	// set camera to new position
+	D3DXVec3TransformCoord(&g_pCam->position, &D3DXVECTOR3{0,0,0}, &(mPosOffset * yRot * mPosFinal));
 }
 
 void UpdateCamera()
@@ -64,7 +65,7 @@ void UpdateCamera()
 
 void UninitCamera()
 {
-	if (g_pCam) delete g_pCam;
+	SAFE_DELETE(g_pCam);
 }
 
 void CameraInput()
@@ -82,37 +83,31 @@ void CameraInput()
 	{
 		// move cam forward
 		g_pCam->position += g_pCam->forward * g_pCam->moveSpeed;
-		g_pCam->lookDirection += g_pCam->forward * g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_A))
 	{
 		// move cam left
 		g_pCam->position += -g_pCam->right * g_pCam->moveSpeed;
-		g_pCam->lookDirection += -g_pCam->right * g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_S))
 	{
 		// move cam backward
 		g_pCam->position += -g_pCam->forward * g_pCam->moveSpeed;
-		g_pCam->lookDirection += -g_pCam->forward * g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_D))
 	{
 		// move cam right
 		g_pCam->position += g_pCam->right * g_pCam->moveSpeed;
-		g_pCam->lookDirection += g_pCam->right * g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_Q))
 	{
 		// move cam up
 		g_pCam->position.y += g_pCam->moveSpeed;
-		g_pCam->lookDirection.y += g_pCam->moveSpeed;
 	}
 	if (Keyboard_IsPress(DIK_E))
 	{
 		// move cam down
 		g_pCam->position.y += -g_pCam->moveSpeed;
-		g_pCam->lookDirection.y += -g_pCam->moveSpeed;
 	}
 
 	// fov
