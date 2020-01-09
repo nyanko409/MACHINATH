@@ -20,3 +20,6 @@ void MoveLight(int index, float x, float y, float z, bool absolute);
 	aboslute = rotate the light to given rotation
 	!aboslute = rotate the light by given value      */
 void RotateLight(int index, float x, float y, float z, bool absolute);
+
+// activate or deactivate light
+void ActivateLight(int index, bool enable);

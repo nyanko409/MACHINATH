@@ -5,7 +5,7 @@
 void AddDirectionalLight(int index, D3DXVECTOR3 direction, D3DXCOLOR diffuse)
 {
 	// get device and init light
-	auto device = MyDirect3D_GetDevice();
+	auto pDevice = MyDirect3D_GetDevice();
 
 	D3DLIGHT9 light;
 	ZeroMemory(&light, sizeof(D3DLIGHT9));
@@ -15,14 +15,14 @@ void AddDirectionalLight(int index, D3DXVECTOR3 direction, D3DXCOLOR diffuse)
 	light.Diffuse = diffuse;
 	light.Ambient = D3DXCOLOR(0.5F, 0.5F, 0.5F, 1.0F);
 
-	device->SetLight(index, &light);
-	device->LightEnable(index, true);
+	pDevice->SetLight(index, &light);
+	pDevice->LightEnable(index, true);
 }
 
 void AddSpotLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffuse)
 {
 	// get device and init light
-	auto device = MyDirect3D_GetDevice();
+	auto pDevice = MyDirect3D_GetDevice();
 
 	D3DLIGHT9 light;
 	ZeroMemory(&light, sizeof(D3DLIGHT9));
@@ -36,14 +36,14 @@ void AddSpotLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffus
 	light.Attenuation1 = 0.125F;
 	light.Attenuation2 = 0.0F;
 
-	device->SetLight(index, &light);
-	device->LightEnable(index, true);
+	pDevice->SetLight(index, &light);
+	pDevice->LightEnable(index, true);
 }
 
 void AddPointLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffuse)
 {
 	// get device and init light
-	auto device = MyDirect3D_GetDevice();
+	auto pDevice = MyDirect3D_GetDevice();
 
 	D3DLIGHT9 light;
 	ZeroMemory(&light, sizeof(D3DLIGHT9));
@@ -58,18 +58,18 @@ void AddPointLight(int index, D3DXVECTOR3 position, float range, D3DXCOLOR diffu
 	light.Attenuation1 = 0.125F;
 	light.Attenuation2 = 0.0F;
 
-	device->SetLight(index, &light);
-	device->LightEnable(index, true);
+	pDevice->SetLight(index, &light);
+	pDevice->LightEnable(index, true);
 }
 
 
 void MoveLight(int index, float x, float y, float z, bool absolute)
 {
 	// get device and init light
-	auto device = MyDirect3D_GetDevice();
+	auto pDeivce = MyDirect3D_GetDevice();
 
 	D3DLIGHT9 light;
-	HRESULT hr = device->GetLight(index, &light);
+	HRESULT hr = pDeivce->GetLight(index, &light);
 
 	// return if invalid index is passed
 	if (FAILED(hr)) return;
@@ -90,16 +90,16 @@ void MoveLight(int index, float x, float y, float z, bool absolute)
 	light.Position = result;
 
 	// set updated light
-	device->SetLight(index, &light);
+	pDeivce->SetLight(index, &light);
 }
 
 void RotateLight(int index, float x, float y, float z, bool absolute)
 {
 	// get device and init light
-	auto device = MyDirect3D_GetDevice();
+	auto pDevice = MyDirect3D_GetDevice();
 
 	D3DLIGHT9 light;
-	HRESULT hr = device->GetLight(index, &light);
+	HRESULT hr = pDevice->GetLight(index, &light);
 
 	// return if invalid index is passed
 	if (FAILED(hr)) return;
@@ -123,5 +123,12 @@ void RotateLight(int index, float x, float y, float z, bool absolute)
 	light.Position = result;
 
 	// set updated light
-	device->SetLight(index, &light);
+	pDevice->SetLight(index, &light);
+}
+
+void ActivateLight(int index, bool enable)
+{
+	auto pDevice = MyDirect3D_GetDevice();
+
+	pDevice->LightEnable(index, enable);
 }
