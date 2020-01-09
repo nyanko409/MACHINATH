@@ -71,7 +71,6 @@ void LoadMesh()
 			// always load first texture
 			if (paths.size() == 0)
 			{
-
 				if (FAILED(D3DXCreateTextureFromFileA(device, path.c_str(), &g_mesh[i].pTexture[j])))
 					g_mesh[i].pTexture[j] = NULL;
 				else

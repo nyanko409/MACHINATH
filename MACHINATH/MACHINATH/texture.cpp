@@ -59,7 +59,7 @@ int Texture_Load(void)
 		
 		if (D3DXCreateTextureFromFileEx(pDevice, g_TextureFiles[i].filename, 
 			0, 0, 
-			0, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, 
+			1, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, 
 			D3DCOLOR_ARGB(150, 100, 100, 100), NULL, NULL, &g_pTextures[i]))
 			failed_count++;
 	}
