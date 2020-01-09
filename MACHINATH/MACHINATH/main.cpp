@@ -248,7 +248,6 @@ bool InitLibrary()
 	InitSprite();
 	InitScene();
 	InitQTE();
-	InitTitleScreen();
 	InitShader();
 
 	return true;
@@ -273,6 +272,7 @@ void FinalizeLibrary()
 // init title screen
 bool InitTitle()
 {
+	InitTitleScreen();
 	return true;
 }
 
@@ -309,7 +309,7 @@ void DrawTitle()
 // free memory used in title screen
 void FinalizeTitle()
 {
-
+	FinalizeTitleScreen();
 }
 
 // init game screen
