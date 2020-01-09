@@ -24,6 +24,7 @@ static int eyeRed, eyeGreen, eyeBlue;
 
 ColorFade g_color;
 
+
 void InitTitleScreen()
 {
 	//init flag 
@@ -32,6 +33,7 @@ void InitTitleScreen()
 	PlaySound(SOUND_LABEL_BGM_TITLE);
 	SetVolume(SOUND_LABEL_BGM_TITLE , 0);
 	StartFade(SOUND_LABEL_BGM_TITLE);
+
 	//init eye color
 	g_color = COLOR_BLUE_IN;
 
@@ -70,21 +72,23 @@ void UpdateTitleScreen()
 {
 	if (!nextsceneGO)
 	{
-		//set sound volume
+		// set sound volume
 		UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 1, 5);
-		//decrease fadecnt
+
+		// decrease fadecnt
 		if (fadecnt > 0)
 			fadecnt--;
 	}
 	else
 	{
 		UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0, 3);
+
 		//increase fadecnt
 		if (fadecnt < 255)
 			fadecnt++;
 	}
 
-	//control titleforward
+	// control titleforward
 	if (titleforwardcnt > 0)
 	{
 		titleforwardcnt--;
@@ -94,83 +98,81 @@ void UpdateTitleScreen()
 		titleforwardcnt = 60;
 	}
 
-	//change color of eye
-	//BLUE
-	if (g_color == COLOR_BLUE_IN )
+	// change color of eye
+	switch (g_color)
 	{
-		eyeBlue ++;
+	case COLOR_BLUE_IN:
+		eyeBlue++;
 		if (eyeBlue == 255)
 			g_color = COLOR_BLUE_OUT;
-	}
-	if ( g_color == COLOR_BLUE_OUT)
-	{
-		eyeBlue --;
+		break;
+	
+	case COLOR_BLUE_OUT:
+		eyeBlue--;
 		if (eyeBlue == 0)
 			g_color = COLOR_YELLOW_IN;
-	}
-	//YELLOW
-	if (g_color == COLOR_YELLOW_IN)
-	{
+		break;
+
+	case COLOR_YELLOW_IN:
 		eyeGreen++; eyeRed++;
 		if (eyeGreen == 255)
 			g_color = COLOR_YELLOW_OUT;
-	}
-	if (g_color == COLOR_YELLOW_OUT)
-	{
+		break;
+
+	case COLOR_YELLOW_OUT:
 		eyeRed--; eyeGreen--;
 		if (eyeRed == 0)
 			g_color = COLOR_WHITE_IN;
-	}
-	//WHITE
-	if (g_color == COLOR_WHITE_IN )
-	{
+		break;
+
+	case COLOR_WHITE_IN:
 		eyeRed++; eyeGreen++; eyeBlue++;
 		if (eyeRed == 255)
 			g_color = COLOR_WHITE_OUT;
-	}
-	if (g_color == COLOR_WHITE_OUT)
-	{
+		break;
+		
+	case COLOR_WHITE_OUT:
 		eyeRed--; eyeGreen--; eyeBlue--;
-		if(eyeRed == 0)
+		if (eyeRed == 0)
 			g_color = COLOR_GREEN_IN;
-	}
-	//GREEN
-	if (g_color == COLOR_GREEN_IN)
-	{
-		eyeGreen ++;
+		break;
+
+	case COLOR_GREEN_IN:
+		eyeGreen++;
 		if (eyeGreen == 255)
 			g_color = COLOR_GREEN_OUT;
-	}
-	if (g_color == COLOR_GREEN_OUT)
-	{
-		eyeGreen --;
+		break;
+
+	case COLOR_GREEN_OUT:
+		eyeGreen--;
 		if (eyeGreen == 0)
 			g_color = COLOR_RED_IN;
-	}
-	//RED
-	if (g_color == COLOR_RED_IN)
-	{
-		eyeRed ++;
+		break;
+
+	case COLOR_RED_IN:
+		eyeRed++;
 		if (eyeRed == 255)
 			g_color = COLOR_RED_OUT;
-	}
-	if (g_color == COLOR_RED_OUT)
-	{
-		eyeRed --;
+		break;
+
+	case COLOR_RED_OUT:
+		eyeRed--;
 		if (eyeRed == 0)
 			g_color = COLOR_BLUE_IN;
+		break;
+	
+	default: break;
 	}
 
-
-
-	// switch to game screen when key is pressed
-	if (fadecnt<=0&&!nextsceneGO && Keyboard_IsTrigger(DIK_SPACE))
+	// start fade when key is pressed
+	if (!nextsceneGO && Keyboard_IsTrigger(DIK_SPACE))
 	{
 		StartFade(SOUND_LABEL_BGM_TITLE);
 		nextsceneGO = true;
 	}
 
-	if (nextsceneGO && fadecnt == 255)
+	// switch to next scene after fading
+	if (nextsceneGO && fadecnt >= 255)
 	{
 		SetScene(SCENE_GAMESCREEN);
 		nextsceneGO = false;
@@ -179,10 +181,10 @@ void UpdateTitleScreen()
 
 void DrawTitleScreen()
 {
-	// draw if in title screen
-	//SpriteDraw(g_title);
+	// draw title screen
 	SpriteDraw(g_titleback);
 	SpriteDraw(g_titleeye);
+
 	if (titleforwardcnt > 30)
 	{
 		SpriteDraw(g_titleforward);
@@ -191,12 +193,11 @@ void DrawTitleScreen()
 	{
 		SpriteDraw(g_titleforward2);
 	}
+
 	SpriteDraw(g_titlefadescreen); 
 
 	g_titleforward.color = g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
-
 	g_titleeye.color = D3DCOLOR_RGBA(eyeRed, eyeGreen,eyeBlue, 255);
-
 	g_titlefadescreen.color = D3DCOLOR_RGBA(255, 255, 255, fadecnt);
 }
 

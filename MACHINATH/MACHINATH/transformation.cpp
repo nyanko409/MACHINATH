@@ -4,7 +4,6 @@
 
 
 D3DXMATRIX matTranslate, matRotation, matLocalRotation, matScale, matPivot;
-D3DXMATRIX matWorld;
 
 
 D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot,
@@ -13,6 +12,7 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot,
 {
 	// get device
 	auto device = MyDirect3D_GetDevice();
+
 	pos -= pivot;
 
 	// set translation and scaling matrix
@@ -29,13 +29,16 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot,
 
 	// set local axis rotation matrix
 	D3DXMatrixRotationAxis(&yRot, &up, D3DXToRadian(rot.y));
-	D3DXVec3TransformCoord(&forward, &forward, &yRot); D3DXVec3TransformCoord(&right, &right, &yRot);
+	D3DXVec3TransformCoord(&forward, &forward, &yRot); 
+	D3DXVec3TransformCoord(&right, &right, &yRot);
 
 	D3DXMatrixRotationAxis(&xRot, &right, D3DXToRadian(rot.x));
-	D3DXVec3TransformCoord(&forward, &forward, &xRot); D3DXVec3TransformCoord(&up, &up, &xRot);
+	D3DXVec3TransformCoord(&forward, &forward, &xRot); 
+	D3DXVec3TransformCoord(&up, &up, &xRot);
 
 	D3DXMatrixRotationAxis(&zRot, &forward, D3DXToRadian(rot.z));
-	D3DXVec3TransformCoord(&right, &right, &zRot); D3DXVec3TransformCoord(&up, &up, &zRot);
+	D3DXVec3TransformCoord(&right, &right, &zRot); 
+	D3DXVec3TransformCoord(&up, &up, &zRot);
 
 	matLocalRotation = xRot * yRot * zRot;
 
@@ -48,11 +51,8 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot,
 	D3DXMatrixTranslation(&matPivot, pivot.x, pivot.y, pivot.z);
 	matFinalRot = matPivot * matCombinedOrientation * matRotation;
 
-	// calculate world matrix
-	matWorld = (matScale * matFinalRot * matTranslate);
-
-	// return world matrix
-	return matWorld;
+	// return final world matrix
+	return (matScale * matFinalRot * matTranslate);
 }
 
 
@@ -68,11 +68,9 @@ D3DXMATRIX TransformSprite(D3DXVECTOR3 translate, float rotZ, D3DXVECTOR2 scale,
 	// set rotation matrix
 	D3DXMatrixRotationZ(&matRotation, D3DXToRadian(rotZ));
 
+	// return final world matrix
 	if (!rotateAtPosition)
-		matWorld = (matScale * matTranslate * matRotation);
+		return (matScale * matTranslate * matRotation);
 	else
-		matWorld = (matScale * matRotation * matTranslate);
-
-	// return the world matrix
-	return matWorld;
+		return (matScale * matRotation * matTranslate);
 }
