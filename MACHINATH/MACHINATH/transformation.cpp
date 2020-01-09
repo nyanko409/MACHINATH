@@ -3,15 +3,13 @@
 #include "common.h"
 
 
-D3DXMATRIX matTranslate, matRotation, matLocalRotation, matScale, matPivot;
-
-
 D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot,
 	D3DXMATRIX& matOrientation, D3DXMATRIX matCombinedOrientation, D3DXVECTOR3 worldRot,
 	D3DXVECTOR3& forward, D3DXVECTOR3& up, D3DXVECTOR3& right, D3DXVECTOR3 pivot)
 {
-	// get device
+	// get device and init matrices
 	auto device = MyDirect3D_GetDevice();
+	D3DXMATRIX matTranslate, matRotation, matLocalRotation, matScale, matPivot;
 
 	pos -= pivot;
 
@@ -58,8 +56,9 @@ D3DXMATRIX TransformObject(D3DXVECTOR3 pos, D3DXVECTOR3 scale, D3DXVECTOR3 rot,
 
 D3DXMATRIX TransformSprite(D3DXVECTOR3 translate, float rotZ, D3DXVECTOR2 scale, bool rotateAtPosition)
 {
-	// get device
+	// get device and init matrices
 	auto device = MyDirect3D_GetDevice();
+	D3DXMATRIX matTranslate, matRotation, matScale;
 
 	// set translation and scaling matrix
 	D3DXMatrixTranslation(&matTranslate, translate.x, translate.y, translate.z);
