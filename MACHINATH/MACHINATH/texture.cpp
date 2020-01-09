@@ -23,6 +23,11 @@ static const TextureFile g_TextureFiles[] = {
 	{ "asset/texture/title.dds",		1920, 1080},
 	{"asset/texture/qte_after.dds",		512,512},
 	{"asset/texture/water.png",		1024,1024},
+	{"asset/texture/titleback.png",		1920,1080},
+	{"asset/texture/titleback_eye2.png",		1920,1080},
+	{"asset/texture/titleforward.png",		1920,1080},
+	{"asset/texture/titleforward2.png",		1920,1080},
+
 };
 
 // texture file count

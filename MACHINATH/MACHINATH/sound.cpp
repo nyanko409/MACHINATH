@@ -411,6 +411,10 @@ void UpdateFadeSound(SOUND_LABEL LABEL, float TargetVolume, float TargetTime)
 	else
 	{
 		SetVolume(LABEL, TargetVolume);
+		if (TargetVolume == 0)
+		{
+			StopSound(LABEL);
+		}
 		g_DeltaTime = 0;
 		g_FadeFlag = false;
 	}
