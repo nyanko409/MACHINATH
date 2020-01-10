@@ -16,18 +16,18 @@
 //*****************************************************************************
 struct SOUNDPARAM
 {
-	const char *pFilename;	// �t�@�C����
-	int nCntLoop;		// ���[�v�J�E���g
+	const char *pFilename;	// path to sound file
+	int nCntLoop;		// -1 == LOOP, 0 == DONT LOOP, >= 1 == LOOP
 };
 
 //*****************************************************************************
-// �v���g�^�C�v�錾
+// methods
 //*****************************************************************************
 HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);
 HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);
 
 //*****************************************************************************
-// �O���[�o���ϐ�
+// globals
 //*****************************************************************************
 IXAudio2 *g_pXAudio2 = NULL;								// XAudio2�I�u�W�F�N�g�ւ̃C���^�[�t�F�C�X
 IXAudio2MasteringVoice *g_pMasteringVoice = NULL;			// �}�X�^�[�{�C�X
@@ -38,14 +38,14 @@ float g_DeltaTime;
 bool g_FadeFlag;
 float nowvolume;
 
-// �e���f�ނ̃p�����[�^ ������e���̊��p�ɏ���������
+// sound files to load
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
 	{"asset/sound/title.wav", -1},			// BGM1
 };
 
 //=============================================================================
-// ����������
+// init sound
 //=============================================================================
 HRESULT InitSound(HWND hWnd)
 {
@@ -54,41 +54,38 @@ HRESULT InitSound(HWND hWnd)
 
 	HRESULT hr;
 
-	// COM���C�u�����̏�����
+	// enable multithread for sound playback
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
-	// XAudio2�I�u�W�F�N�g�̍쐬
+	// initialize xaudio2
 	hr = XAudio2Create(&g_pXAudio2, 0);
 	if(FAILED(hr))
 	{
-		MessageBox(hWnd, "XAudio2�I�u�W�F�N�g�̍쐬�Ɏ��s�I", "�x���I", MB_ICONWARNING);
+		MessageBox(hWnd, "Failed to initialize XAudio2!", "Error!", MB_ICONWARNING);
 
-		// COM���C�u�����̏I������
 		CoUninitialize();
 
 		return E_FAIL;
 	}
 	
-	// �}�X�^�[�{�C�X�̐���
+	// initialize master voice
 	hr = g_pXAudio2->CreateMasteringVoice(&g_pMasteringVoice);
 	if(FAILED(hr))
 	{
-		MessageBox(hWnd, "�}�X�^�[�{�C�X�̐����Ɏ��s�I", "�x���I", MB_ICONWARNING);
+		MessageBox(hWnd, "Failed to initialize Mastering Voice!", "Error!", MB_ICONWARNING);
 
 		if(g_pXAudio2)
 		{
-			// XAudio2�I�u�W�F�N�g�̊J��
 			g_pXAudio2->Release();
 			g_pXAudio2 = NULL;
 		}
 
-		// COM���C�u�����̏I������
 		CoUninitialize();
 
 		return E_FAIL;
 	}
 
-	// �T�E���h�f�[�^�̏�����
+	// load sound files
 	for(int nCntSound = 0; nCntSound < SOUND_LABEL_MAX; nCntSound++)
 	{
 		HANDLE hFile;
@@ -98,39 +95,37 @@ HRESULT InitSound(HWND hWnd)
 		WAVEFORMATEXTENSIBLE wfx;
 		XAUDIO2_BUFFER buffer;
 
-		// �o�b�t�@�̃N���A
 		memset(&wfx, 0, sizeof(WAVEFORMATEXTENSIBLE));
 		memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
 
-		// �T�E���h�f�[�^�t�@�C���̐���
+		// load sound files from given path
 		hFile = CreateFile(g_aParam[nCntSound].pFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 		if(hFile == INVALID_HANDLE_VALUE)
 		{
-			MessageBox(hWnd, "�T�E���h�f�[�^�t�@�C���̐����Ɏ��s�I(1)", "�x���I", MB_ICONWARNING);
+			MessageBox(hWnd, "Invalid Handle Value!", "Error!", MB_ICONWARNING);
 			return HRESULT_FROM_WIN32(GetLastError());
 		}
 		if(SetFilePointer(hFile, 0, NULL, FILE_BEGIN) == INVALID_SET_FILE_POINTER)
-		{// �t�@�C���|�C���^��擪�Ɉړ�
-			MessageBox(hWnd, "�T�E���h�f�[�^�t�@�C���̐����Ɏ��s�I(2)", "�x���I", MB_ICONWARNING);
+		{
+			MessageBox(hWnd, "Invalid Set File Pointer!", "Error!", MB_ICONWARNING);
 			return HRESULT_FROM_WIN32(GetLastError());
 		}
 	
-		// WAVE�t�@�C���̃`�F�b�N
 		hr = CheckChunk(hFile, 'FFIR', &dwChunkSize, &dwChunkPosition);
 		if(FAILED(hr))
 		{
-			MessageBox(hWnd, "WAVE�t�@�C���̃`�F�b�N�Ɏ��s�I(1)", "�x���I", MB_ICONWARNING);
+			MessageBox(hWnd, "Failed at checking chunk!", "Error!", MB_ICONWARNING);
 			return S_FALSE;
 		}
 		hr = ReadChunkData(hFile, &dwFiletype, sizeof(DWORD), dwChunkPosition);
 		if(FAILED(hr))
 		{
-			MessageBox(hWnd, "WAVE�t�@�C���̃`�F�b�N�Ɏ��s�I(2)", "�x���I", MB_ICONWARNING);
+			MessageBox(hWnd, "Failed to read chunk data!", "Error!", MB_ICONWARNING);
 			return S_FALSE;
 		}
 		if(dwFiletype != 'EVAW')
 		{
-			MessageBox(hWnd, "WAVE�t�@�C���̃`�F�b�N�Ɏ��s�I(3)", "�x���I", MB_ICONWARNING);
+			MessageBox(hWnd, "Invalid file type!", "Error!", MB_ICONWARNING);
 			return S_FALSE;
 		}
 	
@@ -163,22 +158,20 @@ HRESULT InitSound(HWND hWnd)
 			return S_FALSE;
 		}
 	
-		// �\�[�X�{�C�X�̐���
+		// create source voice
 		hr = g_pXAudio2->CreateSourceVoice(&g_apSourceVoice[nCntSound], &(wfx.Format));
 		if(FAILED(hr))
 		{
-			MessageBox(hWnd, "�\�[�X�{�C�X�̐����Ɏ��s�I", "�x���I", MB_ICONWARNING);
+			MessageBox(hWnd, "Failed at creating source voice!", "Error!", MB_ICONWARNING);
 			return S_FALSE;
 		}
 
-		// �o�b�t�@�̒l�ݒ�
 		memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
 		buffer.AudioBytes = g_aSizeAudio[nCntSound];
 		buffer.pAudioData = g_apDataAudio[nCntSound];
 		buffer.Flags      = XAUDIO2_END_OF_STREAM;
 		buffer.LoopCount  = g_aParam[nCntSound].nCntLoop;
 
-		// �I�[�f�B�I�o�b�t�@�̓o�^
 		g_apSourceVoice[nCntSound]->SubmitSourceBuffer(&buffer);
 	}
 
@@ -186,7 +179,7 @@ HRESULT InitSound(HWND hWnd)
 }
 
 //=============================================================================
-// �I������
+// uninit sound
 //=============================================================================
 void UninitSound(void)
 {

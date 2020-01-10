@@ -68,7 +68,7 @@ void UpdateTitleScreen()
 	if (!nextsceneGO)
 	{
 		// set sound volume
-		UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 1, 5);
+		//UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 1, 5);
 
 		// decrease fadecnt
 		if (fadecnt > 0)
@@ -76,7 +76,7 @@ void UpdateTitleScreen()
 	}
 	else
 	{
-		UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0, 3);
+		//UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0, 3);
 
 		//increase fadecnt
 		if (fadecnt < 255)

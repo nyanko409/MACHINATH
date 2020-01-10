@@ -32,7 +32,7 @@
 #include "collider.h"
 #include "water.h"
 
-//ÂƒÂ‰ÂƒCÂƒuÂƒÂ‰ÂƒÂŠÂƒtÂƒ@ÂƒCÂƒÂ‹Â‚ÃŒÂƒÂŠÂƒÂ“ÂƒNÂiexeÂƒtÂƒ@ÂƒCÂƒÂ‹Â‚Ã‰ÂŠÃœÂ‚ÃŸÂ‚Ã©Âj
+//ƒ‰ƒCƒuƒ‰ƒŠƒtƒ@ƒCƒ‹‚ÌƒŠƒ“ƒNiexeƒtƒ@ƒCƒ‹‚ÉŠÜ‚ß‚éj
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"d3dx9.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -45,7 +45,7 @@
 
 static HWND g_hWnd;
 
-// ÂƒvÂƒÂÂƒgÂƒ^ÂƒCÂƒvÂÃ©ÂŒÂ¾
+// ƒvƒƒgƒ^ƒCƒvéŒ¾
 LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 void InitRenderState();
 
@@ -70,7 +70,7 @@ void InitTest();
 
 
 /*-----------------------------------------------------------------------
-   ÂƒÂÂƒCÂƒÂ“
+   ƒƒCƒ“
 ------------------------------------------------------------------------*/
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -88,27 +88,27 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	RegisterClass(&wc);
 
-	//ÂƒEÂƒBÂƒÂ“ÂƒhÂƒEÂƒXÂƒ^ÂƒCÂƒÂ‹ÂiÂŒÂ©Â‚Â½Â–ÃšÂjÂ‚ÃŒÂÃÂ’Ã¨
+	//ƒEƒBƒ“ƒhƒEƒXƒ^ƒCƒ‹iŒ©‚½–Új‚ÌÝ’è
 	DWORD window_style;
 	if(FULLSCREEN) window_style = WS_EX_TOPMOST | WS_POPUP;
 	else		   window_style = WS_OVERLAPPEDWINDOW;
 
-	//ÂŠÃ®Â–{Â‹Ã©ÂŒ`ÂÃ€Â•W
+	//Šî–{‹éŒ`À•W
 	RECT window_rect = { 0,0,SCREEN_WIDTH,SCREEN_HEIGHT };
 
-	//ÂŽwÂ’Ã¨Â‚ÂµÂ‚Â½ÂƒNÂƒÂ‰ÂƒCÂƒAÂƒÂ“ÂƒgÂ—ÃŒÂˆÃ¦Â‚Ã‰ÂÂ‡Â‚Ã­Â‚Â¹Â‚Ã„Â‹Ã©ÂŒ`Â‚Ã°Â’Â²ÂÂ®
+	//Žw’è‚µ‚½ƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚É‡‚í‚¹‚Ä‹éŒ`‚ð’²®
 	AdjustWindowRect(&window_rect, window_style, FALSE);
 
-	//ÂƒEÂƒBÂƒÂ“ÂƒhÂƒEÂ‚ÃŒÂ‹Ã©ÂŒ`ÂÃ€Â•WÂ‚Â©Â‚Ã§Â•ÂÂ‚Ã†ÂÂ‚Â‚Â³Â‚Ã°ÂŒvÂŽZ
+	//ƒEƒBƒ“ƒhƒE‚Ì‹éŒ`À•W‚©‚ç•‚Æ‚‚³‚ðŒvŽZ
 	int window_width = window_rect.right - window_rect.left;
 	int window_height = window_rect.bottom - window_rect.top;
 
-	//ÂƒfÂƒBÂƒXÂƒvÂƒÂŒÂƒCÂ‚ÃŒÂ‰Ã°Â‘ÂœÂ“xÂ‚ÃŒÂŽÃ¦Â“Â¾
+	//ƒfƒBƒXƒvƒŒƒC‚Ì‰ð‘œ“x‚ÌŽæ“¾
 	int desktop_width = GetSystemMetrics(SM_CXSCREEN);
 	int desktop_height = GetSystemMetrics(SM_CYSCREEN);
 
-	//Â‰Ã¦Â–ÃŠÂ‚ÃŒÂ’Â†Â‚Ã‰ÂƒEÂƒBÂƒÂ“ÂƒhÂƒEÂ‚Ã°Â•\ÂŽÂ¦Â‚Â·Â‚Ã©Â‚Ã¦Â‚Â¤ÂÃ€Â•WÂŒvÂŽZ
-	//Â‚Â½Â‚Â¾Â‚ÂµÂ‰Ã¦Â–ÃŠÂ‚Ã¦Â‚Ã¨Â‘Ã¥Â‚Â«Â‚Â¢ÂƒEÂƒBÂƒÂ“ÂƒhÂƒEÂ‚ÃÂÂ¶ÂÃ£Â‚Ã‰ÂÂ‡Â‚Ã­Â‚Â¹Â‚Ã„Â•\ÂŽÂ¦
+	//‰æ–Ê‚Ì’†‚ÉƒEƒBƒ“ƒhƒE‚ð•\Ž¦‚·‚é‚æ‚¤À•WŒvŽZ
+	//‚½‚¾‚µ‰æ–Ê‚æ‚è‘å‚«‚¢ƒEƒBƒ“ƒhƒE‚Í¶ã‚É‡‚í‚¹‚Ä•\Ž¦
 	int window_x = max((desktop_width - window_width) / 2, 0);
 	int window_y = max((desktop_height - window_height) / 2, 0);
 
@@ -126,7 +126,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		NULL
 	);
 
-	//ÂƒEÂƒBÂƒÂ“ÂƒhÂƒEÂ‚ÂªÂÃ¬ÂÂ¬Â‚Ã…Â‚Â«Â‚ÃˆÂ‚Â©Â‚ÃÂ‚Â½Â‚Ã§ÂIÂ—Â¹
+	//ƒEƒBƒ“ƒhƒE‚ªì¬‚Å‚«‚È‚©‚Á‚½‚çI—¹
 	if (g_hWnd == NULL)
 	{
 		return 0;
@@ -138,7 +138,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	// init library once
 	if (!InitLibrary())
 	{
-		//ÂÂ‰ÂŠÃºÂ‰Â»ÂŽÂ¸Â”s
+		//‰Šú‰»Ž¸”s
 		return -1;
 	}
 
@@ -196,7 +196,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 	}
 
-	//ÂƒQÂ[ÂƒÂ€Â‚ÃŒÂIÂ—Â¹ÂÂˆÂ—Â
+	//ƒQ[ƒ€‚ÌI—¹ˆ—
 	FinalizeTitle();
 	FinalizeGame();
 	FinalizeLibrary();
@@ -216,7 +216,7 @@ LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_CLOSE:
-		if (MessageBox(g_hWnd, "Â–{Â“Â–Â‚Ã‰ÂIÂ—Â¹Â‚ÂµÂ‚Ã„Â‚Ã¦Â‚Ã«Â‚ÂµÂ‚Â¢Â‚Ã…Â‚Â·Â‚Â©ÂH", "ÂŠmÂ”F", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
+		if (MessageBox(g_hWnd, "–{“–‚ÉI—¹‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H", "Šm”F", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
 			DestroyWindow(g_hWnd);
 		}
 		return 0;
@@ -232,7 +232,7 @@ LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 // load tasks that only need to be initialized once
 bool InitLibrary()
 {
-	//Direct3DÂƒCÂƒÂ“Âƒ^Â[ÂƒtÂƒFÂƒCÂƒXÂÃ¬ÂÂ¬
+	//Direct3DƒCƒ“ƒ^[ƒtƒFƒCƒXì¬
 	if (!MyDirect3D_Initialize(g_hWnd))
 	{
 		return false;
@@ -287,7 +287,7 @@ void DrawTitle()
 {
 	LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
 
-	//ÂƒoÂƒbÂƒNÂƒoÂƒbÂƒtÂƒ@Â[Â‚ÃŒÂƒNÂƒÂŠÂƒA ÂŽÂ‡ÂFÂ‚Ã230ÂC0ÂC255ÂC255
+	//ƒoƒbƒNƒoƒbƒtƒ@[‚ÌƒNƒŠƒA Ž‡F‚Í230C0C255C255
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(80, 80, 255), 1.0F, 0);
 
 	// draw 3d meshes
@@ -344,7 +344,7 @@ void DrawGame()
 {
 	LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
 	
-	//ÂƒoÂƒbÂƒNÂƒoÂƒbÂƒtÂƒ@Â[Â‚ÃŒÂƒNÂƒÂŠÂƒA ÂŽÂ‡ÂFÂ‚Ã230ÂC0ÂC255ÂC255
+	//ƒoƒbƒNƒoƒbƒtƒ@[‚ÌƒNƒŠƒA Ž‡F‚Í230C0C255C255
 	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(80, 80, 255), 1.0F, 0);
 	pDevice->BeginScene();
 
@@ -433,9 +433,9 @@ void InitTest()
 	water = new Water(trans, MESH_WATER, SHADER_WATER);
 
 	trans.position.y += 30;
-	trans.position.z += -150;
+	trans.position.x += 150;
 	trans.scale = { 1,1,1 };
-	boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT, &(*GetMap()->back()));
+	//boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT, &(*GetMap()->back()));
 }
 
 void DrawTest()

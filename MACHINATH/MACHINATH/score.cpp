@@ -45,18 +45,11 @@ void UpdateScore()
 
 void DrawScore()
 {
-	static float offset = 0;
-	if (playTime >= 4.5F && playTime <= 20.0F)
-	{
-		offset += 1;
-	}
-
 	int width = Texture_GetWidth(TEXTURE_INDEX_SCORE);
 	int height = Texture_GetHeight(TEXTURE_INDEX_SCORE);
 
 	RECT ScoreRect;
-	g_scoreSprite.position.x = 600.0f + offset;
-	g_scoreSprite.position.y = 200.0F + offset * 0.5F;
+	g_scoreSprite.position.x = 600.0f;
 	int fig = 0;
 	int s = g_score;
 
@@ -71,6 +64,7 @@ void DrawScore()
 		ScoreRect.bottom = ScoreRect.top + 0.5f * height;
 
 		//g_scoreSprite.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand()%122 + 122, 60, 255);
+		g_scoreSprite.color = D3DCOLOR_RGBA(0,255,0, 255);
 
 		SpriteDraw(g_scoreSprite, true, &ScoreRect);
 

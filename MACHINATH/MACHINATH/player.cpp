@@ -34,17 +34,6 @@ void Slope(EventData& event);
 void CheckMapCollision();
 
 
-void Fuck()
-{
-	if (playTime >= 3.5F)
-	{
-		g_player->moveSpeed -= 0.05F;
-		if (g_player->moveSpeed < 0)
-			g_player->moveSpeed = 0;
-	}
-}
-
-
 // override player draw
 void Player::Draw()
 {
@@ -76,7 +65,7 @@ void InitPlayer()
 	g_parent = new GameObject(trans);
 
 	// create player
-	g_player = new Player(trans, 2.0F, 1.0F, 1.5F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
+	g_player = new Player(trans, 2.0F, 1.0F, 2.5F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
@@ -101,7 +90,6 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {	
-	Fuck();
 	HandleMapEvent();
 	MovePlayer();
 	MoveSideways();
