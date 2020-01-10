@@ -11,11 +11,114 @@
 
 // globals
 static std::vector<Pickup*> g_pickup;
+//set medals
 static std::vector<std::pair<int, D3DXVECTOR3>> g_spawnPos =
 {
-	{1, D3DXVECTOR3(0, 1, 10)}, {1, D3DXVECTOR3(0, 1, 0)}, {2, D3DXVECTOR3(0, 1, 0)},
-	{3, D3DXVECTOR3(0, 1, 0)}, {4, D3DXVECTOR3(0, 1, 0)}, {5, D3DXVECTOR3(0, 1, 0)}
-};;
+	{ 1, D3DXVECTOR3(rand()%36-18, 1, 10)}, {1, D3DXVECTOR3(0, 1, 0)}, 
+	{ 2, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{ 3, D3DXVECTOR3(rand()%36-18, 1, 0)}, 
+	{ 4, D3DXVECTOR3(rand()%36-18, 1, 0)}, 
+	{ 5, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{ 6, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{ 7, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{ 8, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{ 9, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{10, D3DXVECTOR3(rand()%36-18, 1, 0)},
+							
+	{11, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{12, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{13, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{14, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{15, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{16, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{17, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{18, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{19, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{20, D3DXVECTOR3(rand()%36-18, 1, 0)},
+					 		
+	{21, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{22, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{23, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{24, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{25, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{26, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{27, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{28, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{29, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{30, D3DXVECTOR3(rand()%36-18, 1, 0)},
+						
+	{31, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{32, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{33, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{34, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{35, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{36, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{37, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{38, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{39, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{40, D3DXVECTOR3(rand()%36-18, 1, 0)},
+						
+	{41, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{42, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{43, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{44, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{45, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{46, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{47, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{48, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{49, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{50, D3DXVECTOR3(rand()%36-18, 1, 0)},
+					 	
+	{51, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{52, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{53, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{54, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{55, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{56, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{57, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{58, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{59, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{60, D3DXVECTOR3(rand()%36-18, 1, 0)},
+					 	
+	{61, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{62, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{63, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{64, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{65, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{66, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{67, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{68, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{69, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{70, D3DXVECTOR3(rand()%36-18, 1, 0)},
+							
+	{71, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{72, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{73, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{74, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{75, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{76, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{77, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{78, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{79, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{80, D3DXVECTOR3(rand()%36-18, 1, 0)},
+						
+	{81, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{82, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{83, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{84, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{85, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{86, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{87, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{88, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{89, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{90, D3DXVECTOR3(rand()%36-18, 1, 0)},
+					 	
+	{91, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{92, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{93, D3DXVECTOR3(rand()%36-18, 1, 0)},
+	{94, D3DXVECTOR3(rand()%36-18, 1, 0)},
+
+};
 static float g_zRotSpeed = 0;
 
 
@@ -53,7 +156,7 @@ void UpdatePickup()
 		if (g_pickup[i]->col.CheckCollision(GetPlayer()->col))
 		{
 			// collided, play effect and delete pickup
-			PlayEffect(EFFECT_JUMP, g_pickup[i]->GetCombinedPosition(), { 0, 0, 0 }, { 0, 0, 0 }, {5, 5, 5});
+			//PlayEffect(EFFECT_JUMP, g_pickup[i]->GetCombinedPosition(), { 0, 0, 0 }, { 0, 0, 0 }, {5, 5, 5});
 			SAFE_DELETE(g_pickup[i]);
 			AddScore(100);
 			g_pickup.erase(g_pickup.begin() + i);
