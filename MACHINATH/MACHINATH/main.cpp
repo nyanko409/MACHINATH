@@ -332,7 +332,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	//UpdatePlayer();
+	UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateCamera();
@@ -432,10 +432,10 @@ void InitTest()
 	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {10, 1, 10});
 	water = new Water(trans, MESH_WATER, SHADER_WATER);
 
-	trans.position.y += 10;
-	trans.position.z += 210;
+	trans.position.y += 30;
+	trans.position.z += -150;
 	trans.scale = { 1,1,1 };
-	boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT);
+	boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT, &(*GetMap()->back()));
 }
 
 void DrawTest()

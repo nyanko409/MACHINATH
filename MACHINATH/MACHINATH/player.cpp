@@ -34,6 +34,17 @@ void Slope(EventData& event);
 void CheckMapCollision();
 
 
+void Fuck()
+{
+	if (playTime >= 3.5F)
+	{
+		g_player->moveSpeed -= 0.05F;
+		if (g_player->moveSpeed < 0)
+			g_player->moveSpeed = 0;
+	}
+}
+
+
 // override player draw
 void Player::Draw()
 {
@@ -90,6 +101,7 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {	
+	Fuck();
 	HandleMapEvent();
 	MovePlayer();
 	MoveSideways();
@@ -267,10 +279,7 @@ void MoveSideways()
 void Jump()
 {
 	if (!g_isJumping && Keyboard_IsPress(DIK_J))
-	{
 		g_isJumping = true;
-		g_finalYPos = g_player->transform.position.y;
-	}
 
 	//jump
 	if (g_isJumping)

@@ -5,6 +5,7 @@
 #include "sprite.h"
 #include "texture.h"
 #include "sceneManagement.h"
+#include "playTime.h"
 
 #define FIGURE_NUM 6
 #define SCORE_SPEED 3.0f
@@ -44,11 +45,18 @@ void UpdateScore()
 
 void DrawScore()
 {
+	static float offset = 0;
+	if (playTime >= 4.5F && playTime <= 20.0F)
+	{
+		offset += 1;
+	}
+
 	int width = Texture_GetWidth(TEXTURE_INDEX_SCORE);
 	int height = Texture_GetHeight(TEXTURE_INDEX_SCORE);
 
 	RECT ScoreRect;
-	g_scoreSprite.position.x = 600.0f;
+	g_scoreSprite.position.x = 600.0f + offset;
+	g_scoreSprite.position.y = 200.0F + offset * 0.5F;
 	int fig = 0;
 	int s = g_score;
 

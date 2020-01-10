@@ -12,7 +12,7 @@ enum class Direction
 
 enum class MapEvent
 {
-	NONE, CURVE, SLOPE
+	NONE, CURVE, SLOPE, STOP
 };
 
 struct EventData
