@@ -1585,56 +1585,140 @@ Frame Root {
       } // End of Cube_027 material list
     } // End of Cube_027 mesh
   } // End of Cube_027
-  Frame Plane_001 {
+  Frame naname1 {
     FrameTransformMatrix {
        1.000000, 0.000000, 0.000000, 0.000000,
        0.000000, 1.000000, 0.000000, 0.000000,
        0.000000, 0.000000, 1.000000, 0.000000,
-      -0.028549,-36.788036, 0.100000, 1.000000;;
+      41.139088,-0.478050, 0.100000, 1.000000;;
     }
-    Mesh { // Plane_001 mesh
+    Mesh { // naname1 mesh
       4;
-      -26.139999;-8.840000; 0.000000;,
-      26.139999;-8.840000; 0.000000;,
-      26.139999; 8.840000; 0.000000;,
-      -26.139999; 8.840000; 0.000000;;
+       5.059999;-26.000000; 0.000000;,
+       5.060002;26.000000; 0.000000;,
+      -5.059999;26.000000; 0.000000;,
+      -5.060002;-26.000000; 0.000000;;
       1;
       4;3,2,1,0;;
-      MeshNormals { // Plane_001 normals
+      MeshNormals { // naname1 normals
         1;
-         0.000000; 0.000000; 1.000000;;
+        -0.000000; 0.000000; 1.000000;;
         1;
         4;0,0,0,0;;
-      } // End of Plane_001 normals
-      MeshTextureCoords { // Plane_001 UV coordinates
+      } // End of naname1 normals
+      MeshTextureCoords { // naname1 UV coordinates
         4;
-        -0.178208; 0.999900;,
-         1.178208; 0.999900;,
-         1.178208; 0.000100;,
-        -0.178208; 0.000100;;
-      } // End of Plane_001 UV coordinates
-      MeshMaterialList { // Plane_001 material list
+         1.175054; 0.479800;,
+        -0.175054; 0.479800;,
+        -0.175054; 0.583259;,
+         1.175054; 0.583259;;
+      } // End of naname1 UV coordinates
+      MeshMaterialList { // naname1 material list
         1;
         1;
         0;
-        Material Material {
+        Material syasen_001 {
            0.640000; 0.640000; 0.640000; 1.000000;;
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
           TextureFilename {"senlo.png";}
         }
-      } // End of Plane_001 material list
-    } // End of Plane_001 mesh
-  } // End of Plane_001
-  Frame Plane_002 {
+      } // End of naname1 material list
+    } // End of naname1 mesh
+  } // End of naname1
+  Frame naname2 {
     FrameTransformMatrix {
        1.000000, 0.000000, 0.000000, 0.000000,
        0.000000, 1.000000, 0.000000, 0.000000,
        0.000000, 0.000000, 1.000000, 0.000000,
-       7.889852,-6.353552, 0.000000, 1.000000;;
+       4.899689,-4.842563, 0.100000, 1.000000;;
     }
-    Mesh { // Plane_002 mesh
+    Mesh { // naname2 mesh
+      4;
+      31.279999;-30.342003; 0.000000;,
+      31.280003;30.341999; 0.000000;,
+      -31.279999;30.342003; 0.000000;,
+      -31.280003;-30.341999; 0.000000;;
+      1;
+      4;3,2,1,0;;
+      MeshNormals { // naname2 normals
+        1;
+        -0.000000; 0.000000; 1.000000;;
+        1;
+        4;0,0,0,0;;
+      } // End of naname2 normals
+      MeshTextureCoords { // naname2 UV coordinates
+        4;
+         0.999925; 1.000771;,
+         0.999925; 0.007332;,
+         0.000075; 0.007332;,
+         0.000075; 1.000771;;
+      } // End of naname2 UV coordinates
+      MeshMaterialList { // naname2 material list
+        1;
+        1;
+        0;
+        Material Material_003 {
+           0.640000; 0.640000; 0.640000; 1.000000;;
+           96.078431;
+           0.500000; 0.500000; 0.500000;;
+           0.000000; 0.000000; 0.000000;;
+          TextureFilename {"senlonaname@.png";}
+        }
+      } // End of naname2 material list
+    } // End of naname2 mesh
+  } // End of naname2
+  Frame naname3 {
+    FrameTransformMatrix {
+       1.000000, 0.000000, 0.000000, 0.000000,
+       0.000000, 1.000000, 0.000000, 0.000000,
+       0.000000, 0.000000, 1.000000, 0.000000,
+      -0.009586,-40.304527, 0.100000, 1.000000;;
+    }
+    Mesh { // naname3 mesh
+      4;
+      26.000000; 5.059997; 0.000000;,
+      -26.000000; 5.060004; 0.000000;,
+      -26.000000;-5.059997; 0.000000;,
+      26.000000;-5.060004; 0.000000;;
+      1;
+      4;3,2,1,0;;
+      MeshNormals { // naname3 normals
+        1;
+         0.000000;-0.000000; 1.000000;;
+        1;
+        4;0,0,0,0;;
+      } // End of naname3 normals
+      MeshTextureCoords { // naname3 UV coordinates
+        4;
+         1.175054; 0.479800;,
+        -0.175054; 0.479800;,
+        -0.175054; 0.583259;,
+         1.175054; 0.583259;;
+      } // End of naname3 UV coordinates
+      MeshMaterialList { // naname3 material list
+        1;
+        1;
+        0;
+        Material syasen_001 {
+           0.640000; 0.640000; 0.640000; 1.000000;;
+           96.078431;
+           0.500000; 0.500000; 0.500000;;
+           0.000000; 0.000000; 0.000000;;
+          TextureFilename {"senlo.png";}
+        }
+      } // End of naname3 material list
+    } // End of naname3 mesh
+  } // End of naname3
+  Frame yuka4 {
+    FrameTransformMatrix {
+       1.000000, 0.000000, 0.000000, 0.000000,
+       0.000000, 1.000000, 0.000000, 0.000000,
+       0.000000, 0.000000, 1.000000, 0.000000,
+       7.949547,-6.561381, 0.000000, 1.000000;;
+    }
+    Mesh { // yuka4 mesh
       4;
       -38.379997;-39.009998; 0.000000;,
       38.379997;-39.009998; 0.000000;,
@@ -1642,107 +1726,23 @@ Frame Root {
       38.379997;39.009998; 0.000000;;
       1;
       4;2,3,1,0;;
-      MeshNormals { // Plane_002 normals
+      MeshNormals { // yuka4 normals
         1;
          0.000000; 0.000000; 1.000000;;
         1;
         4;0,0,0,0;;
-      } // End of Plane_002 normals
-      MeshMaterialList { // Plane_002 material list
+      } // End of yuka4 normals
+      MeshMaterialList { // yuka4 material list
         1;
         1;
         0;
-        Material Material_002 {
+        Material Material_001 {
            0.000000; 0.000000; 0.000000; 1.000000;;
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
         }
-      } // End of Plane_002 material list
-    } // End of Plane_002 mesh
-  } // End of Plane_002
-  Frame Plane_003 {
-    FrameTransformMatrix {
-       1.000000, 0.000000, 0.000000, 0.000000,
-       0.000000, 1.000000, 0.000000, 0.000000,
-       0.000000, 0.000000, 1.000000, 0.000000,
-       4.724785,-12.441318, 0.100000, 1.000000;;
-    }
-    Mesh { // Plane_003 mesh
-      4;
-      -32.916176; 1.900362; 0.000000;,
-      15.769527;-28.955276; 0.000000;,
-      32.916176;-1.900362; 0.000000;,
-      -15.769527;28.955276; 0.000000;;
-      1;
-      4;3,2,1,0;;
-      MeshNormals { // Plane_003 normals
-        1;
-         0.000000; 0.000000; 1.000000;;
-        1;
-        4;0,0,0,0;;
-      } // End of Plane_003 normals
-      MeshTextureCoords { // Plane_003 UV coordinates
-        4;
-        -0.178208; 0.999900;,
-         1.178208; 0.999900;,
-         1.178208; 0.000100;,
-        -0.178208; 0.000100;;
-      } // End of Plane_003 UV coordinates
-      MeshMaterialList { // Plane_003 material list
-        1;
-        1;
-        0;
-        Material Material {
-           0.640000; 0.640000; 0.640000; 1.000000;;
-           96.078431;
-           0.500000; 0.500000; 0.500000;;
-           0.000000; 0.000000; 0.000000;;
-          TextureFilename {"senlo.png";}
-        }
-      } // End of Plane_003 material list
-    } // End of Plane_003 mesh
-  } // End of Plane_003
-  Frame Plane_004 {
-    FrameTransformMatrix {
-       1.000000, 0.000000, 0.000000, 0.000000,
-       0.000000, 1.000000, 0.000000, 0.000000,
-       0.000000, 0.000000, 1.000000, 0.000000,
-      38.229527, 0.026151, 0.100000, 1.000000;;
-    }
-    Mesh { // Plane_004 mesh
-      4;
-       7.747276;-28.146944; 0.000000;,
-       7.713277;28.156279; 0.000000;,
-      -7.747276;28.146944; 0.000000;,
-      -7.713277;-28.156279; 0.000000;;
-      1;
-      4;3,2,1,0;;
-      MeshNormals { // Plane_004 normals
-        1;
-        -0.000000; 0.000000; 1.000000;;
-        1;
-        4;0,0,0,0;;
-      } // End of Plane_004 normals
-      MeshTextureCoords { // Plane_004 UV coordinates
-        4;
-        -0.178208; 0.999900;,
-         1.178208; 0.999900;,
-         1.178208; 0.000100;,
-        -0.178208; 0.000100;;
-      } // End of Plane_004 UV coordinates
-      MeshMaterialList { // Plane_004 material list
-        1;
-        1;
-        0;
-        Material Material {
-           0.640000; 0.640000; 0.640000; 1.000000;;
-           96.078431;
-           0.500000; 0.500000; 0.500000;;
-           0.000000; 0.000000; 0.000000;;
-          TextureFilename {"senlo.png";}
-        }
-      } // End of Plane_004 material list
-    } // End of Plane_004 mesh
-  } // End of Plane_004
+      } // End of yuka4 material list
+    } // End of yuka4 mesh
+  } // End of yuka4
 } // End of Root

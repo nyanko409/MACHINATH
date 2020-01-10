@@ -1483,6 +1483,132 @@ Frame Root {
       } // End of aieo material list
     } // End of aieo mesh
   } // End of aieo
+  Frame naname1 {
+    FrameTransformMatrix {
+       1.000000, 0.000000, 0.000000, 0.000000,
+       0.000000, 1.000000, 0.000000, 0.000000,
+       0.000000, 0.000000, 1.000000, 0.000000,
+      -0.008000,-41.232147, 0.100000, 1.000000;;
+    }
+    Mesh { // naname1 mesh
+      4;
+      -26.000000;-5.060000; 0.000000;,
+      26.000000;-5.060000; 0.000000;,
+      26.000000; 5.060000; 0.000000;,
+      -26.000000; 5.060000; 0.000000;;
+      1;
+      4;3,2,1,0;;
+      MeshNormals { // naname1 normals
+        1;
+         0.000000; 0.000000; 1.000000;;
+        1;
+        4;0,0,0,0;;
+      } // End of naname1 normals
+      MeshTextureCoords { // naname1 UV coordinates
+        4;
+         1.175054; 0.479800;,
+        -0.175054; 0.479800;,
+        -0.175054; 0.583259;,
+         1.175054; 0.583259;;
+      } // End of naname1 UV coordinates
+      MeshMaterialList { // naname1 material list
+        1;
+        1;
+        0;
+        Material syasen_001 {
+           0.640000; 0.640000; 0.640000; 1.000000;;
+           96.078431;
+           0.500000; 0.500000; 0.500000;;
+           0.000000; 0.000000; 0.000000;;
+          TextureFilename {"senlo.png";}
+        }
+      } // End of naname1 material list
+    } // End of naname1 mesh
+  } // End of naname1
+  Frame naname2 {
+    FrameTransformMatrix {
+       1.000000, 0.000000, 0.000000, 0.000000,
+       0.000000, 1.000000, 0.000000, 0.000000,
+       0.000000, 0.000000, 1.000000, 0.000000,
+      -4.372518,-4.992750, 0.100000, 1.000000;;
+    }
+    Mesh { // naname2 mesh
+      4;
+      -30.342001;-31.280001; 0.000000;,
+      30.342001;-31.280001; 0.000000;,
+      30.342001;31.280001; 0.000000;,
+      -30.342001;31.280001; 0.000000;;
+      1;
+      4;3,2,1,0;;
+      MeshNormals { // naname2 normals
+        1;
+         0.000000; 0.000000; 1.000000;;
+        1;
+        4;0,0,0,0;;
+      } // End of naname2 normals
+      MeshTextureCoords { // naname2 UV coordinates
+        4;
+         0.999925; 1.000771;,
+         0.999925; 0.007332;,
+         0.000075; 0.007332;,
+         0.000075; 1.000771;;
+      } // End of naname2 UV coordinates
+      MeshMaterialList { // naname2 material list
+        1;
+        1;
+        0;
+        Material Material_003 {
+           0.640000; 0.640000; 0.640000; 1.000000;;
+           96.078431;
+           0.500000; 0.500000; 0.500000;;
+           0.000000; 0.000000; 0.000000;;
+          TextureFilename {"senlonaname@.png";}
+        }
+      } // End of naname2 material list
+    } // End of naname2 mesh
+  } // End of naname2
+  Frame naname3 {
+    FrameTransformMatrix {
+       1.000000, 0.000000, 0.000000, 0.000000,
+       0.000000, 1.000000, 0.000000, 0.000000,
+       0.000000, 0.000000, 1.000000, 0.000000,
+      -39.834480,-0.083477, 0.100000, 1.000000;;
+    }
+    Mesh { // naname3 mesh
+      4;
+       5.060001;-26.000000; 0.000000;,
+       5.059999;26.000000; 0.000000;,
+      -5.060001;26.000000; 0.000000;,
+      -5.059999;-26.000000; 0.000000;;
+      1;
+      4;3,2,1,0;;
+      MeshNormals { // naname3 normals
+        1;
+        -0.000000; 0.000000; 1.000000;;
+        1;
+        4;0,0,0,0;;
+      } // End of naname3 normals
+      MeshTextureCoords { // naname3 UV coordinates
+        4;
+         1.175054; 0.479800;,
+        -0.175054; 0.479800;,
+        -0.175054; 0.583259;,
+         1.175054; 0.583259;;
+      } // End of naname3 UV coordinates
+      MeshMaterialList { // naname3 material list
+        1;
+        1;
+        0;
+        Material syasen_001 {
+           0.640000; 0.640000; 0.640000; 1.000000;;
+           96.078431;
+           0.500000; 0.500000; 0.500000;;
+           0.000000; 0.000000; 0.000000;;
+          TextureFilename {"senlo.png";}
+        }
+      } // End of naname3 material list
+    } // End of naname3 mesh
+  } // End of naname3
   Frame watari {
     FrameTransformMatrix {
        1.000000, 0.000000, 0.000000, 0.000000,
@@ -1585,138 +1711,12 @@ Frame Root {
       } // End of watari material list
     } // End of watari mesh
   } // End of watari
-  Frame yuka1 {
-    FrameTransformMatrix {
-       1.000000, 0.000000, 0.000000, 0.000000,
-       0.000000, 1.000000, 0.000000, 0.000000,
-       0.000000, 0.000000, 1.000000, 0.000000,
-      -12.179102,-4.877542, 0.099999, 1.000000;;
-    }
-    Mesh { // yuka1 mesh
-      4;
-       1.900362;32.916176; 0.000000;,
-      -28.955276;-15.769527; 0.000000;,
-      -1.900362;-32.916176; 0.000000;,
-      28.955276;15.769527; 0.000000;;
-      1;
-      4;3,2,1,0;;
-      MeshNormals { // yuka1 normals
-        1;
-         0.000000;-0.000000; 1.000000;;
-        1;
-        4;0,0,0,0;;
-      } // End of yuka1 normals
-      MeshTextureCoords { // yuka1 UV coordinates
-        4;
-        -0.178208; 0.999900;,
-         1.178208; 0.999900;,
-         1.178208; 0.000100;,
-        -0.178208; 0.000100;;
-      } // End of yuka1 UV coordinates
-      MeshMaterialList { // yuka1 material list
-        1;
-        1;
-        0;
-        Material Material {
-           0.640000; 0.640000; 0.640000; 1.000000;;
-           96.078431;
-           0.500000; 0.500000; 0.500000;;
-           0.000000; 0.000000; 0.000000;;
-          TextureFilename {"senlo.png";}
-        }
-      } // End of yuka1 material list
-    } // End of yuka1 mesh
-  } // End of yuka1
-  Frame yuka2 {
-    FrameTransformMatrix {
-       1.000000, 0.000000, 0.000000, 0.000000,
-       0.000000, 1.000000, 0.000000, 0.000000,
-       0.000000, 0.000000, 1.000000, 0.000000,
-       0.288370,-38.382278, 0.099999, 1.000000;;
-    }
-    Mesh { // yuka2 mesh
-      4;
-      -28.146942;-7.747278; 0.000000;,
-      28.156281;-7.713275; 0.000000;,
-      28.146942; 7.747278; 0.000000;,
-      -28.156281; 7.713275; 0.000000;;
-      1;
-      4;3,2,1,0;;
-      MeshNormals { // yuka2 normals
-        1;
-         0.000000; 0.000000; 1.000000;;
-        1;
-        4;0,0,0,0;;
-      } // End of yuka2 normals
-      MeshTextureCoords { // yuka2 UV coordinates
-        4;
-        -0.178208; 0.999900;,
-         1.178208; 0.999900;,
-         1.178208; 0.000100;,
-        -0.178208; 0.000100;;
-      } // End of yuka2 UV coordinates
-      MeshMaterialList { // yuka2 material list
-        1;
-        1;
-        0;
-        Material Material {
-           0.640000; 0.640000; 0.640000; 1.000000;;
-           96.078431;
-           0.500000; 0.500000; 0.500000;;
-           0.000000; 0.000000; 0.000000;;
-          TextureFilename {"senlo.png";}
-        }
-      } // End of yuka2 material list
-    } // End of yuka2 mesh
-  } // End of yuka2
-  Frame yuka3 {
-    FrameTransformMatrix {
-       1.000000, 0.000000, 0.000000, 0.000000,
-       0.000000, 1.000000, 0.000000, 0.000000,
-       0.000000, 0.000000, 1.000000, 0.000000,
-      -36.525822,-0.124209, 0.099999, 1.000000;;
-    }
-    Mesh { // yuka3 mesh
-      4;
-      -8.840002;26.139999; 0.000000;,
-      -8.839998;-26.139999; 0.000000;,
-       8.840002;-26.139999; 0.000000;,
-       8.839998;26.139999; 0.000000;;
-      1;
-      4;3,2,1,0;;
-      MeshNormals { // yuka3 normals
-        1;
-         0.000000; 0.000000; 1.000000;;
-        1;
-        4;0,0,0,0;;
-      } // End of yuka3 normals
-      MeshTextureCoords { // yuka3 UV coordinates
-        4;
-        -0.178208; 0.999900;,
-         1.178208; 0.999900;,
-         1.178208; 0.000100;,
-        -0.178208; 0.000100;;
-      } // End of yuka3 UV coordinates
-      MeshMaterialList { // yuka3 material list
-        1;
-        1;
-        0;
-        Material Material {
-           0.640000; 0.640000; 0.640000; 1.000000;;
-           96.078431;
-           0.500000; 0.500000; 0.500000;;
-           0.000000; 0.000000; 0.000000;;
-          TextureFilename {"senlo.png";}
-        }
-      } // End of yuka3 material list
-    } // End of yuka3 mesh
-  } // End of yuka3
   Frame yuka4 {
     FrameTransformMatrix {
        1.000000, 0.000000, 0.000000, 0.000000,
        0.000000, 1.000000, 0.000000, 0.000000,
        0.000000, 0.000000, 1.000000, 0.000000,
-      -6.091335,-8.042607,-0.000001, 1.000000;;
+      -6.091335,-8.042607, 0.000000, 1.000000;;
     }
     Mesh { // yuka4 mesh
       4;
