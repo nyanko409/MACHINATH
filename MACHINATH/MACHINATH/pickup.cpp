@@ -13,8 +13,11 @@
 static std::vector<Pickup*> g_pickup;
 static std::vector<std::pair<int, D3DXVECTOR3>> g_spawnPos =
 {
-	{1, D3DXVECTOR3(0, 1, 10)}, {1, D3DXVECTOR3(0, 1, 0)}, {2, D3DXVECTOR3(0, 1, 0)},
-	{3, D3DXVECTOR3(0, 1, 0)}, {4, D3DXVECTOR3(0, 1, 0)}, {5, D3DXVECTOR3(0, 1, 0)}
+	{1, D3DXVECTOR3(0, 1, 10)}, {1, D3DXVECTOR3(0, 1, 0)}, 
+	{2, D3DXVECTOR3(0, 1, 0)},
+	{3, D3DXVECTOR3(0, 1, 0)}, 
+	{4, D3DXVECTOR3(0, 1, 0)}, 
+	{5, D3DXVECTOR3(0, 1, 0)},
 };;
 static float g_zRotSpeed = 0;
 
@@ -53,7 +56,7 @@ void UpdatePickup()
 		if (g_pickup[i]->col.CheckCollision(GetPlayer()->col))
 		{
 			// collided, play effect and delete pickup
-			PlayEffect(EFFECT_JUMP, g_pickup[i]->GetCombinedPosition(), { 0, 0, 0 }, { 0, 0, 0 }, {5, 5, 5});
+			//PlayEffect(EFFECT_JUMP, g_pickup[i]->GetCombinedPosition(), { 0, 0, 0 }, { 0, 0, 0 }, {5, 5, 5});
 			SAFE_DELETE(g_pickup[i]);
 			AddScore(100);
 			g_pickup.erase(g_pickup.begin() + i);

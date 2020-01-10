@@ -112,7 +112,7 @@ void MovePlayer()
 
 		if(map != nullptr)
 			g_parent->transform.position.y = Lerp(g_parent->transform.position.y, 
-										map->transform.position.y + g_player->heightOffset, 0.1F);
+										map->transform.position.y + g_player->heightOffset, 1.0F);
 	}
 }
 
@@ -269,7 +269,7 @@ void Jump()
 	if (!g_isJumping && Keyboard_IsPress(DIK_J))
 	{
 		g_isJumping = true;
-		g_finalYPos = g_player->transform.position.y;
+		//g_finalYPos = g_player->transform.position.y;
 	}
 
 	//jump

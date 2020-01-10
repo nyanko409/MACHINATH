@@ -332,7 +332,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	//UpdatePlayer();
+	UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateCamera();
@@ -429,13 +429,13 @@ void InitTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 	
-	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {10, 1, 10});
-	water = new Water(trans, MESH_WATER, SHADER_WATER);
-
-	trans.position.y += 10;
-	trans.position.z += 210;
-	trans.scale = { 1,1,1 };
-	boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT);
+	//Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {10, 1, 10});
+	//water = new Water(trans, MESH_WATER, SHADER_WATER);
+	//
+	//trans.position.y += 10;
+	//trans.position.z += 210;
+	//trans.scale = { 1,1,1 };
+	//boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT);
 }
 
 void DrawTest()
