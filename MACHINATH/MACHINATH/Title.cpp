@@ -29,9 +29,9 @@ void InitTitleScreen()
 	//init flag 
 	nextsceneGO = false;
 	
-	PlaySound(SOUND_LABEL_BGM_TITLE);
-	SetVolume(SOUND_LABEL_BGM_TITLE , 0);
-	StartFade(SOUND_LABEL_BGM_TITLE);
+	//PlaySound(SOUND_LABEL_BGM_TITLE);
+	//SetVolume(SOUND_LABEL_BGM_TITLE , 0);
+	//StartFade(SOUND_LABEL_BGM_TITLE);
 
 	//init eye color
 	g_color = COLOR_BLUE_IN;
@@ -162,7 +162,7 @@ void UpdateTitleScreen()
 	// start fade when key is pressed
 	if (!nextsceneGO && Keyboard_IsTrigger(DIK_SPACE))
 	{
-		StartFade(SOUND_LABEL_BGM_TITLE);
+		//StartFade(SOUND_LABEL_BGM_TITLE);
 		nextsceneGO = true;
 	}
 
