@@ -332,7 +332,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateCamera();
@@ -435,7 +435,7 @@ void InitTest()
 	trans.position.y += 30;
 	trans.position.x += 150;
 	trans.scale = { 1,1,1 };
-	//boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT, &(*GetMap()->back()));
+	//boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT);
 }
 
 void DrawTest()

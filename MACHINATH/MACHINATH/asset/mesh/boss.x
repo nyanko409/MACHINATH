@@ -6200,7 +6200,7 @@ Frame Root {
            94.117647;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"boss color2jpg.jpg";}
+          TextureFilename {"boss color2jpg.png";}
         }
         Material innter {
            0.640000; 0.640000; 0.640000; 1.000000;;
@@ -9981,7 +9981,7 @@ Frame Root {
            94.117647;
            0.498061; 0.466756; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"eye.jpeg";}
+          TextureFilename {"eye.png";}
         }
       } // End of pSphere2 material list
     } // End of pSphere2 mesh

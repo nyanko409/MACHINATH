@@ -11,7 +11,9 @@
 
 // globals
 static std::vector<Pickup*> g_pickup;
-//set medals
+static float g_zRotSpeed = 0;
+
+// set pickups
 static std::vector<std::pair<int, D3DXVECTOR3>> g_spawnPos =
 {
 	{ 1, D3DXVECTOR3(rand()%36-18, 1.3f, 10)},
@@ -119,7 +121,7 @@ static std::vector<std::pair<int, D3DXVECTOR3>> g_spawnPos =
 	//{94, D3DXVECTOR3(rand()%36-18, 1.3f, 0)},
 
 };
-static float g_zRotSpeed = 0;
+
 
 
 void Pickup::Draw()
