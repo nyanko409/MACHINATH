@@ -7,6 +7,7 @@
 #include "sceneManagement.h"
 #include "map.h"
 #include "customMath.h"
+#include "cameraevent.h"
 #include "common.h"
 
 // globals 
@@ -43,7 +44,6 @@ void Player::Draw()
 	//device->SetRenderState(D3DRS_LIGHTING, false);
 	BoneObject::Draw();
 	//device->SetRenderState(D3DRS_LIGHTING, true);
-
 }
 
 
@@ -76,6 +76,7 @@ void InitPlayer()
 	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, g_player);
 
+	InitCameraPosition(g_parent->transform.position);
 	ResetTimer();
 	StartTimer();
 }
@@ -145,13 +146,19 @@ void HandleMapEvent()
 	// handle events
 	for (int i = 0; i < front->data.event.size(); ++i)
 	{
-		// start event if collied with event trigger
+		// start map event if collied with event trigger
 		if (!front->data.event[i].started)
 		{
 			if (g_player->col.CheckCollision(front->data.event[i].trigger))
 			{
 				front->data.event[i].started = true;
 			}
+		}
+
+		// start camera event if collided with camera trigger
+		if (true)
+		{
+
 		}
 
 		// update events
@@ -293,22 +300,7 @@ void Jump()
 
 void PlayerCamera()
 {
-	static int rotY = 0;
-	rotY++;
-	float offsetZ = -10;
-	float offsetY = 5;
-
-	float offsetX = offsetZ;
-
-	D3DXVECTOR3 forward = g_parent->GetForward();
-
-	offsetZ *= forward.z;
-	offsetX *= forward.x;
-
-	g_camPos = Lerp(g_camPos, g_player->GetCombinedPosition(), 0.1F);
-
-	auto v = SetCameraForward(g_player->GetCombinedPosition());
-	SetCameraPos(g_camPos, offsetX, offsetY, offsetZ, rotY);
+	UpdateCameraEvent(CameraEvent{}, g_parent);
 }
 
 void CheckMapCollision()
