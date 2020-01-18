@@ -1,3 +1,4 @@
+#include <vector>
 #include "player.h"
 #include "material.h"
 #include "transformation.h"
@@ -7,8 +8,8 @@
 #include "sceneManagement.h"
 #include "map.h"
 #include "customMath.h"
-#include "cameraevent.h"
 #include "common.h"
+#include "cameraevent.h"
 
 // globals 
 static GameObject* g_parent;
@@ -19,6 +20,7 @@ static float g_zRotMax;
 static float g_jumpHeight;
 static float g_jumpSpeed;
 
+static std::vector<CameraEventData> g_camEvent;
 static D3DXVECTOR3 g_camPos;
 static float g_finalYPos;
 static bool g_isJumping;
@@ -28,8 +30,8 @@ static float g_curRot, g_curSlopeRot;
 void MovePlayer();
 void MoveSideways();
 void Jump();
-void PlayerCamera();
 void HandleMapEvent();
+void HandleCameraEvent();
 void Curve(EventData& event);
 void Slope(EventData& event);
 void CheckMapCollision();
@@ -55,6 +57,7 @@ void InitPlayer()
 	g_jumpHeight = 10.0F;
 	g_jumpSpeed = 3.0F;
 
+	g_camEvent = std::vector<CameraEventData>();
 	g_isJumping = false;
 	g_jumpCnt = 0;
 	g_curRot = 0;
@@ -65,7 +68,7 @@ void InitPlayer()
 	g_parent = new GameObject(trans);
 
 	// create player
-	g_player = new Player(trans, 2.0F, 1.0F, 2.5F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
+	g_player = new Player(trans, 2.0F, 1.0F, 1.5F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
@@ -92,10 +95,11 @@ void UninitPlayer()
 void UpdatePlayer()
 {	
 	HandleMapEvent();
+	HandleCameraEvent();
 	MovePlayer();
 	MoveSideways();
 	Jump();
-	PlayerCamera();
+	UpdateCameraPosition(g_player, g_parent->GetForward());
 
 	CheckMapCollision();
 }
@@ -106,14 +110,14 @@ void MovePlayer()
 	// move parent
 	g_parent->transform.position += g_parent->GetForward() * g_player->moveSpeed;
 
-	// offset player y position to active map
+	// lerp player y position to active map height
 	if (g_parent->transform.rotation.x == 0.0F)
 	{
 		Map* map = GetMapById(GetCurrentMapId());
 
 		if(map != nullptr)
 			g_parent->transform.position.y = Lerp(g_parent->transform.position.y, 
-										map->transform.position.y + g_player->heightOffset, 1.0F);
+										map->transform.position.y + g_player->heightOffset, 0.1F);
 	}
 }
 
@@ -155,12 +159,6 @@ void HandleMapEvent()
 			}
 		}
 
-		// start camera event if collided with camera trigger
-		if (true)
-		{
-
-		}
-
 		// update events
 		if (front->data.event[i].started && !front->data.event[i].finished)
 		{
@@ -169,6 +167,41 @@ void HandleMapEvent()
 			else if (front->data.event[i].mapEvent == MapEvent::SLOPE)
 				Slope(front->data.event[i]);
 		}
+	}
+}
+
+void HandleCameraEvent()
+{
+	// get first camera event
+	auto map = GetMap();
+	if (!(map->size() > 0)) return;
+
+	CameraEvent* event = nullptr;
+	for (int i = 0; i < map->size(); ++i)
+	{
+		if (!(*map)[i]->camEvent.data.started)
+		{
+			event = &(*map)[i]->camEvent;
+			break;
+		}
+	}
+
+	// check for collision with player
+	if (event != nullptr && g_player->col.CheckCollision(event->trigger) != 0)
+	{
+		event->data.started = true;
+		g_camEvent.emplace_back(event->data);
+	}
+
+	
+	// execute queued up camera event
+	if (g_camEvent.size() > 0)
+	{
+		UpdateCameraEvent(g_camEvent.front());
+
+		// delete finished events
+		if (g_camEvent.front().finished)
+			g_camEvent.erase(g_camEvent.begin());
 	}
 }
 
@@ -296,11 +329,6 @@ void Jump()
 			//g_player->transform.rotation.x = 0.0F;
 		}
 	}
-}
-
-void PlayerCamera()
-{
-	UpdateCameraEvent(CameraEvent{}, g_parent);
 }
 
 void CheckMapCollision()

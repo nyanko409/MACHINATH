@@ -27,6 +27,14 @@ static MapData g_MapData[] =
 	{MESH_MAP_METROPOLITAN, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}}
 };
+
+// camera event collider list
+// mapID, collider position, rotY, rotYspeed, offsetz, zspeed, offsety, yspeed
+static std::vector<std::pair<std::pair<int, std::pair<D3DXVECTOR3, D3DXVECTOR3>>, CameraEventData>> g_camEventList =
+{	
+	{{2, std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 20, 10 }, { 0, 5, -30 })}, {180, 2, -20, -0.2F, 0, 0}}
+};
+
 std::vector<Map*> g_map;
 static float g_mapRadius = 0;
 static int g_drawCount;
@@ -55,6 +63,9 @@ void Map::Draw()
 	// draw map collider
 	for (int i = 0; i < col.size(); ++i)
 		BoxCollider::DrawCollider(col[i], D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255)));
+
+	// draw camera event collider
+	BoxCollider::DrawCollider(camEvent.trigger, D3DCOLOR(D3DCOLOR_RGBA(255, 255, 0, 255)));
 
 	// draw trigger collider
 	for (int i = 0; i < data.event.size(); ++i)
@@ -152,12 +163,15 @@ void LoadMapFromFile(char* path)
 	char c;
 
 	// insert first map
+	auto camEventInfo = std::pair<std::pair<D3DXVECTOR3, D3DXVECTOR3>, CameraEventData>();
+	camEventInfo.second.started = true;
+	camEventInfo.second.finished = true;
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
 	Direction dir = GetExitDirection(g_MapData[7], Direction::NORTH);
 
 	g_map.emplace_back(new Map(id++, transform, g_MapData[7], dir, 
 		GetMapEntranceCollider(g_MapData[0].name, dir), GetMapCollider(g_MapData[0].name, dir), 
-		GetMapEventCollider(g_MapData[0].name, dir)));
+		GetMapEventCollider(g_MapData[0].name, dir), camEventInfo.first, camEventInfo.second));
 	while (true)
 	{
 		try
@@ -192,10 +206,23 @@ void LoadMapFromFile(char* path)
 			transform = GetStartTransform(*g_map[id - 1]);
 			dir = GetExitDirection(g_MapData[ci], dir);
 
+			camEventInfo = std::pair<std::pair<D3DXVECTOR3, D3DXVECTOR3>, CameraEventData>();
+			camEventInfo.second.started = true;
+			camEventInfo.second.finished = true;
+			for (int i = 0; i < g_camEventList.size(); ++i)
+			{
+				if (id == g_camEventList[i].first.first)
+				{
+					camEventInfo.first = g_camEventList[i].first.second;
+					camEventInfo.second = g_camEventList[i].second;
+					break;
+				}
+			}
+
 			// populate map
  			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, 
 				GetMapEntranceCollider(g_MapData[ci].name, dir), GetMapCollider(g_MapData[ci].name, dir), 
-				GetMapEventCollider(g_MapData[ci].name, dir)));
+				GetMapEventCollider(g_MapData[ci].name, dir), camEventInfo.first, camEventInfo.second));
 		}
 		catch (std::runtime_error& e)
 		{
@@ -208,6 +235,8 @@ void LoadMapFromFile(char* path)
 			std::exit(0);
 		}
 	}
+
+	g_map.shrink_to_fit();
 }
 
 Transform GetStartTransform(const Map& prevMap)

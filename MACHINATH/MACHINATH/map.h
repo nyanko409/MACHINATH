@@ -3,6 +3,8 @@
 #include <vector>
 #include "mesh.h"
 #include "collider.h"
+#include "cameraevent.h"
+
 
 // exit direction of the map
 enum class Direction
@@ -41,15 +43,18 @@ class Map : public MeshObject
 public:
 	int id;								// id of the map
 	BoxCollider entrance;				// entrance collider of the map
-	std::vector<BoxCollider> col;		// list of colliders attached to the map
+	CameraEvent camEvent;				// camera event
+	std::vector<BoxCollider> col;		// list of map colliders
 	Direction exit;						// exit direction of the map
 	MapData data;						// data of the map like events
 
 	// costructor
 	Map(int id, Transform transform, MapData data, Direction exit, 
-		std::pair<D3DXVECTOR3, D3DXVECTOR3> entranceCollider,
-		std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> mapCollider,
-		std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> eventCollider,
+		const std::pair<D3DXVECTOR3, D3DXVECTOR3>& entranceCollider,
+		const std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>& mapCollider,
+		const std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>& eventCollider,
+		const std::pair<D3DXVECTOR3, D3DXVECTOR3>& cameraCollider,
+		const CameraEventData& cameraEventData,
 		SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
 		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data), col(col)
 	{
@@ -59,7 +64,7 @@ public:
 		// set entrance collider
 		entrance = BoxCollider(this,
 			entranceCollider.first.x, entranceCollider.first.y, entranceCollider.first.z,
-			entranceCollider.second);
+			entranceCollider.second, true);
 
 		// populate map collider
 		col = std::vector<BoxCollider>();
@@ -67,7 +72,7 @@ public:
 		{
 			col.emplace_back((BoxCollider(this, 
 				mapCollider[i].first.x, mapCollider[i].first.y, mapCollider[i].first.z,
-				mapCollider[i].second)));
+				mapCollider[i].second, true)));
 		}
 
 		// pupulate event collider
@@ -75,8 +80,14 @@ public:
 		{
 			this->data.event[i].trigger = BoxCollider(this,
 				eventCollider[i].first.x, eventCollider[i].first.y, eventCollider[i].first.z,
-				eventCollider[i].second);
+				eventCollider[i].second, true);
 		}
+
+		// polulate camera collider
+		camEvent.trigger = BoxCollider(this,
+			cameraCollider.first.x, cameraCollider.first.y, cameraCollider.first.z,
+			cameraCollider.second, true);
+		camEvent.data = cameraEventData;
 	}
 
 	// destructor
