@@ -3,10 +3,6 @@
 #include <d3dx9.h>
 
 
-#define SAFE_RELEASE(p)			if(p){ p->Release(); p=NULL; }
-#define SAFE_DELETE(p)			if(p){ delete p; p = nullptr; }
-#define SAFE_DELETE_ARRAY(p)	if(p){ delete[] p; p = nullptr; }
-
 /*-----------------------------------------------------------------------
    ’è”’è‹`
 ------------------------------------------------------------------------*/
@@ -16,12 +12,16 @@
 	FULLSCREEN: 1440 x 900 (wide)
 	WINDOWED:	1920 x 1080
 */
-#define FULLSCREEN		false
+#define FULLSCREEN		FALSE
 #define SCREEN_WIDTH	(1920)
 #define SCREEN_HEIGHT	(1080)
 
 #define FPS				60
 #define TIME_PER_FRAME	(float)1/FPS
+
+#define SAFE_RELEASE(p)			if(p){ p->Release();	p = nullptr; }
+#define SAFE_DELETE(p)			if(p){ delete p;		p = nullptr; }
+#define SAFE_DELETE_ARRAY(p)	if(p){ delete[] p;		p = nullptr; }
 
 // custom vertex struct
 struct CUSTOM_VERTEX
