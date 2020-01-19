@@ -31,6 +31,7 @@
 #include "sound.h"
 #include "collider.h"
 #include "water.h"
+#include "edge.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -64,10 +65,8 @@ static void FinalizeGame();
 
 
 // TEST
-void InitLight();
 void DrawTest();
 void InitTest();
-
 
 /*-----------------------------------------------------------------------
    メイン
@@ -320,6 +319,7 @@ bool InitGame()
 	InitPlayer();
 	InitPickup();
 	InitMap();
+	InitEdge();
 
 	InitTest();
 
@@ -332,11 +332,12 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateCamera();
 	UpdateQTE();
+	UpdateEdge();
 }
 
 // draw game
@@ -351,12 +352,14 @@ void DrawGame()
 	// draw 3d meshes
 	DrawObjects();
 	DrawEffect();
+	DrawTest();
 
 	SpriteStart();
 
 	// draw 2d sprites
 	DrawQTE();
 	DrawScore();
+	DrawEdge();
 
 	// display text and finish
 	SpriteEnd();
@@ -374,6 +377,7 @@ void FinalizeGame()
 	UninitMap();
 	UninitPickup();
 	UninitLighting();
+	UninitEdge();
 }
 
 // init render state
@@ -444,7 +448,8 @@ void DrawTest()
 	//MoveLight(1, 0, 0, GetPlayer()->moveSpeed, false);
 
 	if(Keyboard_IsTrigger(DIK_Z))
-		PlayEffect(EFFECT_JUMP, { 0, 10, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, {0.1,0.1,0.1});
+		FadeEdge(5, 20, 50, 255, 190);
+		//PlayEffect(EFFECT_GOLD, { 0, 10, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, {1,1,1});
 
 	// draw text
 	//char f[] = "fuck";

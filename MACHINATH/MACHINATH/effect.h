@@ -1,12 +1,15 @@
 #pragma once
 
-#include <d3dx9.h>
+#include "mydirect3d.h"
+#include <Effekseer.h>
+#include <EffekseerRendererDX9.h>
 
 
 // name of the effect
 enum Effect
 {
-	EFFECT_JUMP
+	EFFECT_JUMP,
+	EFFECT_GOLD
 };
 
 // call once at init
@@ -20,5 +23,5 @@ void PlayEffect(Effect type, D3DXVECTOR3 position,
 	D3DXVECTOR3 deltaPos = { 0, 0, 0 }, D3DXVECTOR3 rotation = {0, 0, 0}, 
 	D3DXVECTOR3 scale = {1, 1, 1}, float playSpeed = 1.0F);
 
-// call every draw frame
+// call every frame
 void DrawEffect();

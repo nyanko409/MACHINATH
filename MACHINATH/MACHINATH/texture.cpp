@@ -25,7 +25,9 @@ static const TextureFile g_TextureFiles[] = {
 	{"asset/texture/titleback.png",			1920, 1080},
 	{"asset/texture/titleback_eye.png",		1920, 1080},
 	{"asset/texture/titleforward1.png",		1920, 1080},
-	{"asset/texture/titleforward2.png",		1920, 1080}
+	{"asset/texture/titleforward2.png",		1920, 1080},
+	{"asset/texture/edgeLeft.png",			150, 1080},
+	{"asset/texture/edgeTop.png",			1920, 150}
 };
 
 // texture file count

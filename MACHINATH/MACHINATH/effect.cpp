@@ -1,8 +1,4 @@
 #include <vector>
-#include <Effekseer.h>
-#include <EffekseerRendererDX9.h>
-#include <EffekseerSoundXAudio2.h>
-#include "mydirect3d.h"
 #include "effect.h"
 #include "camera.h"
 
@@ -30,9 +26,10 @@ struct EffectData
 };
 
 // path to the effect
-EFK_CHAR* path[1]
+EFK_CHAR* path[]
 {
-	(EFK_CHAR*)L"asset/shader/effekseer/jump.efk"
+	(EFK_CHAR*)L"asset/shader/effekseer/jump.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/gold.efk"
 };
 
 EffekseerRenderer::Renderer* renderer = NULL;

@@ -140,10 +140,9 @@ void UninitPickup()
 {
 	// free memory
 	for (int i = 0; i < g_pickup.size(); ++i)
-	{
-		if (g_pickup[i] != nullptr)
-			SAFE_DELETE(g_pickup[i]);
-	}
+		SAFE_DELETE(g_pickup[i]);
+
+	g_pickup.clear();
 }
 
 void UpdatePickup()
@@ -190,7 +189,7 @@ void CleanPickup(int mapId)
 		{
 			delete g_pickup[i];
 			g_pickup.erase(g_pickup.begin() + i);
-			i--;
+			--i;
 		}
 	}
 }
