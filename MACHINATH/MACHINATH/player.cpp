@@ -23,7 +23,6 @@ static float g_jumpSpeed;
 static std::vector<CameraEventData> g_camEvent;
 static D3DXVECTOR3 g_camPos;
 static float g_finalYPos;
-static bool g_isJumping;
 static int g_jumpCnt;
 static float g_curRot, g_curSlopeRot;
 
@@ -58,7 +57,6 @@ void InitPlayer()
 	g_jumpSpeed = 3.0F;
 
 	g_camEvent = std::vector<CameraEventData>();
-	g_isJumping = false;
 	g_jumpCnt = 0;
 	g_curRot = 0;
 	g_curSlopeRot = 0;
@@ -90,6 +88,8 @@ void UninitPlayer()
 	SAFE_DELETE(g_skateboard);
 	SAFE_DELETE(g_player);
 	SAFE_DELETE(g_parent);
+
+	g_camEvent.clear();
 }
 
 void UpdatePlayer()
@@ -98,7 +98,10 @@ void UpdatePlayer()
 	HandleCameraEvent();
 	MovePlayer();
 	MoveSideways();
-	Jump();
+
+	if (g_player->isJumping)
+		Jump();
+
 	UpdateCameraPosition(g_player, g_parent->GetForward());
 
 	CheckMapCollision();
@@ -192,7 +195,6 @@ void HandleCameraEvent()
 		event->data.started = true;
 		g_camEvent.emplace_back(event->data);
 	}
-
 	
 	// execute queued up camera event
 	if (g_camEvent.size() > 0)
@@ -306,28 +308,24 @@ void MoveSideways()
 
 void Jump()
 {
-	if (!g_isJumping && Keyboard_IsPress(DIK_J))
-		g_isJumping = true;
+	// move player up
+	g_player->transform.position.y = g_finalYPos + g_jumpHeight * sin(D3DXToRadian(g_jumpCnt));
+	g_jumpCnt += g_jumpSpeed;
+	float finalRot = 360.0F / (180.0F / g_jumpSpeed);
 
-	//jump
-	if (g_isJumping)
+	// rotate player
+	g_player->transform.rotation.y += finalRot;
+	//g_player->transform.rotation.z += finalRot;
+	//g_player->transform.rotation.x += finalRot;
+
+	// player reached ground
+	if (g_jumpCnt > 180)
 	{
-		g_player->transform.position.y = g_finalYPos + g_jumpHeight * sin(D3DXToRadian(g_jumpCnt));
-		g_jumpCnt += g_jumpSpeed;
-		float finalRot = 360.0F / (180.0F / g_jumpSpeed);
-
-		g_player->transform.rotation.y += finalRot;
-		//g_player->transform.rotation.z += finalRot;
-		//g_player->transform.rotation.x += finalRot;
-
-		if (g_jumpCnt > 180)
-		{
-			g_isJumping = false;
-			g_jumpCnt = 0;
-			g_player->transform.rotation.y = 0.0F;
-			//g_player->transform.rotation.z = 0.0F;
-			//g_player->transform.rotation.x = 0.0F;
-		}
+		g_player->isJumping = false;
+		g_jumpCnt = 0;
+		g_player->transform.rotation.y = 0.0F;
+		//g_player->transform.rotation.z = 0.0F;
+		//g_player->transform.rotation.x = 0.0F;
 	}
 }
 

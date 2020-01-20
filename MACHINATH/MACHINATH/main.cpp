@@ -65,7 +65,7 @@ static void FinalizeGame();
 
 
 // TEST
-void DrawTest();
+void UpdateTest();
 void InitTest();
 
 /*-----------------------------------------------------------------------
@@ -332,12 +332,14 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	//UpdatePlayer();
+	UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateCamera();
 	UpdateQTE();
 	UpdateEdge();
+
+	UpdateTest();
 }
 
 // draw game
@@ -352,7 +354,6 @@ void DrawGame()
 	// draw 3d meshes
 	DrawObjects();
 	DrawEffect();
-	DrawTest();
 
 	SpriteStart();
 
@@ -442,7 +443,7 @@ void InitTest()
 	//boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT);
 }
 
-void DrawTest()
+void UpdateTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 	//MoveLight(1, 0, 0, GetPlayer()->moveSpeed, false);

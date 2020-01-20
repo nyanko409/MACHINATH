@@ -6,7 +6,8 @@
 #include "score.h"
 #include "playTime.h"
 #include "qte.h"
-#include"common.h"
+#include "common.h"
+#include "player.h"
 
 // performance threshold
 #define PERFECT 0.1F
@@ -56,6 +57,11 @@ void StartQTE(QTE type)
 
 	g_alpha = 0;
 	g_active = true;
+}
+
+bool IsQTEActive()
+{
+	return g_active;
 }
 
 
@@ -132,7 +138,7 @@ void DrawQTE()
 	{
 		SpriteDraw(g_inner);
 
-		if (Keyboard_IsPress(DIK_L))
+		if (Keyboard_IsPress(DIK_SPACE))
 			SpriteDraw(g_press);
 
 		if(g_activeQTE == QTE_DEFAULT)
@@ -165,7 +171,7 @@ void qteDefault()
 	float dist = g_outer.scale.x - g_inner.scale.x;
 
 	// check for user input
-	if (Keyboard_IsTrigger(DIK_L))
+	if (Keyboard_IsTrigger(DIK_SPACE))
 	{
 		// check for performance and add it to score
 		dist = fabs(dist);
@@ -178,8 +184,9 @@ void qteDefault()
 		else if (dist < BAD)
 			score += 10;
 
-		// add to score and finish qte
+		// add score, set jump flag and finish qte
 		AddScore(score);
+		GetPlayer()->isJumping = true;
 		g_active = false;
 	}
 
@@ -227,12 +234,12 @@ void qteMultiPress()
 		}
 
 		// add score after user input
-		if (Keyboard_IsTrigger(DIK_L))
+		if (Keyboard_IsTrigger(DIK_SPACE))
 		{
 			AddScore(10);
 		}
 
-		// erase if scale <= 0
+		// erase if scale <= inner scale
 		if (g_outerMultiSprite[0].scale.x <= g_innerScale)
 			g_outerMultiSprite.erase(g_outerMultiSprite.begin());
 	}
