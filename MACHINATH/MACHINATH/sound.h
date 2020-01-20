@@ -15,6 +15,7 @@ typedef enum
 {
 	AUDIO_BGM_TITLE	,		// TITLE BGM
 	AUDIO_BGM_GAME,			// INGAME BGM
+	AUIDO_SE_PICKUP,		// pickup sound effect
 
 	SOUND_LABEL_MAX
 } SOUND_LABEL;

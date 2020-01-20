@@ -45,8 +45,9 @@ SOUND_LABEL g_curFadeSound;
 // sound files to load
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
-	{"asset/sound/BGM/title.wav", -1},			// title bgm
-	{"asset/sound/BGM/game.wav", -1},			// ingame bgm
+	{"asset/sound/BGM/title.wav", -1},
+	{"asset/sound/BGM/game.wav", -1},	
+	{"asset/sound/SE/pickup.wav", 0},
 };
 
 //=============================================================================
