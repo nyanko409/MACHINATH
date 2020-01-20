@@ -26,22 +26,14 @@ ColorFade g_color;
 
 void InitTitleScreen()
 {
-	//init flag 
+	//init  
 	nextsceneGO = false;
-	
-	//PlaySound(SOUND_LABEL_BGM_TITLE);
-	//SetVolume(SOUND_LABEL_BGM_TITLE , 0);
-	//StartFade(SOUND_LABEL_BGM_TITLE);
-
-	//init eye color
 	g_color = COLOR_BLUE_IN;
-
-	//init cnt
 	fadecnt = 255;
 	titleforwardcnt = 60;
 	eyeRed = eyeGreen = eyeBlue = 0;
 
-	// init title sprite
+	// init title sprites
 	g_titleback = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_BACK), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_BACK) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_BACK) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
@@ -61,23 +53,22 @@ void InitTitleScreen()
 	g_titlefadescreen = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_BACK), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_BACK) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_BACK) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
+
+	// play title bgm
+	StopSound();
+	PlaySound(AUDIO_BGM_TITLE);
 }
 
 void UpdateTitleScreen()
 {
 	if (!nextsceneGO)
 	{
-		// set sound volume
-		//UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 1, 5);
-
 		// decrease fadecnt
 		if (fadecnt > 0)
 			fadecnt--;
 	}
 	else
 	{
-		//UpdateFadeSound(SOUND_LABEL_BGM_TITLE, 0, 3);
-
 		//increase fadecnt
 		if (fadecnt < 255)
 			fadecnt++;
@@ -162,13 +153,14 @@ void UpdateTitleScreen()
 	// start fade when key is pressed
 	if (!nextsceneGO && Keyboard_IsTrigger(DIK_SPACE))
 	{
-		//StartFade(SOUND_LABEL_BGM_TITLE);
+		StartFade(AUDIO_BGM_TITLE, 0, 3.0F);
 		nextsceneGO = true;
 	}
 
 	// switch to next scene after fading
 	if (nextsceneGO && fadecnt >= 255)
 	{
+		StopSound(AUDIO_BGM_TITLE);
 		SetScene(SCENE_GAMESCREEN);
 		nextsceneGO = false;
 	}

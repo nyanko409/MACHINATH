@@ -1,4 +1,5 @@
 #include <vector>
+#include "sound.h"
 #include "player.h"
 #include "material.h"
 #include "transformation.h"
@@ -10,6 +11,7 @@
 #include "customMath.h"
 #include "common.h"
 #include "cameraevent.h"
+
 
 // globals 
 static GameObject* g_parent;
@@ -50,6 +52,9 @@ void Player::Draw()
 
 void InitPlayer()
 {	
+	// play sound
+	PlaySound(AUDIO_BGM_GAME);
+
 	// init
 	g_zRotSpeed = 3.0F;
 	g_zRotMax = 20.0F;

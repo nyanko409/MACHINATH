@@ -12,12 +12,12 @@
 #pragma comment (lib, "winmm.lib") 
 
 //*****************************************************************************
-// �p�����[�^�\���̒�`
+// sound parameters
 //*****************************************************************************
 struct SOUNDPARAM
 {
 	const char *pFilename;	// path to sound file
-	int nCntLoop;		// -1 == LOOP, 0 == DONT LOOP, >= 1 == LOOP
+	int nCntLoop;			// -1 == LOOP EDNLESSLY, 0 == DONT LOOP, >= 1 == LOOP
 };
 
 //*****************************************************************************
@@ -25,23 +25,28 @@ struct SOUNDPARAM
 //*****************************************************************************
 HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);
 HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);
+void UpdateFadeSound();
 
 //*****************************************************************************
 // globals
 //*****************************************************************************
-IXAudio2 *g_pXAudio2 = NULL;								// XAudio2�I�u�W�F�N�g�ւ̃C���^�[�t�F�C�X
-IXAudio2MasteringVoice *g_pMasteringVoice = NULL;			// �}�X�^�[�{�C�X
-IXAudio2SourceVoice *g_apSourceVoice[SOUND_LABEL_MAX] = {};	// �\�[�X�{�C�X
-BYTE *g_apDataAudio[SOUND_LABEL_MAX] = {};					// �I�[�f�B�I�f�[�^
-DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};					// �I�[�f�B�I�f�[�^�T�C�Y
+IXAudio2 *g_pXAudio2 = NULL;								// XAudio2 interface
+IXAudio2MasteringVoice *g_pMasteringVoice = NULL;			// master voice
+IXAudio2SourceVoice *g_apSourceVoice[SOUND_LABEL_MAX] = {};	// source voice
+BYTE *g_apDataAudio[SOUND_LABEL_MAX] = {};
+DWORD g_aSizeAudio[SOUND_LABEL_MAX] = {};
+
 float g_DeltaTime;
+float g_targetTime, g_targetVolume;
 bool g_FadeFlag;
-float nowvolume;
+float g_curVolume;
+SOUND_LABEL g_curFadeSound;
 
 // sound files to load
 SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 {
-	{"asset/sound/title.wav", -1},			// BGM1
+	{"asset/sound/BGM/title.wav", -1},			// title bgm
+	{"asset/sound/BGM/game.wav", -1},			// ingame bgm
 };
 
 //=============================================================================
@@ -221,7 +226,8 @@ void UninitSound(void)
 //=============================================================================
 void UpdateSound(void)
 {
-
+	if (g_FadeFlag)
+		UpdateFadeSound();
 }
 
 //=============================================================================
@@ -232,28 +238,24 @@ HRESULT PlaySound(SOUND_LABEL label, float volume)
 	XAUDIO2_VOICE_STATE xa2state;
 	XAUDIO2_BUFFER buffer;
 
-	// �o�b�t�@�̒l�ݒ�
+	// init buffer
 	memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
 	buffer.AudioBytes = g_aSizeAudio[label];
 	buffer.pAudioData = g_apDataAudio[label];
 	buffer.Flags      = XAUDIO2_END_OF_STREAM;
 	buffer.LoopCount  = g_aParam[label].nCntLoop;
 
-	// ��Ԏ擾
 	g_apSourceVoice[label]->GetState(&xa2state);
 	if(xa2state.BuffersQueued != 0)
-	{// �Đ���
-		// �ꎞ��~
+	{
 		g_apSourceVoice[label]->Stop(0);
-
-		// �I�[�f�B�I�o�b�t�@�̍폜
 		g_apSourceVoice[label]->FlushSourceBuffers();
 	}
 
-	// �I�[�f�B�I�o�b�t�@�̓o�^
+	// submit source buffer
 	g_apSourceVoice[label]->SubmitSourceBuffer(&buffer);
 
-	// �Đ�
+	// play sound
 	g_apSourceVoice[label]->Start(0);
 
 	// set volume
@@ -388,33 +390,45 @@ HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwB
 
 HRESULT SetVolume(SOUND_LABEL LABEL,float volume,UINT32 OperationSet)
 {
-	g_apSourceVoice[LABEL]->SetVolume(volume * AUDIO_MASTER, OperationSet);
-	return S_OK;
+	return g_apSourceVoice[LABEL]->SetVolume(volume * AUDIO_MASTER, OperationSet);
 }
 
-void UpdateFadeSound(SOUND_LABEL LABEL, float TargetVolume, float TargetTime)
+float GetVolume(SOUND_LABEL label)
 {
-	if (!g_FadeFlag) return;
+	float vol;
+	g_apSourceVoice[label]->GetVolume(&vol);
+	return vol;
+}
 
-	if (g_DeltaTime < TargetTime)
+void UpdateFadeSound()
+{
+	if (g_DeltaTime < g_targetTime)
 	{
-		SetVolume(LABEL, TargetVolume * (g_DeltaTime/TargetTime) + nowvolume * ((TargetTime - g_DeltaTime )/ TargetTime));
+		SetVolume(g_curFadeSound, g_targetVolume * (g_DeltaTime/ g_targetTime) + 
+			g_curVolume * ((g_targetTime - g_DeltaTime )/ g_targetTime));
 		g_DeltaTime += (1.0f / 60.0f);
 	}
 	else
 	{
-		SetVolume(LABEL, TargetVolume);
-		if (TargetVolume == 0)
+		SetVolume(g_curFadeSound, g_targetVolume);
+		if (g_targetVolume == 0)
 		{
-			StopSound(LABEL);
+			StopSound(g_curFadeSound);
 		}
+
 		g_DeltaTime = 0;
 		g_FadeFlag = false;
 	}
 }
 
-void StartFade(SOUND_LABEL LABEL)
+void StartFade(SOUND_LABEL label, float targetVolume, float targetTime)
 {
-	g_apSourceVoice[LABEL]->GetVolume(&nowvolume);
+	// return if a sound is currently fading
+	if (g_FadeFlag) return;
+
+	g_curFadeSound = label;
+	g_apSourceVoice[label]->GetVolume(&g_curVolume);
+	g_targetVolume = targetVolume;
+	g_targetTime = targetTime;
 	g_FadeFlag = true;
 }

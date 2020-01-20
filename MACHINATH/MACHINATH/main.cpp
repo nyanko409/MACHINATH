@@ -279,6 +279,7 @@ bool InitTitle()
 void UpdateTitle()
 {
 	UpdateTitleScreen();
+	UpdateSound();
 }
 
 // draw title
@@ -329,6 +330,7 @@ bool InitGame()
 // update game
 void UpdateGame()
 {
+	UpdateSound();
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();

@@ -13,7 +13,9 @@
 //*****************************************************************************
 typedef enum
 {
-	SOUND_LABEL_BGM_TITLE,			// TITLE BGM
+	AUDIO_BGM_TITLE	,		// TITLE BGM
+	AUDIO_BGM_GAME,			// INGAME BGM
+
 	SOUND_LABEL_MAX
 } SOUND_LABEL;
 
@@ -31,6 +33,7 @@ void StopSound(SOUND_LABEL label);
 
 HRESULT SetVolume(SOUND_LABEL LABEL, float volume, UINT32 OperationSet = 0);
 
-void StartFade(SOUND_LABEL LABEL);
+float GetVolume(SOUND_LABEL label);
 
-void UpdateFadeSound(SOUND_LABEL LABEL, float TargetVolume, float TargetTime);
+void StartFade(SOUND_LABEL label, float targetVolume, float targetTime);
+
