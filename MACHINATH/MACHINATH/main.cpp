@@ -449,7 +449,14 @@ void DrawTest()
 
 	if(Keyboard_IsTrigger(DIK_Z))
 		FadeEdge(5, 20, 50, 255, 190);
-		//PlayEffect(EFFECT_GOLD, { 0, 10, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, {1,1,1});
+
+	if (Keyboard_IsTrigger(DIK_X))
+		StartQTE(QTE_MULTIPRESS);
+
+	if (Keyboard_IsTrigger(DIK_C))
+		StartQTE(QTE_DEFAULT);
+
+	//PlayEffect(EFFECT_GOLD, { 0, 10, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, {1,1,1});
 
 	// draw text
 	//char f[] = "fuck";

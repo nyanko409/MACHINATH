@@ -15,12 +15,9 @@
 
 // globals
 static Sprite g_inner, g_outer, g_press;
-
 static float g_outerScale = 1.0F;
 static float g_innerScale = 0.4F;
-
 static float g_multiDelay = 0.1F;
-
 static int g_multiCount = 20;
 
 static std::vector<Sprite> g_outerMultiSprite;
@@ -28,6 +25,7 @@ static QTE g_activeQTE;
 static bool g_active;
 static int g_curCount;
 static float g_curTime;
+static float g_alpha;
 
 
 void qteDefault();
@@ -46,17 +44,19 @@ void StartQTE(QTE type)
 	g_curCount = g_multiCount;
 	g_inner.scale.x = g_innerScale;
 	g_inner.scale.y = g_innerScale;
+	g_inner.color.a = 0;
+	g_press.color.a = 0;
 
 	if (g_activeQTE == QTE_DEFAULT)
 	{
-		g_outer.color.a = 0;
 		g_outer.scale.x = g_outerScale;
 		g_outer.scale.y = g_outerScale;
+		g_outer.color.a = 0;
 	}
 
+	g_alpha = 0;
 	g_active = true;
 }
-
 
 
 
@@ -85,25 +85,50 @@ void UninitQTE()
 
 void UpdateQTE()
 {
-	// start qte when its not active for test
-	//if (!g_active)
-	//	StartQTE(QTE_MULTIPRESS);
-
-	// update active qte
 	if (g_active)
 	{
-		if(g_activeQTE == QTE_DEFAULT)
-			qteDefault();
+		// increase alpha
+		g_alpha += 0.05;
+		if (g_alpha > 1) g_alpha = 1;
 
-		if (g_activeQTE == QTE_MULTIPRESS)
+		// update sprite alpha
+		g_inner.color.a = g_alpha;
+		g_outer.color.a = g_alpha;
+		g_press.color.a = g_alpha;
+
+		// update active qte
+		switch (g_activeQTE)
+		{
+		case QTE_DEFAULT:
+			qteDefault();
+			break;
+
+		case QTE_MULTIPRESS:
 			qteMultiPress();
+			break;
+
+		default:
+			break;
+		}
+	}
+	else if(g_alpha > 0)
+	{
+		// decrease alpha
+		g_alpha -= 0.05;
+		if (g_alpha < 0)
+			g_alpha = 0;
+
+		// update sprite alpha
+		g_inner.color.a = g_alpha;
+		g_outer.color.a = g_alpha;
+		g_press.color.a = g_alpha;
 	}
 }
 
 void DrawQTE()
 {
-	// draw qte when active
-	if (g_active)
+	// draw qte when active or not faded out
+	if (g_active || g_alpha > 0)
 	{
 		SpriteDraw(g_inner);
 
@@ -121,7 +146,6 @@ void DrawQTE()
 			}
 		}
 	}
-
 }
 
 
@@ -174,15 +198,19 @@ void qteMultiPress()
 		g_curTime = playTime;
 		g_curCount--;
 
-		if (g_curCount < 0)
+		// disable qte after its done
+		if(g_curCount > 0)
+		{
+			g_outerMultiSprite.push_back(Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200, 0.1),
+				D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_OUTER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_OUTER) / 2, 0),
+				0, D3DXVECTOR2(g_outerScale, g_outerScale), D3DXCOLOR(1.0F, 1.0F, 1.0F, 0.0F)));
+		}
+		else if (g_outerMultiSprite.size() == 0)
 		{
 			g_active = false;
+			g_outerMultiSprite.clear();
 			return;
 		}
-
-		g_outerMultiSprite.push_back(Sprite(Texture_GetTexture(TEXTURE_INDEX_QTE_OUTER), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 200, 0.1),
-			D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_QTE_OUTER) / 2, Texture_GetHeight(TEXTURE_INDEX_QTE_OUTER) / 2, 0),
-			0, D3DXVECTOR2(g_outerScale, g_outerScale), D3DXCOLOR(1.0F, 1.0F, 1.0F, 0.0F)));
 	}
 
 	if (g_outerMultiSprite.size() > 0)
@@ -198,15 +226,14 @@ void qteMultiPress()
 			g_outerMultiSprite[i].rotZ -= 10;
 		}
 
-		// check for user input
+		// add score after user input
 		if (Keyboard_IsTrigger(DIK_L))
 		{
-			// add score
 			AddScore(10);
 		}
 
 		// erase if scale <= 0
-		if (g_outerMultiSprite[0].scale.x <= 0.0F)
+		if (g_outerMultiSprite[0].scale.x <= g_innerScale)
 			g_outerMultiSprite.erase(g_outerMultiSprite.begin());
 	}
 }
