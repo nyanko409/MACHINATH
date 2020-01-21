@@ -46,9 +46,9 @@ void Player::Draw()
 #endif
 
 	auto device = MyDirect3D_GetDevice();
-	//device->SetRenderState(D3DRS_LIGHTING, false);
+	device->SetRenderState(D3DRS_LIGHTING, false);
 	BoneObject::Draw();
-	//device->SetRenderState(D3DRS_LIGHTING, true);
+	device->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 
@@ -323,7 +323,7 @@ void Jump()
 
 	// rotate player
 	g_player->transform.rotation.y += finalRot;
-	//g_player->transform.rotation.z += finalRot;
+	g_player->transform.rotation.z += finalRot;
 	//g_player->transform.rotation.x += finalRot;
 
 	// player reached ground
@@ -332,7 +332,7 @@ void Jump()
 		g_player->isJumping = false;
 		g_jumpCnt = 0;
 		g_player->transform.rotation.y = 0.0F;
-		//g_player->transform.rotation.z = 0.0F;
+		g_player->transform.rotation.z = 0.0F;
 		//g_player->transform.rotation.x = 0.0F;
 	}
 }
