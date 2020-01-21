@@ -47,8 +47,9 @@ void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offs
 
 void UpdateCamera()
 {
-	// move camera with WASD and mouse for debug purposes
+#if _DEBUG
 	CameraInput();
+#endif
 
 	// init matrix and get device
 	auto device = MyDirect3D_GetDevice();

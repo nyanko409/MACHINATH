@@ -55,6 +55,8 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 
 void Map::Draw()
 {
+
+#if _DEBUG
 	if (!enableDraw) return;
 
 	// draw entrance collider
@@ -70,6 +72,7 @@ void Map::Draw()
 	// draw trigger collider
 	for (int i = 0; i < data.event.size(); ++i)
 		BoxCollider::DrawCollider(data.event[i].trigger, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 0, 255)));
+#endif
 
 	MeshObject::Draw();
 }

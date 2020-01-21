@@ -45,6 +45,11 @@ static std::vector<std::pair<int, D3DXVECTOR3>> g_spawnPos =
 
 void Pickup::Draw()
 {
+#if _DEBUG
+	for(auto pickup : g_pickup)
+		BoxCollider::DrawCollider(pickup->col, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 255, 255)));
+#endif
+
 	MeshObject::Draw();
 }
 
