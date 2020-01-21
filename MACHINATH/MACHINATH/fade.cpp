@@ -65,6 +65,9 @@ void DrawFade()
 
 void StartFadeToScene(SceneType scene)
 {
+	// return if already fading
+	if (g_state != FadeNone) return;
+
 	// init fade
 	g_fadeScene = scene;
 	g_state = FadeIn;

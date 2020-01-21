@@ -5,7 +5,7 @@
 #include "map.h"
 #include "mesh.h"
 #include "playTime.h"
-#include "sceneManagement.h"
+#include "fade.h"
 #include "customMath.h"
 #include "player.h"
 #include "input.h"
@@ -103,9 +103,10 @@ void UpdateMap()
 	// update the current map the player is on
 	UpdateCurrentMap();
 
+	// return to title if map ends
 	if (g_map.size() < 1)
 	{
-		SetScene(SCENE_TITLESCREEN);
+		StartFadeToScene(SCENE_TITLESCREEN);
 		return;
 	}
 
