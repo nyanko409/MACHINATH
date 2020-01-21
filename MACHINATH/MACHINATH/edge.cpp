@@ -20,6 +20,11 @@ void InitEdge()
 		{ 0,0,0 }, { 0,0,0 }, 0, { 1,1 });
 	g_edgeBottom = Sprite(Texture_GetTexture(TEXTURE_INDEX_EDGETOP),
 		{ 0,SCREEN_HEIGHT,0 }, { 0,0,0 }, 0, { 1,-1 });
+
+	g_edgeLeft.color.a = 0;
+	g_edgeRight.color.a = 0;
+	g_edgeTop.color.a = 0;
+	g_edgeBottom.color.a = 0;
 }
 
 void UpdateEdge()
