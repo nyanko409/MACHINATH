@@ -134,6 +134,7 @@
     <ClCompile Include="customMath.cpp" />
     <ClCompile Include="edge.cpp" />
     <ClCompile Include="effect.cpp" />
+    <ClCompile Include="fade.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="customMath.h" />
     <ClInclude Include="edge.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="fade.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="input.h" />

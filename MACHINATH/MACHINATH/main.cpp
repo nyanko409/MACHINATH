@@ -18,6 +18,7 @@
 #include "gameObject.h"
 #include "lighting.h"
 #include "player.h"
+#include "fade.h"
 #include "pickup.h"
 #include "playTime.h"
 #include "sceneManagement.h"
@@ -158,13 +159,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		}
 		else
 		{
+			// MAIN LOOP
 			Sleep(6);
 			Keyboard_Update();
+			UpdateFade();
 
-			// update title
-			if (GetScene() == SCENE_TITLESCREEN)
+			switch (GetScene())
 			{
-				// free memory used in game and init title screen
+			case SCENE_TITLESCREEN:
 				if (!init_title)
 				{
 					FinalizeGame();
@@ -175,12 +177,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 				UpdateTitle();
 				DrawTitle();
-			}
-
-			// update game
-			else if (GetScene() == SCENE_GAMESCREEN)
-			{
-				// free memory used in title and init title screen
+				break;
+			case SCENE_GAMESCREEN:
 				if (!init_game)
 				{
 					FinalizeTitle();
@@ -191,6 +189,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 				UpdateGame();
 				DrawGame();
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -248,6 +249,7 @@ bool InitLibrary()
 	InitScene();
 	InitQTE();
 	InitShader();
+	InitFade();
 
 	return true;
 }
@@ -264,6 +266,7 @@ void FinalizeLibrary()
 	UninitSound();
 	UninitSprite();
 	UninitMesh();
+	UninitFade();
 	Texture_Release();
 	MyDirect3D_Finalize();
 }
