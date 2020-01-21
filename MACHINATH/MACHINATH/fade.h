@@ -8,4 +8,4 @@ void UninitFade();
 void UpdateFade();
 void DrawFade();
 
-void StartFade(SceneType scene);
+void StartFadeToScene(SceneType scene);

@@ -51,7 +51,7 @@ static HWND g_hWnd;
 LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 void InitRenderState();
 
-static bool InitLibrary();
+static void InitLibrary();
 static void FinalizeLibrary();
 
 static bool InitTitle();
@@ -135,16 +135,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ShowWindow(g_hWnd, nCmdShow);
 	UpdateWindow(g_hWnd);
 
-	// init library once
-	if (!InitLibrary())
-	{
-		//初期化失敗
-		return -1;
-	}
-
-	Keyboard_Initialize(hInstance, g_hWnd);
-
 	ShowCursor(false);
+
+	// init once
+	InitLibrary();
+	Keyboard_Initialize(hInstance, g_hWnd);
 
 	MSG msg = {};
 	bool init_title = false;
@@ -230,13 +225,10 @@ LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 // load tasks that only need to be initialized once
-bool InitLibrary()
+void InitLibrary()
 {
 	//Direct3Dインターフェイス作成
-	if (!MyDirect3D_Initialize(g_hWnd))
-	{
-		return false;
-	}
+	MyDirect3D_Initialize(g_hWnd);
 
 	InitRenderState();
 	InitSound(g_hWnd);
@@ -250,8 +242,6 @@ bool InitLibrary()
 	InitQTE();
 	InitShader();
 	InitFade();
-
-	return true;
 }
 
 // free memory used in library
@@ -301,6 +291,7 @@ void DrawTitle()
 	SpriteStart();
 
 	DrawTitleScreen();
+	DrawFade();
 
 	SpriteEnd();
 	pDevice->EndScene();
@@ -366,6 +357,7 @@ void DrawGame()
 	DrawQTE();
 	DrawScore();
 	DrawEdge();
+	DrawFade();
 
 	// display text and finish
 	SpriteEnd();

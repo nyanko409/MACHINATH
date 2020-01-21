@@ -52,7 +52,8 @@ void Player::Draw()
 
 void InitPlayer()
 {	
-	// play sound
+	// play BGM
+	StopSound();
 	PlaySound(AUDIO_BGM_GAME);
 
 	// init
