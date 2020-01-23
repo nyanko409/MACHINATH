@@ -20,3 +20,4 @@ struct CameraEvent
 void InitCameraPosition(D3DXVECTOR3 position);
 void UpdateCameraEvent(CameraEventData& event);
 void UpdateCameraPosition(GameObject* follow, const D3DXVECTOR3& forward);
+void SetLerpSpeed(float lerpSpeed);

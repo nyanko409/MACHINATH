@@ -74,7 +74,10 @@ void Map::Draw()
 		BoxCollider::DrawCollider(data.event[i].trigger, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 0, 255)));
 #endif
 
+	auto pDevice = MyDirect3D_GetDevice();
+	//pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	MeshObject::Draw();
+	//pDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 

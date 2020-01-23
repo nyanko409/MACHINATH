@@ -316,7 +316,7 @@ bool InitGame()
 	InitMap();
 	InitEdge();
 
-	InitTest();
+	//InitTest();
 
 	return true;
 }

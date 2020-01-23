@@ -23,7 +23,6 @@ static float g_jumpHeight;
 static float g_jumpSpeed;
 
 static std::vector<CameraEventData> g_camEvent;
-static D3DXVECTOR3 g_camPos;
 static float g_finalYPos;
 static int g_jumpCnt;
 static float g_curRot, g_curSlopeRot;
@@ -46,9 +45,7 @@ void Player::Draw()
 #endif
 
 	auto device = MyDirect3D_GetDevice();
-	device->SetRenderState(D3DRS_LIGHTING, false);
 	BoneObject::Draw();
-	device->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 
@@ -70,22 +67,21 @@ void InitPlayer()
 	g_curSlopeRot = 0;
 
 	// create parent
-	Transform trans = Transform(D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
+	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_parent = new GameObject(trans);
 
 	// create player
-	g_player = new Player(trans, 2.0F, 1.0F, 1.5F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
+	g_player = new Player(trans, 2.0F, 1.0F, 0.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
-
-	g_camPos = trans.position;
 
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, g_player);
 
-	InitCameraPosition(g_parent->transform.position);
+	auto pos = g_player->GetCombinedPosition();
+	InitCameraPosition({ 0, 70, -40 });
 	ResetTimer();
 	StartTimer();
 }
@@ -102,6 +98,11 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {	
+	UpdateCameraPosition(g_player, g_parent->GetForward());
+
+	if (playTime < 6) return;
+	SetLerpSpeed(0.1F);
+
 	HandleMapEvent();
 	HandleCameraEvent();
 	MovePlayer();
@@ -109,8 +110,6 @@ void UpdatePlayer()
 
 	if (g_player->isJumping)
 		Jump();
-
-	UpdateCameraPosition(g_player, g_parent->GetForward());
 
 	CheckMapCollision();
 }

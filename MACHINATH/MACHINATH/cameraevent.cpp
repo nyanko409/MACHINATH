@@ -9,6 +9,7 @@ static D3DXVECTOR3 g_camPos;
 static int rotY = 0;
 static float offsetZ;
 static float offsetY;
+static float g_lerpSpeed;
 
 static bool init;
 static int finalRotY;
@@ -19,8 +20,9 @@ void InitCameraPosition(D3DXVECTOR3 position)
 {
 	g_camPos = position;
 	offsetZ = -10;
-	offsetY = 5;
-	rotY = 0;
+	offsetY = 3;
+	rotY = -170;
+	g_lerpSpeed = 0.01F;
 }
 
 void UpdateCameraEvent(CameraEventData& event)
@@ -66,8 +68,13 @@ void UpdateCameraPosition(GameObject* follow, const D3DXVECTOR3& forward)
 	offZ *= forward.z;
 	offX *= forward.x;
 
-	g_camPos = Lerp(g_camPos, follow->GetCombinedPosition(), 0.1F);
+	g_camPos = Lerp(g_camPos, follow->GetCombinedPosition(), g_lerpSpeed);
 
 	SetCameraForward(follow->GetCombinedPosition());
 	SetCameraPos(g_camPos, offX, offsetY, offZ, rotY);
+}
+
+void SetLerpSpeed(float lerpSpeed)
+{
+	g_lerpSpeed = lerpSpeed;
 }
