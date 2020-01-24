@@ -33,6 +33,7 @@
 #include "collider.h"
 #include "water.h"
 #include "edge.h"
+#include "countdown.h"
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -242,11 +243,13 @@ void InitLibrary()
 	InitQTE();
 	InitShader();
 	InitFade();
+	InitCountdown();
 }
 
 // free memory used in library
 void FinalizeLibrary()
 {
+	UninitCountdown();
 	UninitQTE();
 	FinalizeTitle();
 	UninitEffect();
@@ -324,6 +327,7 @@ bool InitGame()
 // update game
 void UpdateGame()
 {
+	UpdateCountdown();
 	UpdateSound();
 	UpdateTimer();
 	UpdateScore();
@@ -357,6 +361,7 @@ void DrawGame()
 	DrawQTE();
 	DrawScore();
 	DrawEdge();
+	DrawCountdown();
 	DrawFade();
 
 	// display text and finish

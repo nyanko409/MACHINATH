@@ -20,8 +20,8 @@ void InitCameraPosition(D3DXVECTOR3 position)
 {
 	g_camPos = position;
 	offsetZ = -10;
-	offsetY = 3;
-	rotY = -170;
+	offsetY = 5;
+	rotY = 0;
 	g_lerpSpeed = 0.01F;
 }
 

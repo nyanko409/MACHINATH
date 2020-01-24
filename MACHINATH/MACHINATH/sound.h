@@ -4,7 +4,7 @@
 
 
 // MASTER AUDIO VOLUME
-#define AUDIO_MASTER 0 //MUST NOT AUDIO_MASTER > 1 (ear rape)
+#define AUDIO_MASTER 1 //MUST NOT AUDIO_MASTER > 1 (ear rape)
 
 
 
@@ -16,6 +16,7 @@ typedef enum
 	AUDIO_BGM_TITLE	,		// TITLE BGM
 	AUDIO_BGM_GAME,			// INGAME BGM
 	AUIDO_SE_PICKUP,		// pickup sound effect
+	AUDIO_SE_COUNTDOWN,
 
 	SOUND_LABEL_MAX
 } SOUND_LABEL;

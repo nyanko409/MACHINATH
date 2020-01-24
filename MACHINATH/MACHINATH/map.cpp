@@ -9,6 +9,7 @@
 #include "customMath.h"
 #include "player.h"
 #include "input.h"
+#include "sound.h"
 #include "pickup.h"
 
 
@@ -112,6 +113,7 @@ void UpdateMap()
 	// return to title if map ends
 	if (g_map.size() < 1)
 	{
+		StartFade(AUDIO_BGM_GAME, 0, 3.0F);
 		StartFadeToScene(SCENE_TITLESCREEN);
 		return;
 	}
@@ -500,22 +502,22 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 	{
 		if (exit == Direction::WEST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 5, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 4, 5, 0 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { -138, -45, 0 }));
 		}
 		else if (exit == Direction::EAST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { -5, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { -4, 5, 0 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 138, -45, 0 }));
 		}
 		else if (exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, 5 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, 4 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, -45, -138 }));
 		}
 		else if (exit == Direction::NORTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, -5 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, -4 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, -45, 138 }));
 
 		}

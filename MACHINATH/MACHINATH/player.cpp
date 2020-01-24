@@ -10,6 +10,7 @@
 #include "map.h"
 #include "customMath.h"
 #include "common.h"
+#include "countdown.h"
 #include "cameraevent.h"
 
 
@@ -52,8 +53,9 @@ void Player::Draw()
 void InitPlayer()
 {	
 	// play BGM
-	StopSound();
 	PlaySound(AUDIO_BGM_GAME);
+	PlaySound(AUDIO_SE_COUNTDOWN);
+	StartCountdown();
 
 	// init
 	g_zRotSpeed = 3.0F;
@@ -71,7 +73,7 @@ void InitPlayer()
 	g_parent = new GameObject(trans);
 
 	// create player
-	g_player = new Player(trans, 2.0F, 1.0F, 0.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
+	g_player = new Player(trans, 2.0F, 1.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
 	g_player->SetAnimationSpeed(0.005F);
@@ -100,7 +102,7 @@ void UpdatePlayer()
 {	
 	UpdateCameraPosition(g_player, g_parent->GetForward());
 
-	if (playTime < 6) return;
+	if (playTime < 9.2F) return;
 	SetLerpSpeed(0.1F);
 
 	HandleMapEvent();

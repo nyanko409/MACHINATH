@@ -131,6 +131,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cameraevent.cpp" />
     <ClCompile Include="collider.cpp" />
+    <ClCompile Include="countdown.cpp" />
     <ClCompile Include="customMath.cpp" />
     <ClCompile Include="edge.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="cameraevent.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="countdown.h" />
     <ClInclude Include="customMath.h" />
     <ClInclude Include="edge.h" />
     <ClInclude Include="effect.h" />

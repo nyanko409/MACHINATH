@@ -16,10 +16,10 @@ typedef struct TextureFile_tag
 
 // texture path
 static const TextureFile g_TextureFiles[] = {
-	{ "asset/texture/qte_outer.dds",		 512,  512},
-	{ "asset/texture/qte_inner.png",		 512,  512},
-	{ "asset/texture/fuck.png",				 256,  256},
-	{ "asset/texture/score_2.png",			1025,  503},
+	{"asset/texture/qte_outer.dds",			512,  512},
+	{"asset/texture/qte_inner.png",			512,  512},
+	{"asset/texture/fuck.png",				 256,  256},
+	{"asset/texture/score_2.png",			1025,  503},
 	{"asset/texture/qte_after.dds",			 512,  512},
 	{"asset/texture/water.png",				1024, 1024},
 	{"asset/texture/titleback.png",			1920, 1080},
@@ -27,7 +27,11 @@ static const TextureFile g_TextureFiles[] = {
 	{"asset/texture/titleforward1.png",		1920, 1080},
 	{"asset/texture/titleforward2.png",		1920, 1080},
 	{"asset/texture/edgeLeft.png",			150, 1080},
-	{"asset/texture/edgeTop.png",			1920, 150}
+	{"asset/texture/edgeTop.png",			1920, 150},
+	{"asset/texture/count_1.png",			256, 256},
+	{"asset/texture/count_2.png",			256, 256},
+	{"asset/texture/count_3.png",			256, 256},
+	{"asset/texture/count_go.png",			256, 256},
 };
 
 // texture file count
