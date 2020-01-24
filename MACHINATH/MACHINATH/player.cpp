@@ -52,9 +52,11 @@ void Player::Draw()
 
 void InitPlayer()
 {	
-	// play BGM
+	ResetTimer();
+	StartTimer();
+
+	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
-	PlaySound(AUDIO_SE_COUNTDOWN);
 	StartCountdown();
 
 	// init
@@ -82,10 +84,7 @@ void InitPlayer()
 	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, g_player);
 
-	auto pos = g_player->GetCombinedPosition();
 	InitCameraPosition({ 0, 70, -40 });
-	ResetTimer();
-	StartTimer();
 }
 
 void UninitPlayer()
@@ -100,13 +99,15 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {	
+	// handle camera
 	UpdateCameraPosition(g_player, g_parent->GetForward());
-
-	if (playTime < 9.2F) return;
-	SetLerpSpeed(0.1F);
-
-	HandleMapEvent();
 	HandleCameraEvent();
+
+	// return if in countdown
+	if (playTime < 11.9F) return;
+
+	// update map and player
+	HandleMapEvent();
 	MovePlayer();
 	MoveSideways();
 

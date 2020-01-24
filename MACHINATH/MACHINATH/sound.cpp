@@ -48,7 +48,11 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"asset/sound/BGM/title.wav", -1},
 	{"asset/sound/BGM/game.wav", -1},	
 	{"asset/sound/SE/pickup.wav", 0},
-	{"asset/sound/SE/countdown.wav", 0}
+	{"asset/sound/SE/get_ready.wav", 0},
+	{"asset/sound/SE/one.wav", 0},
+	{"asset/sound/SE/two.wav", 0},
+	{"asset/sound/SE/three.wav", 0},
+	{"asset/sound/SE/go.wav", 0},
 };
 
 //=============================================================================
