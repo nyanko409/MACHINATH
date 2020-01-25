@@ -436,7 +436,7 @@ void InitTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 	
-	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {10, 1, 10});
+	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});
 	water = new Water(trans, MESH_WATER, SHADER_WATER);
 
 	trans.position.y += 30;

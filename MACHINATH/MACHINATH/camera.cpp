@@ -18,7 +18,7 @@ void InitCamera()
 {
 	// init camera
 	g_pCam = new Camera({0,0,0});
-	g_pCam->LookAt({ 0,0,0 });
+	g_pCam->LookAt({ 0,0,1 });
 
 	// init cursor pos
 	GetCursorPos(&g_curPos);

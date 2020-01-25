@@ -39,7 +39,6 @@ static std::vector<std::pair<std::pair<int, std::pair<D3DXVECTOR3, D3DXVECTOR3>>
 std::vector<Map*> g_map;
 static float g_mapRadius = 0;
 static int g_drawCount;
-static float g_poolDistance;
 
 static int g_drawIndex;
 static int g_currentMapId;
@@ -87,7 +86,6 @@ void InitMap()
 	// init values
 	g_drawCount = 5;
 	g_mapRadius = 90.0F;
-	g_poolDistance = 160.0F;
 
 	g_drawIndex = 0;
 	g_currentMapId = 0;
@@ -107,19 +105,19 @@ void InitMap()
 
 void UpdateMap()
 {
-	// update the current map the player is on
-	UpdateCurrentMap();
-
-	// return to title if map ends
-	if (g_map.size() < 1)
+	// return to title after key press
+	if(Keyboard_IsTrigger(DIK_R))
 	{
 		StartFade(AUDIO_BGM_GAME, 0, 3.0F);
 		StartFadeToScene(SCENE_TITLESCREEN);
 		return;
 	}
 
+	// update the current map the player is on
+	UpdateCurrentMap();
+
 	// map pooling
-	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->GetCombinedPosition(), true) > g_poolDistance)
+	if (!g_map.empty() && g_map.front()->id < g_currentMapId - 1)
 	{
 		// display next map and pickups
 		if (g_map.size() > g_drawIndex)
@@ -128,11 +126,9 @@ void UpdateMap()
 			ActivatePickup(g_map[g_drawIndex]->id);
 		}
 	
-		// delete pickup
+		// delete pickup and map
 		CleanPickup(g_map[0]->id);
-	
-		// delete map
-		delete g_map[0];
+		SAFE_DELETE(g_map[0]);
 		g_map.erase(g_map.begin());
 	}
 }
