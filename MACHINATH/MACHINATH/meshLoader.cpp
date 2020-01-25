@@ -20,7 +20,8 @@ std::vector<MESH_DATA> g_mesh
 	{"asset/mesh/map_cliff.x" },
 	{"asset/mesh/map_start.x" },
 	{"asset/mesh/map_metropolitan.x" },
-	{"asset/mesh/map_hiroba.x" }
+	{"asset/mesh/map_hiroba.x" },
+	{"asset/mesh/map_fallhole.x" }
 };
 
 // animated mesh data, add path to x file
