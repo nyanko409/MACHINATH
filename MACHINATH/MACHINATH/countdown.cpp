@@ -5,6 +5,7 @@
 #include "common.h"
 #include "cameraevent.h"
 #include "sprite.h"
+#include "player.h"
 
 
 enum CountState
@@ -100,6 +101,8 @@ void UpdateCountdown()
 			g_count1.color.a = 0;
 			state = CountGo;
 			PlaySound(AUDIO_SE_GO);
+			GetPlayer()->isMoving = true;
+			SetLerpSpeed(0.1F);
 		}
 		break;
 	case CountGo:
@@ -110,7 +113,6 @@ void UpdateCountdown()
 		{
 			g_countGo.color.a = 0;
 			state = CountDone;
-			SetLerpSpeed(0.1F);
 		}
 		break;
 	default:

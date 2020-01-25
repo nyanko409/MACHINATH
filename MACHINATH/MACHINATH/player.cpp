@@ -104,7 +104,7 @@ void UpdatePlayer()
 	HandleCameraEvent();
 
 	// return if in countdown
-	if (playTime < 11.9F) return;
+	if (!g_player->isMoving) return;
 
 	// update map and player
 	HandleMapEvent();
