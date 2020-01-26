@@ -10,7 +10,6 @@ std::vector<MESH_DATA> g_mesh
 	{"asset/mesh/medal_gold.x"},
 	{"asset/mesh/skateboard.x" },
 	{"asset/mesh/boss.x" },
-	{"asset/mesh/map_water.x" },
 	{"asset/mesh/map_straight.x" },
 	{"asset/mesh/map_curve_left.x" },
 	{"asset/mesh/map_curve_right.x" },
@@ -21,7 +20,8 @@ std::vector<MESH_DATA> g_mesh
 	{"asset/mesh/map_start.x" },
 	{"asset/mesh/map_metropolitan.x" },
 	{"asset/mesh/map_hiroba.x" },
-	{"asset/mesh/map_fallhole.x" }
+	{"asset/mesh/map_fallhole.x" },
+	{"asset/mesh/map_water.x" },
 };
 
 // animated mesh data, add path to x file

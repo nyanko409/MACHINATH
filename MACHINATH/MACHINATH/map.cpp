@@ -9,6 +9,7 @@
 #include "player.h"
 #include "input.h"
 #include "sound.h"
+#include "texture.h"
 #include "pickup.h"
 
 
@@ -22,11 +23,12 @@ static MapData g_MapData[] =
 	{MESH_MAP_STRAIGHT_BRIDGE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
 	{MESH_MAP_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
-	{MESH_MAP_CLIFF, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_CLIFF, 1, -100, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_START, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_METROPOLITAN, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_FALLHOLE, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_WATER, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 };
 
 // camera event collider list
@@ -50,12 +52,12 @@ Direction GetExitDirection(const MapData& data, const Direction& lastExit);
 std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, Direction exit);
 std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME mesh, Direction exit);
 std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direction exit);
+SHADER_TYPE GetShaderOfMap(MESH_NAME name);
 
 
 
 void Map::Draw()
 {
-
 #if _DEBUG
 	if (!enableDraw) return;
 
@@ -74,7 +76,14 @@ void Map::Draw()
 		BoxCollider::DrawCollider(data.event[i].trigger, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 0, 255)));
 #endif
 
-	auto pDevice = MyDirect3D_GetDevice();
+	if (data.name == MESH_MAP_WATER)
+	{
+		auto device = MyDirect3D_GetDevice();
+
+		device->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_WATER));
+		pShader->SetFloat("time", playTime * 0.01F);
+	}
+
 	//pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	MeshObject::Draw();
 	//pDevice->SetRenderState(D3DRS_LIGHTING, true);
@@ -202,7 +211,7 @@ void LoadMapFromFile(char* path)
 			// continue if c == \n
 			if (c == 10) continue;
 
-			// get the whole number
+			// get all the digits
 			int ci = c - '0';
 			while (true)
 			{
@@ -239,7 +248,7 @@ void LoadMapFromFile(char* path)
 			// populate map
  			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, 
 				GetMapEntranceCollider(g_MapData[ci].name, dir), GetMapCollider(g_MapData[ci].name, dir), 
-				GetMapEventCollider(g_MapData[ci].name, dir), camEventInfo.first, camEventInfo.second));
+				GetMapEventCollider(g_MapData[ci].name, dir), camEventInfo.first, camEventInfo.second, GetShaderOfMap(g_MapData[ci].name)));
 		}
 		catch (std::runtime_error& e)
 		{
@@ -598,6 +607,14 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 	}
 }
 
+// returns the shader to render the map
+SHADER_TYPE GetShaderOfMap(MESH_NAME name)
+{
+	if (name == MESH_MAP_WATER)
+		return SHADER_WATER;
+
+	return SHADER_DEFAULT;
+}
 
 
 Direction GetExitDirection(const MapData& data, const Direction& lastExit)

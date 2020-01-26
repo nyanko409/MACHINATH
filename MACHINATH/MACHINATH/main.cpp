@@ -31,7 +31,6 @@
 #include "Title.h"
 #include "sound.h"
 #include "collider.h"
-#include "water.h"
 #include "edge.h"
 #include "countdown.h"
 
@@ -319,7 +318,7 @@ bool InitGame()
 	InitMap();
 	InitEdge();
 
-	//InitTest();
+	InitTest();
 
 	return true;
 }
@@ -429,7 +428,6 @@ void InitRenderState()
 
 
 
-Water* water;
 MeshObject* boss;
 
 void InitTest()
@@ -437,7 +435,7 @@ void InitTest()
 	auto pDevice = MyDirect3D_GetDevice();
 	
 	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});
-	water = new Water(trans, MESH_WATER, SHADER_WATER);
+	//water = new Water(trans, MESH_MAP_WATER, SHADER_WATER);
 
 	trans.position.y += 30;
 	trans.position.x += 150;

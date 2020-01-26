@@ -29,7 +29,7 @@ public:
 		forward(D3DXVECTOR3(0.0F, 0.0F, 1.0F)), 
 		right(D3DXVECTOR3(1.0F, 0.0F, 0.0F)),
 		aspect((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT),
-		nearClip(1.0F), farClip(200.0F), fov(D3DXToRadian(90)),
+		nearClip(1.0F), farClip(1000.0F), fov(D3DXToRadian(90)),
 		moveSpeed(1.0F), lookSensivity(1.0F)
 	{}
 

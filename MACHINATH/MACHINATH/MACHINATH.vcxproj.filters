@@ -102,9 +102,6 @@
     <ClCompile Include="collider.cpp">
       <Filter>ソース ファイル\Library</Filter>
     </ClCompile>
-    <ClCompile Include="water.cpp">
-      <Filter>ソース ファイル\Game</Filter>
-    </ClCompile>
     <ClCompile Include="lighting.cpp">
       <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
@@ -205,9 +202,6 @@
     </ClInclude>
     <ClInclude Include="collider.h">
       <Filter>ヘッダー ファイル\Library</Filter>
-    </ClInclude>
-    <ClInclude Include="water.h">
-      <Filter>ヘッダー ファイル\Game</Filter>
     </ClInclude>
     <ClInclude Include="lighting.h">
       <Filter>ヘッダー ファイル\Game</Filter>
