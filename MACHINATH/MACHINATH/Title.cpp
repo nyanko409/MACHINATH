@@ -14,10 +14,7 @@ static Sprite g_titleback;
 static Sprite g_titleeye;
 static Sprite g_titleforward;
 static Sprite g_titleforward2;
-static Sprite g_titleqte;
-static Sprite g_titleqte2;
 static int titleforwardcnt;
-static int titleqtecnt;
 static int eyeRed, eyeGreen, eyeBlue;
 
 ColorFade g_color;
@@ -27,7 +24,6 @@ void InitTitleScreen()
 	//init  
 	g_color = COLOR_BLUE_IN;
 	titleforwardcnt = 60;
-	titleqtecnt = 120;
 	eyeRed = eyeGreen = eyeBlue = 0;
 
 	// init title sprites
@@ -47,14 +43,6 @@ void InitTitleScreen()
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_FORWARD2) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_FORWARD2) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
-	g_titleqte = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLEQTE), D3DXVECTOR3(SCREEN_WIDTH / 2, 300 + (SCREEN_HEIGHT / 2), 0),
-		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLEQTE) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLEQTE) / 2, 0),
-		0, D3DXVECTOR2(0.5, 0.5), D3DCOLOR_RGBA(255, 255, 255, 255));
-
-	g_titleqte2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLEQTE2), D3DXVECTOR3(SCREEN_WIDTH / 2, 300+(SCREEN_HEIGHT / 2), 0),
-		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLEQTE2) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLEQTE2) / 2, 0),
-		0, D3DXVECTOR2(0.5, 0.5), D3DCOLOR_RGBA(255, 255, 255, 255));
-
 	// play title bgm
 	PlaySound(AUDIO_BGM_TITLE);
 }
@@ -71,15 +59,6 @@ void UpdateTitleScreen()
 		titleforwardcnt = 60;
 	}
 
-	// control titleqte
-	if (titleqtecnt > 0)
-	{
-		titleqtecnt--;
-	}
-	else
-	{
-		titleqtecnt = 120;
-	}
 
 	// change color of eye
 	switch (g_color)
@@ -172,16 +151,7 @@ void DrawTitleScreen()
 		SpriteDraw(g_titleforward2);
 	}
 
-
-	if (titleqtecnt > 60)
-	{
-		SpriteDraw(g_titleqte);
-	}
-	else
-	{
-		SpriteDraw(g_titleqte2);
-	}
-	g_titleqte2.color = g_titleqte.color =  g_titleforward.color =  g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
+g_titleforward.color =  g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
 	g_titleeye.color = D3DCOLOR_RGBA(eyeRed, eyeGreen,eyeBlue, 255);
 }
 

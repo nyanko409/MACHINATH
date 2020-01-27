@@ -334,7 +334,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	//UpdatePlayer();
+	UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateBoss();
@@ -474,7 +474,7 @@ void UpdateTest()
 		D3DXVECTOR3 t = GetPlayer()->transform.position;
 		t.y += 2.5F;
 		t.z -= 2;
-		PlayEffect(EFFECT_AIR, t, { 0, 0, 0 }, { 0, 0, 0 }, { 10,10,10 });
+		PlayEffect(EFFECT_QTESUCCESS, t, { 0, 0, 0 }, { 0, 0, 0 }, { 1,1,1 });
 	}
 
 	// draw text
