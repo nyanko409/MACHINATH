@@ -9,24 +9,25 @@
 #include "input.h"
 #include "common.h"
 #include "sound.h"
-
-#define COLOR_CHANGESPEED 2
-
+#define COLOR_CHANGESPEED 3
 static Sprite g_titleback;
 static Sprite g_titleeye;
 static Sprite g_titleforward;
 static Sprite g_titleforward2;
+static Sprite g_titleqte;
+static Sprite g_titleqte2;
 static int titleforwardcnt;
+static int titleqtecnt;
 static int eyeRed, eyeGreen, eyeBlue;
 
 ColorFade g_color;
-
 
 void InitTitleScreen()
 {
 	//init  
 	g_color = COLOR_BLUE_IN;
 	titleforwardcnt = 60;
+	titleqtecnt = 120;
 	eyeRed = eyeGreen = eyeBlue = 0;
 
 	// init title sprites
@@ -46,6 +47,14 @@ void InitTitleScreen()
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_FORWARD2) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_FORWARD2) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
+	g_titleqte = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLEQTE), D3DXVECTOR3(SCREEN_WIDTH / 2, 300 + (SCREEN_HEIGHT / 2), 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLEQTE) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLEQTE) / 2, 0),
+		0, D3DXVECTOR2(0.5, 0.5), D3DCOLOR_RGBA(255, 255, 255, 255));
+
+	g_titleqte2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLEQTE2), D3DXVECTOR3(SCREEN_WIDTH / 2, 300+(SCREEN_HEIGHT / 2), 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLEQTE2) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLEQTE2) / 2, 0),
+		0, D3DXVECTOR2(0.5, 0.5), D3DCOLOR_RGBA(255, 255, 255, 255));
+
 	// play title bgm
 	StopSound();
 	PlaySound(AUDIO_BGM_TITLE);
@@ -63,65 +72,75 @@ void UpdateTitleScreen()
 		titleforwardcnt = 60;
 	}
 
+	// control titleqte
+	if (titleqtecnt > 0)
+	{
+		titleqtecnt--;
+	}
+	else
+	{
+		titleqtecnt = 120;
+	}
+
 	// change color of eye
 	switch (g_color)
 	{
 	case COLOR_BLUE_IN:
-		eyeBlue++;
+		eyeBlue += COLOR_CHANGESPEED;
 		if (eyeBlue == 255)
 			g_color = COLOR_BLUE_OUT;
 		break;
 	
 	case COLOR_BLUE_OUT:
-		eyeBlue--;
+		eyeBlue-= COLOR_CHANGESPEED;
 		if (eyeBlue == 0)
 			g_color = COLOR_YELLOW_IN;
 		break;
 
 	case COLOR_YELLOW_IN:
-		eyeGreen++; eyeRed++;
+		eyeGreen += COLOR_CHANGESPEED;  eyeRed += COLOR_CHANGESPEED;
 		if (eyeGreen == 255)
 			g_color = COLOR_YELLOW_OUT;
 		break;
 
 	case COLOR_YELLOW_OUT:
-		eyeRed--; eyeGreen--;
+		eyeRed-= COLOR_CHANGESPEED; eyeGreen-= COLOR_CHANGESPEED;
 		if (eyeRed == 0)
 			g_color = COLOR_WHITE_IN;
 		break;
 
 	case COLOR_WHITE_IN:
-		eyeRed++; eyeGreen++; eyeBlue++;
+		eyeRed+= COLOR_CHANGESPEED; eyeGreen+= COLOR_CHANGESPEED; eyeBlue+= COLOR_CHANGESPEED;
 		if (eyeRed == 255)
 			g_color = COLOR_WHITE_OUT;
 		break;
 		
 	case COLOR_WHITE_OUT:
-		eyeRed--; eyeGreen--; eyeBlue--;
+		eyeRed-= COLOR_CHANGESPEED; eyeGreen-= COLOR_CHANGESPEED; eyeBlue-= COLOR_CHANGESPEED;
 		if (eyeRed == 0)
 			g_color = COLOR_GREEN_IN;
 		break;
 
 	case COLOR_GREEN_IN:
-		eyeGreen++;
+		eyeGreen+= COLOR_CHANGESPEED;
 		if (eyeGreen == 255)
 			g_color = COLOR_GREEN_OUT;
 		break;
 
 	case COLOR_GREEN_OUT:
-		eyeGreen--;
+		eyeGreen-= COLOR_CHANGESPEED;
 		if (eyeGreen == 0)
 			g_color = COLOR_RED_IN;
 		break;
 
 	case COLOR_RED_IN:
-		eyeRed++;
+		eyeRed+= COLOR_CHANGESPEED;
 		if (eyeRed == 255)
 			g_color = COLOR_RED_OUT;
 		break;
 
 	case COLOR_RED_OUT:
-		eyeRed--;
+		eyeRed-= COLOR_CHANGESPEED;
 		if (eyeRed == 0)
 			g_color = COLOR_BLUE_IN;
 		break;
@@ -146,13 +165,24 @@ void DrawTitleScreen()
 	if (titleforwardcnt > 30)
 	{
 		SpriteDraw(g_titleforward);
+		
+		
 	}
 	else
 	{
 		SpriteDraw(g_titleforward2);
 	}
 
-	g_titleforward.color = g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
+
+	if (titleqtecnt > 60)
+	{
+		SpriteDraw(g_titleqte);
+	}
+	else
+	{
+		SpriteDraw(g_titleqte2);
+	}
+	g_titleqte2.color = g_titleqte.color =  g_titleforward.color =  g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
 	g_titleeye.color = D3DCOLOR_RGBA(eyeRed, eyeGreen,eyeBlue, 255);
 }
 
