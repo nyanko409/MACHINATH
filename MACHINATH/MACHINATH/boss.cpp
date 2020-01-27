@@ -29,4 +29,5 @@ void UninitBoss()
 
 void UpdateBoss()
 {
+
 }

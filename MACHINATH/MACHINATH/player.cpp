@@ -54,7 +54,7 @@ void InitPlayer()
 	// init
 	ResetTimer();
 	StartTimer();
-	g_zRotSpeed = 3.0F;
+	g_zRotSpeed = 2.0F;
 	g_zRotMax = 20.0F;
 	g_jumpHeight = 10.0F;
 	g_jumpSpeed = 3.0F;
