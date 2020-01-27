@@ -1,7 +1,6 @@
 #include <vector>
 #include <tuple>
 #include <fstream>
-#include <iostream>
 #include "map.h"
 #include "mesh.h"
 #include "playTime.h"
@@ -9,6 +8,8 @@
 #include "customMath.h"
 #include "player.h"
 #include "input.h"
+#include "sound.h"
+#include "texture.h"
 #include "pickup.h"
 
 
@@ -22,10 +23,12 @@ static MapData g_MapData[] =
 	{MESH_MAP_STRAIGHT_BRIDGE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
 	{MESH_MAP_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
-	{MESH_MAP_CLIFF, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_CLIFF, 1, -100, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_START, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_METROPOLITAN, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}}
+	{MESH_MAP_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_FALLHOLE, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_WATER, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 };
 
 // camera event collider list
@@ -38,7 +41,6 @@ static std::vector<std::pair<std::pair<int, std::pair<D3DXVECTOR3, D3DXVECTOR3>>
 std::vector<Map*> g_map;
 static float g_mapRadius = 0;
 static int g_drawCount;
-static float g_poolDistance;
 
 static int g_drawIndex;
 static int g_currentMapId;
@@ -50,12 +52,12 @@ Direction GetExitDirection(const MapData& data, const Direction& lastExit);
 std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, Direction exit);
 std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME mesh, Direction exit);
 std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direction exit);
+SHADER_TYPE GetShaderOfMap(MESH_NAME name);
 
 
 
 void Map::Draw()
 {
-
 #if _DEBUG
 	if (!enableDraw) return;
 
@@ -74,7 +76,17 @@ void Map::Draw()
 		BoxCollider::DrawCollider(data.event[i].trigger, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 0, 255)));
 #endif
 
+	if (data.name == MESH_MAP_WATER)
+	{
+		auto device = MyDirect3D_GetDevice();
+
+		device->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_WATER));
+		pShader->SetFloat("time", playTime * 0.01F);
+	}
+
+	//pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	MeshObject::Draw();
+	//pDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 
@@ -83,7 +95,6 @@ void InitMap()
 	// init values
 	g_drawCount = 5;
 	g_mapRadius = 90.0F;
-	g_poolDistance = 160.0F;
 
 	g_drawIndex = 0;
 	g_currentMapId = 0;
@@ -103,18 +114,19 @@ void InitMap()
 
 void UpdateMap()
 {
-	// update the current map the player is on
-	UpdateCurrentMap();
-
-	// return to title if map ends
-	if (g_map.size() < 1)
+	// return to title after key press
+	if(Keyboard_IsTrigger(DIK_R))
 	{
+		StartFade(AUDIO_BGM_GAME, 0, 3.0F);
 		StartFadeToScene(SCENE_TITLESCREEN);
 		return;
 	}
 
+	// update the current map the player is on
+	UpdateCurrentMap();
+
 	// map pooling
-	if (g_map.size() > 0 && GetDistance(g_map[0]->transform.position, GetPlayer()->GetCombinedPosition(), true) > g_poolDistance)
+	if (!g_map.empty() && g_map.front()->id < g_currentMapId - 1)
 	{
 		// display next map and pickups
 		if (g_map.size() > g_drawIndex)
@@ -123,11 +135,9 @@ void UpdateMap()
 			ActivatePickup(g_map[g_drawIndex]->id);
 		}
 	
-		// delete pickup
+		// delete pickup and map
 		CleanPickup(g_map[0]->id);
-	
-		// delete map
-		delete g_map[0];
+		SAFE_DELETE(g_map[0]);
 		g_map.erase(g_map.begin());
 	}
 }
@@ -174,8 +184,9 @@ void LoadMapFromFile(char* path)
 	Direction dir = GetExitDirection(g_MapData[7], Direction::NORTH);
 
 	g_map.emplace_back(new Map(id++, transform, g_MapData[7], dir, 
-		GetMapEntranceCollider(g_MapData[0].name, dir), GetMapCollider(g_MapData[0].name, dir), 
-		GetMapEventCollider(g_MapData[0].name, dir), camEventInfo.first, camEventInfo.second));
+		GetMapEntranceCollider(g_MapData[7].name, dir), GetMapCollider(g_MapData[7].name, dir), 
+		GetMapEventCollider(g_MapData[7].name, dir), camEventInfo.first, camEventInfo.second));
+
 	while (true)
 	{
 		try
@@ -200,11 +211,22 @@ void LoadMapFromFile(char* path)
 			// continue if c == \n
 			if (c == 10) continue;
 
-			// cast data to int
+			// get all the digits
 			int ci = c - '0';
+			while (true)
+			{
+				in.read(&c, 1);
+				if (c == 10 || c == 32 || in.eof()) break;
+				if(c < 48 || c > 57) throw std::runtime_error("Failed to parse map.txt!");
 
-			// check for invalid data
-			if (ci < 0 || ci > 9) throw std::runtime_error("Failed to parse map.txt!");
+				// shift the number to left and append next number to front
+				ci *= 10;
+				ci += c - '0';
+			}
+
+			// display error when given map index is invalid
+			if((sizeof(g_MapData) / sizeof(MapData)) <= ci)
+				throw std::runtime_error("Given map index is invalid!");
 
 			// get data for next map
 			transform = GetStartTransform(*g_map[id - 1]);
@@ -226,17 +248,18 @@ void LoadMapFromFile(char* path)
 			// populate map
  			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, 
 				GetMapEntranceCollider(g_MapData[ci].name, dir), GetMapCollider(g_MapData[ci].name, dir), 
-				GetMapEventCollider(g_MapData[ci].name, dir), camEventInfo.first, camEventInfo.second));
+				GetMapEventCollider(g_MapData[ci].name, dir), camEventInfo.first, camEventInfo.second, GetShaderOfMap(g_MapData[ci].name)));
 		}
 		catch (std::runtime_error& e)
 		{
 			// display error box and exit program
+			ShowCursor(true);
 			MessageBox(NULL,
 				e.what(),
 				"Error!",
 				MB_ICONEXCLAMATION | MB_OK);
 			
-			std::exit(0);
+			std::exit(1);
 		}
 	}
 
@@ -423,6 +446,19 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 20, 10 }, { 45, 5, -45 }));
 		}
 	}
+	else if (mesh == MESH_MAP_FALLHOLE)
+	{
+		if (exit == Direction::NORTH || exit == Direction::SOUTH)
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 185 }, { 35, 5, 45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 185 }, { -35, 5, 45 }));
+		}
+		else
+		{
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 185, 20, 20 }, { 45, 5, 35 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 185, 20, 20 }, { 45, 5, -35 }));
+		}
+	}
 
 	return collider;
 }
@@ -497,22 +533,22 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 	{
 		if (exit == Direction::WEST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 5, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 4, 5, 0 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { -138, -45, 0 }));
 		}
 		else if (exit == Direction::EAST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { -5, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { -4, 5, 0 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 138, -45, 0 }));
 		}
 		else if (exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, 5 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, 4 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, -45, -138 }));
 		}
 		else if (exit == Direction::NORTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, -5 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, -4 }));
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, -45, 138 }));
 
 		}
@@ -524,7 +560,8 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 // returns the entrace collider of given map
 std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direction exit)
 {
-	if (mesh == MESH_MAP_STRAIGHT)
+	if (mesh == MESH_MAP_STRAIGHT || mesh == MESH_MAP_FALLHOLE || 
+		mesh == MESH_MAP_STRAIGHT_UP || mesh == MESH_MAP_STRAIGHT_TUNNEL_DOWN)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 45, 5, 0 });
@@ -557,28 +594,6 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 		else if (exit == Direction::NORTH)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 45, 5, 0 });
 	}
-	else if (mesh == MESH_MAP_STRAIGHT_UP)
-	{
-		if (exit == Direction::WEST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 45, 5, 0 });
-		else if (exit == Direction::EAST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { -45, 5, 0 });
-		else if (exit == Direction::SOUTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, 45 });
-		else if (exit == Direction::NORTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, -45 });
-	}
-	else if (mesh == MESH_MAP_STRAIGHT_TUNNEL_DOWN)
-	{
-		if (exit == Direction::WEST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { 45, 5, 0 });
-		else if (exit == Direction::EAST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 50 }, { -45, 5, 0 });
-		else if (exit == Direction::SOUTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, 45 });
-		else if (exit == Direction::NORTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 50, 20, 2 }, { 0, 5, -45 });
-	}
 	else if (mesh == MESH_MAP_HIROBA)
 	{
 		if (exit == Direction::WEST)
@@ -592,6 +607,14 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 	}
 }
 
+// returns the shader to render the map
+SHADER_TYPE GetShaderOfMap(MESH_NAME name)
+{
+	if (name == MESH_MAP_WATER)
+		return SHADER_WATER;
+
+	return SHADER_DEFAULT;
+}
 
 
 Direction GetExitDirection(const MapData& data, const Direction& lastExit)

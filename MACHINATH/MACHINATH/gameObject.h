@@ -58,7 +58,7 @@ public:
 	}
 
 	// destructor
-	~GameObject() 
+	virtual ~GameObject() 
 	{
 		// deassign the shader
 		DeassignShader(this, shaderType);

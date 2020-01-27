@@ -17,7 +17,8 @@ POINT operator - (POINT o1, POINT o2) { return POINT{ o1.x - o2.x, o1.y - o2.y }
 void InitCamera()
 {
 	// init camera
-	g_pCam = new Camera(D3DXVECTOR3(0, 0, -10));
+	g_pCam = new Camera({0,0,0});
+	g_pCam->LookAt({ 0,0,1 });
 
 	// init cursor pos
 	GetCursorPos(&g_curPos);

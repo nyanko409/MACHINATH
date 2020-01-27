@@ -56,7 +56,6 @@ void InitTitleScreen()
 		0, D3DXVECTOR2(0.5, 0.5), D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	// play title bgm
-	StopSound();
 	PlaySound(AUDIO_BGM_TITLE);
 }
 

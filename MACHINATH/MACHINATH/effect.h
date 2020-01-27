@@ -9,7 +9,11 @@
 enum Effect
 {
 	EFFECT_JUMP,
-	EFFECT_GOLD
+	EFFECT_GOLD,
+	EFFECT_LANDING,
+	EFFECT_QTESUCCESS,
+	EFFECT_BOOST,
+	EFFECT_AIR
 };
 
 // call once at init

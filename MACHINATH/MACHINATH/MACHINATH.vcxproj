@@ -128,9 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="billboard.cpp" />
+    <ClCompile Include="boss.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cameraevent.cpp" />
     <ClCompile Include="collider.cpp" />
+    <ClCompile Include="countdown.cpp" />
     <ClCompile Include="customMath.cpp" />
     <ClCompile Include="edge.cpp" />
     <ClCompile Include="effect.cpp" />
@@ -156,14 +158,15 @@
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="transformation.cpp" />
-    <ClCompile Include="water.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="billboard.h" />
+    <ClInclude Include="boss.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cameraevent.h" />
     <ClInclude Include="collider.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="countdown.h" />
     <ClInclude Include="customMath.h" />
     <ClInclude Include="edge.h" />
     <ClInclude Include="effect.h" />
@@ -191,7 +194,6 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="transformation.h" />
-    <ClInclude Include="water.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

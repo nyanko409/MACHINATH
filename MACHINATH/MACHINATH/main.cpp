@@ -31,8 +31,10 @@
 #include "Title.h"
 #include "sound.h"
 #include "collider.h"
-#include "water.h"
 #include "edge.h"
+#include "countdown.h"
+#include "boss.h"
+
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -242,11 +244,13 @@ void InitLibrary()
 	InitQTE();
 	InitShader();
 	InitFade();
+	InitCountdown();
 }
 
 // free memory used in library
 void FinalizeLibrary()
 {
+	UninitCountdown();
 	UninitQTE();
 	FinalizeTitle();
 	UninitEffect();
@@ -315,6 +319,7 @@ bool InitGame()
 	InitPickup();
 	InitMap();
 	InitEdge();
+	InitBoss();
 
 	InitTest();
 
@@ -324,13 +329,15 @@ bool InitGame()
 // update game
 void UpdateGame()
 {
+	UpdateCountdown();
 	UpdateSound();
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
+	UpdateBoss();
 	UpdateCamera();
 	UpdateQTE();
 	UpdateEdge();
@@ -357,6 +364,7 @@ void DrawGame()
 	DrawQTE();
 	DrawScore();
 	DrawEdge();
+	DrawCountdown();
 	DrawFade();
 
 	// display text and finish
@@ -376,6 +384,7 @@ void FinalizeGame()
 	UninitPickup();
 	UninitLighting();
 	UninitEdge();
+	UninitBoss();
 }
 
 // init render state
@@ -424,15 +433,14 @@ void InitRenderState()
 
 
 
-Water* water;
 MeshObject* boss;
 
 void InitTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 	
-	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {10, 1, 10});
-	water = new Water(trans, MESH_WATER, SHADER_WATER);
+	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});
+	//water = new Water(trans, MESH_MAP_WATER, SHADER_WATER);
 
 	trans.position.y += 30;
 	trans.position.x += 150;
@@ -454,7 +462,20 @@ void UpdateTest()
 	if (Keyboard_IsTrigger(DIK_C))
 		StartQTE(QTE_DEFAULT);
 
-	//PlayEffect(EFFECT_GOLD, { 0, 10, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, {1,1,1});
+	if (Keyboard_IsTrigger(DIK_V))
+	{
+		D3DXVECTOR3 t = GetPlayer()->transform.position;
+		t.y += 2.5F;
+		t.z -= 2;
+		PlayEffect(EFFECT_BOOST, t, { 0, 0, 0 }, { 0, 0, 0 }, { 1,1,1 });
+	}
+	if (Keyboard_IsTrigger(DIK_B))
+	{
+		D3DXVECTOR3 t = GetPlayer()->transform.position;
+		t.y += 2.5F;
+		t.z -= 2;
+		PlayEffect(EFFECT_AIR, t, { 0, 0, 0 }, { 0, 0, 0 }, { 10,10,10 });
+	}
 
 	// draw text
 	//char f[] = "fuck";

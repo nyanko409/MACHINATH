@@ -7,9 +7,9 @@
 
 
 /*------------------------------------------------------------------------------
-   ƒeƒNƒXƒ`ƒƒ—ñ‹“Œ^
+   ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ñ‹“Œ^
 ------------------------------------------------------------------------------*/
-// ƒeƒNƒXƒ`ƒƒŠÇ—”Ô†
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ç—ï¿½ï¿½Ôï¿½
 typedef enum TextureIndex
 {
 	TEXTURE_INDEX_QTE_OUTER,
@@ -24,40 +24,43 @@ typedef enum TextureIndex
 	TEXTURE_INDEX_TITLE_FORWARD2,
 	TEXTURE_INDEX_EDGELEFT,
 	TEXTURE_INDEX_EDGETOP,
-	TEXTURE_INDEX_TITLEQTE,
-	TEXTURE_INDEX_TITLEQTE2,
+	TEXTURE_INDEX_COUNT1,
+	TEXTURE_INDEX_COUNT2,
+	TEXTURE_INDEX_COUNT3,
+	TEXTURE_INDEX_COUNTGO,
+	TEXTURE_INDEX_COUNTGETREADY,
 
     TEXTURE_INDEX_MAX
 };
 
 
 /*------------------------------------------------------------------------------
-   ŠÖ”‚Ìƒvƒƒgƒ^ƒCƒvéŒ¾
+   ï¿½Öï¿½ï¿½Ìƒvï¿½ï¿½ï¿½gï¿½^ï¿½Cï¿½vï¿½éŒ¾
 ------------------------------------------------------------------------------*/
-// ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚Ýž‚Ý
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ì“Ç‚Ýï¿½ï¿½ï¿½
 //
-// –ß‚è’l:“Ç‚Ýž‚ß‚È‚©‚Á‚½”
+// ï¿½ß‚ï¿½l:ï¿½Ç‚Ýï¿½ï¿½ß‚È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //
 int Texture_Load(void);
 
-// ƒeƒNƒXƒ`ƒƒ‚Ì‰ð•ú
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ì‰ï¿½ï¿½
 void Texture_Release(void);
 
-// ƒeƒNƒXƒ`ƒƒƒCƒ“ƒ^[ƒtƒF[ƒX‚ÌŽæ“¾
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½[ï¿½Xï¿½ÌŽæ“¾
 //
-// –ß‚è’l:ƒeƒNƒXƒ`ƒƒƒCƒ“ƒ^[ƒtƒF[ƒX
-//        ‚½‚¾‚µ‘¶Ý‚µ‚È‚¢index‚ðŽw’è‚µ‚½ê‡ANULL
+// ï¿½ß‚ï¿½l:ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½[ï¿½X
+//        ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý‚ï¿½ï¿½È‚ï¿½indexï¿½ï¿½wï¿½è‚µï¿½ï¿½ï¿½ê‡ï¿½ANULL
 LPDIRECT3DTEXTURE9 Texture_GetTexture(TextureIndex index);
 
-// ƒeƒNƒXƒ`ƒƒ‰ð‘œ“x•‚ÌŽæ“¾
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ð‘œ“xï¿½ï¿½ï¿½ÌŽæ“¾
 //
-// ˆø” ... index ƒeƒNƒXƒ`ƒƒŠÇ—”Ô†
+// ï¿½ï¿½ï¿½ï¿½ ... index ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ç—ï¿½ï¿½Ôï¿½
 //
 int Texture_GetWidth(TextureIndex index);
 
-// ƒeƒNƒXƒ`ƒƒ‰ð‘œ“x‚‚³‚ÌŽæ“¾
+// ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½ð‘œ“xï¿½ï¿½ï¿½ï¿½ï¿½ÌŽæ“¾
 //
-// ˆø” ... index ƒeƒNƒXƒ`ƒƒŠÇ—”Ô†
+// ï¿½ï¿½ï¿½ï¿½ ... index ï¿½eï¿½Nï¿½Xï¿½`ï¿½ï¿½ï¿½Ç—ï¿½ï¿½Ôï¿½
 //
 int Texture_GetHeight(TextureIndex index);
 
