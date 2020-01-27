@@ -33,6 +33,8 @@
 #include "collider.h"
 #include "edge.h"
 #include "countdown.h"
+#include "boss.h"
+
 
 //ライブラリファイルのリンク（exeファイルに含める）
 #pragma comment(lib,"d3d9.lib")
@@ -317,6 +319,7 @@ bool InitGame()
 	InitPickup();
 	InitMap();
 	InitEdge();
+	InitBoss();
 
 	InitTest();
 
@@ -331,9 +334,10 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
+	UpdateBoss();
 	UpdateCamera();
 	UpdateQTE();
 	UpdateEdge();
@@ -380,6 +384,7 @@ void FinalizeGame()
 	UninitPickup();
 	UninitLighting();
 	UninitEdge();
+	UninitBoss();
 }
 
 // init render state
@@ -457,7 +462,20 @@ void UpdateTest()
 	if (Keyboard_IsTrigger(DIK_C))
 		StartQTE(QTE_DEFAULT);
 
-	//PlayEffect(EFFECT_GOLD, { 0, 10, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, {1,1,1});
+	if (Keyboard_IsTrigger(DIK_V))
+	{
+		D3DXVECTOR3 t = GetPlayer()->transform.position;
+		t.y += 2.5F;
+		t.z -= 2;
+		PlayEffect(EFFECT_BOOST, t, { 0, 0, 0 }, { 0, 0, 0 }, { 1,1,1 });
+	}
+	if (Keyboard_IsTrigger(DIK_B))
+	{
+		D3DXVECTOR3 t = GetPlayer()->transform.position;
+		t.y += 2.5F;
+		t.z -= 2;
+		PlayEffect(EFFECT_AIR, t, { 0, 0, 0 }, { 0, 0, 0 }, { 10,10,10 });
+	}
 
 	// draw text
 	//char f[] = "fuck";

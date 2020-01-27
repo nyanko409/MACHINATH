@@ -29,7 +29,11 @@ struct EffectData
 EFK_CHAR* path[]
 {
 	(EFK_CHAR*)L"asset/shader/effekseer/jump.efk",
-	(EFK_CHAR*)L"asset/shader/effekseer/gold.efk"
+	(EFK_CHAR*)L"asset/shader/effekseer/gold.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/landing.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/qte_success.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/boost.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/air.efk"
 };
 
 EffekseerRenderer::Renderer* renderer = NULL;

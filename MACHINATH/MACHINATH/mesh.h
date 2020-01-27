@@ -19,7 +19,7 @@ public:
 		mesh = GetMesh(name);
 	}
 
-	~MeshObject() {}
+	virtual ~MeshObject() {}
 
 	// draw the object
 	virtual void Draw() override
