@@ -81,6 +81,22 @@ void PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 deltaPos, D3DXVEC
 		Effekseer::Vector3D(scale.x, scale.y, scale.z), playSpeed });
 }
 
+void StopAllEffect()
+{
+	// release all effects
+	manager->StopAllEffects();
+	for (auto effect : g_effect)
+	{
+		if (effect.effect)
+		{
+			effect.effect->UnloadResources();
+			effect.effect->Release();
+			effect.effect = NULL;
+		}
+	}
+	
+	g_effect.clear();
+}
 
 void DrawEffect()
 {

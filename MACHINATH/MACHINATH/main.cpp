@@ -437,6 +437,7 @@ MeshObject* boss;
 
 void InitTest()
 {
+	StopAllEffect();
 	auto pDevice = MyDirect3D_GetDevice();
 	
 	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});

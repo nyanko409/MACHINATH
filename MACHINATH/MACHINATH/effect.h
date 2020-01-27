@@ -29,3 +29,6 @@ void PlayEffect(Effect type, D3DXVECTOR3 position,
 
 // call every frame
 void DrawEffect();
+
+// stop all effect
+void StopAllEffect();
