@@ -18,8 +18,19 @@ Boss* g_boss;
 
 void InitBoss()
 {
-	Transform trans = Transform({ 0,50, -200 });
-	g_boss = new Boss(trans, MESH_BOSS, SHADER_DEFAULT, GetMap()->back());
+	Map* map = GetMap()->back();
+	Transform trans;
+
+	if(map->exit == Direction::NORTH)
+		trans = Transform({ 0 ,50, -200 });
+	else if (map->exit == Direction::SOUTH)
+		trans = Transform({ 0 ,50, 200 });
+	else if(map->exit == Direction::WEST)
+		trans = Transform({ 200 ,50, 0 });
+	else
+		trans = Transform({ -200 ,50, 0 });
+
+	g_boss = new Boss(trans, MESH_BOSS, SHADER_DEFAULT, map);
 }
 
 void UninitBoss()

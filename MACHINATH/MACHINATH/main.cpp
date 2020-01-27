@@ -433,27 +433,18 @@ void InitRenderState()
 
 
 
-MeshObject* boss;
 
 void InitTest()
 {
 	StopAllEffect();
 	auto pDevice = MyDirect3D_GetDevice();
-	
-	Transform trans({ 0, 0, 0 }, {0, 0, 0}, {0, 0, 0}, {1, 1, 1});
-	//water = new Water(trans, MESH_MAP_WATER, SHADER_WATER);
-
-	trans.position.y += 30;
-	trans.position.x += 150;
-	trans.scale = { 1,1,1 };
-	//boss = new MeshObject(trans, MESH_BOSS, SHADER_DEFAULT);
 }
 
 void UpdateTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
 	//MoveLight(1, 0, 0, GetPlayer()->moveSpeed, false);
-
+	
 	if(Keyboard_IsTrigger(DIK_Z))
 		FadeEdge(5, 20, 50, 255, 190);
 

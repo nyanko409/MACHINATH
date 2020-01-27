@@ -50,7 +50,7 @@ public:
 			device->SetTransform(D3DTS_WORLD, &matWorld);
 
 		// draw mesh
-		for (DWORD i = 0; i < mesh->numMaterial; i++)
+		for (DWORD i = 0; i < mesh->numMaterial; ++i)
 		{
 			SetMaterial(&(mesh->pMaterial[i]));
 
