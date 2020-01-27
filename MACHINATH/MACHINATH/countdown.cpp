@@ -29,6 +29,8 @@ void StartCountdown()
 		g_countGo.scale.x = g_getReady.scale.x =
 	g_count1.scale.y = g_count2.scale.y = g_count3.scale.y =
 		g_countGo.scale.y = g_getReady.scale.y = 2;
+
+	g_getReady.scale.x = g_getReady.scale.y = 5;
 }
 
 
@@ -38,23 +40,23 @@ void InitCountdown()
 
 	g_count1 = Sprite(Texture_GetTexture(TEXTURE_INDEX_COUNT1), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_COUNT1) / 2, Texture_GetHeight(TEXTURE_INDEX_COUNT1) / 2, 0),
-		0, D3DXVECTOR2(2, 2), D3DCOLOR_RGBA(255, 255, 255, 255));
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	g_count2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_COUNT2), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_COUNT2) / 2, Texture_GetHeight(TEXTURE_INDEX_COUNT2) / 2, 0),
-		0, D3DXVECTOR2(2, 2), D3DCOLOR_RGBA(255, 255, 255, 255));
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	g_count3 = Sprite(Texture_GetTexture(TEXTURE_INDEX_COUNT3), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_COUNT3) / 2, Texture_GetHeight(TEXTURE_INDEX_COUNT3) / 2, 0),
-		0, D3DXVECTOR2(2, 2), D3DCOLOR_RGBA(255, 255, 255, 255));
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	g_countGo = Sprite(Texture_GetTexture(TEXTURE_INDEX_COUNTGO), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_COUNTGO) / 2, Texture_GetHeight(TEXTURE_INDEX_COUNTGO) / 2, 0),
-		0, D3DXVECTOR2(2, 2), D3DCOLOR_RGBA(255, 255, 255, 255));
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
-	g_getReady = Sprite(Texture_GetTexture(TEXTURE_INDEX_COUNTGO), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
-		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_COUNTGO) / 2, Texture_GetHeight(TEXTURE_INDEX_COUNTGO) / 2, 0),
-		0, D3DXVECTOR2(2, 2), D3DCOLOR_RGBA(255, 255, 255, 255));
+	g_getReady = Sprite(Texture_GetTexture(TEXTURE_INDEX_COUNTGETREADY), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_COUNTGETREADY) / 2, Texture_GetHeight(TEXTURE_INDEX_COUNTGETREADY) / 2, 0),
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 }
 
 void UpdateCountdown()

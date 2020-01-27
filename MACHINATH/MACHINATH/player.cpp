@@ -45,7 +45,6 @@ void Player::Draw()
 	BoxCollider::DrawCollider(GetPlayer()->col, D3DCOLOR(D3DCOLOR_RGBA(255, 0, 255, 255)));
 #endif
 
-	auto device = MyDirect3D_GetDevice();
 	BoneObject::Draw();
 }
 
@@ -82,9 +81,9 @@ void InitPlayer()
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
 	InitCameraPosition({ 0, 70, -40 });
-	SetLerpSpeed(0.1F);
-	//StartCountdown();
-	g_player->isMoving = true;
+	SetLerpSpeed(0.01F);
+	StartCountdown();
+	//g_player->isMoving = true;
 }
 
 void UninitPlayer()
