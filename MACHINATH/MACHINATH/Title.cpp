@@ -134,6 +134,8 @@ void UpdateTitleScreen()
 	// fade to game screen
 	if (Keyboard_IsTrigger(DIK_SPACE))
 	{
+		PlaySound(AUDIO_SE_TITLE_PUSHBUTTON);
+		SetVolume(AUDIO_SE_TITLE_PUSHBUTTON, 0.2f);
 		StartFade(AUDIO_BGM_TITLE, 0, 3.0F);
 		StartFadeToScene(SCENE_GAMESCREEN);
 	}
