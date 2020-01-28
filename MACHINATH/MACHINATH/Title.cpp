@@ -9,7 +9,9 @@
 #include "input.h"
 #include "common.h"
 #include "sound.h"
+
 #define COLOR_CHANGESPEED 3
+
 static Sprite g_titleback;
 static Sprite g_titleeye;
 static Sprite g_titleforward;
@@ -132,12 +134,11 @@ void UpdateTitleScreen()
 	}
 
 	// fade to game screen
-	if (Keyboard_IsTrigger(DIK_SPACE))
+	if (Keyboard_IsTrigger(DIK_SPACE) && StartFadeToScene(SCENE_GAMESCREEN))
 	{
 		PlaySound(AUDIO_SE_TITLE_PUSHBUTTON);
 		SetVolume(AUDIO_SE_TITLE_PUSHBUTTON, 0.2f);
 		StartFade(AUDIO_BGM_TITLE, 0, 3.0F);
-		StartFadeToScene(SCENE_GAMESCREEN);
 	}
 }
 
@@ -151,8 +152,6 @@ void DrawTitleScreen()
 	if (titleforwardcnt > 30)
 	{
 		SpriteDraw(g_titleforward);
-		
-		
 	}
 	else
 	{

@@ -65,13 +65,14 @@ void DrawFade()
 	SpriteDraw(g_fade);
 }
 
-void StartFadeToScene(SceneType scene)
+bool StartFadeToScene(SceneType scene)
 {
 	// return if already fading
-	if (g_state != FadeNone) return;
+	if (g_state != FadeNone) return false;
 
 	// init fade
 	g_fadeScene = scene;
 	g_state = FadeIn;
 	g_fade.color.a = 0;
+	return true;
 }
