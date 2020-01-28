@@ -18,6 +18,7 @@
 static GameObject* g_parent;
 static Player* g_player;
 static MeshObject* g_skateboard;
+static MeshObject* g_skybox;
 static float g_zRotSpeed;
 static float g_zRotMax;
 static float g_jumpHeight;
@@ -68,7 +69,7 @@ void InitPlayer()
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_parent = new GameObject(trans);
 
-	// create player
+	// create player and set parent
 	g_player = new Player(trans, 2.0F, 1.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
 	g_player->PlayAnimation(0);
@@ -77,6 +78,10 @@ void InitPlayer()
 	// create skateboard and make player the parent
 	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, g_player);
+
+	// create skybox and set parent
+	g_skybox = new MeshObject(Transform(), MESH_SKYBOX, SHADER_DEFAULT, g_parent);
+	g_skybox->transform.scale = { 400, 400, 400 };
 
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
@@ -92,6 +97,7 @@ void UninitPlayer()
 	SAFE_DELETE(g_skateboard);
 	SAFE_DELETE(g_player);
 	SAFE_DELETE(g_parent);
+	SAFE_DELETE(g_skybox);
 
 	g_camEvent.clear();
 }

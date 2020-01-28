@@ -434,7 +434,6 @@ void InitRenderState()
 
 
 
-
 void InitTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
