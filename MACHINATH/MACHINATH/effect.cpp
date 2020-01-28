@@ -114,6 +114,23 @@ void StopAllEffect()
 	g_effect.clear();
 }
 
+void StopEffect(int handle)
+{
+	manager->StopEffect(handle);
+	for (int i = 0; i < g_effect.size(); ++i)
+	{
+		if (g_effect[i].handle == handle)
+		{
+			g_effect[i].effect->UnloadResources();
+			g_effect[i].effect->Release();
+			g_effect[i].effect = NULL;
+
+			g_effect.erase(g_effect.begin() + i);
+			return;
+		}
+	}
+}
+
 void DrawEffect()
 {
 	// update camera matrix

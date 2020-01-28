@@ -32,5 +32,8 @@ void UpdateEffect(int handle, D3DXVECTOR3 position, D3DXVECTOR3 rotation);
 // call every frame
 void DrawEffect();
 
+// stop the effect of given handle
+void StopEffect(int handle);
+
 // stop all effect
 void StopAllEffect();
