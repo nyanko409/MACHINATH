@@ -171,7 +171,7 @@ void LoadMapFromFile(char* path)
 	camEventInfo.second.started = true;
 	camEventInfo.second.finished = true;
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
-	Direction dir = GetExitDirection(g_MapData[7], Direction::NORTH);
+	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
 
 	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, 
 		GetMapEntranceCollider(g_MapData[0].name, dir), GetMapCollider(g_MapData[0].name, dir), 

@@ -385,6 +385,7 @@ void FinalizeGame()
 	UninitLighting();
 	UninitEdge();
 	UninitBoss();
+	StopAllEffect();
 }
 
 // init render state
@@ -436,7 +437,6 @@ void InitRenderState()
 
 void InitTest()
 {
-	StopAllEffect();
 	auto pDevice = MyDirect3D_GetDevice();
 }
 
