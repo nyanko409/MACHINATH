@@ -81,7 +81,7 @@ void UpdatePickup()
 		if (g_pickup[i]->col.CheckCollision(GetPlayer()->col))
 		{
 			// collided, play effect and delete pickup
-			PlayEffect(EFFECT_GOLD, g_pickup[i]->GetCombinedPosition(), { 0, 0, 0 }, { 0, 0, 0 }, {0.2F,0.2F,0.2F});
+			PlayEffect(EFFECT_GOLD, g_pickup[i]->GetCombinedPosition(), { 0, 0, 0 }, {0.2F,0.2F,0.2F});
 			PlaySound(AUIDO_SE_PICKUP);
 			SAFE_DELETE(g_pickup[i]);
 			AddScore(100);

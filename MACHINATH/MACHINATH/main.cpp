@@ -443,7 +443,12 @@ void InitTest()
 void UpdateTest()
 {
 	auto pDevice = MyDirect3D_GetDevice();
-	//MoveLight(1, 0, 0, GetPlayer()->moveSpeed, false);
+
+	D3DXVECTOR3 t = GetPlayer()->GetCombinedPosition();
+	t.y += 2.5F;
+	//t.z -= 2;
+	static int handle;
+	UpdateEffect(handle, t, GetPlayer()->GetCombinedRotation());
 	
 	if(Keyboard_IsTrigger(DIK_Z))
 		FadeEdge(5, 20, 50, 255, 190);
@@ -456,17 +461,11 @@ void UpdateTest()
 
 	if (Keyboard_IsTrigger(DIK_V))
 	{
-		D3DXVECTOR3 t = GetPlayer()->transform.position;
-		t.y += 2.5F;
-		t.z -= 2;
-		PlayEffect(EFFECT_BOOST, t, { 0, 0, 0 }, { 0, 0, 0 }, { 1,1,1 });
+		handle = PlayEffect(EFFECT_BOOST, t, { 0, 0, 0 }, { 1,1,1 });
 	}
 	if (Keyboard_IsTrigger(DIK_B))
 	{
-		D3DXVECTOR3 t = GetPlayer()->transform.position;
-		t.y += 2.5F;
-		t.z -= 2;
-		PlayEffect(EFFECT_QTESUCCESS, t, { 0, 0, 0 }, { 0, 0, 0 }, { 1,1,1 });
+		PlayEffect(EFFECT_QTESUCCESS, t, { 0, 0, 0 }, { 1,1,1 });
 	}
 
 	// draw text

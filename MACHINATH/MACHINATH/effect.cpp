@@ -19,7 +19,7 @@ struct EffectData
 {
 	Effekseer::Handle handle;
 	Effekseer::Effect* effect;
-	Effekseer::Vector3D deltaPos;
+	Effekseer::Vector3D position;
 	Effekseer::Vector3D rotation;
 	Effekseer::Vector3D scale;
 	float playSpeed;
@@ -70,15 +70,31 @@ void InitEffect()
 				pCamera->fov, pCamera->aspect, pCamera->nearClip, pCamera->farClip));
 }
 
-void PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 deltaPos, D3DXVECTOR3 rotation, D3DXVECTOR3 scale, float playSpeed)
+int PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 rotation, D3DXVECTOR3 scale, float playSpeed)
 {
 	Effekseer::Effect* effect = Effekseer::Effect::Create(manager, path[type]);
 	Effekseer::Handle handle = manager->Play(effect, position.x, position.y, position.z);
 
 	g_effect.emplace_back(
-		EffectData{ handle, effect, Effekseer::Vector3D(deltaPos.x, deltaPos.y, deltaPos.z),
+		EffectData{ handle, effect, Effekseer::Vector3D(position.x, position.y, position.z),
 		Effekseer::Vector3D(rotation.x, rotation.y, rotation.z),
 		Effekseer::Vector3D(scale.x, scale.y, scale.z), playSpeed });
+
+	return handle;
+}
+
+void UpdateEffect(int handle, D3DXVECTOR3 position, D3DXVECTOR3 rotation)
+{
+	// update the effect of given handle
+	for (int i = 0; i < g_effect.size(); ++i)
+	{
+		if (g_effect[i].handle == handle)
+		{
+			g_effect[i].position = Effekseer::Vector3D(position.x, position.y, position.z);
+			g_effect[i].rotation = Effekseer::Vector3D(rotation.x, rotation.y, rotation.z);
+			return;
+		}
+	}
 }
 
 void StopAllEffect()
@@ -125,7 +141,7 @@ void DrawEffect()
 		}
 
 		// update active effects
-		manager->AddLocation(g_effect[i].handle, g_effect[i].deltaPos);
+		manager->SetLocation(g_effect[i].handle, g_effect[i].position);
 		manager->SetSpeed(g_effect[i].handle, g_effect[i].playSpeed);
 		manager->SetScale(g_effect[i].handle, 
 			g_effect[i].scale.X, g_effect[i].scale.Y, g_effect[i].scale.Z);
