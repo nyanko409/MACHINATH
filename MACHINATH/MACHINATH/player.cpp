@@ -104,6 +104,9 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {	
+	// rotate skybox
+	g_skybox->transform.rotation.y += 0.2F;
+
 	// handle camera
 	UpdateCameraPosition(g_player, g_parent->GetForward());
 	HandleCameraEvent();
