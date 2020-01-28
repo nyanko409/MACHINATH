@@ -53,6 +53,7 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"asset/sound/SE/two.wav", 0},
 	{"asset/sound/SE/three.wav", 0},
 	{"asset/sound/SE/go.wav", 0},
+	{"asset/sound/SE/title_pushbutton2.wav", 0},
 };
 
 //=============================================================================
