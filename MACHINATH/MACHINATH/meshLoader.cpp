@@ -20,6 +20,13 @@ std::vector<MESH_DATA> g_mesh
 	{"asset/mesh/map_green_straight_tunnel_down.x" },
 	{"asset/mesh/map_green_hiroba.x" },
 	{"asset/mesh/map_green_fallhole.x" },
+	{"asset/mesh/map_yellow_straight.x" },
+	{"asset/mesh/map_yellow_curve_left.x" },
+	{"asset/mesh/map_yellow_curve_right.x" },
+	{"asset/mesh/map_yellow_straight_up.x" },
+	{"asset/mesh/map_yellow_straight_tunnel_down.x" },
+	{"asset/mesh/map_yellow_hiroba.x" },
+	{"asset/mesh/map_yellow_fallhole.x" },
 	{"asset/mesh/map_blue_cliff.x" },
 	{"asset/mesh/map_blue_straight_bridge.x" },
 };
@@ -27,7 +34,8 @@ std::vector<MESH_DATA> g_mesh
 // animated mesh data, add path to x file
 std::vector<std::string> g_boneMeshPath
 {
-	{"asset/mesh/robot.x"}
+	{"asset/mesh/robot.x"},
+	{"asset/mesh/enemy_yellow.x"}
 };
 
 // animated mesh data

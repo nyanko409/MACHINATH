@@ -104,7 +104,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity6.png";}
+          TextureFilename {"yellowneoncity6.png";}
         }
       } // End of Cube_013 material list
     } // End of Cube_013 mesh
@@ -206,7 +206,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity7.png";}
+          TextureFilename {"yellowneoncity7.png";}
         }
       } // End of Cube_014 material list
     } // End of Cube_014 mesh
@@ -308,7 +308,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity8.png";}
+          TextureFilename {"yellowneoncity8.png";}
         }
       } // End of Cube_015 material list
     } // End of Cube_015 mesh
@@ -410,7 +410,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity9.png";}
+          TextureFilename {"yellowneoncity9.png";}
         }
       } // End of Cube_016 material list
     } // End of Cube_016 mesh
@@ -512,7 +512,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity2.png";}
+          TextureFilename {"yellowneoncity2.png";}
         }
       } // End of Cube_048 material list
     } // End of Cube_048 mesh
@@ -614,7 +614,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity7.png";}
+          TextureFilename {"yellowneoncity7.png";}
         }
       } // End of Cube_049 material list
     } // End of Cube_049 mesh
@@ -716,7 +716,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity2.png";}
+          TextureFilename {"yellowneoncity2.png";}
         }
       } // End of Cube_050 material list
     } // End of Cube_050 mesh
@@ -818,7 +818,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity10.png";}
+          TextureFilename {"yellowneoncity10.png";}
         }
       } // End of Cube_052 material list
     } // End of Cube_052 mesh
@@ -920,7 +920,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity3.png";}
+          TextureFilename {"yellowneoncity3.png";}
         }
       } // End of Cube_053 material list
     } // End of Cube_053 mesh
@@ -1022,7 +1022,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity5.png";}
+          TextureFilename {"yellowneoncity5.png";}
         }
       } // End of Cube_054 material list
     } // End of Cube_054 mesh
@@ -1124,7 +1124,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity3.png";}
+          TextureFilename {"yellowneoncity3.png";}
         }
       } // End of Cube_055 material list
     } // End of Cube_055 mesh
@@ -1226,7 +1226,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity2.png";}
+          TextureFilename {"yellowneoncity2.png";}
         }
       } // End of Cube_057 material list
     } // End of Cube_057 mesh
@@ -1328,7 +1328,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity4.png";}
+          TextureFilename {"yellowneoncity4.png";}
         }
       } // End of Cube_058 material list
     } // End of Cube_058 mesh
@@ -1430,7 +1430,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity5.png";}
+          TextureFilename {"yellowneoncity5.png";}
         }
       } // End of Cube_059 material list
     } // End of Cube_059 mesh
@@ -1532,7 +1532,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity10.png";}
+          TextureFilename {"yellowneoncity10.png";}
         }
       } // End of Cube_060 material list
     } // End of Cube_060 mesh
@@ -1634,7 +1634,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity4.png";}
+          TextureFilename {"yellowneoncity4.png";}
         }
       } // End of Cube_061 material list
     } // End of Cube_061 mesh
@@ -1736,7 +1736,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity7.png";}
+          TextureFilename {"yellowneoncity7.png";}
         }
       } // End of Cube_062 material list
     } // End of Cube_062 mesh
@@ -1886,7 +1886,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity2.png";}
+          TextureFilename {"yellowneoncity2.png";}
         }
       } // End of aieo material list
     } // End of aieo mesh
@@ -2030,7 +2030,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"neoncity10.png";}
+          TextureFilename {"yellowneoncity10.png";}
         }
       } // End of watari material list
     } // End of watari mesh

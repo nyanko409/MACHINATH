@@ -31,6 +31,7 @@ void InitBoss()
 		trans = Transform({ -200 ,50, 0 });
 
 	g_boss = new Boss(trans, MESH_BOSS, SHADER_DEFAULT, map);
+	g_boss->enableDraw = false;
 }
 
 void UninitBoss()
@@ -40,5 +41,7 @@ void UninitBoss()
 
 void UpdateBoss()
 {
-
+	// draw boss if map is active
+	if (g_boss->parent->enableDraw)
+		g_boss->enableDraw = true;
 }
