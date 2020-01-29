@@ -35,7 +35,7 @@ std::vector<MESH_DATA> g_mesh
 std::vector<std::string> g_boneMeshPath
 {
 	{"asset/mesh/robot.x"},
-	{"asset/mesh/robot.x"}
+	{"asset/mesh/enemy_yellow.x"}
 };
 
 // animated mesh data

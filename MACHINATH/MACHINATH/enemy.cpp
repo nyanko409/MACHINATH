@@ -21,7 +21,7 @@ void InitEnemy()
 			g_yellow->transform.rotation.y = 180;
 			g_yellow->transform.scale = {4, 4, 4};
 			g_yellow->PlayAnimation(1);
-			g_yellow->SetAnimationSpeed(0.001F);
+			g_yellow->SetAnimationSpeed(0.005F);
 		}
 	}
 }
