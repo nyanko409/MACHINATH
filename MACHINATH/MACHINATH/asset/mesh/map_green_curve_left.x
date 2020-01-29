@@ -1891,14 +1891,14 @@ Frame Root {
       } // End of aieo material list
     } // End of aieo mesh
   } // End of aieo
-  Frame naname2 {
+  Frame curve {
     FrameTransformMatrix {
        1.000000, 0.000000, 0.000000, 0.000000,
        0.000000, 1.000000, 0.000000, 0.000000,
        0.000000, 0.000000, 1.000000, 0.000000,
        0.000000, 0.000000,-0.280000, 1.000000;;
     }
-    Mesh { // naname2 mesh
+    Mesh { // curve mesh
       4;
       -46.000000;-46.000000; 0.000000;,
       46.000000;-46.000000; 0.000000;,
@@ -1906,20 +1906,20 @@ Frame Root {
       -46.000000;46.000000; 0.000000;;
       1;
       4;3,2,1,0;;
-      MeshNormals { // naname2 normals
+      MeshNormals { // curve normals
         1;
          0.000000; 0.000000; 1.000000;;
         1;
         4;0,0,0,0;;
-      } // End of naname2 normals
-      MeshTextureCoords { // naname2 UV coordinates
+      } // End of curve normals
+      MeshTextureCoords { // curve UV coordinates
         4;
-         0.999925; 0.860504;,
-         0.999925; 0.003742;,
-         0.000075; 0.003741;,
-         0.000075; 0.860503;;
-      } // End of naname2 UV coordinates
-      MeshMaterialList { // naname2 material list
+         0.000100; 0.999900;,
+         0.999900; 0.999900;,
+         0.999900; 0.000100;,
+         0.000100; 0.000100;;
+      } // End of curve UV coordinates
+      MeshMaterialList { // curve material list
         1;
         1;
         0;
@@ -1928,11 +1928,11 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"senlonaname@.png";}
+          TextureFilename {"curvetexture.png";}
         }
-      } // End of naname2 material list
-    } // End of naname2 mesh
-  } // End of naname2
+      } // End of curve material list
+    } // End of curve mesh
+  } // End of curve
   Frame watari {
     FrameTransformMatrix {
        1.000000, 0.000000, 0.000000, 0.000000,

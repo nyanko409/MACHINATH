@@ -33,6 +33,7 @@
 #include "collider.h"
 #include "edge.h"
 #include "countdown.h"
+#include "enemy.h"
 #include "boss.h"
 
 
@@ -319,6 +320,7 @@ bool InitGame()
 	InitPickup();
 	InitMap();
 	InitEdge();
+	InitEnemy();
 	InitBoss();
 
 	InitTest();
@@ -337,6 +339,7 @@ void UpdateGame()
 	UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
+	UpdateEnemy();
 	UpdateBoss();
 	UpdateCamera();
 	UpdateQTE();
@@ -385,6 +388,8 @@ void FinalizeGame()
 	UninitLighting();
 	UninitEdge();
 	UninitBoss();
+	UninitEnemy();
+
 	StopAllEffect();
 }
 
