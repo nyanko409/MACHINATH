@@ -83,7 +83,7 @@ void Map::Draw()
 void InitMap()
 {
 	// init values
-	g_drawCount = 4;
+	g_drawCount = 5;
 	g_mapRadius = 90.0F;
 
 	g_drawIndex = 0;
