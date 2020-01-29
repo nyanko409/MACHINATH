@@ -198,8 +198,8 @@ void LoadMapFromFile(char* path)
 				while (!(c == 10));
 			}
 
-			// continue if c == \n
-			if (c == 10) continue;
+			// continue if c == \n or space
+			if (c == 10 || c == 32) continue;
 
 			// get all the digits
 			int ci = c - '0';

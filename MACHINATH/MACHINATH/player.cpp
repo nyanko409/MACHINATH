@@ -72,7 +72,7 @@ void InitPlayer()
 	// create player and set parent
 	g_player = new Player(trans, 2.0F, 1.0F, 1.0F, A_MESH_ROBOT, SHADER_DEFAULT, 4, 4, 4, g_parent);
 	g_player->pivot.y += 1;
-	g_player->PlayAnimation(0);
+	g_player->PlayAnimation(1);
 	g_player->SetAnimationSpeed(0.005F);
 
 	// create skateboard and make player the parent
@@ -105,7 +105,7 @@ void UninitPlayer()
 void UpdatePlayer()
 {	
 	// rotate skybox
-	g_skybox->transform.rotation.y += 0.2F;
+	g_skybox->transform.rotation.y += 0.05F;
 
 	// handle camera
 	UpdateCameraPosition(g_player, g_parent->GetForward());
