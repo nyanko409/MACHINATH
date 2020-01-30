@@ -20,7 +20,7 @@ static MapData g_MapData[] =
 	{MESH_MAP_START, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_METROPOLITAN, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_GREEN_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_GREEN_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, -90, 2.5F}}},
+	{MESH_MAP_GREEN_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, -90, 4.0F}}},
 	{MESH_MAP_GREEN_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 90, 2.5F}}},
 	{MESH_MAP_GREEN_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
 	{MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
@@ -33,8 +33,29 @@ static MapData g_MapData[] =
 	{MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
 	{MESH_MAP_YELLOW_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_YELLOW_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_BLUE_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_BLUE_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, -90, 2.5F}}},
+	{MESH_MAP_BLUE_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 90, 2.5F}}},
+	{MESH_MAP_BLUE_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
+	{MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
+	{MESH_MAP_BLUE_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_BLUE_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_BLUE_STRAIGHT_BRIDGE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_BLUE_CLIFF, 1, -100, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_RED_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_RED_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, -90, 4.5F}}},
+	{MESH_MAP_RED_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 90, 2.5F}}},
+	{MESH_MAP_RED_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
+	{MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
+	{MESH_MAP_RED_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_RED_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_TWOTONE_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_TWOTONE_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, -90, 2.5F}}},
+	{MESH_MAP_TWOTONE_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 90, 2.5F}}},
+	{MESH_MAP_TWOTONE_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
+	{MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
+	{MESH_MAP_TWOTONE_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
+	{MESH_MAP_TWOTONE_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}}
 };
 
 // camera event collider list
@@ -205,8 +226,8 @@ void LoadMapFromFile(char* path)
 				while (!(c == 10));
 			}
 
-			// continue if c == \n or space
-			if (c == 10 || c == 32) continue;
+			// continue if its not a number
+			if (!(c >= 48 && c <= 57)) continue;
 
 			// get all the digits
 			int ci = c - '0';
@@ -301,7 +322,9 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 {
 	auto collider = std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>();
 
-	if (mesh == MESH_MAP_GREEN_STRAIGHT || mesh == MESH_MAP_YELLOW_STRAIGHT)
+	if (mesh == MESH_MAP_GREEN_STRAIGHT || mesh == MESH_MAP_YELLOW_STRAIGHT ||
+		 mesh == MESH_MAP_BLUE_STRAIGHT || mesh == MESH_MAP_RED_STRAIGHT ||
+		mesh == MESH_MAP_TWOTONE_STRAIGHT)
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
@@ -314,7 +337,10 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 20, 20 }, { 0, 5, -50 }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT)
+
+	else if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT ||
+		mesh == MESH_MAP_BLUE_CURVELEFT || mesh == MESH_MAP_RED_CURVELEFT ||
+		mesh == MESH_MAP_TWOTONE_CURVELEFT)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -341,7 +367,10 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 60 }, { 45, 5, 15 }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT)
+
+	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT ||
+		mesh == MESH_MAP_BLUE_CURVERIGHT || mesh == MESH_MAP_RED_CURVERIGHT ||
+		mesh == MESH_MAP_TWOTONE_CURVERIGHT)
 	{
 		if (exit == Direction::SOUTH)
 		{
@@ -368,7 +397,10 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 20, 10 }, { -20, 5, -45 }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_UP)
+
+	else if (mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_UP ||
+		mesh == MESH_MAP_BLUE_STRAIGHT_UP || mesh == MESH_MAP_RED_STRAIGHT_UP ||
+		mesh == MESH_MAP_TWOTONE_STRAIGHT_UP)
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
@@ -381,7 +413,10 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 80, 20 }, { 0, 25, -50 }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN)
+
+	else if (mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN ||
+		mesh == MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN ||
+		mesh == MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN)
 	{
 		if (exit == Direction::NORTH)
 		{
@@ -404,7 +439,10 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 190, 80, 20 }, { 50, -10, -50 }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_HIROBA || mesh == MESH_MAP_YELLOW_HIROBA)
+
+	else if (mesh == MESH_MAP_GREEN_HIROBA || mesh == MESH_MAP_YELLOW_HIROBA || 
+		mesh == MESH_MAP_BLUE_HIROBA || mesh == MESH_MAP_RED_HIROBA ||
+		mesh == MESH_MAP_TWOTONE_HIROBA)
 	{
 		if (exit == Direction::NORTH)
 		{
@@ -427,17 +465,20 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 20, 20 }, { 45, 5, -50 }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_FALLHOLE || mesh == MESH_MAP_YELLOW_FALLHOLE)
+
+	else if (mesh == MESH_MAP_GREEN_FALLHOLE || mesh == MESH_MAP_YELLOW_FALLHOLE ||
+		mesh == MESH_MAP_BLUE_FALLHOLE || mesh == MESH_MAP_RED_FALLHOLE ||
+		mesh == MESH_MAP_TWOTONE_FALLHOLE)
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 185 }, { 50, 5, 45 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 185 }, { -50, 5, 45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 90 }, { 50, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 90 }, { -50, 5, 0 }));
 		}
 		else
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 185, 20, 20 }, { 45, 5, 50 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 185, 20, 20 }, { 45, 5, -50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 20, 20 }, { 0, 5, 50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 20, 20 }, { 0, 5, -50 }));
 		}
 	}
 
@@ -449,26 +490,31 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 {
 	auto collider = std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>();
 
-	if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT)
+	if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT ||
+		mesh == MESH_MAP_BLUE_CURVELEFT || mesh == MESH_MAP_RED_CURVELEFT ||
+		mesh == MESH_MAP_TWOTONE_CURVELEFT)
 	{
 		if (exit == Direction::WEST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -20 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -40 }));
 		}
 		else if (exit == Direction::EAST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, 20 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, 40 }));
 		}
 		else if (exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 20, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 40, 5, 0 }));
 		}
 		else if (exit == Direction::NORTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { -20, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { -40, 5, 0 }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT)
+
+	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT ||
+			mesh == MESH_MAP_BLUE_CURVERIGHT || mesh == MESH_MAP_RED_CURVERIGHT ||
+			mesh == MESH_MAP_TWOTONE_CURVERIGHT)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -487,7 +533,10 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 20, 5, 0 }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_UP)
+
+	else if (mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_UP ||
+			mesh == MESH_MAP_BLUE_STRAIGHT_UP || mesh == MESH_MAP_RED_STRAIGHT_UP ||
+			mesh == MESH_MAP_TWOTONE_STRAIGHT_UP)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -510,7 +559,10 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 40, 45.3F }));
 		}
 	}
-	else if (mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN)
+
+	else if (mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN ||
+			mesh == MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN ||
+			mesh == MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -544,7 +596,13 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 	if (mesh == MESH_MAP_GREEN_STRAIGHT || mesh == MESH_MAP_GREEN_FALLHOLE || 
 		mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN ||
 		mesh == MESH_MAP_YELLOW_STRAIGHT || mesh == MESH_MAP_YELLOW_FALLHOLE ||
-		mesh == MESH_MAP_YELLOW_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN)
+		mesh == MESH_MAP_YELLOW_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN ||
+		mesh == MESH_MAP_BLUE_STRAIGHT || mesh == MESH_MAP_BLUE_FALLHOLE ||
+		mesh == MESH_MAP_BLUE_STRAIGHT_UP || mesh == MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN ||
+		mesh == MESH_MAP_RED_STRAIGHT || mesh == MESH_MAP_RED_FALLHOLE ||
+		mesh == MESH_MAP_RED_STRAIGHT_UP || mesh == MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN ||
+		mesh == MESH_MAP_TWOTONE_STRAIGHT || mesh == MESH_MAP_TWOTONE_FALLHOLE ||
+		mesh == MESH_MAP_TWOTONE_STRAIGHT_UP || mesh == MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 45, 5, 0 });
@@ -555,7 +613,10 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 		else if (exit == Direction::NORTH)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -45 });
 	}
-	else if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT)
+
+	else if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT ||
+			mesh == MESH_MAP_BLUE_CURVELEFT || mesh == MESH_MAP_RED_CURVELEFT ||
+			mesh == MESH_MAP_TWOTONE_CURVELEFT)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -45 });
@@ -566,7 +627,10 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 		else if (exit == Direction::NORTH)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { -45, 5, 0 });
 	}
-	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT)
+
+	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT ||
+			mesh == MESH_MAP_BLUE_CURVERIGHT || mesh == MESH_MAP_RED_CURVERIGHT ||
+			mesh == MESH_MAP_TWOTONE_CURVERIGHT)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, 45 });
@@ -577,7 +641,10 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 		else if (exit == Direction::NORTH)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 45, 5, 0 });
 	}
-	else if (mesh == MESH_MAP_GREEN_HIROBA || mesh == MESH_MAP_YELLOW_HIROBA)
+
+	else if (mesh == MESH_MAP_GREEN_HIROBA || mesh == MESH_MAP_YELLOW_HIROBA ||
+			mesh == MESH_MAP_BLUE_HIROBA || mesh == MESH_MAP_RED_HIROBA ||
+			mesh == MESH_MAP_TWOTONE_HIROBA)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 180 }, { 45, 5, 0 });
