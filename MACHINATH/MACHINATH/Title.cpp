@@ -92,9 +92,14 @@ void UpdateTitleScreen()
 	if (g_Animecnt > 0)
 	{
 		g_Animecnt--;
+		if (g_Animecnt == ANIMATION_SPAN * 5)
+		{
+			PlaySound(AUDIO_SE_TITLE_NOISE);
+		}
 	}
 	else
 	{
+		StopSound(AUDIO_SE_TITLE_NOISE);
 		g_Animecnt = rand()% ANIMATION_PERIOD +100;
 	}
 
