@@ -25,9 +25,9 @@ static float g_jumpHeight;
 static float g_jumpSpeed;
 
 static std::vector<CameraEventData> g_camEvent;
+static std::vector<EventData> g_mapEvent;
 static float g_finalYPos;
 static int g_jumpCnt;
-static float g_curRot, g_curSlopeRot;
 
 void MovePlayer();
 void MoveSideways();
@@ -61,9 +61,8 @@ void InitPlayer()
 	g_jumpSpeed = 3.0F;
 
 	g_camEvent = std::vector<CameraEventData>();
+	g_mapEvent = std::vector<EventData>();
 	g_jumpCnt = 0;
-	g_curRot = 0;
-	g_curSlopeRot = 0;
 
 	// create parent
 	Transform trans = Transform(D3DXVECTOR3(0.0F, 1.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
@@ -86,9 +85,9 @@ void InitPlayer()
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
 	InitCameraPosition({ 0, 70, -40 });
-	SetLerpSpeed(0.01F);
-	StartCountdown();
-	//g_player->isMoving = true;
+	//SetLerpSpeed(0.01F);
+	//StartCountdown();
+	g_player->isMoving = true;
 }
 
 void UninitPlayer()
@@ -100,6 +99,7 @@ void UninitPlayer()
 	SAFE_DELETE(g_skybox);
 
 	g_camEvent.clear();
+	g_mapEvent.clear();
 }
 
 void UpdatePlayer()
@@ -144,49 +144,54 @@ void MovePlayer()
 
 void HandleMapEvent()
 {
+	// update active events
+	for (int i = 0; i < g_mapEvent.size(); ++i)
+	{
+		if (!g_mapEvent[i].finished)
+		{
+			if (g_mapEvent[i].mapEvent == MapEvent::CURVE)
+				Curve(g_mapEvent[i]);
+			else if (g_mapEvent[i].mapEvent == MapEvent::SLOPE)
+				Slope(g_mapEvent[i]);
+		}
+		else
+		{
+			g_mapEvent.erase(g_mapEvent.begin() + i);
+			--i;
+		}
+	}
+
 	// get first event
 	auto map = GetMap();
 	if (!(map->size() > 0)) return;
 
-	Map* front = nullptr;
+	EventData* front = nullptr;
 	for (int i = 0; i < map->size(); ++i)
 	{
+		if (!(*map)[i]->enableDraw) break;
+
 		for (int j = 0; j < (*map)[i]->data.event.size(); ++j)
 		{
-			if (!(*map)[i]->data.event[j].finished &&
+			if (!(*map)[i]->data.event[j].started &&
 				!((*map)[i]->data.event[j].mapEvent == MapEvent::NONE))
 			{
-				front = (*map)[i];
+				front = &(*map)[i]->data.event[j];
 				break;
 			}
 		}
 
-		// break if front map with event is found
+		// break if event is found
 		if (front != nullptr) break;
 	}
-
-	// return if no event is found
-	if (front == nullptr) return;
 	
-	// handle events
-	for (int i = 0; i < front->data.event.size(); ++i)
+	// check for event collision
+	if (!(front == nullptr))
 	{
 		// start map event if collied with event trigger
-		if (!front->data.event[i].started)
+		if (g_player->col.CheckCollision(front->trigger))
 		{
-			if (g_player->col.CheckCollision(front->data.event[i].trigger))
-			{
-				front->data.event[i].started = true;
-			}
-		}
-
-		// update events
-		if (front->data.event[i].started && !front->data.event[i].finished)
-		{
-			if (front->data.event[i].mapEvent == MapEvent::CURVE)
-				Curve(front->data.event[i]);
-			else if (front->data.event[i].mapEvent == MapEvent::SLOPE)
-				Slope(front->data.event[i]);
+			front->started = true;
+			g_mapEvent.emplace_back(*front);
 		}
 	}
 }
@@ -230,14 +235,13 @@ void Curve(EventData& event)
 	float speed = event.speed * g_player->moveSpeed;
 
 	// get rotation to add
-	g_curRot += speed;
-	float frameRot = g_curRot > fabsf(event.value) ? g_curRot - speed : speed;
+	event.curValue += speed;
+	float frameRot = event.curValue > fabsf(event.value) ? event.curValue - speed : speed;
 	if (event.value < 0) frameRot *= -1;
 
-	if (g_curRot >= fabsf(event.value))
+	if (event.curValue >= fabsf(event.value))
 	{
 		event.finished = true;
-		g_curRot = 0;
 	}
 
 	// add rotation to player
@@ -249,17 +253,17 @@ void Slope(EventData& event)
 	float speed = event.speed * g_player->moveSpeed;
 
 	// rotate to climb slope
-	if (g_curSlopeRot < fabsf(event.value))
+	if (event.curValue < fabsf(event.value))
 	{
-		g_curSlopeRot += speed;
+		event.curValue += speed;
 
-		float frameRot = g_curSlopeRot > fabsf(event.value) ? 
-			fabsf(event.value) - (g_curSlopeRot - speed) : speed;
+		float frameRot = event.curValue > fabsf(event.value) ?
+			fabsf(event.value) - (event.curValue - speed) : speed;
 		if (event.value < 0) frameRot *= -1;
 
 		// clamp
-		if (g_curSlopeRot > fabsf(event.value)) 
-			g_curSlopeRot = fabsf(event.value);
+		if (event.curValue > fabsf(event.value))
+			event.curValue = fabsf(event.value);
 
 		// add rotation to player
 		g_parent->transform.rotation.x += frameRot;
@@ -267,7 +271,6 @@ void Slope(EventData& event)
 	else
 	{
 		event.finished = true;
-		g_curSlopeRot = 0;
 	}
 }
 

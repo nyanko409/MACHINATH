@@ -25,6 +25,7 @@ struct EventData
 	BoxCollider trigger;
 	bool started;
 	bool finished;
+	float curValue;
 };
 
 struct MapData
