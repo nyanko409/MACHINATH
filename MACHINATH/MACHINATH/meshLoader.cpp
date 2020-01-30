@@ -57,8 +57,8 @@ std::vector<std::string> g_boneMeshPath
 {
 	{"asset/mesh/robot.x"},
 	{"asset/mesh/enemy_yellow.x"},
-	//{"asset/mesh/enemy_blue.x"},
-	//{"asset/mesh/enemy_red.x"},
+	{"asset/mesh/enemy_blue.x"},
+	{"asset/mesh/enemy_red.x"},
 	{"asset/mesh/enemy_twotone.x"}
 };
 
