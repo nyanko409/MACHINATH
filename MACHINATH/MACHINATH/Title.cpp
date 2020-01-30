@@ -22,6 +22,9 @@ static Sprite g_titlePS;
 static Sprite g_titleAnime1;
 static Sprite g_titleAnime2;
 static Sprite g_titleAnime3;
+static Sprite g_titleSuna1;
+static Sprite g_titleSuna2;
+
 static int titleforwardcnt;
 static int g_Animecnt;
 static int eyeRed, eyeGreen, eyeBlue;
@@ -70,6 +73,13 @@ void InitTitleScreen()
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_ANIME3) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_ANIME3) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
+	g_titleSuna1 = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_SUNA1), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_SUNA1) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_SUNA1) / 2, 0),
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
+
+	g_titleSuna2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_SUNA2), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_SUNA2) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_SUNA2) / 2, 0),
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
 
 
@@ -172,8 +182,10 @@ void UpdateTitleScreen()
 	// fade to game screen
 	if (Keyboard_IsTrigger(DIK_SPACE) && StartFadeToScene(SCENE_GAMESCREEN))
 	{
+		StopSound(AUDIO_SE_TITLE_NOISE);
 		PlaySound(AUDIO_SE_TITLE_PUSHBUTTON , 0.2f);
 		StartFade(AUDIO_BGM_TITLE, 0, 3.0F);
+
 	}
 }
 
@@ -183,13 +195,18 @@ void DrawTitleScreen()
 	SpriteDraw(g_titleback);
 	SpriteDraw(g_titleeye);
 
+
 	//animation
 	if (g_Animecnt > 0 && g_Animecnt < ANIMATION_SPAN)
 	{
+		//SpriteDraw(g_titleSuna1);
+		
 		SpriteDraw(g_titleAnime1);
 	}
 	else if (g_Animecnt > ANIMATION_SPAN && g_Animecnt < ANIMATION_SPAN*2)
 	{
+		//SpriteDraw(g_titleSuna2);
+
 		SpriteDraw(g_titleAnime2);
 	}
 	else if (g_Animecnt > ANIMATION_SPAN*2 && g_Animecnt < ANIMATION_SPAN*3)
@@ -221,6 +238,8 @@ void DrawTitleScreen()
 	g_titleAnime1.color = g_titleAnime2.color = g_titleAnime3.color=
 	g_titlePS.color=g_titleforward.color =  g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
 	g_titleeye.color = D3DCOLOR_RGBA(eyeRed, eyeGreen,eyeBlue, 255);
+	
+	g_titleSuna1.color= g_titleSuna2.color = D3DCOLOR_RGBA(255,255,255,50);
 }
 
 void FinalizeTitleScreen()
