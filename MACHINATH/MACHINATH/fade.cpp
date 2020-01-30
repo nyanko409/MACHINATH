@@ -18,7 +18,7 @@ void InitFade()
 { 
 	g_fade = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_BACK), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_BACK) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_BACK) / 2, 0),
-		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 0));
+		0, D3DXVECTOR2(200, 200), D3DCOLOR_RGBA(255, 255, 255, 0));
 
 	g_state = FadeNone;
 }
