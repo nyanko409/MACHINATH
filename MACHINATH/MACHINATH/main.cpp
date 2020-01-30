@@ -286,7 +286,7 @@ void DrawTitle()
 	LPDIRECT3DDEVICE9 pDevice = MyDirect3D_GetDevice();
 
 	//バックバッファーのクリア 紫色は230，0，255，255
-	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(80, 80, 255), 1.0F, 0);
+	pDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0F, 0);
 
 	// draw 3d meshes
 	pDevice->BeginScene();

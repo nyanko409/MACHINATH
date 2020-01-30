@@ -14,7 +14,6 @@
 #define ANIMATION_SPAN 5
 #define ANIMATION_PERIOD 200
 
-static Sprite g_titleback;
 static Sprite g_titleeye;
 static Sprite g_titleforward;
 static Sprite g_titleforward2;
@@ -40,10 +39,6 @@ void InitTitleScreen()
 	eyeRed = eyeGreen = eyeBlue = 0;
 
 	// init title sprites(MainSprites)
-	g_titleback = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_BACK), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
-		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_BACK) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_BACK) / 2, 0),
-		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
-
 	g_titleeye = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_EYE), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_EYE) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_EYE) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
@@ -192,7 +187,6 @@ void UpdateTitleScreen()
 void DrawTitleScreen()
 {
 	// draw title screen
-	SpriteDraw(g_titleback);
 	SpriteDraw(g_titleeye);
 
 
