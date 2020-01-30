@@ -11,13 +11,19 @@
 #include "sound.h"
 
 #define COLOR_CHANGESPEED 3
+#define ANIMATION_SPAN 5
+#define ANIMATION_PERIOD 200
 
 static Sprite g_titleback;
 static Sprite g_titleeye;
 static Sprite g_titleforward;
 static Sprite g_titleforward2;
 static Sprite g_titlePS;
+static Sprite g_titleAnime1;
+static Sprite g_titleAnime2;
+static Sprite g_titleAnime3;
 static int titleforwardcnt;
+static int g_Animecnt;
 static int eyeRed, eyeGreen, eyeBlue;
 
 ColorFade g_color;
@@ -27,9 +33,10 @@ void InitTitleScreen()
 	//init  
 	g_color = COLOR_BLUE_IN;
 	titleforwardcnt = 60;
+	g_Animecnt = ANIMATION_PERIOD;
 	eyeRed = eyeGreen = eyeBlue = 0;
 
-	// init title sprites
+	// init title sprites(MainSprites)
 	g_titleback = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_BACK), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_BACK) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_BACK) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
@@ -50,6 +57,22 @@ void InitTitleScreen()
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_PRESSSTART) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_PRESSSTART) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
+	// init title sprites(Sprites for Animation)
+	g_titleAnime1 = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_ANIME1), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_ANIME1) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_ANIME1) / 2, 0),
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
+
+	g_titleAnime2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_ANIME2), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_ANIME2) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_ANIME2) / 2, 0),
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
+
+	g_titleAnime3 = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_ANIME3), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
+		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_ANIME3) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_ANIME3) / 2, 0),
+		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
+
+
+
+
 	// play title bgm
 	PlaySound(AUDIO_BGM_TITLE);
 }
@@ -65,7 +88,15 @@ void UpdateTitleScreen()
 	{
 		titleforwardcnt = 60;
 	}
-
+	// control span of animation
+	if (g_Animecnt > 0)
+	{
+		g_Animecnt--;
+	}
+	else
+	{
+		g_Animecnt = rand()% ANIMATION_PERIOD +100;
+	}
 
 	// change color of eye
 	switch (g_color)
@@ -146,18 +177,44 @@ void DrawTitleScreen()
 	// draw title screen
 	SpriteDraw(g_titleback);
 	SpriteDraw(g_titleeye);
-	SpriteDraw(g_titlePS);
 
-	if (titleforwardcnt > 30)
+	//animation
+	if (g_Animecnt > 0 && g_Animecnt < ANIMATION_SPAN)
 	{
-		SpriteDraw(g_titleforward);
+		SpriteDraw(g_titleAnime1);
+	}
+	else if (g_Animecnt > ANIMATION_SPAN && g_Animecnt < ANIMATION_SPAN*2)
+	{
+		SpriteDraw(g_titleAnime2);
+	}
+	else if (g_Animecnt > ANIMATION_SPAN*2 && g_Animecnt < ANIMATION_SPAN*3)
+	{
+		SpriteDraw(g_titleAnime3);
+	}
+	else if (g_Animecnt > ANIMATION_SPAN * 3 && g_Animecnt < ANIMATION_SPAN * 4)
+	{
+		SpriteDraw(g_titleAnime2);
+	}
+	else if (g_Animecnt > ANIMATION_SPAN * 4 && g_Animecnt < ANIMATION_SPAN * 5)
+	{
+		SpriteDraw(g_titleAnime1);
 	}
 	else
 	{
-		SpriteDraw(g_titleforward2);
+		SpriteDraw(g_titlePS);
+		if (titleforwardcnt > 30)
+		{
+			SpriteDraw(g_titleforward);
+		}
+		else
+		{
+			SpriteDraw(g_titleforward2);
+		}
 	}
 
-g_titlePS.color=g_titleforward.color =  g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
+	//control color of sprites
+	g_titleAnime1.color = g_titleAnime2.color = g_titleAnime3.color=
+	g_titlePS.color=g_titleforward.color =  g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
 	g_titleeye.color = D3DCOLOR_RGBA(eyeRed, eyeGreen,eyeBlue, 255);
 }
 
