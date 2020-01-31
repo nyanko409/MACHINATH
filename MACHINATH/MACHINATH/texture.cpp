@@ -33,10 +33,11 @@ static const TextureFile g_TextureFiles[] = {
 	{"asset/texture/count_3.png",			256, 256},
 	{"asset/texture/count_go.png",			256, 256},
 	{"asset/texture/count_getready.png",	256, 256},
-	{"asset/texture/press_start.png",		1920, 1080},
 	{"asset/texture/TitleAnime1.png",		1920, 1080},
 	{"asset/texture/TitleAnime2.png",		1920, 1080},
 	{"asset/texture/TitleAnime3.png",		1920, 1080},
+	{"asset/texture/Title_suna1.png",		1920, 1080},
+	{"asset/texture/Title_suna2.png",		1920, 1080},
 };
 
 // texture file count
