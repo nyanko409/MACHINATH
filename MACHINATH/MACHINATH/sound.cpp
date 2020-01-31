@@ -442,3 +442,15 @@ void StartFade(SOUND_LABEL label, float targetVolume, float targetTime)
 	g_targetTime = targetTime;
 	g_FadeFlag = true;
 }
+
+void SetPlaybackSpeed(SOUND_LABEL label, float speed)
+{
+	// return if given speed is the same as currently set
+	float value;
+	g_apSourceVoice[label]->GetFrequencyRatio(&value);
+	if (value == speed)
+		return;
+
+	// set playback speed and pitch
+	g_apSourceVoice[label]->SetFrequencyRatio(speed, 0);
+}

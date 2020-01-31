@@ -95,6 +95,8 @@ void UninitQTE()
 
 void UpdateQTE()
 {
+	SetPlaybackSpeed(AUDIO_BGM_GAME, 0.85 + 0.15 * g_slowmoFactor);
+
 	if (!g_active)
 	{
 		// decrease slowmo factor
@@ -107,8 +109,8 @@ void UpdateQTE()
 	{
 		// increase slowmo factor
 		g_slowmoFactor -= 0.04F;
-		if (g_slowmoFactor < 0.1F)
-			g_slowmoFactor = 0.1F;
+		if (g_slowmoFactor < 0.4F)
+			g_slowmoFactor = 0.4F;
 
 		// increase alpha
 		g_alpha += 0.05;

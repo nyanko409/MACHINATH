@@ -47,3 +47,5 @@ float GetVolume(SOUND_LABEL label);
 
 void StartFade(SOUND_LABEL label, float targetVolume, float targetTime);
 
+void SetPlaybackSpeed(SOUND_LABEL label, float speed);
+
