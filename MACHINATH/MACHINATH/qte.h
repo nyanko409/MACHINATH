@@ -13,6 +13,9 @@ void StartQTE(QTE type);
 // returns true if qte is currently active
 bool IsQTEActive();
 
+// returns the slowmotion factor
+float getSlowmoFactor();
+
 void InitQTE();
 void UninitQTE();
 void UpdateQTE();

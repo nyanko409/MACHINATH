@@ -11,6 +11,7 @@
 #include "customMath.h"
 #include "common.h"
 #include "countdown.h"
+#include "qte.h"
 #include "cameraevent.h"
 
 
@@ -129,7 +130,7 @@ void UpdatePlayer()
 void MovePlayer()
 {
 	// move parent
-	g_parent->transform.position += g_parent->GetForward() * g_player->moveSpeed;
+	g_parent->transform.position += g_parent->GetForward() * g_player->moveSpeed * getSlowmoFactor();
 
 	// lerp player y position to active map height
 	if (g_parent->transform.rotation.x == 0.0F)

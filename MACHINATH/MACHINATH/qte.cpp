@@ -21,6 +21,7 @@ static float g_outerScale = 1.0F;
 static float g_innerScale = 0.4F;
 static float g_multiDelay = 0.1F;
 static int g_multiCount = 20;
+static float g_slowmoFactor = 1;
 
 static std::vector<Sprite> g_outerMultiSprite;
 static QTE g_activeQTE;
@@ -58,6 +59,7 @@ void StartQTE(QTE type)
 	}
 
 	g_alpha = 0;
+	g_slowmoFactor = 1;
 	g_active = true;
 }
 
@@ -93,8 +95,21 @@ void UninitQTE()
 
 void UpdateQTE()
 {
+	if (!g_active)
+	{
+		// decrease slowmo factor
+		g_slowmoFactor += 0.04F;
+		if(g_slowmoFactor > 1)
+			g_slowmoFactor = 1;
+	}
+
 	if (g_active)
 	{
+		// increase slowmo factor
+		g_slowmoFactor -= 0.04F;
+		if (g_slowmoFactor < 0.1F)
+			g_slowmoFactor = 0.1F;
+
 		// increase alpha
 		g_alpha += 0.05;
 		if (g_alpha > 1) g_alpha = 1;
@@ -252,4 +267,9 @@ void finishQTE()
 {
 	PlaySound(AUDIO_SE_SLOWMO_END, 2.0F);
 	g_active = false;
+}
+
+float getSlowmoFactor()
+{
+	return g_slowmoFactor;
 }
