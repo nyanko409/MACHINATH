@@ -22,7 +22,7 @@ static const TextureFile g_TextureFiles[] = {
 	{"asset/texture/score_2.png",			1025,  503},
 	{"asset/texture/qte_after.dds",			 512,  512},
 	{"asset/texture/water.png",				1024, 1024},
-	{"asset/texture/titleback.png",			16, 9},
+	{"asset/texture/black.png",				16, 9},
 	{"asset/texture/titleback_eye.png",		1920, 1080},
 	{"asset/texture/titleforward1.png",		1920, 1080},
 	{"asset/texture/titleforward2.png",		1920, 1080},
