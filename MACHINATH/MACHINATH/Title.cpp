@@ -17,7 +17,6 @@
 static Sprite g_titleeye;
 static Sprite g_titleforward;
 static Sprite g_titleforward2;
-static Sprite g_titlePS;
 static Sprite g_titleAnime1;
 static Sprite g_titleAnime2;
 static Sprite g_titleAnime3;
@@ -49,10 +48,6 @@ void InitTitleScreen()
 
 	g_titleforward2 = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_FORWARD2), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
 		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_FORWARD2) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_FORWARD2) / 2, 0),
-		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
-
-	g_titlePS = Sprite(Texture_GetTexture(TEXTURE_INDEX_TITLE_PRESSSTART), D3DXVECTOR3(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0),
-		D3DXVECTOR3(Texture_GetWidth(TEXTURE_INDEX_TITLE_PRESSSTART) / 2, Texture_GetHeight(TEXTURE_INDEX_TITLE_PRESSSTART) / 2, 0),
 		0, D3DXVECTOR2(1, 1), D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	// init title sprites(Sprites for Animation)
@@ -217,7 +212,7 @@ void DrawTitleScreen()
 	}
 	else
 	{
-		SpriteDraw(g_titlePS);
+
 		if (titleforwardcnt > 30)
 		{
 			SpriteDraw(g_titleforward);
@@ -230,7 +225,7 @@ void DrawTitleScreen()
 
 	//control color of sprites
 	g_titleAnime1.color = g_titleAnime2.color = g_titleAnime3.color=
-	g_titlePS.color=g_titleforward.color =  g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
+	g_titleforward.color =  g_titleforward2.color = D3DCOLOR_RGBA(rand() % 61 + 1, rand() % 122 + 122, 60, 255);
 	g_titleeye.color = D3DCOLOR_RGBA(eyeRed, eyeGreen,eyeBlue, 255);
 	
 	g_titleSuna1.color= g_titleSuna2.color = D3DCOLOR_RGBA(255,255,255,50);
