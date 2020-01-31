@@ -24,6 +24,7 @@ void InitEnemy()
 			g_yellow->transform.rotation.y = 180;
 			g_yellow->transform.scale = {4, 4, 4};
 			g_yellow->enableDraw = false;
+			g_yellow->PlayAnimation(1);
 			g_yellow->SetAnimationSpeed(0);
 		}
 		else if (map->data.name == MESH_MAP_BLUE_HIROBA)
@@ -34,6 +35,7 @@ void InitEnemy()
 			g_blue->transform.rotation.y = 180;
 			g_blue->transform.scale = { 4, 4, 4 };
 			g_blue->enableDraw = false;
+			g_blue->PlayAnimation(1);
 			g_blue->SetAnimationSpeed(0);
 		}
 		else if (map->data.name == MESH_MAP_RED_HIROBA)
@@ -44,7 +46,8 @@ void InitEnemy()
 			g_red->transform.rotation.y = 180;
 			g_red->transform.scale = { 4, 4, 4 };
 			g_red->enableDraw = false;
-			g_red->SetAnimationSpeed(0);
+			g_red->PlayAnimation(1);
+			g_red->SetAnimationSpeed(0.004);
 		}
 		else if (map->data.name == MESH_MAP_TWOTONE_HIROBA)
 		{
@@ -54,7 +57,8 @@ void InitEnemy()
 			g_twotone->transform.rotation.y = 180;
 			g_twotone->transform.scale = { 4, 4, 4 };
 			g_twotone->enableDraw = false;
-			g_twotone->SetAnimationSpeed(0);
+			g_twotone->PlayAnimation(1);
+			g_twotone->SetAnimationSpeed(0.004);
 		}
 	}
 }

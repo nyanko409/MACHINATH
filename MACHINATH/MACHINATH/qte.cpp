@@ -1,4 +1,5 @@
 #include <vector>
+#include "sound.h"
 #include "input.h"
 #include "font.h"
 #include "texture.h"
@@ -15,7 +16,7 @@
 #define BAD		0.3F
 
 // globals
-static Sprite g_inner, g_outer, g_press;
+static Sprite g_inner, g_outer, g_press, g_black;
 static float g_outerScale = 1.0F;
 static float g_innerScale = 0.4F;
 static float g_multiDelay = 0.1F;
@@ -31,7 +32,7 @@ static float g_alpha;
 
 void qteDefault();
 void qteMultiPress();
-
+void finishQTE();
 
 
 void StartQTE(QTE type)
@@ -40,6 +41,7 @@ void StartQTE(QTE type)
 	if (g_active) return;
 
 	// activate qte
+	PlaySound(AUDIO_SE_SLOWMO_START, 2.0F);
 	g_activeQTE = type;
 	g_curTime = playTime;
 	g_curCount = g_multiCount;
@@ -187,13 +189,13 @@ void qteDefault()
 		// add score, set jump flag and finish qte
 		AddScore(score);
 		GetPlayer()->isJumping = true;
-		g_active = false;
+		finishQTE();
 	}
 
 	// if distance < -bad, player didnt click
 	if (dist < -BAD)
 	{
-		g_active = false;
+		finishQTE();
 	}
 }
 
@@ -214,7 +216,7 @@ void qteMultiPress()
 		}
 		else if (g_outerMultiSprite.size() == 0)
 		{
-			g_active = false;
+			finishQTE();
 			g_outerMultiSprite.clear();
 			return;
 		}
@@ -243,4 +245,11 @@ void qteMultiPress()
 		if (g_outerMultiSprite[0].scale.x <= g_innerScale)
 			g_outerMultiSprite.erase(g_outerMultiSprite.begin());
 	}
+}
+
+
+void finishQTE()
+{
+	PlaySound(AUDIO_SE_SLOWMO_END, 2.0F);
+	g_active = false;
 }
