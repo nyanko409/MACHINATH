@@ -21,7 +21,6 @@ static float g_outerScale = 1.0F;
 static float g_innerScale = 0.4F;
 static float g_multiDelay = 0.1F;
 static int g_multiCount = 20;
-static float g_slowmoFactor = 1;
 
 static std::vector<Sprite> g_outerMultiSprite;
 static QTE g_activeQTE;
@@ -29,6 +28,7 @@ static bool g_active;
 static int g_curCount;
 static float g_curTime;
 static float g_alpha;
+static float g_slowmoFactor = 1;
 
 
 void qteDefault();
@@ -36,10 +36,10 @@ void qteMultiPress();
 void finishQTE();
 
 
-void StartQTE(QTE type)
+bool StartQTE(QTE type)
 {
 	// return if qte is already active
-	if (g_active) return;
+	if (g_active) return false;
 
 	// activate qte
 	PlaySound(AUDIO_SE_SLOWMO_START, 1.0F);
@@ -61,6 +61,7 @@ void StartQTE(QTE type)
 	g_alpha = 0;
 	g_slowmoFactor = 1;
 	g_active = true;
+	return true;
 }
 
 bool IsQTEActive()
@@ -178,7 +179,7 @@ void DrawQTE()
 void qteDefault()
 {
 	// reduce scale, rotate and increase alpha
-	g_outer.scale -= {0.02F, 0.02F};
+	g_outer.scale -= {0.015F, 0.015F};
 	//g_inner.rotZ += 10;
 	g_outer.rotZ += 10;
 

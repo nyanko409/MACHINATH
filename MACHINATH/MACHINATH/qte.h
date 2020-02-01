@@ -7,8 +7,8 @@ enum QTE
 	QTE_MULTIPRESS
 };
 
-// call to start qte event
-void StartQTE(QTE type);
+// call to start qte event, returns true if success
+bool StartQTE(QTE type);
 
 // returns true if qte is currently active
 bool IsQTEActive();

@@ -79,8 +79,8 @@ void InitPlayer()
 	trans = Transform(D3DXVECTOR3(-0.2F, -0.5F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(0.0F, 0.0F, 0.0F), D3DXVECTOR3(1, 1, 1));
 	g_skateboard = new MeshObject(trans, MESH_SKATEBOARD, SHADER_DEFAULT, g_player);
 
-	// create skybox and set parent
-	g_skybox = new MeshObject(Transform(), MESH_SKYBOX, SHADER_DEFAULT, g_parent);
+	// create skybox
+	g_skybox = new MeshObject(Transform(), MESH_SKYBOX, SHADER_DEFAULT);
 	g_skybox->transform.scale = { 400, 400, 400 };
 
 	// play BGM and start countdown
@@ -105,7 +105,8 @@ void UninitPlayer()
 
 void UpdatePlayer()
 {	
-	// rotate skybox
+	// update skybox
+	g_skybox->transform.position = g_player->GetCombinedPosition();
 	g_skybox->transform.rotation.y += 0.05F;
 
 	// handle camera
@@ -154,6 +155,10 @@ void HandleMapEvent()
 				Curve(g_mapEvent[i]);
 			else if (g_mapEvent[i].mapEvent == MapEvent::SLOPE)
 				Slope(g_mapEvent[i]);
+			else if (g_mapEvent[i].mapEvent == MapEvent::QTE_SINGLE)
+				g_mapEvent[i].finished = StartQTE(QTE_DEFAULT);
+			else if (g_mapEvent[i].mapEvent == MapEvent::QTE_MULTI)
+				g_mapEvent[i].finished = StartQTE(QTE_MULTIPRESS);
 		}
 		else
 		{
@@ -164,7 +169,7 @@ void HandleMapEvent()
 
 	// get first event
 	auto map = GetMap();
-	if (!(map->size() > 0)) return;
+	if (map->empty()) return;
 
 	EventData* front = nullptr;
 	for (int i = 0; i < map->size(); ++i)
@@ -303,7 +308,7 @@ void MoveSideways()
 		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y + 90));
 		D3DXVec3TransformCoord(&right, &right, &mRot);
 
-		g_parent->transform.position += right * g_player->sideSpeed;
+		g_parent->transform.position += right * g_player->sideSpeed * getSlowmoFactor();
 
 		g_player->transform.localRotation.z += g_zRotSpeed;
 		if (g_player->transform.localRotation.z > g_zRotMax)
