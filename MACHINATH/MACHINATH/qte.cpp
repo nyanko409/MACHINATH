@@ -42,7 +42,7 @@ void StartQTE(QTE type)
 	if (g_active) return;
 
 	// activate qte
-	PlaySound(AUDIO_SE_SLOWMO_START, 2.0F);
+	PlaySound(AUDIO_SE_SLOWMO_START, 1.0F);
 	g_activeQTE = type;
 	g_curTime = playTime;
 	g_curCount = g_multiCount;
@@ -95,7 +95,7 @@ void UninitQTE()
 
 void UpdateQTE()
 {
-	SetPlaybackSpeed(AUDIO_BGM_GAME, 0.85 + 0.15 * g_slowmoFactor);
+	SetPlaybackSpeed(AUDIO_BGM_GAME, 0.9 + 0.1 * g_slowmoFactor);
 
 	if (!g_active)
 	{
@@ -267,7 +267,7 @@ void qteMultiPress()
 
 void finishQTE()
 {
-	PlaySound(AUDIO_SE_SLOWMO_END, 2.0F);
+	PlaySound(AUDIO_SE_SLOWMO_END, 1.0F);
 	g_active = false;
 }
 
