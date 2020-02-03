@@ -16,10 +16,8 @@ void InitEnemy()
 	// init enemies at map
 	for (Map* map : *mapArray)
 	{
-		if (map->data.name == MESH_MAP_GREEN_HIROBA)
+		if (!g_yellow && map->data.name == MESH_MAP_GREEN_HIROBA)
 		{
-			SAFE_DELETE(g_yellow);
-
 			g_yellow = new BoneObject(Transform(), A_MESH_ENEMY_YELLOW, SHADER_DEFAULT, map);
 			g_yellow->transform.rotation.y = 180;
 			g_yellow->transform.scale = {4, 4, 4};
@@ -27,10 +25,8 @@ void InitEnemy()
 			g_yellow->PlayAnimation(1);
 			g_yellow->SetAnimationSpeed(0);
 		}
-		else if (map->data.name == MESH_MAP_BLUE_HIROBA)
+		else if (!g_blue && map->data.name == MESH_MAP_BLUE_HIROBA)
 		{
-			SAFE_DELETE(g_blue);
-
 			g_blue = new BoneObject(Transform(), A_MESH_ENEMY_BLUE, SHADER_DEFAULT, map);
 			g_blue->transform.rotation.y = 180;
 			g_blue->transform.scale = { 4, 4, 4 };
@@ -38,10 +34,8 @@ void InitEnemy()
 			g_blue->PlayAnimation(1);
 			g_blue->SetAnimationSpeed(0);
 		}
-		else if (map->data.name == MESH_MAP_RED_HIROBA)
+		else if (!g_red && map->data.name == MESH_MAP_RED_HIROBA)
 		{
-			SAFE_DELETE(g_red);
-
 			g_red = new BoneObject(Transform(), A_MESH_ENEMY_RED, SHADER_DEFAULT, map);
 			g_red->transform.rotation.y = 180;
 			g_red->transform.scale = { 4, 4, 4 };
@@ -49,10 +43,8 @@ void InitEnemy()
 			g_red->PlayAnimation(1);
 			g_red->SetAnimationSpeed(0.004);
 		}
-		else if (map->data.name == MESH_MAP_TWOTONE_HIROBA)
+		else if (!g_twotone && map->data.name == MESH_MAP_TWOTONE_HIROBA)
 		{
-			SAFE_DELETE(g_twotone);
-
 			g_twotone = new BoneObject(Transform(), A_MESH_ENEMY_TWOTONE, SHADER_DEFAULT, map);
 			g_twotone->transform.rotation.y = 180;
 			g_twotone->transform.scale = { 4, 4, 4 };
