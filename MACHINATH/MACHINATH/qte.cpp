@@ -110,8 +110,8 @@ void UpdateQTE()
 	{
 		// increase slowmo factor
 		g_slowmoFactor -= 0.04F;
-		if (g_slowmoFactor < 0.4F)
-			g_slowmoFactor = 0.4F;
+		if (g_slowmoFactor < 0.2F)
+			g_slowmoFactor = 0.2F;
 
 		// increase alpha
 		g_alpha += 0.05;
@@ -206,7 +206,6 @@ void qteDefault()
 
 		// add score, set jump flag and finish qte
 		AddScore(score);
-		GetPlayer()->isJumping = true;
 		finishQTE();
 	}
 
@@ -268,6 +267,9 @@ void qteMultiPress()
 
 void finishQTE()
 {
+	if(g_activeQTE == QTE_DEFAULT)
+		GetPlayer()->isJumping = true;
+
 	PlaySound(AUDIO_SE_SLOWMO_END, 1.0F);
 	g_active = false;
 }
