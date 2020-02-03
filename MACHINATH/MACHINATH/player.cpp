@@ -23,12 +23,11 @@ static MeshObject* g_skybox;
 static float g_zRotSpeed;
 static float g_zRotMax;
 static float g_jumpHeight;
-static float g_jumpSpeed;
 
 static std::vector<CameraEventData> g_camEvent;
 static std::vector<EventData> g_mapEvent;
 static float g_finalYPos;
-static int g_jumpCnt;
+static float g_jumpCnt;
 
 void MovePlayer();
 void MoveSideways();
@@ -59,7 +58,6 @@ void InitPlayer()
 	g_zRotSpeed = 2.0F;
 	g_zRotMax = 20.0F;
 	g_jumpHeight = 10.0F;
-	g_jumpSpeed = 3.0F;
 
 	g_camEvent = std::vector<CameraEventData>();
 	g_mapEvent = std::vector<EventData>();
@@ -337,8 +335,8 @@ void Jump()
 {
 	// move player up
 	g_player->transform.position.y = g_finalYPos + g_jumpHeight * sin(D3DXToRadian(g_jumpCnt));
-	g_jumpCnt += g_jumpSpeed;
-	float finalRot = 360.0F / (180.0F / g_jumpSpeed);
+	g_jumpCnt += g_player->jumpSpeed;
+	float finalRot = 360.0F / (180.0F / g_player->jumpSpeed);
 
 	// rotate player
 	g_player->transform.rotation.y += finalRot;

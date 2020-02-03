@@ -267,8 +267,12 @@ void qteMultiPress()
 
 void finishQTE()
 {
-	if(g_activeQTE == QTE_DEFAULT)
+	// jump if default qte
+	if (g_activeQTE == QTE_DEFAULT)
+	{
+		GetPlayer()->jumpSpeed = 2.9F;
 		GetPlayer()->isJumping = true;
+	}
 
 	PlaySound(AUDIO_SE_SLOWMO_END, 1.0F);
 	g_active = false;
