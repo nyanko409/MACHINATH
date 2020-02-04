@@ -1,11 +1,19 @@
 #include "boss.h"
+#include "player.h"
+#include "effect.h"
 #include "map.h"
 
 
 void Boss::Draw()
 {
+	if (!enableDraw) return;
+
+#ifdef _DEBUG
+	BoxCollider::DrawCollider(collider, D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255)));
+#endif
+
+	// draw both faces for boss
 	auto pDevice = MyDirect3D_GetDevice();
-	
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	MeshObject::Draw();
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -41,7 +49,17 @@ void UninitBoss()
 
 void UpdateBoss()
 {
+	// return if boss is already dead
+	if (!g_boss) return;
+
 	// draw boss if map is active
 	if (g_boss->parent->enableDraw)
 		g_boss->enableDraw = true;
+
+	// if collided with player, delete object and play effects
+	if (g_boss->collider.CheckCollision(GetPlayer()->col))
+	{
+		PlayEffect(EFFECT_GOLD, g_boss->GetCombinedPosition(), { 0, 0, 0 }, { 10, 10, 10 }, 1.0F);
+		SAFE_DELETE(g_boss);
+	}
 }

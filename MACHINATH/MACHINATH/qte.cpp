@@ -20,7 +20,6 @@ static Sprite g_inner, g_outer, g_press, g_black;
 static float g_outerScale = 1.0F;
 static float g_innerScale = 0.4F;
 static float g_multiDelay = 0.1F;
-static int g_multiCount = 20;
 
 static std::vector<Sprite> g_outerMultiSprite;
 static QTE g_activeQTE;
@@ -29,6 +28,7 @@ static int g_curCount;
 static float g_curTime;
 static float g_alpha;
 static float g_slowmoFactor = 1;
+static float g_slowmoLimit = 0.2F;
 
 
 void qteDefault();
@@ -36,7 +36,7 @@ void qteMultiPress();
 void finishQTE(bool success);
 
 
-bool StartQTE(QTE type)
+bool StartQTE(QTE type, int multiCount)
 {
 	// return if qte is already active
 	if (g_active) return false;
@@ -45,7 +45,6 @@ bool StartQTE(QTE type)
 	PlaySound(AUDIO_SE_SLOWMO_START, 1.0F);
 	g_activeQTE = type;
 	g_curTime = playTime;
-	g_curCount = g_multiCount;
 	g_inner.scale.x = g_innerScale;
 	g_inner.scale.y = g_innerScale;
 	g_inner.color.a = 0;
@@ -57,6 +56,11 @@ bool StartQTE(QTE type)
 		g_outer.scale.y = g_outerScale;
 		g_outer.color.a = 0;
 		//PlaySound(AUDIO_SE_QTE_STANDBY, 0.2F);
+	}
+	else if (g_activeQTE == QTE_MULTIPRESS)
+	{
+		g_curCount = multiCount;
+		g_outerMultiSprite.clear();
 	}
 
 	g_alpha = 0;
@@ -111,8 +115,8 @@ void UpdateQTE()
 	{
 		// increase slowmo factor
 		g_slowmoFactor -= 0.04F;
-		if (g_slowmoFactor < 0.2F)
-			g_slowmoFactor = 0.2F;
+		if (g_slowmoFactor < g_slowmoLimit)
+			g_slowmoFactor = g_slowmoLimit;
 
 		// increase alpha
 		g_alpha += 0.05;
@@ -288,4 +292,9 @@ void finishQTE(bool success)
 float getSlowmoFactor()
 {
 	return g_slowmoFactor;
+}
+
+void setSlowmoLimit(float limit)
+{
+	g_slowmoLimit = limit;
 }

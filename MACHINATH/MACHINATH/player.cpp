@@ -22,7 +22,6 @@ static MeshObject* g_skateboard;
 static MeshObject* g_skybox;
 static float g_zRotSpeed;
 static float g_zRotMax;
-static float g_jumpHeight;
 
 static std::vector<CameraEventData> g_camEvent;
 static std::vector<EventData> g_mapEvent;
@@ -57,7 +56,6 @@ void InitPlayer()
 	StartTimer();
 	g_zRotSpeed = 2.0F;
 	g_zRotMax = 20.0F;
-	g_jumpHeight = 10.0F;
 
 	g_camEvent = std::vector<CameraEventData>();
 	g_mapEvent = std::vector<EventData>();
@@ -154,9 +152,15 @@ void HandleMapEvent()
 			else if (g_mapEvent[i].mapEvent == MapEvent::SLOPE)
 				Slope(g_mapEvent[i]);
 			else if (g_mapEvent[i].mapEvent == MapEvent::QTE_SINGLE)
+			{
 				g_mapEvent[i].finished = StartQTE(QTE_DEFAULT);
+				g_player->jumpHeight = g_mapEvent[i].value;
+			}
 			else if (g_mapEvent[i].mapEvent == MapEvent::QTE_MULTI)
-				g_mapEvent[i].finished = StartQTE(QTE_MULTIPRESS);
+			{
+				g_mapEvent[i].finished = StartQTE(QTE_MULTIPRESS, g_mapEvent[i].value);
+				setSlowmoLimit(g_mapEvent[i].speed);
+			}
 		}
 		else
 		{
@@ -293,7 +297,7 @@ void MoveSideways()
 		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y - 90));
 		D3DXVec3TransformCoord(&left, &left, &mRot);
 
-		g_parent->transform.position += left * g_player->sideSpeed;
+		g_parent->transform.position += left * g_player->sideSpeed * getSlowmoFactor();
 
 		g_player->transform.localRotation.z -= g_zRotSpeed;
 		if (g_player->transform.localRotation.z < -g_zRotMax)
@@ -334,9 +338,9 @@ void MoveSideways()
 void Jump()
 {
 	// move player up
-	g_player->transform.position.y = g_finalYPos + g_jumpHeight * sin(D3DXToRadian(g_jumpCnt));
-	g_jumpCnt += g_player->jumpSpeed;
-	float finalRot = 360.0F / (180.0F / g_player->jumpSpeed);
+	g_player->transform.position.y = g_finalYPos + g_player->jumpHeight * sin(D3DXToRadian(g_jumpCnt));
+	g_jumpCnt += g_player->jumpSpeed * getSlowmoFactor();
+	float finalRot = 360.0F / (180.0F / (g_player->jumpSpeed * getSlowmoFactor()));
 
 	// rotate player
 	g_player->transform.rotation.y += finalRot;
