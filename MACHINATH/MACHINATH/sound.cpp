@@ -57,6 +57,9 @@ SOUNDPARAM g_aParam[SOUND_LABEL_MAX] =
 	{"asset/sound/SE/title_noise.wav", 0},
 	{"asset/sound/SE/slowmo_start.wav", 0},
 	{"asset/sound/SE/slowmo_end.wav", 0},
+	{"asset/sound/SE/QTE_fail.wav", 0},
+	{"asset/sound/SE/QTE_success.wav", 0},
+	{"asset/sound/SE/QTE_standby.wav", 0},
 };
 
 //=============================================================================

@@ -33,7 +33,7 @@ static float g_slowmoFactor = 1;
 
 void qteDefault();
 void qteMultiPress();
-void finishQTE();
+void finishQTE(bool success);
 
 
 bool StartQTE(QTE type)
@@ -56,6 +56,7 @@ bool StartQTE(QTE type)
 		g_outer.scale.x = g_outerScale;
 		g_outer.scale.y = g_outerScale;
 		g_outer.color.a = 0;
+		//PlaySound(AUDIO_SE_QTE_STANDBY, 0.2F);
 	}
 
 	g_alpha = 0;
@@ -96,7 +97,7 @@ void UninitQTE()
 
 void UpdateQTE()
 {
-	SetPlaybackSpeed(AUDIO_BGM_GAME, 0.9 + 0.1 * g_slowmoFactor);
+	//SetPlaybackSpeed(AUDIO_BGM_GAME, 0.9 + 0.1 * g_slowmoFactor);
 
 	if (!g_active)
 	{
@@ -206,13 +207,13 @@ void qteDefault()
 
 		// add score, set jump flag and finish qte
 		AddScore(score);
-		finishQTE();
+		finishQTE(true);
 	}
 
 	// if distance < -bad, player didnt click
 	if (dist < -BAD)
 	{
-		finishQTE();
+		finishQTE(false);
 	}
 }
 
@@ -233,7 +234,7 @@ void qteMultiPress()
 		}
 		else if (g_outerMultiSprite.size() == 0)
 		{
-			finishQTE();
+			finishQTE(true);
 			g_outerMultiSprite.clear();
 			return;
 		}
@@ -265,7 +266,7 @@ void qteMultiPress()
 }
 
 
-void finishQTE()
+void finishQTE(bool success)
 {
 	// jump if default qte
 	if (g_activeQTE == QTE_DEFAULT)
@@ -273,6 +274,12 @@ void finishQTE()
 		GetPlayer()->jumpSpeed = 2.9F;
 		GetPlayer()->isJumping = true;
 	}
+
+	// play sound effect
+	if (success)
+		PlaySound(AUDIO_SE_QTE_SUCCESS);
+	else
+		PlaySound(AUDIO_SE_QTE_FAIL);
 
 	PlaySound(AUDIO_SE_SLOWMO_END, 1.0F);
 	g_active = false;
