@@ -33,7 +33,8 @@ EFK_CHAR* path[]
 	(EFK_CHAR*)L"asset/shader/effekseer/landing.efk",
 	(EFK_CHAR*)L"asset/shader/effekseer/qte_success.efk",
 	(EFK_CHAR*)L"asset/shader/effekseer/boost.efk",
-	(EFK_CHAR*)L"asset/shader/effekseer/air.efk"
+	(EFK_CHAR*)L"asset/shader/effekseer/air.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/explosion_red.efk"
 };
 
 EffekseerRenderer::Renderer* renderer = NULL;

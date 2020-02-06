@@ -59,7 +59,7 @@ void UpdateBoss()
 	// if collided with player, delete object and play effects
 	if (g_boss->collider.CheckCollision(GetPlayer()->col))
 	{
-		PlayEffect(EFFECT_GOLD, g_boss->GetCombinedPosition(), { 0, 0, 0 }, { 10, 10, 10 }, 1.0F);
+		PlayEffect(EFFECT_EXPLOSION_RED, g_boss->GetCombinedPosition(), { 0, 0, 0 }, { 10, 10, 10 }, 1.0F);
 		SAFE_DELETE(g_boss);
 	}
 }

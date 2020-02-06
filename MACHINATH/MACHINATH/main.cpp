@@ -242,7 +242,6 @@ void InitLibrary()
 	LoadMesh();
 	InitSprite();
 	InitScene();
-	InitQTE();
 	InitShader();
 	InitFade();
 	InitCountdown();
@@ -252,7 +251,6 @@ void InitLibrary()
 void FinalizeLibrary()
 {
 	UninitCountdown();
-	UninitQTE();
 	FinalizeTitle();
 	UninitEffect();
 	UninitShader();
@@ -318,6 +316,7 @@ bool InitGame()
 	InitScore();
 	InitPlayer();
 	InitPickup();
+	InitQTE();
 	InitMap();
 	InitEdge();
 	InitEnemy();
@@ -336,7 +335,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateEnemy();
@@ -388,6 +387,7 @@ void FinalizeGame()
 	UninitLighting();
 	UninitEdge();
 	UninitBoss();
+	UninitQTE();
 	UninitEnemy();
 
 	StopAllEffect();
@@ -469,7 +469,7 @@ void UpdateTest()
 	}
 	if (Keyboard_IsTrigger(DIK_B))
 	{
-		PlayEffect(EFFECT_QTESUCCESS, t, { 0, 0, 0 }, { 1,1,1 });
+		PlayEffect(EFFECT_EXPLOSION_RED, t, { 0, 0, 0 }, { 1,1,1 });
 	}
 
 	// draw text
