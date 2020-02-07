@@ -52,10 +52,6 @@ void UpdateBoss()
 	// return if boss is already dead
 	if (!g_boss) return;
 
-	// draw boss if map is active
-	if (!g_boss->enableDraw && g_boss->parent->enableDraw)
-		g_boss->enableDraw = true;
-
 	// if collided with player, delete object and play effects
 	if (g_boss->collider.CheckCollision(GetPlayer()->col))
 	{

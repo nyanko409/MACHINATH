@@ -150,11 +150,21 @@ void UpdateMap()
 		if (g_map.size() > g_drawIndex)
 		{
 			g_map[g_drawIndex]->enableDraw = true;
+			for (auto child : g_map[g_drawIndex]->child)
+			{
+				child->enableDraw = true;
+			}
+
 			ActivatePickup(g_map[g_drawIndex]->id);
 		}
 	
 		// delete pickup and map
 		CleanPickup(g_map[0]->id);
+
+		for (auto child : g_map[0]->child)
+		{
+			child->parent = nullptr;
+		}
 		SAFE_DELETE(g_map[0]);
 		g_map.erase(g_map.begin());
 	}

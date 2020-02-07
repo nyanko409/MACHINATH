@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+#include <algorithm>
 #include "transform.h"
 #include "shader.h"
 
@@ -28,34 +30,30 @@ private:
 	SHADER_TYPE shaderType;
 
 protected:
-	D3DXMATRIX m_matOrientation;	// orienration matrix for local axis rotation
-	D3DXVECTOR3 m_prevRotation;		// previous frame rotation of this object
-	D3DXVECTOR3 m_prevPosition;		// previous frame position of this object
-	D3DXVECTOR3 forward, up, right;	// forward, up and right vector
+	D3DXMATRIX m_matOrientation;		// orienration matrix for local axis rotation
+	D3DXVECTOR3 m_prevRotation;			// previous frame rotation of this object
+	D3DXVECTOR3 m_prevPosition;			// previous frame position of this object
+	D3DXVECTOR3 forward, up, right;		// forward, up and right vector
 
 public:
-	LPD3DXEFFECT pShader;			// pointer to the shader
-	Transform transform;			// transform data of this gameobject (position, rotation, scale)
-	D3DXVECTOR3 pivot;				// pivot point for rotation, default is 0
-	GameObject* parent;				// the parent this gameobject is attached to
+	Transform transform;				// transform data of this gameobject (position, rotation, scale)
+	LPD3DXEFFECT pShader;				// pointer to the shader
+	D3DXVECTOR3 pivot;					// pivot point for rotation, default is 0
+	GameObject* parent;					// the parent this gameobject is attached to
+	std::vector<GameObject*> child;		// list of children of this gameobject
+	bool enableDraw;					// if true, draw this object
 
-	bool enableDraw;				// if true, draw this object
 
 	// constructor
 	GameObject() {}
 	GameObject(Transform transform, SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) : 
-		transform(transform), parent(parent)
+		transform(transform), shaderType(type), pShader(AssignShader(this, shaderType)),
+		child(std::vector<GameObject*>()), enableDraw(true), pivot(D3DXVECTOR3(0, 0, 0)),
+		forward(D3DXVECTOR3(0, 0, 1)), up(D3DXVECTOR3(0, 1, 0)), right(D3DXVECTOR3(1, 0, 0)),
+		m_matOrientation(*D3DXMatrixIdentity(&D3DXMATRIX{}))
 	{
-		// assign the shader at creation
-		shaderType = type;
-		pShader = AssignShader(this, shaderType);
-
-		D3DXMatrixIdentity(&m_matOrientation);
-		pivot = D3DXVECTOR3(0, 0, 0);
-		forward = D3DXVECTOR3(0, 0, 1);
-		up = D3DXVECTOR3(0, 1, 0);
-		right = D3DXVECTOR3(1, 0, 0);
-		enableDraw = true;
+		// set parent
+		SetParent(parent);
 	}
 
 	// destructor
@@ -63,12 +61,32 @@ public:
 	{
 		// deassign the shader
 		DeassignShader(this, shaderType);
+
+		// remove this object from parent child list
+		if (parent)
+			parent->child.erase(std::remove(parent->child.begin(), parent->child.end(), this));
 	}
 
 	// virtual draw
 	virtual void Draw() 
 	{
+		m_prevRotation = transform.localRotation;
 		m_prevPosition = transform.position;
+	}
+
+	// set the parent of this gameobject
+	void SetParent(GameObject* parent)
+	{
+		if (!parent) return;
+
+		this->parent = parent;
+		parent->child.emplace_back(this);
+	}
+
+	// removes the parent of this gameobject
+	void RemoveParent()
+	{
+
 	}
 
 	// returns the final forward vector of both local and world rotation

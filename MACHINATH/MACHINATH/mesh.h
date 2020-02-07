@@ -24,15 +24,12 @@ public:
 	// draw the object
 	virtual void Draw() override
 	{
-		if (!enableDraw) return;
-
-		auto device = MyDirect3D_GetDevice();
-
-		// update
+		// update gameobject draw
 		D3DXVECTOR3 diff = m_prevRotation - transform.localRotation;
-		m_prevRotation = transform.localRotation;
+		GameObject::Draw();
 
-		m_prevPosition = transform.position;
+		// return if no draw
+		if (!enableDraw) return;
 
 		// get world matrix
 		D3DXMATRIX matWorld;
@@ -47,7 +44,7 @@ public:
 			pShader->CommitChanges();
 		}
 		else 
-			device->SetTransform(D3DTS_WORLD, &matWorld);
+			MyDirect3D_GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);
 
 		// draw mesh
 		for (DWORD i = 0; i < mesh->numMaterial; ++i)
@@ -55,9 +52,9 @@ public:
 			SetMaterial(&(mesh->pMaterial[i]));
 
 			if (mesh->pTexture[i] != NULL)
-				device->SetTexture(0, mesh->pTexture[i]);
+				MyDirect3D_GetDevice()->SetTexture(0, mesh->pTexture[i]);
 			else
-				device->SetTexture(0, NULL);
+				MyDirect3D_GetDevice()->SetTexture(0, NULL);
 
 			mesh->mesh->DrawSubset(i);
 		}
@@ -82,27 +79,23 @@ public:
 	// draw the object
 	virtual void Draw() override
 	{
-		if (!enableDraw) return;
-
-		auto device = MyDirect3D_GetDevice();
-
-		// update
+		// update gameobject draw
 		D3DXVECTOR3 diff = m_prevRotation - transform.localRotation;
-		m_prevRotation = transform.localRotation;
+		GameObject::Draw();
 
-		m_prevPosition = transform.position;
+		// return if no draw
+		if (!enableDraw) return;
 
 		// get world matrix
 		D3DXMATRIX matWorld;
 		matWorld = TransformObject(GetCombinedPosition(), GetCombinedScale(), diff, 
 			m_matOrientation, GetCombinedOrientationMatrix(), GetCombinedRotation(), forward, up, right, pivot);
 
-
 		// apply world matrix
 		if (pShader)
 			pShader->SetMatrix("World", &matWorld);
 		else
-			device->SetTransform(D3DTS_WORLD, &matWorld);
+			MyDirect3D_GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);
 
 		// draw	
 		mesh->UpdateAnim();
