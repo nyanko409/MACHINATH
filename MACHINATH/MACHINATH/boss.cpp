@@ -2,6 +2,7 @@
 #include "player.h"
 #include "effect.h"
 #include "map.h"
+#include "camera.h"
 
 
 void Boss::Draw()
@@ -39,7 +40,7 @@ void InitBoss()
 		trans = Transform({ -200 ,50, 0 });
 
 	g_boss = new Boss(trans, MESH_BOSS, SHADER_DEFAULT, map);
-	g_boss->enableDraw = false;
+	g_boss->enableDraw = map->enableDraw;
 }
 
 void UninitBoss()
@@ -56,6 +57,7 @@ void UpdateBoss()
 	if (g_boss->collider.CheckCollision(GetPlayer()->col))
 	{
 		PlayEffect(EFFECT_EXPLOSION_RED, g_boss->GetCombinedPosition(), { 0, 0, 0 }, { 10, 10, 10 }, 1.0F);
-		SAFE_DELETE(g_boss);
+		//SAFE_DELETE(g_boss);
+		//GetCamera()->target = g_boss;
 	}
 }

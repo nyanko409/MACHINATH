@@ -161,10 +161,6 @@ void UpdateMap()
 		// delete pickup and map
 		CleanPickup(g_map[0]->id);
 
-		for (auto child : g_map[0]->child)
-		{
-			child->parent = nullptr;
-		}
 		SAFE_DELETE(g_map[0]);
 		g_map.erase(g_map.begin());
 	}

@@ -62,6 +62,12 @@ public:
 		// deassign the shader
 		DeassignShader(this, shaderType);
 
+		// delete the references of children to this gameobject
+		for (auto c : child)
+		{
+			c->parent = nullptr;
+		}
+
 		// remove this object from parent child list
 		if (parent)
 			parent->child.erase(std::remove(parent->child.begin(), parent->child.end(), this));
