@@ -2,7 +2,6 @@
 #include "player.h"
 #include "camera.h"
 #include "cameraevent.h"
-#include "map.h"
 #include "customMath.h"
 
 
@@ -18,6 +17,7 @@ static int finalRotY;
 static float finalOffsetZ, finalOffsetY;
 
 void UpdateCameraEventData(CameraEventData& event);
+
 
 
 void AddCameraEvent(CameraEventData& event)

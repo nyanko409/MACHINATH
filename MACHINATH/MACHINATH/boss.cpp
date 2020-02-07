@@ -2,6 +2,7 @@
 #include "player.h"
 #include "effect.h"
 #include "map.h"
+#include "cameraevent.h"
 #include "camera.h"
 
 
@@ -54,10 +55,15 @@ void UpdateBoss()
 	if (!g_boss) return;
 
 	// if collided with player, delete object and play effects
-	if (g_boss->collider.CheckCollision(GetPlayer()->col))
+	if (g_boss->enableDraw && g_boss->collider.CheckCollision(GetPlayer()->col))
 	{
-		PlayEffect(EFFECT_EXPLOSION_RED, g_boss->GetCombinedPosition(), { 0, 0, 0 }, { 10, 10, 10 }, 1.0F);
-		//SAFE_DELETE(g_boss);
-		//GetCamera()->target = g_boss;
+		PlayEffect(EFFECT_EXPLOSION_RED, g_boss->GetCombinedPosition(), { 0, 0, 0 }, { 10, 10, 10 }, 0.1F);
+
+		GetCamera()->target = g_boss;
+
+		CameraEventData ced = {0, 0, 30, 1, 2, 1};
+		AddCameraEvent(ced);
+		g_boss->enableDraw = false;
+		GetPlayer()->isMoving = false;
 	}
 }

@@ -275,7 +275,6 @@ void finishQTE(bool success)
 	// jump if default qte
 	if (g_activeQTE == QTE_DEFAULT)
 	{
-		GetPlayer()->jumpSpeed = 2.9F;
 		GetPlayer()->isJumping = true;
 	}
 
