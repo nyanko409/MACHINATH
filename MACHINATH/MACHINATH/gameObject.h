@@ -38,6 +38,7 @@ public:
 	Transform transform;			// transform data of this gameobject (position, rotation, scale)
 	D3DXVECTOR3 pivot;				// pivot point for rotation, default is 0
 	GameObject* parent;				// the parent this gameobject is attached to
+
 	bool enableDraw;				// if true, draw this object
 
 	// constructor
@@ -71,7 +72,7 @@ public:
 	}
 
 	// returns the final forward vector of both local and world rotation
-	D3DXVECTOR3 GetForward()
+	D3DXVECTOR3 GetForward() const
 	{
 		// create y rotation matrix
 		D3DXMATRIX rotX, rotY, rotZ;
@@ -88,7 +89,7 @@ public:
 	}
 
 	// returns the combined position of this gameobject
-	D3DXVECTOR3 GetCombinedPosition()
+	D3DXVECTOR3 GetCombinedPosition() const
 	{
 		if(parent != nullptr)
 			return transform.position + parent->GetCombinedPosition();
@@ -97,13 +98,13 @@ public:
 	}
 
 	// returns the position relative to parent of this gameobject
-	D3DXVECTOR3 GetPosition()
+	D3DXVECTOR3 GetPosition() const
 	{
 		return transform.position;
 	}
 
 	// returns the combined rotation of this gameobject
-	D3DXVECTOR3 GetCombinedRotation()
+	D3DXVECTOR3 GetCombinedRotation() const
 	{
 		if (parent != nullptr)
 			return transform.rotation + parent->GetCombinedRotation();
@@ -112,7 +113,7 @@ public:
 	}
 
 	// returns the combined orientation matrix
-	D3DXMATRIX GetCombinedOrientationMatrix()
+	D3DXMATRIX GetCombinedOrientationMatrix() const
 	{
 		if (parent != nullptr)
 			return m_matOrientation * parent->GetCombinedOrientationMatrix();
@@ -121,19 +122,19 @@ public:
 	}
 
 	// returns the combined orientation matrix
-	D3DXMATRIX GetOrientationMatrix()
+	D3DXMATRIX GetOrientationMatrix() const
 	{
 		return m_matOrientation;
 	}
 
 	// returns the rotation relative to parent of this gameobject
-	D3DXVECTOR3 GetRotation()
+	D3DXVECTOR3 GetRotation() const
 	{
 		return transform.rotation;
 	}
 
 	// returns the combined rotation of this gameobject
-	D3DXVECTOR3 GetCombinedLocalRotation()
+	D3DXVECTOR3 GetCombinedLocalRotation() const
 	{
 		if (parent != nullptr)
 			return transform.localRotation + parent->GetCombinedLocalRotation();
@@ -142,13 +143,13 @@ public:
 	}
 
 	// returns the rotation relative to parent of this gameobject
-	D3DXVECTOR3 GetLocalRotation()
+	D3DXVECTOR3 GetLocalRotation() const
 	{
 		return transform.localRotation;
 	}
 
 	// returns the combined scale of this gameobject
-	D3DXVECTOR3 GetCombinedScale()
+	D3DXVECTOR3 GetCombinedScale() const
 	{
 		if (parent != nullptr)
 		{
@@ -161,13 +162,13 @@ public:
 	}
 
 	// returns the scale relative to parent of this gameobject
-	D3DXVECTOR3 GetScale()
+	D3DXVECTOR3 GetScale() const 
 	{
 		return transform.scale;
 	}
 
 	// returns the scale relative to parent of this gameobject
-	D3DXVECTOR3 GetPreviousPosition()
+	D3DXVECTOR3 GetPreviousPosition() const 
 	{
 		return m_prevPosition;
 	}
