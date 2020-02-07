@@ -60,17 +60,23 @@ void UpdateCameraEvent(CameraEventData& event)
 	}
 }
 
-void UpdateCameraPosition(GameObject* follow, const D3DXVECTOR3& forward)
+void UpdateCameraPosition()
 {
+	// get target and forward vector
+	auto target = GetCamera()->target;
+	auto forward = target->GetForward();
+
+	// adjust z and x offset
 	float offZ = offsetZ;
 	float offX = offZ;
-
 	offZ *= forward.z;
 	offX *= forward.x;
 
-	g_camPos = Lerp(g_camPos, follow->GetCombinedPosition(), g_lerpSpeed);
+	// lerp the camera to target
+	g_camPos = Lerp(g_camPos, target->GetCombinedPosition(), g_lerpSpeed);
 
-	SetCameraForward(follow->GetCombinedPosition());
+	// set camera forward direction and position
+	SetCameraForward(target->GetCombinedPosition());
 	SetCameraPos(g_camPos, offX, offsetY, offZ, rotY);
 }
 

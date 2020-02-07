@@ -34,6 +34,7 @@
 #include "edge.h"
 #include "countdown.h"
 #include "enemy.h"
+#include "cameraevent.h"
 #include "boss.h"
 
 
@@ -335,14 +336,16 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	//UpdatePlayer();
+	UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateEnemy();
 	UpdateBoss();
+	UpdateCameraPosition();
 	UpdateCamera();
 	UpdateQTE();
 	UpdateEdge();
+
 
 	UpdateTest();
 }

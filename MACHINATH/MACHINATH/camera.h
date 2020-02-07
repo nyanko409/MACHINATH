@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.h"
+#include "gameObject.h"
 
 
 // camera class
@@ -21,6 +22,8 @@ public:
 
 	float moveSpeed;									// speed of the camera when moving
 	float lookSensivity;								// sensivity of mouse look
+
+	GameObject* target;									// target to follow
 
 	// constructor
 	Camera(D3DXVECTOR3 pos) : 
@@ -89,7 +92,7 @@ D3DXVECTOR3 SetCameraForward(D3DXVECTOR3 lookAt);
 // set camera pos to given value
 void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, int rotY);
 
-// return address of camera
+// returns the address of camera
 Camera* GetCamera();
 
 // call once in init

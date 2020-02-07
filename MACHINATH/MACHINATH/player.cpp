@@ -79,6 +79,9 @@ void InitPlayer()
 	g_skybox = new MeshObject(Transform(), MESH_SKYBOX, SHADER_DEFAULT);
 	g_skybox->transform.scale = { 400, 400, 400 };
 
+	// set the camera target
+	GetCamera()->target = g_parent;
+
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
 	InitCameraPosition({ 0, 70, -40 });
@@ -105,21 +108,24 @@ void UpdatePlayer()
 	g_skybox->transform.position = g_player->GetCombinedPosition();
 	g_skybox->transform.rotation.y += 0.05F;
 
-	// handle camera
-	UpdateCameraPosition(g_player, g_parent->GetForward());
+	// handle camera event
 	HandleCameraEvent();
 
 	// return if in countdown
 	if (!g_player->isMoving) return;
 
-	// update map and player
+	// update map event
 	HandleMapEvent();
+
+	// move player
 	MovePlayer();
 	MoveSideways();
 
+	// jump
 	if (g_player->isJumping)
 		Jump();
 
+	// check for collision
 	CheckMapCollision();
 }
 
@@ -338,7 +344,7 @@ void MoveSideways()
 void Jump()
 {
 	// move player up
-	g_player->transform.position.y = g_finalYPos + g_player->jumpHeight * sin(D3DXToRadian(g_jumpCnt));
+	g_parent->transform.position.y = g_finalYPos + g_player->jumpHeight * sin(D3DXToRadian(g_jumpCnt));
 	g_jumpCnt += g_player->jumpSpeed * getSlowmoFactor();
 	float finalRot = 360.0F / (180.0F / (g_player->jumpSpeed * getSlowmoFactor()));
 
