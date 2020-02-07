@@ -17,7 +17,10 @@ struct CameraEvent
 };
 
 
-void InitCameraPosition(D3DXVECTOR3 position);
-void UpdateCameraEvent(CameraEventData& event);
-void UpdateCameraPosition();
+// add a camera event to the queue
+void AddCameraEvent(CameraEventData& event);
+
+void InitCameraEvent();
+void UninitCameraEvent();
+void UpdateCameraEvent();
 void SetLerpSpeed(float lerpSpeed);

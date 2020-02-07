@@ -2,9 +2,11 @@
 #include "player.h"
 #include "camera.h"
 #include "cameraevent.h"
+#include "map.h"
 #include "customMath.h"
 
 
+static std::vector<CameraEventData> g_camEvent;
 static D3DXVECTOR3 g_camPos;
 static int rotY = 0;
 static float offsetZ;
@@ -15,17 +17,62 @@ static bool init;
 static int finalRotY;
 static float finalOffsetZ, finalOffsetY;
 
+void UpdateCameraEventData(CameraEventData& event);
 
-void InitCameraPosition(D3DXVECTOR3 position)
+
+void AddCameraEvent(CameraEventData& event)
 {
-	g_camPos = position;
+	g_camEvent.emplace_back(event);
+}
+
+void UpdateCameraEvent()
+{
+	// execute queued up camera event
+	if (!g_camEvent.empty())
+	{
+		UpdateCameraEventData(g_camEvent.front());
+
+		// delete finished events
+		if (g_camEvent.front().finished)
+			g_camEvent.erase(g_camEvent.begin());
+	}
+
+	// update the camera position
+	// get target and forward vector
+	auto target = GetCamera()->target;
+	auto forward = target->GetForward();
+
+	// adjust z and x offset
+	float offZ = offsetZ;
+	float offX = offZ;
+	offZ *= forward.z;
+	offX *= forward.x;
+
+	// lerp the camera to target
+	g_camPos = Lerp(g_camPos, target->GetCombinedPosition(), g_lerpSpeed);
+
+	// set camera forward direction and position
+	SetCameraForward(target->GetCombinedPosition());
+	SetCameraPos(g_camPos, offX, offsetY, offZ, rotY);
+}
+
+
+void InitCameraEvent()
+{
+	g_camEvent = std::vector<CameraEventData>();
+	g_camPos = GetCamera()->position;
 	offsetZ = -10;
 	offsetY = 5;
 	rotY = 0;
 	g_lerpSpeed = 0.1F;
 }
 
-void UpdateCameraEvent(CameraEventData& event)
+void UninitCameraEvent()
+{
+	g_camEvent.clear();
+}
+
+void UpdateCameraEventData(CameraEventData& event)
 { 
 	if (!init)
 	{
@@ -58,26 +105,6 @@ void UpdateCameraEvent(CameraEventData& event)
 		event.finished = true;
 		init = false;
 	}
-}
-
-void UpdateCameraPosition()
-{
-	// get target and forward vector
-	auto target = GetCamera()->target;
-	auto forward = target->GetForward();
-
-	// adjust z and x offset
-	float offZ = offsetZ;
-	float offX = offZ;
-	offZ *= forward.z;
-	offX *= forward.x;
-
-	// lerp the camera to target
-	g_camPos = Lerp(g_camPos, target->GetCombinedPosition(), g_lerpSpeed);
-
-	// set camera forward direction and position
-	SetCameraForward(target->GetCombinedPosition());
-	SetCameraPos(g_camPos, offX, offsetY, offZ, rotY);
 }
 
 void SetLerpSpeed(float lerpSpeed)

@@ -322,6 +322,7 @@ bool InitGame()
 	InitEdge();
 	InitEnemy();
 	InitBoss();
+	InitCameraEvent();
 
 	InitTest();
 
@@ -341,7 +342,7 @@ void UpdateGame()
 	UpdateLighting();
 	UpdateEnemy();
 	UpdateBoss();
-	UpdateCameraPosition();
+	UpdateCameraEvent();
 	UpdateCamera();
 	UpdateQTE();
 	UpdateEdge();
@@ -392,6 +393,7 @@ void FinalizeGame()
 	UninitBoss();
 	UninitQTE();
 	UninitEnemy();
+	UninitCameraEvent();
 
 	StopAllEffect();
 }

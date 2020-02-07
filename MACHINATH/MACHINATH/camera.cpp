@@ -17,7 +17,7 @@ POINT operator - (POINT o1, POINT o2) { return POINT{ o1.x - o2.x, o1.y - o2.y }
 void InitCamera()
 {
 	// init camera
-	g_pCam = new Camera({0,0,0});
+	g_pCam = new Camera({0,70,-40});
 	g_pCam->LookAt({ 0,0,1 });
 
 	// init cursor pos

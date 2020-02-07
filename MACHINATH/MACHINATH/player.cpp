@@ -23,7 +23,6 @@ static MeshObject* g_skybox;
 static float g_zRotSpeed;
 static float g_zRotMax;
 
-static std::vector<CameraEventData> g_camEvent;
 static std::vector<EventData> g_mapEvent;
 static float g_finalYPos;
 static float g_jumpCnt;
@@ -57,7 +56,6 @@ void InitPlayer()
 	g_zRotSpeed = 2.0F;
 	g_zRotMax = 20.0F;
 
-	g_camEvent = std::vector<CameraEventData>();
 	g_mapEvent = std::vector<EventData>();
 	g_jumpCnt = 0;
 
@@ -84,8 +82,7 @@ void InitPlayer()
 
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
-	InitCameraPosition({ 0, 70, -40 });
-	//SetLerpSpeed(0.01F);
+	//SetLerpSpeed(0.1F);
 	//StartCountdown();
 	g_player->isMoving = true;
 }
@@ -98,7 +95,6 @@ void UninitPlayer()
 	SAFE_DELETE(g_parent);
 	SAFE_DELETE(g_skybox);
 
-	g_camEvent.clear();
 	g_mapEvent.clear();
 }
 
@@ -230,17 +226,7 @@ void HandleCameraEvent()
 	if (event != nullptr && g_player->col.CheckCollision(event->trigger) != 0)
 	{
 		event->data.started = true;
-		g_camEvent.emplace_back(event->data);
-	}
-	
-	// execute queued up camera event
-	if (g_camEvent.size() > 0)
-	{
-		UpdateCameraEvent(g_camEvent.front());
-
-		// delete finished events
-		if (g_camEvent.front().finished)
-			g_camEvent.erase(g_camEvent.begin());
+		AddCameraEvent(event->data);
 	}
 }
 
