@@ -40,7 +40,7 @@ void UpdateCameraEvent()
 	// update the camera position
 	// get target and forward vector
 	auto target = GetCamera()->target;
-	auto forward = target->GetForward();
+	auto forward = GetCamera()->forwardOverride->GetForward();
 
 	// adjust z and x offset
 	float offZ = offsetZ;

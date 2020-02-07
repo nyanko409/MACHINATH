@@ -24,6 +24,7 @@ public:
 	float lookSensivity;								// sensivity of mouse look
 
 	GameObject* target;									// target to follow
+	GameObject* forwardOverride;						// use this forward vector if not nullptr
 
 	// constructor
 	Camera(D3DXVECTOR3 pos) : 

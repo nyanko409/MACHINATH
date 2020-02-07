@@ -24,7 +24,6 @@ static float g_zRotSpeed;
 static float g_zRotMax;
 
 static std::vector<EventData> g_mapEvent;
-static float g_finalYPos;
 static float g_jumpCnt;
 
 void MovePlayer();
@@ -78,7 +77,8 @@ void InitPlayer()
 	g_skybox->transform.scale = { 400, 400, 400 };
 
 	// set the camera target
-	GetCamera()->target = g_parent;
+	GetCamera()->target = g_player;
+	GetCamera()->forwardOverride = g_parent;
 
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
@@ -330,7 +330,7 @@ void MoveSideways()
 void Jump()
 {
 	// move player up
-	g_parent->transform.position.y = g_finalYPos + g_player->jumpHeight * sin(D3DXToRadian(g_jumpCnt));
+	g_player->transform.position.y = g_player->jumpHeight * sin(D3DXToRadian(g_jumpCnt));
 	g_jumpCnt += g_player->jumpSpeed * getSlowmoFactor();
 	float finalRot = 360.0F / (180.0F / (g_player->jumpSpeed * getSlowmoFactor()));
 
