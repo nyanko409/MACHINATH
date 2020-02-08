@@ -151,10 +151,32 @@ void MovePlayerToFinalPosition()
 	ced = { 0, 0, 0, 0, -5, -0.1F };
 	AddCameraEvent(ced);
 
+	// offset player to final position
+	Direction exit = GetMap()->back()->exit;
 	GetPlayer()->parent->transform.position = GetMap()->back()->GetCombinedPosition();
-	GetPlayer()->transform.position.y += 200;
-	GetPlayer()->transform.position.x += 10;
-	GetPlayer()->transform.position.z -= 90;
-	GetPlayer()->transform.rotation.y = 180;
 	GetPlayer()->enableDraw = true;
+
+	GetPlayer()->transform.position.y += 200;
+	GetPlayer()->transform.rotation.y = 180;
+
+	if (exit == Direction::NORTH)
+	{
+		GetPlayer()->transform.position.x += 10;
+		GetPlayer()->transform.position.z -= 90;
+	}
+	if (exit == Direction::SOUTH)
+	{
+		GetPlayer()->transform.position.x -= 10;
+		GetPlayer()->transform.position.z += 90;
+	}
+	if (exit == Direction::EAST)
+	{
+		GetPlayer()->transform.position.x -= 90;
+		GetPlayer()->transform.position.z -= 10;
+	}
+	if (exit == Direction::WEST)
+	{
+		GetPlayer()->transform.position.x += 90;
+		GetPlayer()->transform.position.z += 10;
+	}
 }
