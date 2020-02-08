@@ -4,6 +4,7 @@
 #include "map.h"
 #include "cameraevent.h"
 #include "camera.h"
+#include "sound.h"
 
 
 void Boss::Draw()
@@ -23,7 +24,14 @@ void Boss::Draw()
 
 
 
-Boss* g_boss;
+static Boss* g_boss;
+
+static bool g_collided;
+static float g_curTime, g_interval;
+static int g_curExplosionCount, g_explosionCount;
+
+void MovePlayerToFinalPosition();
+
 
 
 void InitBoss()
@@ -42,6 +50,12 @@ void InitBoss()
 
 	g_boss = new Boss(trans, MESH_BOSS, SHADER_DEFAULT, map);
 	g_boss->enableDraw = map->enableDraw;
+
+	g_collided = false;
+	g_interval = 0.5F;
+	g_curTime = g_interval;
+	g_curExplosionCount = 0;
+	g_explosionCount = 15;
 }
 
 void UninitBoss()
@@ -55,15 +69,92 @@ void UpdateBoss()
 	if (!g_boss) return;
 
 	// if collided with player, delete object and play effects
-	if (g_boss->enableDraw && g_boss->collider.CheckCollision(GetPlayer()->col))
+	if (!g_collided && g_boss->enableDraw && g_boss->collider.CheckCollision(GetPlayer()->col))
 	{
-		PlayEffect(EFFECT_EXPLOSION_RED, g_boss->GetCombinedPosition(), { 0, 0, 0 }, { 10, 10, 10 }, 0.1F);
+		g_collided = true;
 
+		SetLerpSpeed(0.005F);
 		GetCamera()->target = g_boss;
+		GetCamera()->forwardOverride = g_boss;
 
-		CameraEventData ced = {0, 0, 30, 1, 2, 1};
-		AddCameraEvent(ced);
-		g_boss->enableDraw = false;
 		GetPlayer()->isMoving = false;
+		GetPlayer()->transform.position = { 0,1,0 };
+		GetPlayer()->transform.rotation = { 0,0,0 };
+		for (auto child : GetPlayer()->parent->child)
+		{
+			child->enableDraw = false;
+		}
+		
+
+		CameraEventData ced = {360, 1, -50, -0.6, 2, 0.1F};
+		AddCameraEvent(ced);
 	}
+	
+	if (g_collided)
+	{
+		// play explosion per interval
+		if (g_curExplosionCount < g_explosionCount)
+		{
+			g_curTime += TIME_PER_FRAME;
+			if (g_curTime >= g_interval)
+			{
+				g_curTime -= g_interval;
+				g_curExplosionCount++;
+
+				// explode at random offset from boss position
+				D3DXVECTOR3 expPos = g_boss->GetCombinedPosition();
+
+				int randX = rand() % 30;
+				int randY = rand() % 30;
+				int randZ = rand() % 30;
+
+				if (g_curExplosionCount % 2)
+				{
+					randX = -randX;
+					randY = -randY;
+					randZ = -randZ;
+				}
+
+				expPos.x += randX;
+				expPos.y += randY;
+				expPos.z += randZ;
+
+				// play the effect
+				PlayEffect(EFFECT_EXPLOSION_RED, expPos, { 0, 0, 0 }, { 4, 4, 4 }, 0.7F);
+				PlaySound(AUDIO_SE_EXPLOSION);
+			}
+		}
+		else if (g_curExplosionCount == g_explosionCount)
+		{
+			// set camera target back to player
+			MovePlayerToFinalPosition();
+			GetCamera()->target = GetPlayer();
+			GetCamera()->forwardOverride = GetPlayer();
+			g_curExplosionCount++;
+		}
+	}
+}
+
+void MovePlayerToFinalPosition()
+{
+	for (auto child : GetPlayer()->parent->child)
+	{
+		child->enableDraw = true;
+	}
+
+	CameraEventData ced = { 180, 180, 50, 1, 3, 0.008F };
+	AddCameraEvent(ced);
+	ced = { 0, 0, 0, 0, 5, 0.1F };
+	AddCameraEvent(ced);
+	ced = { 360, 1, 0, 0, 0, 0 };
+	AddCameraEvent(ced);
+	ced = { 0, 0, 0, 0, -5, -0.1F };
+	AddCameraEvent(ced);
+
+	GetPlayer()->parent->transform.position = GetMap()->back()->GetCombinedPosition();
+	GetPlayer()->transform.position.y += 200;
+	GetPlayer()->transform.position.x += 10;
+	GetPlayer()->transform.position.z -= 90;
+	GetPlayer()->transform.rotation.y = 180;
+	GetPlayer()->enableDraw = true;
 }

@@ -4,7 +4,7 @@
 
 struct CameraEventData
 {
-	int yRot, yRotSpeed;
+	float yRot, yRotSpeed;
 	float zOffset, zOffsetSpeed;
 	float yOffset, yOffsetSpeed;
 	bool started, finished;

@@ -31,7 +31,7 @@ D3DXVECTOR3 SetCameraForward(D3DXVECTOR3 lookAt)
 	return g_pCam->LookAt(lookAt);
 }
 
-void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, int rotY)
+void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, float rotY)
 {
 	// get rotation matrix
 	D3DXMATRIX yRot;

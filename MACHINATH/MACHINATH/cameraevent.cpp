@@ -7,7 +7,7 @@
 
 static std::vector<CameraEventData> g_camEvent;
 static D3DXVECTOR3 g_camPos;
-static int rotY = 0;
+static float rotY = 0;
 static float offsetZ;
 static float offsetY;
 static float g_lerpSpeed;
@@ -65,6 +65,7 @@ void InitCameraEvent()
 	offsetY = 5;
 	rotY = 0;
 	g_lerpSpeed = 0.1F;
+	init = false;
 }
 
 void UninitCameraEvent()
@@ -98,9 +99,9 @@ void UpdateCameraEventData(CameraEventData& event)
 	else if (event.yOffset < 0) offsetY = offsetY < finalOffsetY ? finalOffsetY : offsetY;
 
 	// check if event is finished
-	if ((event.yRot > 0 && rotY >= finalRotY) || (event.yRot < 0 && rotY <= finalRotY) &&
-		(event.zOffset > 0 && offsetZ >= finalOffsetZ) || (event.zOffset < 0 && offsetZ <= finalOffsetZ) &&
-		(event.yOffset > 0 && offsetY >= finalOffsetY) || (event.yOffset < 0 && offsetY <= finalOffsetY))
+	if ( ((event.yRot >= 0 && rotY >= finalRotY) || (event.yRot <= 0 && rotY <= finalRotY)) &&
+		 ((event.zOffset >= 0 && offsetZ >= finalOffsetZ) || (event.zOffset <= 0 && offsetZ <= finalOffsetZ)) &&
+		 ((event.yOffset >= 0 && offsetY >= finalOffsetY) || (event.yOffset <= 0 && offsetY <= finalOffsetY)) )
 	{
 		event.finished = true;
 		init = false;

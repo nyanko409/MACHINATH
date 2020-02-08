@@ -64,11 +64,6 @@ void InitEffect()
 
 	// À•WŒn‚ÌŽw’è
 	manager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
-
-	// set projection matrix
-	auto pCamera = GetCamera();
-	renderer->SetProjectionMatrix(Effekseer::Matrix44().PerspectiveFovLH(
-				pCamera->fov, pCamera->aspect, pCamera->nearClip, pCamera->farClip));
 }
 
 int PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 rotation, D3DXVECTOR3 scale, float playSpeed)
@@ -136,12 +131,17 @@ void DrawEffect()
 {
 	// update camera matrix
 	auto pCamera = GetCamera();
+
+	renderer->SetProjectionMatrix(Effekseer::Matrix44().PerspectiveFovLH(
+		pCamera->fov, pCamera->aspect, pCamera->nearClip, pCamera->farClip));
+
 	renderer->SetCameraMatrix(
 		Effekseer::Matrix44().LookAtLH(
 			Effekseer::Vector3D(pCamera->position.x, pCamera->position.y, pCamera->position.z),
 			Effekseer::Vector3D(pCamera->forward.x + pCamera->position.x, 
 				pCamera->forward.y + pCamera->position.y, pCamera->forward.z + pCamera->position.z),
 			Effekseer::Vector3D(pCamera->up.x, pCamera->up.y, pCamera->up.z)));
+
 
 	// update effects
 	for (int i = 0; i < g_effect.size(); ++i)

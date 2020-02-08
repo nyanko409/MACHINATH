@@ -100,9 +100,9 @@ public:
 	{
 		// create y rotation matrix
 		D3DXMATRIX rotX, rotY, rotZ;
-		D3DXMatrixRotationX(&rotX, D3DXToRadian(transform.rotation.x));
-		D3DXMatrixRotationY(&rotY, D3DXToRadian(transform.rotation.y));
-		D3DXMatrixRotationZ(&rotZ, D3DXToRadian(transform.rotation.z));
+		D3DXMatrixRotationX(&rotX, D3DXToRadian(GetCombinedRotation().x));
+		D3DXMatrixRotationY(&rotY, D3DXToRadian(GetCombinedRotation().y));
+		D3DXMatrixRotationZ(&rotZ, D3DXToRadian(GetCombinedRotation().z));
 
 		D3DXVECTOR3 newForward = forward;
 		D3DXVec3TransformCoord(&newForward, &newForward, &rotX);

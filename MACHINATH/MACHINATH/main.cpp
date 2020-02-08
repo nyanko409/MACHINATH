@@ -237,7 +237,6 @@ void InitLibrary()
 	InitRenderState();
 	InitSound(g_hWnd);
 	InitFont();
-	InitCamera();
 	InitEffect();
 	Texture_Load();
 	LoadMesh();
@@ -255,7 +254,6 @@ void FinalizeLibrary()
 	FinalizeTitle();
 	UninitEffect();
 	UninitShader();
-	UninitCamera();
 	UninitFont();
 	UninitSound();
 	UninitSprite();
@@ -315,6 +313,7 @@ bool InitGame()
 {
 	InitLighting();
 	InitScore();
+	InitCamera();
 	InitPlayer();
 	InitPickup();
 	InitQTE();
@@ -346,7 +345,6 @@ void UpdateGame()
 	UpdateCamera();
 	UpdateQTE();
 	UpdateEdge();
-
 
 	UpdateTest();
 }
@@ -393,6 +391,7 @@ void FinalizeGame()
 	UninitBoss();
 	UninitQTE();
 	UninitEnemy();
+	UninitCamera();
 	UninitCameraEvent();
 
 	StopAllEffect();

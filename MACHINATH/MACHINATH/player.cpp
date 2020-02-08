@@ -74,7 +74,7 @@ void InitPlayer()
 
 	// create skybox
 	g_skybox = new MeshObject(Transform(), MESH_SKYBOX, SHADER_DEFAULT);
-	g_skybox->transform.scale = { 400, 400, 400 };
+	g_skybox->transform.scale = { 600, 600, 600 };
 
 	// set the camera target
 	GetCamera()->target = g_player;

@@ -91,7 +91,7 @@ public:
 D3DXVECTOR3 SetCameraForward(D3DXVECTOR3 lookAt);
 
 // set camera pos to given value
-void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, int rotY);
+void SetCameraPos(D3DXVECTOR3 position, float offsetX, float offsetY, float offsetZ, float rotY);
 
 // returns the address of camera
 Camera* GetCamera();
