@@ -82,9 +82,8 @@ void InitPlayer()
 
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
-	//SetLerpSpeed(0.1F);
-	StartCountdown();
-	//g_player->isMoving = true;
+	//StartCountdown();
+	g_player->isMoving = true;
 }
 
 void UninitPlayer()
@@ -115,7 +114,9 @@ void UpdatePlayer()
 
 	// move player
 	MovePlayer();
-	MoveSideways();
+
+	if(g_player->isMovingSideways)
+		MoveSideways();
 
 	// jump
 	if (g_player->isJumping)

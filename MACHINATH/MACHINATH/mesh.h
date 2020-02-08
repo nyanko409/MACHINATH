@@ -36,7 +36,6 @@ public:
 		matWorld = TransformObject(GetCombinedPosition(), GetCombinedScale(), diff, 
 			m_matOrientation, GetCombinedOrientationMatrix(), GetCombinedRotation(), forward, up, right, pivot);
 
-
 		// set world transform
 		if (pShader)
 		{

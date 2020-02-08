@@ -4,6 +4,7 @@
 #include "map.h"
 #include "cameraevent.h"
 #include "camera.h"
+#include "customMath.h"
 #include "sound.h"
 
 
@@ -68,6 +69,32 @@ void UpdateBoss()
 	// return if boss is already dead
 	if (!g_boss) return;
 
+	// move player back to center
+	if (g_boss->enableDraw)
+	{
+		GetPlayer()->isMovingSideways = false;
+		GetPlayer()->transform.localRotation = { 0,0,0 };
+		for (auto child : GetPlayer()->child)
+		{
+			child->transform.localRotation = { 0,0,0 };
+		}
+
+		Direction dir = GetMap()->back()->exit;
+		float px, mx;
+		if (dir == Direction::NORTH || dir == Direction::SOUTH)
+		{
+			px = GetPlayer()->parent->transform.position.x;
+			mx = GetMap()->back()->GetCombinedPosition().x;
+			GetPlayer()->parent->transform.position.x = Lerp(px, mx, 0.02F);
+		}
+		else
+		{
+			px = GetPlayer()->parent->transform.position.z;
+			mx = GetMap()->back()->GetCombinedPosition().z;
+			GetPlayer()->parent->transform.position.z = Lerp(px, mx, 0.02F);
+		}
+	}
+
 	// if collided with player, delete object and play effects
 	if (!g_collided && g_boss->enableDraw && g_boss->collider.CheckCollision(GetPlayer()->col))
 	{
@@ -77,8 +104,8 @@ void UpdateBoss()
 		GetCamera()->target = g_boss;
 		GetCamera()->forwardOverride = g_boss;
 
-		GetPlayer()->isMoving = false;
 		GetPlayer()->enableDraw = false;
+		GetPlayer()->isMoving = false;
 		for (auto child : GetPlayer()->child)
 		{
 			child->enableDraw = false;
@@ -138,11 +165,16 @@ void MovePlayerToFinalPosition()
 	GetPlayer()->enableDraw = true;
 	GetPlayer()->transform.position = { 0,1,0 };
 	GetPlayer()->transform.rotation = { 0,0,0 };
+	GetPlayer()->transform.localRotation = { 0,0,0 };
+
 	GetPlayer()->parent->transform.rotation = { 0,0,0 };
+	GetPlayer()->parent->transform.localRotation = { 0,0,0 };
+
 	for (auto child : GetPlayer()->child)
 	{
 		child->enableDraw = true;
-		child->transform.rotation = { 0,90,0 };
+		child->transform.rotation = { 0,0,0 };
+		child->transform.localRotation = { 0,90,0 };
 	}
 
 	CameraEventData ced = { 180, 180, 50, 1, 3, 0.008F };
