@@ -150,6 +150,12 @@ void MovePlayerToFinalPosition()
 	AddCameraEvent(ced);
 	ced = { 0, 0, 0, 0, -5, -0.1F };
 	AddCameraEvent(ced);
+	ced = { -30, -0.5F, 5, 0.1F, -6, -0.1F };
+	AddCameraEvent(ced);
+
+	// play player pose animation
+	GetPlayer()->PlayAnimation(0);
+	GetPlayer()->SetAnimationSpeed(0.02F);
 
 	// offset player to final position
 	Direction exit = GetMap()->back()->exit;
