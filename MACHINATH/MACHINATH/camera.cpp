@@ -57,7 +57,7 @@ void UpdateCamera()
 	D3DXMATRIX matView, matProjection;
 
 	// set view
-	D3DXMatrixLookAtLH(&matView, &g_pCam->position, &(g_pCam->forward + g_pCam->position), &g_pCam->up);
+	D3DXMatrixLookAtLH(&matView, &(g_pCam->position + g_pCam->positionOffset), &(g_pCam->forward + g_pCam->position + g_pCam->positionOffset), &g_pCam->up);
 	device->SetTransform(D3DTS_VIEW, &matView);
 
 	// set projection

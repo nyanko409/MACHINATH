@@ -80,7 +80,8 @@ void UpdateBoss()
 		GetPlayer()->isMoving = false;
 		GetPlayer()->transform.position = { 0,1,0 };
 		GetPlayer()->transform.rotation = { 0,0,0 };
-		for (auto child : GetPlayer()->parent->child)
+		GetPlayer()->enableDraw = false;
+		for (auto child : GetPlayer()->child)
 		{
 			child->enableDraw = false;
 		}
@@ -137,9 +138,11 @@ void UpdateBoss()
 
 void MovePlayerToFinalPosition()
 {
-	for (auto child : GetPlayer()->parent->child)
+	GetPlayer()->enableDraw = true;
+	for (auto child : GetPlayer()->child)
 	{
 		child->enableDraw = true;
+		child->transform.rotation.y = 90;
 	}
 
 	CameraEventData ced = { 180, 180, 50, 1, 3, 0.008F };
@@ -150,38 +153,43 @@ void MovePlayerToFinalPosition()
 	AddCameraEvent(ced);
 	ced = { 0, 0, 0, 0, -5, -0.1F };
 	AddCameraEvent(ced);
-	ced = { -30, -0.5F, 5, 0.1F, -6, -0.1F };
+	ced = { -40, -0.5F, 3, 0.1F, -6, -0.1F };
 	AddCameraEvent(ced);
 
 	// play player pose animation
 	GetPlayer()->PlayAnimation(0);
 	GetPlayer()->SetAnimationSpeed(0.02F);
 
-	// offset player to final position
+	// offset player and camera to final position
 	Direction exit = GetMap()->back()->exit;
 	GetPlayer()->parent->transform.position = GetMap()->back()->GetCombinedPosition();
 	GetPlayer()->enableDraw = true;
 
+	GetCamera()->targetOffset.y += 2;
 	GetPlayer()->transform.position.y += 200;
 	GetPlayer()->transform.rotation.y = 180;
 
 	if (exit == Direction::NORTH)
 	{
+		GetCamera()->positionOffset.x -= 3;
 		GetPlayer()->transform.position.x += 10;
 		GetPlayer()->transform.position.z -= 90;
 	}
 	if (exit == Direction::SOUTH)
 	{
+		GetCamera()->positionOffset.x += 3;
 		GetPlayer()->transform.position.x -= 10;
 		GetPlayer()->transform.position.z += 90;
 	}
 	if (exit == Direction::EAST)
 	{
+		GetCamera()->positionOffset.z += 3;
 		GetPlayer()->transform.position.x -= 90;
 		GetPlayer()->transform.position.z -= 10;
 	}
 	if (exit == Direction::WEST)
 	{
+		GetCamera()->positionOffset.z -= 3;
 		GetPlayer()->transform.position.x += 90;
 		GetPlayer()->transform.position.z += 10;
 	}

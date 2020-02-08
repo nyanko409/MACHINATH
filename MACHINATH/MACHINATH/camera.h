@@ -25,6 +25,8 @@ public:
 
 	GameObject* target;									// target to follow
 	GameObject* forwardOverride;						// use this forward vector if not nullptr
+	D3DXVECTOR3 targetOffset;							// offset from target to look at
+	D3DXVECTOR3 positionOffset;							// offset camera from final position
 
 	// constructor
 	Camera(D3DXVECTOR3 pos) : 
@@ -34,7 +36,7 @@ public:
 		right(D3DXVECTOR3(1.0F, 0.0F, 0.0F)),
 		aspect((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT),
 		nearClip(1.0F), farClip(1000.0F), fov(D3DXToRadian(90)),
-		moveSpeed(1.0F), lookSensivity(1.0F)
+		moveSpeed(1.0F), lookSensivity(1.0F), targetOffset({ 0,0,0 }), positionOffset({ 0,0,0 })
 	{}
 
 	// destructor
@@ -75,7 +77,7 @@ public:
 	D3DXVECTOR3 LookAt(D3DXVECTOR3 objPos)
 	{
 		// vector between camera pos and object pos
-		D3DXVECTOR3 diff = objPos - position;
+		D3DXVECTOR3 diff = objPos + targetOffset - position;
 
 		// normalize the vector
 		float mag = sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
