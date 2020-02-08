@@ -78,14 +78,11 @@ void UpdateBoss()
 		GetCamera()->forwardOverride = g_boss;
 
 		GetPlayer()->isMoving = false;
-		GetPlayer()->transform.position = { 0,1,0 };
-		GetPlayer()->transform.rotation = { 0,0,0 };
 		GetPlayer()->enableDraw = false;
 		for (auto child : GetPlayer()->child)
 		{
 			child->enableDraw = false;
 		}
-		
 
 		CameraEventData ced = {360, 1, -50, -0.6, 2, 0.1F};
 		AddCameraEvent(ced);
@@ -139,10 +136,13 @@ void UpdateBoss()
 void MovePlayerToFinalPosition()
 {
 	GetPlayer()->enableDraw = true;
+	GetPlayer()->transform.position = { 0,1,0 };
+	GetPlayer()->transform.rotation = { 0,0,0 };
+	GetPlayer()->parent->transform.rotation = { 0,0,0 };
 	for (auto child : GetPlayer()->child)
 	{
 		child->enableDraw = true;
-		child->transform.rotation.y = 90;
+		child->transform.rotation = { 0,90,0 };
 	}
 
 	CameraEventData ced = { 180, 180, 50, 1, 3, 0.008F };

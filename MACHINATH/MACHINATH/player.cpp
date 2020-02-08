@@ -83,8 +83,8 @@ void InitPlayer()
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
 	//SetLerpSpeed(0.1F);
-	//StartCountdown();
-	g_player->isMoving = true;
+	StartCountdown();
+	//g_player->isMoving = true;
 }
 
 void UninitPlayer()
@@ -102,13 +102,13 @@ void UpdatePlayer()
 {	
 	// update skybox
 	g_skybox->transform.position = g_player->GetCombinedPosition();
-	g_skybox->transform.rotation.y += 0.05F;
-
-	// handle camera event
-	HandleCameraEvent();
+	g_skybox->transform.rotation.y += 0.01F;
 
 	// return if in countdown
 	if (!g_player->isMoving) return;
+
+	// handle camera event
+	HandleCameraEvent();
 
 	// update map event
 	HandleMapEvent();
