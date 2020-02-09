@@ -2,6 +2,7 @@
 
 #include "collider.h"
 #include "mesh.h"
+#include "map.h"
 
 // player class
 class Player : public BoneObject
@@ -36,3 +37,4 @@ void InitPlayer();
 void UninitPlayer();
 void UpdatePlayer();
 Player* GetPlayer();
+void QueueMapEvent(EventData data);

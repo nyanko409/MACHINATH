@@ -33,9 +33,9 @@ protected:
 	D3DXMATRIX m_matOrientation;		// orienration matrix for local axis rotation
 	D3DXVECTOR3 m_prevRotation;			// previous frame rotation of this object
 	D3DXVECTOR3 m_prevPosition;			// previous frame position of this object
-	D3DXVECTOR3 forward, up, right;		// forward, up and right vector
 
 public:
+	D3DXVECTOR3 forward, up, right;		// forward, up and right vector
 	Transform transform;				// transform data of this gameobject (position, rotation, scale)
 	LPD3DXEFFECT pShader;				// pointer to the shader
 	D3DXVECTOR3 pivot;					// pivot point for rotation, default is 0

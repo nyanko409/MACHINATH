@@ -37,7 +37,13 @@ void MovePlayerToFinalPosition();
 
 void InitBoss()
 {
+	// get last map
 	Map* map = GetMap()->back();
+
+	// only init boss if there is a metropolitan map
+	if (map->data.name != MESH_NAME::MESH_MAP_METROPOLITAN) return;
+
+	// init boss
 	Transform trans;
 
 	if(map->exit == Direction::NORTH)

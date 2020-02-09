@@ -7,7 +7,6 @@
 #include "camera.h"
 #include "playTime.h"
 #include "sceneManagement.h"
-#include "map.h"
 #include "customMath.h"
 #include "common.h"
 #include "countdown.h"
@@ -198,7 +197,7 @@ void HandleMapEvent()
 	// check for event collision
 	if (!(front == nullptr))
 	{
-		// start map event if collied with event trigger
+		// queue up map event if collied with event trigger
 		if (g_player->col.CheckCollision(front->trigger))
 		{
 			front->started = true;
@@ -386,4 +385,9 @@ void CheckMapCollision()
 			}
 		}
 	}
+}
+
+void QueueMapEvent(EventData data)
+{
+	g_mapEvent.emplace_back(data);
 }
