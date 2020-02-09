@@ -40,7 +40,7 @@ void CheckMapCollision();
 void Player::Draw()
 {
 #if _DEBUG
-	BoxCollider::DrawCollider(GetPlayer()->col, D3DCOLOR(D3DCOLOR_RGBA(255, 0, 255, 255)));
+	BoxCollider::DrawCollider(col, D3DCOLOR(D3DCOLOR_RGBA(255, 0, 255, 255)));
 #endif
 
 	BoneObject::Draw();

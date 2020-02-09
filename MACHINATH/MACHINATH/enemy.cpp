@@ -3,10 +3,21 @@
 #include "mesh.h"
 
 
-BoneObject* g_yellow;
-BoneObject* g_blue;
-BoneObject* g_red;
-BoneObject* g_twotone;
+void Enemy::Draw()
+{
+#if _DEBUG
+	BoxCollider::DrawCollider(collider, D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255)));
+#endif
+
+	BoneObject::Draw();
+}
+
+
+
+Enemy* g_yellow;
+Enemy* g_blue;
+Enemy* g_red;
+Enemy* g_twotone;
 
 
 void InitEnemy()
@@ -18,7 +29,7 @@ void InitEnemy()
 	{
 		if (!g_yellow && map->data.name == MESH_MAP_GREEN_HIROBA)
 		{
-			g_yellow = new BoneObject(Transform(), A_MESH_ENEMY_YELLOW, SHADER_DEFAULT, map);
+			g_yellow = new Enemy(Transform(), A_MESH_ENEMY_YELLOW, SHADER_DEFAULT, 20, 20, 15, { 0,10,0 }, true, map);
 			g_yellow->transform.rotation.y = 180;
 			g_yellow->transform.scale = {4, 4, 4};
 			g_yellow->enableDraw = false;
@@ -27,7 +38,7 @@ void InitEnemy()
 		}
 		else if (!g_blue && map->data.name == MESH_MAP_BLUE_HIROBA)
 		{
-			g_blue = new BoneObject(Transform(), A_MESH_ENEMY_BLUE, SHADER_DEFAULT, map);
+			g_blue = new Enemy(Transform(), A_MESH_ENEMY_BLUE, SHADER_DEFAULT, 20, 20, 15, { 0,10,0 }, true, map);
 			g_blue->transform.rotation.y = 180;
 			g_blue->transform.scale = { 4, 4, 4 };
 			g_blue->enableDraw = false;
@@ -36,7 +47,7 @@ void InitEnemy()
 		}
 		else if (!g_red && map->data.name == MESH_MAP_RED_HIROBA)
 		{
-			g_red = new BoneObject(Transform(), A_MESH_ENEMY_RED, SHADER_DEFAULT, map);
+			g_red = new Enemy(Transform(), A_MESH_ENEMY_RED, SHADER_DEFAULT, 20, 20, 15, { 0,10,0 }, true, map);
 			g_red->transform.rotation.y = 180;
 			g_red->transform.scale = { 4, 4, 4 };
 			g_red->enableDraw = false;
@@ -45,7 +56,7 @@ void InitEnemy()
 		}
 		else if (!g_twotone && map->data.name == MESH_MAP_TWOTONE_HIROBA)
 		{
-			g_twotone = new BoneObject(Transform(), A_MESH_ENEMY_TWOTONE, SHADER_DEFAULT, map);
+			g_twotone = new Enemy(Transform(), A_MESH_ENEMY_TWOTONE, SHADER_DEFAULT, 20, 20, 15, {0,10,0}, true, map);
 			g_twotone->transform.rotation.y = 180;
 			g_twotone->transform.scale = { 4, 4, 4 };
 			g_twotone->enableDraw = false;
