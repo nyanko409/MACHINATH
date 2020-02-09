@@ -174,7 +174,7 @@ void MovePlayerToFinalPosition()
 	{
 		child->enableDraw = true;
 		child->transform.rotation = { 0,0,0 };
-		child->transform.localRotation = { 0,90,0 };
+		child->transform.localRotation = { 0,0,0 };
 	}
 
 	CameraEventData ced = { 180, 180, 50, 1, 3, 0.008F };
@@ -199,30 +199,36 @@ void MovePlayerToFinalPosition()
 
 	GetCamera()->targetOffset.y += 2;
 	GetPlayer()->transform.position.y += 200;
-	GetPlayer()->transform.rotation.y = 180;
 
 	if (exit == Direction::NORTH)
 	{
-		GetCamera()->positionOffset.x -= 3;
+		GetCamera()->positionOffset.x = -3;
 		GetPlayer()->transform.position.x += 10;
 		GetPlayer()->transform.position.z -= 90;
+		GetPlayer()->transform.rotation.y = 180;
+		GetPlayer()->child.front()->transform.rotation = { 0,90,0 };
 	}
 	if (exit == Direction::SOUTH)
 	{
-		GetCamera()->positionOffset.x += 3;
+		GetCamera()->positionOffset.x = 3;
 		GetPlayer()->transform.position.x -= 10;
 		GetPlayer()->transform.position.z += 90;
+		GetPlayer()->child.front()->transform.rotation = { 0,90,0 };
 	}
 	if (exit == Direction::EAST)
 	{
-		GetCamera()->positionOffset.z += 3;
+		GetCamera()->positionOffset.z = 3;
 		GetPlayer()->transform.position.x -= 90;
 		GetPlayer()->transform.position.z -= 10;
+		GetPlayer()->transform.rotation.y = -90;
+		GetPlayer()->child.front()->transform.rotation = { 0,90,0 };
 	}
 	if (exit == Direction::WEST)
 	{
-		GetCamera()->positionOffset.z -= 3;
+		GetCamera()->positionOffset.z = -3;
 		GetPlayer()->transform.position.x += 90;
 		GetPlayer()->transform.position.z += 10;
+		GetPlayer()->transform.rotation.y = 90;
+		GetPlayer()->child.front()->transform.rotation = { 0,90,0 };
 	}
 }
