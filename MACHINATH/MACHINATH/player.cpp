@@ -29,7 +29,6 @@ void MovePlayer();
 void MoveSideways();
 void Jump();
 void HandleMapEvent();
-void HandleCameraEvent();
 void Curve(EventData& event);
 void Slope(EventData& event);
 void CheckMapCollision();
@@ -104,9 +103,6 @@ void UpdatePlayer()
 
 	// return if in countdown
 	if (!g_player->isMoving) return;
-
-	// handle camera event
-	HandleCameraEvent();
 
 	// update map event
 	HandleMapEvent();
@@ -203,30 +199,6 @@ void HandleMapEvent()
 			front->started = true;
 			g_mapEvent.emplace_back(*front);
 		}
-	}
-}
-
-void HandleCameraEvent()
-{
-	// get first camera event
-	auto map = GetMap();
-	if (!(map->size() > 0)) return;
-
-	CameraEvent* event = nullptr;
-	for (int i = 0; i < map->size(); ++i)
-	{
-		if (!(*map)[i]->camEvent.data.started)
-		{
-			event = &(*map)[i]->camEvent;
-			break;
-		}
-	}
-
-	// check for collision with player
-	if (event != nullptr && g_player->col.CheckCollision(event->trigger) != 0)
-	{
-		event->data.started = true;
-		AddCameraEvent(event->data);
 	}
 }
 

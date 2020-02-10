@@ -51,7 +51,6 @@ class Map : public MeshObject
 public:
 	int id;								// id of the map
 	BoxCollider entrance;				// entrance collider of the map
-	CameraEvent camEvent;				// camera event
 	std::vector<BoxCollider> col;		// list of map colliders
 	Direction exit;						// exit direction of the map
 	MapData data;						// data of the map like events
@@ -63,29 +62,11 @@ public:
 		const std::pair<D3DXVECTOR3, D3DXVECTOR3>& entranceCollider,
 		const std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>& mapCollider,
 		const std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>& eventCollider,
-		const std::pair<D3DXVECTOR3, D3DXVECTOR3>& cameraCollider,
-		const CameraEventData& cameraEventData,
 		SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
 		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data), col(col), mapType(mapType)
 	{
 		// disable draw
 		enableDraw = false;
-
-		// set map type
-		//if (data.name == MESH_MAP_GREEN_STRAIGHT || data.name == MESH_MAP_YELLOW_STRAIGHT ||
-		//	data.name == MESH_MAP_BLUE_STRAIGHT || data.name == MESH_MAP_RED_STRAIGHT ||
-		//	data.name == MESH_MAP_TWOTONE_STRAIGHT)
-		//	mapType = MapType::STRAIGHT;
-		//
-		//else if (data.name == MESH_MAP_GREEN_CURVELEFT || data.name == MESH_MAP_YELLOW_CURVELEFT ||
-		//		 data.name == MESH_MAP_BLUE_CURVELEFT || data.name == MESH_MAP_RED_CURVELEFT ||
-		//		 data.name == MESH_MAP_TWOTONE_CURVELEFT)
-		//	mapType = MapType::CURVE_LEFT;
-		//
-		//else if (data.name == MESH_MAP_GREEN_CURVERIGHT || data.name == MESH_MAP_YELLOW_CURVERIGHT ||
-		//	data.name == MESH_MAP_BLUE_CURVERIGHT || data.name == MESH_MAP_RED_CURVERIGHT ||
-		//	data.name == MESH_MAP_TWOTONE_CURVELEFT)
-		//	mapType = MapType::CURVE_LEFT;
 
 		// set entrance collider
 		entrance = BoxCollider(this,
@@ -108,12 +89,6 @@ public:
 				eventCollider[i].first.x, eventCollider[i].first.y, eventCollider[i].first.z,
 				eventCollider[i].second, true);
 		}
-
-		// polulate camera collider
-		camEvent.trigger = BoxCollider(this,
-			cameraCollider.first.x, cameraCollider.first.y, cameraCollider.first.z,
-			cameraCollider.second, true);
-		camEvent.data = cameraEventData;
 	}
 
 	// destructor
