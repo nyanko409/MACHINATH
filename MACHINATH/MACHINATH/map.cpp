@@ -72,13 +72,14 @@ static int g_drawCount;
 static int g_drawIndex;
 static int g_currentMapId;
 
+MapType GetMapType(MESH_NAME mesh);
 void UpdateCurrentMap();
 void LoadMapFromFile(char* path);
 Transform GetStartTransform(const Map& prevMap);
 Direction GetExitDirection(const MapData& data, const Direction& lastExit);
-std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, Direction exit);
-std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME mesh, Direction exit);
-std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direction exit);
+std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Direction exit);
+std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MapType mt, Direction exit);
+std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MapType mt, Direction exit);
 
 
 
@@ -204,9 +205,9 @@ void LoadMapFromFile(char* path)
 	Transform transform(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(1, 1, 1));
 	Direction dir = GetExitDirection(g_MapData[0], Direction::NORTH);
 
-	g_map.emplace_back(new Map(id++, transform, g_MapData[0], dir, 
-		GetMapEntranceCollider(g_MapData[0].name, dir), GetMapCollider(g_MapData[0].name, dir), 
-		GetMapEventCollider(g_MapData[0].name, dir), camEventInfo.first, camEventInfo.second));
+	g_map.emplace_back(new Map(id++, transform, g_MapData[0], MapType::NONE,  dir, 
+		GetMapEntranceCollider(MapType::NONE, dir), GetMapCollider(MapType::NONE, dir), 
+		GetMapEventCollider(MapType::NONE, dir), camEventInfo.first, camEventInfo.second));
 
 	while (true)
 	{
@@ -266,10 +267,12 @@ void LoadMapFromFile(char* path)
 				}
 			}
 
+			MapType mt = GetMapType(g_MapData[ci].name);
+
 			// populate map
- 			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], dir, 
-				GetMapEntranceCollider(g_MapData[ci].name, dir), GetMapCollider(g_MapData[ci].name, dir), 
-				GetMapEventCollider(g_MapData[ci].name, dir), camEventInfo.first, camEventInfo.second));
+ 			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], mt, dir, 
+				GetMapEntranceCollider(mt, dir), GetMapCollider(mt, dir), 
+				GetMapEventCollider(mt, dir), camEventInfo.first, camEventInfo.second));
 		}
 		catch (std::runtime_error& e)
 		{
@@ -285,6 +288,64 @@ void LoadMapFromFile(char* path)
 	}
 
 	g_map.shrink_to_fit();
+}
+
+// get map type
+MapType GetMapType(MESH_NAME mesh)
+{
+	if (mesh == MESH_MAP_GREEN_STRAIGHT || mesh == MESH_MAP_YELLOW_STRAIGHT ||
+		mesh == MESH_MAP_BLUE_STRAIGHT || mesh == MESH_MAP_RED_STRAIGHT ||
+		mesh == MESH_MAP_TWOTONE_STRAIGHT)
+	{
+		return MapType::STRAIGHT;
+	}
+
+	else if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT ||
+		mesh == MESH_MAP_BLUE_CURVELEFT || mesh == MESH_MAP_RED_CURVELEFT ||
+		mesh == MESH_MAP_TWOTONE_CURVELEFT)
+	{
+		return MapType::CURVE_LEFT;
+	}
+
+	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT ||
+		mesh == MESH_MAP_BLUE_CURVERIGHT || mesh == MESH_MAP_RED_CURVERIGHT ||
+		mesh == MESH_MAP_TWOTONE_CURVERIGHT)
+	{
+		return MapType::CURVE_RIGHT;
+	}
+
+	else if (mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_UP ||
+		mesh == MESH_MAP_BLUE_STRAIGHT_UP || mesh == MESH_MAP_RED_STRAIGHT_UP ||
+		mesh == MESH_MAP_TWOTONE_STRAIGHT_UP)
+	{
+		return MapType::SLOPE;
+	}
+
+	else if (mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN ||
+		mesh == MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN ||
+		mesh == MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN)
+	{
+		return MapType::TUNNEL;
+	}
+
+	else if (mesh == MESH_MAP_GREEN_FALLHOLE || mesh == MESH_MAP_YELLOW_FALLHOLE ||
+		mesh == MESH_MAP_BLUE_FALLHOLE || mesh == MESH_MAP_RED_FALLHOLE ||
+		mesh == MESH_MAP_TWOTONE_FALLHOLE)
+	{
+		return MapType::FALLHOLE;
+	}
+
+	else if (mesh == MESH_MAP_GREEN_HIROBA || mesh == MESH_MAP_YELLOW_HIROBA ||
+		mesh == MESH_MAP_BLUE_HIROBA || mesh == MESH_MAP_RED_HIROBA ||
+		mesh == MESH_MAP_TWOTONE_HIROBA)
+	{
+		return MapType::HIROBA;
+	}
+
+	else if (mesh == MESH_MAP_METROPOLITAN)
+		return MapType::METROPOLITAN;
+
+	return MapType::NONE;
 }
 
 Transform GetStartTransform(const Map& prevMap)
@@ -321,13 +382,11 @@ Transform GetStartTransform(const Map& prevMap)
 }
 
 // returns a list of collider of given map
-std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, Direction exit)
+std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Direction exit)
 {
 	auto collider = std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>();
 
-	if (mesh == MESH_MAP_GREEN_STRAIGHT || mesh == MESH_MAP_YELLOW_STRAIGHT ||
-		 mesh == MESH_MAP_BLUE_STRAIGHT || mesh == MESH_MAP_RED_STRAIGHT ||
-		mesh == MESH_MAP_TWOTONE_STRAIGHT)
+	if (mt == MapType::STRAIGHT)
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
@@ -341,9 +400,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT ||
-		mesh == MESH_MAP_BLUE_CURVELEFT || mesh == MESH_MAP_RED_CURVELEFT ||
-		mesh == MESH_MAP_TWOTONE_CURVELEFT)
+	else if (mt == MapType::CURVE_LEFT)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -371,9 +428,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT ||
-		mesh == MESH_MAP_BLUE_CURVERIGHT || mesh == MESH_MAP_RED_CURVERIGHT ||
-		mesh == MESH_MAP_TWOTONE_CURVERIGHT)
+	else if (mt == MapType::CURVE_RIGHT)
 	{
 		if (exit == Direction::SOUTH)
 		{
@@ -401,9 +456,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_UP ||
-		mesh == MESH_MAP_BLUE_STRAIGHT_UP || mesh == MESH_MAP_RED_STRAIGHT_UP ||
-		mesh == MESH_MAP_TWOTONE_STRAIGHT_UP)
+	else if (mt == MapType::SLOPE)
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
@@ -417,9 +470,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN ||
-		mesh == MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN ||
-		mesh == MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN)
+	else if (mt == MapType::TUNNEL)
 	{
 		if (exit == Direction::NORTH)
 		{
@@ -443,9 +494,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_HIROBA || mesh == MESH_MAP_YELLOW_HIROBA || 
-		mesh == MESH_MAP_BLUE_HIROBA || mesh == MESH_MAP_RED_HIROBA ||
-		mesh == MESH_MAP_TWOTONE_HIROBA)
+	else if (mt == MapType::HIROBA)
 	{
 		if (exit == Direction::NORTH)
 		{
@@ -469,9 +518,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_FALLHOLE || mesh == MESH_MAP_YELLOW_FALLHOLE ||
-		mesh == MESH_MAP_BLUE_FALLHOLE || mesh == MESH_MAP_RED_FALLHOLE ||
-		mesh == MESH_MAP_TWOTONE_FALLHOLE)
+	else if (mt == MapType::FALLHOLE)
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
@@ -489,13 +536,11 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MESH_NAME mesh, 
 }
 
 // returns a list of event collider of given map
-std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME mesh, Direction exit)
+std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MapType mt, Direction exit)
 {
 	auto collider = std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>();
 
-	if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT ||
-		mesh == MESH_MAP_BLUE_CURVELEFT || mesh == MESH_MAP_RED_CURVELEFT ||
-		mesh == MESH_MAP_TWOTONE_CURVELEFT)
+	if (mt == MapType::CURVE_LEFT)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -515,9 +560,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT ||
-			mesh == MESH_MAP_BLUE_CURVERIGHT || mesh == MESH_MAP_RED_CURVERIGHT ||
-			mesh == MESH_MAP_TWOTONE_CURVERIGHT)
+	else if (mt == MapType::CURVE_RIGHT)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -537,9 +580,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_UP ||
-			mesh == MESH_MAP_BLUE_STRAIGHT_UP || mesh == MESH_MAP_RED_STRAIGHT_UP ||
-			mesh == MESH_MAP_TWOTONE_STRAIGHT_UP)
+	else if (mt == MapType::SLOPE)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -563,9 +604,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN ||
-			mesh == MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN || mesh == MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN ||
-			mesh == MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN)
+	else if (mt == MapType::TUNNEL)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -590,9 +629,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 		}
 	}
 
-	else if (mesh == MESH_MAP_GREEN_FALLHOLE || mesh == MESH_MAP_YELLOW_FALLHOLE ||
-			mesh == MESH_MAP_BLUE_FALLHOLE || mesh == MESH_MAP_RED_FALLHOLE ||
-			mesh == MESH_MAP_TWOTONE_FALLHOLE)
+	else if (mt == MapType::FALLHOLE)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -612,7 +649,7 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 		}
 	}
 
-	else if (mesh == MESH_MAP_METROPOLITAN)
+	else if (mt == MapType::METROPOLITAN)
 	{
 		if (exit == Direction::WEST)
 		{
@@ -640,18 +677,10 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapEventCollider(MESH_NAME m
 }
 
 // returns the entrace collider of given map
-std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direction exit)
+std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MapType mt, Direction exit)
 {
-	if (mesh == MESH_MAP_GREEN_STRAIGHT || mesh == MESH_MAP_GREEN_FALLHOLE || 
-		mesh == MESH_MAP_GREEN_STRAIGHT_UP || mesh == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN ||
-		mesh == MESH_MAP_YELLOW_STRAIGHT || mesh == MESH_MAP_YELLOW_FALLHOLE ||
-		mesh == MESH_MAP_YELLOW_STRAIGHT_UP || mesh == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN ||
-		mesh == MESH_MAP_BLUE_STRAIGHT || mesh == MESH_MAP_BLUE_FALLHOLE ||
-		mesh == MESH_MAP_BLUE_STRAIGHT_UP || mesh == MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN ||
-		mesh == MESH_MAP_RED_STRAIGHT || mesh == MESH_MAP_RED_FALLHOLE ||
-		mesh == MESH_MAP_RED_STRAIGHT_UP || mesh == MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN ||
-		mesh == MESH_MAP_TWOTONE_STRAIGHT || mesh == MESH_MAP_TWOTONE_FALLHOLE ||
-		mesh == MESH_MAP_TWOTONE_STRAIGHT_UP || mesh == MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN)
+	if (mt == MapType::STRAIGHT || mt == MapType::FALLHOLE 
+		|| mt == MapType::SLOPE || mt == MapType::TUNNEL)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 45, 5, 0 });
@@ -663,9 +692,7 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -45 });
 	}
 
-	else if (mesh == MESH_MAP_GREEN_CURVELEFT || mesh == MESH_MAP_YELLOW_CURVELEFT ||
-			mesh == MESH_MAP_BLUE_CURVELEFT || mesh == MESH_MAP_RED_CURVELEFT ||
-			mesh == MESH_MAP_TWOTONE_CURVELEFT)
+	if (mt == MapType::CURVE_LEFT)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -45 });
@@ -677,9 +704,7 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { -45, 5, 0 });
 	}
 
-	else if (mesh == MESH_MAP_GREEN_CURVERIGHT || mesh == MESH_MAP_YELLOW_CURVERIGHT ||
-			mesh == MESH_MAP_BLUE_CURVERIGHT || mesh == MESH_MAP_RED_CURVERIGHT ||
-			mesh == MESH_MAP_TWOTONE_CURVERIGHT)
+	if (mt == MapType::CURVE_RIGHT)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, 45 });
@@ -691,9 +716,7 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MESH_NAME mesh, Direc
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 45, 5, 0 });
 	}
 
-	else if (mesh == MESH_MAP_GREEN_HIROBA || mesh == MESH_MAP_YELLOW_HIROBA ||
-			mesh == MESH_MAP_BLUE_HIROBA || mesh == MESH_MAP_RED_HIROBA ||
-			mesh == MESH_MAP_TWOTONE_HIROBA)
+	if (mt == MapType::HIROBA)
 	{
 		if (exit == Direction::WEST)
 			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 180 }, { 45, 5, 0 });

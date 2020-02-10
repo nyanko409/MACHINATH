@@ -6,6 +6,13 @@
 #include "cameraevent.h"
 
 
+// map type
+enum class MapType
+{
+	STRAIGHT, CURVE_LEFT, CURVE_RIGHT, FALLHOLE, TUNNEL, SLOPE, HIROBA, METROPOLITAN,
+	NONE
+};
+
 // exit direction of the map
 enum class Direction
 {
@@ -48,19 +55,37 @@ public:
 	std::vector<BoxCollider> col;		// list of map colliders
 	Direction exit;						// exit direction of the map
 	MapData data;						// data of the map like events
+	MapType mapType;					// type of the map
+
 
 	// costructor
-	Map(int id, Transform transform, MapData data, Direction exit, 
+	Map(int id, Transform transform, MapData data, MapType mapType, Direction exit, 
 		const std::pair<D3DXVECTOR3, D3DXVECTOR3>& entranceCollider,
 		const std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>& mapCollider,
 		const std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>& eventCollider,
 		const std::pair<D3DXVECTOR3, D3DXVECTOR3>& cameraCollider,
 		const CameraEventData& cameraEventData,
 		SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
-		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data), col(col)
+		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data), col(col), mapType(mapType)
 	{
 		// disable draw
 		enableDraw = false;
+
+		// set map type
+		//if (data.name == MESH_MAP_GREEN_STRAIGHT || data.name == MESH_MAP_YELLOW_STRAIGHT ||
+		//	data.name == MESH_MAP_BLUE_STRAIGHT || data.name == MESH_MAP_RED_STRAIGHT ||
+		//	data.name == MESH_MAP_TWOTONE_STRAIGHT)
+		//	mapType = MapType::STRAIGHT;
+		//
+		//else if (data.name == MESH_MAP_GREEN_CURVELEFT || data.name == MESH_MAP_YELLOW_CURVELEFT ||
+		//		 data.name == MESH_MAP_BLUE_CURVELEFT || data.name == MESH_MAP_RED_CURVELEFT ||
+		//		 data.name == MESH_MAP_TWOTONE_CURVELEFT)
+		//	mapType = MapType::CURVE_LEFT;
+		//
+		//else if (data.name == MESH_MAP_GREEN_CURVERIGHT || data.name == MESH_MAP_YELLOW_CURVERIGHT ||
+		//	data.name == MESH_MAP_BLUE_CURVERIGHT || data.name == MESH_MAP_RED_CURVERIGHT ||
+		//	data.name == MESH_MAP_TWOTONE_CURVELEFT)
+		//	mapType = MapType::CURVE_LEFT;
 
 		// set entrance collider
 		entrance = BoxCollider(this,

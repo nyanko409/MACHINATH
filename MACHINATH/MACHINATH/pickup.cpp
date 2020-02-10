@@ -90,7 +90,7 @@ void CleanPickup(int mapId)
 
 void SpawnPickupAtRandom(Map* map)
 {
-	if (map->data.name == MESH_NAME::MESH_MAP_GREEN_STRAIGHT)
+	if (map->mapType == MapType::STRAIGHT)
 	{
 		if (map->exit == Direction::NORTH || map->exit == Direction::SOUTH)
 		{
