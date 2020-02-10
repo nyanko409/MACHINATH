@@ -9,6 +9,8 @@
 void Enemy::Draw()
 {
 #if _DEBUG
+	if (!enableDraw) return;
+
 	BoxCollider::DrawCollider(collider, D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255)));
 	if(eventCollider) BoxCollider::DrawCollider(*eventCollider, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 0, 255)));
 #endif

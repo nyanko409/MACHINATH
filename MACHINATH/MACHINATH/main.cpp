@@ -336,12 +336,12 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateEnemy();
 	UpdateBoss();
-	UpdateCameraEvent();
+	//UpdateCameraEvent();
 	UpdateCamera();
 	UpdateQTE();
 	UpdateEdge();
