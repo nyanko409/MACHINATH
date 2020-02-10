@@ -315,9 +315,9 @@ bool InitGame()
 	InitScore();
 	InitCamera();
 	InitPlayer();
-	InitPickup();
 	InitQTE();
 	InitMap();
+	InitPickup();
 	InitEdge();
 	InitEnemy();
 	InitBoss();

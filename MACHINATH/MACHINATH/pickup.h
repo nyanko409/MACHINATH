@@ -2,6 +2,8 @@
 
 #include "collider.h"
 #include "mesh.h"
+#include "map.h"
+
 
 // pickup class - medals, powerups etc
 class Pickup : public MeshObject
@@ -23,14 +25,11 @@ public:
 
 
 // spawn pickup at position
-void SpawnPickup(int mapId, D3DXVECTOR3 position, GameObject* parent = nullptr);
-void SpawnPickup(int mapId, float posX, float posY, float posZ, GameObject* parent = nullptr);
+void SpawnPickup(D3DXVECTOR3 position, Map* parent = nullptr);
+void SpawnPickup(float posX, float posY, float posZ, Map* parent = nullptr);
 
 // delete every pickup with the given mapId
 void CleanPickup(int mapId);
-
-// activate every pickup with the given mapId
-void ActivatePickup(int mapId);
 
 // returns a vector of every pickup
 std::vector<Pickup*>* GetPickup();

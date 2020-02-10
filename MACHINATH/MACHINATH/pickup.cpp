@@ -6,7 +6,6 @@
 #include "mydirect3d.h"
 #include "player.h"
 #include "effect.h"
-#include "map.h"
 #include "score.h"
 
 
@@ -14,40 +13,15 @@
 static std::vector<Pickup*> g_pickup;
 static float g_zRotSpeed = 0;
 
-// set pickups
-static std::vector<std::pair<int, D3DXVECTOR3>> g_spawnPos =
-{
-	{ 1, D3DXVECTOR3(0, 1.3f, -30)},
-	{ 1, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 1, D3DXVECTOR3(0, 1.3f, 30)},
-	{ 2, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 3, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 4, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 5, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 6, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 7, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 8, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 9, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 10, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 11, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 12, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 13, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 14, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 15, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 16, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 17, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 18, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 19, D3DXVECTOR3(0, 1.3f, 0)},
-	{ 20, D3DXVECTOR3(0, 1.3f, 0)},
-};
+void SpawnPickupAtRandom(Map* map);
 
 
 
 void Pickup::Draw()
 {
 #if _DEBUG
-	for(auto pickup : g_pickup)
-		BoxCollider::DrawCollider(pickup->col, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 255, 255)));
+	if(enableDraw)
+		BoxCollider::DrawCollider(col, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 255, 255)));
 #endif
 
 	MeshObject::Draw();
@@ -58,6 +32,12 @@ void InitPickup()
 	// init
 	g_zRotSpeed = 10;
 	g_pickup = std::vector<Pickup*>();
+
+	// spawn pickups at random
+	for (Map* map : *GetMap())
+	{
+		SpawnPickupAtRandom(map);
+	}
 }
 
 void UninitPickup()
@@ -74,11 +54,13 @@ void UpdatePickup()
 	// loop for every pickup
 	for (int i = 0; i < g_pickup.size(); i++)
 	{
+		if (!g_pickup[i]->enableDraw) break;
+
 		// rotate pickup
 		g_pickup[i]->transform.localRotation.y += g_zRotSpeed;
 
 		// check for collision with player
-		if (g_pickup[i]->col.CheckCollision(GetPlayer()->col))
+		if (GetCurrentMapId() == g_pickup[i]->mapId && g_pickup[i]->col.CheckCollision(GetPlayer()->col))
 		{
 			// collided, play effect and delete pickup
 			PlayEffect(EFFECT_GOLD, g_pickup[i]->GetCombinedPosition(), { 0, 0, 0 }, {0.2F,0.2F,0.2F});
@@ -90,19 +72,6 @@ void UpdatePickup()
 	}
 }
 
-
-void ActivatePickup(int mapId)
-{
-	// activate all pickups with the given mapId
-	for (int i = 0; i < g_spawnPos.size(); ++i)
-	{
-		if (g_spawnPos[i].first > mapId) return;
-		if (g_spawnPos[i].first == mapId)
-		{
-			SpawnPickup(g_spawnPos[i].first, g_spawnPos[i].second, GetMapById(mapId));
-		}
-	}
-}
 
 void CleanPickup(int mapId)
 {
@@ -119,15 +88,41 @@ void CleanPickup(int mapId)
 	}
 }
 
-void SpawnPickup(int mapId, D3DXVECTOR3 position, GameObject* parent)
+void SpawnPickupAtRandom(Map* map)
 {
-	SpawnPickup(mapId, position.x, position.y, position.z, parent);
+	if (map->data.name == MESH_NAME::MESH_MAP_GREEN_STRAIGHT)
+	{
+		if (map->exit == Direction::NORTH || map->exit == Direction::SOUTH)
+		{
+			float r = (rand() % 61) - 30;
+
+			SpawnPickup({ r,2,-10 }, map);
+			SpawnPickup({ r,2,0 }, map);
+			SpawnPickup({ r,2,10 }, map);
+			return;
+		}
+		if (map->exit == Direction::EAST || map->exit == Direction::WEST)
+		{
+			float r = (rand() % 61) - 30;
+
+			SpawnPickup({ -10,2,r }, map);
+			SpawnPickup({ 0,2,r }, map);
+			SpawnPickup({ 10,2,r }, map);
+			return;
+		}
+	}
 }
 
-void SpawnPickup(int mapId, float posX, float posY, float posZ, GameObject* parent)
+void SpawnPickup(D3DXVECTOR3 position, Map* parent)
+{
+	SpawnPickup(position.x, position.y, position.z, parent);
+}
+
+void SpawnPickup(float posX, float posY, float posZ, Map* parent)
 {
 	Transform trans(D3DXVECTOR3(posX, posY, posZ), D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 90, 0), D3DXVECTOR3(0.2F, 0.2F, 0.2F));
-	g_pickup.emplace_back(new Pickup(mapId, trans, MESH_COIN, SHADER_DEFAULT, 12, 12, 12, true, parent));
+	g_pickup.emplace_back(new Pickup(parent->id, trans, MESH_COIN, SHADER_DEFAULT, 12, 12, 12, true, parent));
+	g_pickup.back()->enableDraw = parent->enableDraw;
 }
 
 std::vector<Pickup*>* GetPickup()

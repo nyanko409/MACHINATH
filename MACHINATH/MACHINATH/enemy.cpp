@@ -232,7 +232,7 @@ void UpdateEnemyEvent(Enemy* enemy)
 			enemy->PlayAnimation(1);
 			enemy->SetAnimationSpeed(0.005F);
 
-			CameraEventData ced = { -45, -5.0F, 0, 0.0F, 0, 0 };
+			CameraEventData ced = { -70, -3.0F, -10, -0.5F, 4, 0.2F };
 			AddCameraEvent(ced);
 		}
 
@@ -269,7 +269,7 @@ void UpdateEnemyEvent(Enemy* enemy)
 			enemy->collided = true;
 			GetPlayer()->isMovingSideways = true;
 
-			CameraEventData ced = { 45, 2.0F, 0, 0.0F, 0, 0 };
+			CameraEventData ced = { 70, 2.0F, 10, 0.5F, -4, -0.2F };
 			AddCameraEvent(ced);
 		}
 	}

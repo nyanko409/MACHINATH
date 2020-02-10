@@ -126,7 +126,6 @@ void InitMap()
 	for (int i = 0; i < g_drawIndex; ++i)
 	{
 		g_map[i]->enableDraw = true;
-		ActivatePickup(g_map[i]->id);
 	}
 }
 
@@ -154,8 +153,6 @@ void UpdateMap()
 			{
 				child->enableDraw = true;
 			}
-
-			ActivatePickup(g_map[g_drawIndex]->id);
 		}
 	
 		// delete pickup and map
