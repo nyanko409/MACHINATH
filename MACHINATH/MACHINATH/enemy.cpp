@@ -2,6 +2,7 @@
 #include "map.h"
 #include "player.h"
 #include "customMath.h"
+#include "cameraevent.h"
 #include "mesh.h"
 
 
@@ -148,7 +149,7 @@ void InitEnemy()
 			g_red->transform.scale = { 4, 4, 4 };
 			g_red->enableDraw = map->enableDraw;
 			g_red->PlayAnimation(1);
-			g_red->SetAnimationSpeed(0.004);
+			g_red->SetAnimationSpeed(0.000);
 		}
 		else if (!g_twotone && map->data.name == MESH_MAP_TWOTONE_HIROBA)
 		{
@@ -187,7 +188,7 @@ void InitEnemy()
 			g_twotone->transform.scale = { 4, 4, 4 };
 			g_twotone->enableDraw = map->enableDraw;
 			g_twotone->PlayAnimation(1);
-			g_twotone->SetAnimationSpeed(0.004);
+			g_twotone->SetAnimationSpeed(0.000);
 		}
 	}
 }
@@ -227,6 +228,12 @@ void UpdateEnemyEvent(Enemy* enemy)
 		{
 			QueueMapEvent({ MapEvent::QTE_MULTI, 20, 0.1F });
 			SAFE_DELETE(enemy->eventCollider);
+
+			enemy->PlayAnimation(1);
+			enemy->SetAnimationSpeed(0.005F);
+
+			CameraEventData ced = { -45, -5.0F, 0, 0.0F, 0, 0 };
+			AddCameraEvent(ced);
 		}
 
 		// collided with event collider
@@ -257,10 +264,13 @@ void UpdateEnemyEvent(Enemy* enemy)
 		}
 
 		// collided with enemy
-		if (enemy->collider.CheckCollision(GetPlayer()->col))
+		if (!enemy->collided && enemy->collider.CheckCollision(GetPlayer()->col))
 		{
 			enemy->collided = true;
 			GetPlayer()->isMovingSideways = true;
+
+			CameraEventData ced = { 45, 2.0F, 0, 0.0F, 0, 0 };
+			AddCameraEvent(ced);
 		}
 	}
 }

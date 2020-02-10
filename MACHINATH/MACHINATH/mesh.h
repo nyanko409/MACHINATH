@@ -113,6 +113,7 @@ public:
 		ID3DXAnimationSet* tr = 0;
 		mesh->GetAnimator()->GetAnimationSet(track, &tr);
 		mesh->GetAnimator()->SetTrackAnimationSet(0, tr);
+		mesh->GetAnimator()->SetTrackPosition(0, 0);
 		mesh->GetAnimator()->ResetTime();
 	}
 };
