@@ -8,7 +8,7 @@
 #include "playTime.h"
 
 #define FIGURE_NUM 6
-#define SCORE_SPEED 3.0f
+#define SCORE_SPEED 10.0f
 
 static int g_score;
 static Sprite g_scoreSprite;
