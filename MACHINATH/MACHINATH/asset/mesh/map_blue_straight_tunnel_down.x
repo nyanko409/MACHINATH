@@ -187,10 +187,10 @@ Frame Root {
          0.333533; 0.666866;,
          0.333533; 0.999800;,
          0.666467; 0.999800;,
-         0.999900; 0.999900;,
          0.999900; 0.000100;,
          0.000100; 0.000100;,
-         0.000100; 0.999900;;
+         0.000100; 0.999900;,
+         0.999900; 0.999900;;
       } // End of Cube_001 UV coordinates
       MeshMaterialList { // Cube_001 material list
         1;
@@ -206,7 +206,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"blueneoncity10.png";}
+          TextureFilename {"blueneoncity11.png";}
         }
       } // End of Cube_001 material list
     } // End of Cube_001 mesh
@@ -391,10 +391,10 @@ Frame Root {
          0.333533; 0.666866;,
          0.333533; 0.999800;,
          0.666467; 0.999800;,
-         0.999900; 0.999900;,
          0.999900; 0.000100;,
          0.000100; 0.000100;,
-         0.000100; 0.999900;;
+         0.000100; 0.999900;,
+         0.999900; 0.999900;;
       } // End of Cube_003 UV coordinates
       MeshMaterialList { // Cube_003 material list
         1;
@@ -410,7 +410,7 @@ Frame Root {
            96.078431;
            0.500000; 0.500000; 0.500000;;
            0.000000; 0.000000; 0.000000;;
-          TextureFilename {"blueneoncity10.png";}
+          TextureFilename {"blueneoncity11.png";}
         }
       } // End of Cube_003 material list
     } // End of Cube_003 mesh
