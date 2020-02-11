@@ -26,6 +26,7 @@ enum class MapEvent
 
 struct EventData
 {
+	CameraEventData camEvent;
 	MapEvent mapEvent;
 	float value;
 	float speed;

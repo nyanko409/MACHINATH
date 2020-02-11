@@ -10,12 +10,6 @@ struct CameraEventData
 	bool started, finished;
 };
 
-struct CameraEvent
-{
-	BoxCollider trigger;
-	CameraEventData data;
-};
-
 
 // add a camera event to the queue
 void AddCameraEvent(CameraEventData& event);

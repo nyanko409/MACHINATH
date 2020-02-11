@@ -228,7 +228,7 @@ void UpdateEnemyEvent(Enemy* enemy)
 		// start qte event
 		if (enemy->eventCollider && enemy->eventCollider->CheckCollision(GetPlayer()->col))
 		{
-			QueueMapEvent({ MapEvent::QTE_MULTI, 20, 0.1F });
+			QueueMapEvent({ {}, MapEvent::QTE_MULTI, 20, 0.1F });
 			SAFE_DELETE(enemy->eventCollider);
 
 			enemy->PlayAnimation(1);

@@ -198,6 +198,7 @@ void HandleMapEvent()
 		{
 			front->started = true;
 			g_mapEvent.emplace_back(*front);
+			AddCameraEvent(front->camEvent);
 		}
 	}
 }

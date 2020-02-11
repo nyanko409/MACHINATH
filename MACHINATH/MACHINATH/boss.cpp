@@ -117,7 +117,7 @@ void UpdateBoss()
 			child->enableDraw = false;
 		}
 
-		CameraEventData ced = {360, 1, -50, -0.6, 2, 0.1F};
+		CameraEventData ced = {360 + 45, 1, -50, -0.6, 2, 0.1F};
 		AddCameraEvent(ced);
 	}
 	
@@ -168,15 +168,17 @@ void UpdateBoss()
 
 void MovePlayerToFinalPosition()
 {
-	GetPlayer()->enableDraw = true;
-	GetPlayer()->transform.position = { 0,1,0 };
-	GetPlayer()->transform.rotation = { 0,0,0 };
-	GetPlayer()->transform.localRotation = { 0,0,0 };
+	Player* player = GetPlayer();
 
-	GetPlayer()->parent->transform.rotation = { 0,0,0 };
-	GetPlayer()->parent->transform.localRotation = { 0,0,0 };
+	player->enableDraw = true;
+	player->transform.position = { 0,1,0 };
+	player->transform.rotation = { 0,0,0 };
+	player->transform.localRotation = { 0,0,0 };
 
-	for (auto child : GetPlayer()->child)
+	player->parent->transform.rotation = { 0,0,0 };
+	player->parent->transform.localRotation = { 0,0,0 };
+
+	for (auto child : player->child)
 	{
 		child->enableDraw = true;
 		child->transform.rotation = { 0,0,0 };
@@ -191,50 +193,50 @@ void MovePlayerToFinalPosition()
 	AddCameraEvent(ced);
 	ced = { 0, 0, 0, 0, -5, -0.1F };
 	AddCameraEvent(ced);
-	ced = { -40, -0.5F, 3, 0.1F, -6, -0.1F };
+	ced = { -40, -0.5F, 8, 0.1F, -11, -0.1F };
 	AddCameraEvent(ced);
 
 	// play player pose animation
-	GetPlayer()->PlayAnimation(0);
-	GetPlayer()->SetAnimationSpeed(0.02F);
+	player->PlayAnimation(0);
+	player->SetAnimationSpeed(0.02F);
 
 	// offset player and camera to final position
 	Direction exit = GetMap()->back()->exit;
-	GetPlayer()->parent->transform.position = GetMap()->back()->GetCombinedPosition();
-	GetPlayer()->enableDraw = true;
+	player->parent->transform.position = GetMap()->back()->GetCombinedPosition();
+	player->enableDraw = true;
 
 	GetCamera()->targetOffset.y += 2;
-	GetPlayer()->transform.position.y += 200;
+	player->transform.position.y += 200;
 
 	if (exit == Direction::NORTH)
 	{
 		GetCamera()->positionOffset.x = -3;
-		GetPlayer()->transform.position.x += 10;
-		GetPlayer()->transform.position.z -= 90;
-		GetPlayer()->transform.rotation.y = 180;
-		GetPlayer()->child.front()->transform.rotation = { 0,90,0 };
+		player->transform.position.x += 10;
+		player->transform.position.z -= 90;
+		player->transform.rotation.y = 180;
+		player->child.front()->transform.rotation = { 0,90,0 };
 	}
 	if (exit == Direction::SOUTH)
 	{
 		GetCamera()->positionOffset.x = 3;
-		GetPlayer()->transform.position.x -= 10;
-		GetPlayer()->transform.position.z += 90;
-		GetPlayer()->child.front()->transform.rotation = { 0,90,0 };
+		player->transform.position.x -= 10;
+		player->transform.position.z += 90;
+		player->child.front()->transform.rotation = { 0,90,0 };
 	}
 	if (exit == Direction::EAST)
 	{
 		GetCamera()->positionOffset.z = 3;
-		GetPlayer()->transform.position.x -= 90;
-		GetPlayer()->transform.position.z -= 10;
-		GetPlayer()->transform.rotation.y = -90;
-		GetPlayer()->child.front()->transform.rotation = { 0,90,0 };
+		player->transform.position.x -= 90;
+		player->transform.position.z -= 10;
+		player->transform.rotation.y = -90;
+		player->child.front()->transform.rotation = { 0,90,0 };
 	}
 	if (exit == Direction::WEST)
 	{
 		GetCamera()->positionOffset.z = -3;
-		GetPlayer()->transform.position.x += 90;
-		GetPlayer()->transform.position.z += 10;
-		GetPlayer()->transform.rotation.y = 90;
-		GetPlayer()->child.front()->transform.rotation = { 0,90,0 };
+		player->transform.position.x += 90;
+		player->transform.position.z += 10;
+		player->transform.rotation.y = 90;
+		player->child.front()->transform.rotation = { 0,90,0 };
 	}
 }
