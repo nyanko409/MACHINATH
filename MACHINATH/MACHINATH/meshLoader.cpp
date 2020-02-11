@@ -12,6 +12,8 @@ std::vector<MESH_DATA> g_mesh
 	{"asset/mesh/boss.x" },
 	{"asset/mesh/skybox.x" },
 	{"asset/mesh/map_start.x" },
+	{"asset/mesh/map_start_gate_left.x" },
+	{"asset/mesh/map_start_gate_right.x" },
 	{"asset/mesh/map_metropolitan.x" },
 	{"asset/mesh/map_green_straight.x" },
 	{"asset/mesh/map_green_curve_left.x" },

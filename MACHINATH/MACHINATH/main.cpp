@@ -36,6 +36,7 @@
 #include "enemy.h"
 #include "cameraevent.h"
 #include "boss.h"
+#include "gate.h"
 
 
 //ライブラリファイルのリンク（exeファイルに含める）
@@ -314,6 +315,7 @@ bool InitGame()
 	InitLighting();
 	InitScore();
 	InitCamera();
+	InitCameraEvent();
 	InitPlayer();
 	InitQTE();
 	InitMap();
@@ -321,7 +323,7 @@ bool InitGame()
 	InitEdge();
 	InitEnemy();
 	InitBoss();
-	InitCameraEvent();
+	InitGate();
 
 	InitTest();
 
@@ -336,6 +338,7 @@ void UpdateGame()
 	UpdateTimer();
 	UpdateScore();
 	UpdateMap();
+	UpdateGate();
 	UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
@@ -391,6 +394,7 @@ void FinalizeGame()
 	UninitBoss();
 	UninitQTE();
 	UninitEnemy();
+	UninitGate();
 	UninitCamera();
 	UninitCameraEvent();
 

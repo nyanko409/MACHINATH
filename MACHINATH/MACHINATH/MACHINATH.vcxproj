@@ -139,6 +139,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="font.cpp" />
+    <ClCompile Include="gate.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="lighting.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="fade.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="gameObject.h" />
+    <ClInclude Include="gate.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="lighting.h" />
