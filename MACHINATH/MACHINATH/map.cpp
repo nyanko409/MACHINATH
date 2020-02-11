@@ -25,21 +25,21 @@ static MapData g_MapData[] =
 	{MESH_MAP_GREEN_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
 	{MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
 	{MESH_MAP_GREEN_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_GREEN_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 10}}},
+	{MESH_MAP_GREEN_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 20}}},
 	{MESH_MAP_YELLOW_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_YELLOW_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, -90, 1.0F}}},
 	{MESH_MAP_YELLOW_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 90, 1.0F}}},
 	{MESH_MAP_YELLOW_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
 	{MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
 	{MESH_MAP_YELLOW_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_YELLOW_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 10}}},
+	{MESH_MAP_YELLOW_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 20}}},
 	{MESH_MAP_BLUE_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_BLUE_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, -90, 1.0F}}},
 	{MESH_MAP_BLUE_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 90, 1.0F}}},
 	{MESH_MAP_BLUE_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
 	{MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
 	{MESH_MAP_BLUE_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_BLUE_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 10}}},
+	{MESH_MAP_BLUE_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 20}}},
 	{MESH_MAP_BLUE_STRAIGHT_BRIDGE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_BLUE_CLIFF, 1, -100, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_RED_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
@@ -48,14 +48,14 @@ static MapData g_MapData[] =
 	{MESH_MAP_RED_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
 	{MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
 	{MESH_MAP_RED_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_RED_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 10}}},
+	{MESH_MAP_RED_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 20}}},
 	{MESH_MAP_TWOTONE_STRAIGHT, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
 	{MESH_MAP_TWOTONE_CURVELEFT, 1, 0, Direction::WEST, std::vector<EventData>{EventData{MapEvent::CURVE, -90, 1.0F}}},
 	{MESH_MAP_TWOTONE_CURVERIGHT, 1, 0, Direction::EAST, std::vector<EventData>{EventData{MapEvent::CURVE, 90, 1.0F}}},
 	{MESH_MAP_TWOTONE_STRAIGHT_UP, 1, 33, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, -20, 5.0F}, EventData{MapEvent::SLOPE, 20, 5.0F}}},
 	{MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN, 2, -52, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::SLOPE, 20, 5.0F}, EventData{MapEvent::SLOPE, -20, 5.0F}}},
 	{MESH_MAP_TWOTONE_HIROBA, 2, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::NONE}}},
-	{MESH_MAP_TWOTONE_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 10}}}
+	{MESH_MAP_TWOTONE_FALLHOLE, 1, 0, Direction::NORTH, std::vector<EventData>{EventData{MapEvent::QTE_SINGLE, 20}}}
 };
 
 std::vector<Map*> g_map;
@@ -136,7 +136,7 @@ void UpdateMap()
 	// map pooling
 	if (!g_map.empty() && g_map.front()->id < g_currentMapId - 1)
 	{
-		// display next map and pickups
+		// display next map and children
 		if (g_map.size() > g_drawIndex)
 		{
 			g_map[g_drawIndex]->enableDraw = true;
@@ -146,7 +146,7 @@ void UpdateMap()
 			}
 		}
 	
-		// delete pickup and map
+		// delete remaining pickup and map
 		CleanPickup(g_map[0]->id);
 
 		SAFE_DELETE(g_map[0]);

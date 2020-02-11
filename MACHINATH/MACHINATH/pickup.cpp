@@ -111,6 +111,132 @@ void SpawnPickupAtRandom(Map* map)
 			return;
 		}
 	}
+
+	if (map->mapType == MapType::FALLHOLE)
+	{
+		if (map->exit == Direction::NORTH || map->exit == Direction::SOUTH)
+		{
+			float r = (rand() % 31) - 15;
+
+			SpawnPickup({ r,15,-30 }, map);
+			SpawnPickup({ r,17,-20 }, map);
+			SpawnPickup({ r,19,-10 }, map);
+			SpawnPickup({ r,21,0 }, map);
+			SpawnPickup({ r,19,10 }, map);
+			SpawnPickup({ r,17,20 }, map);
+			SpawnPickup({ r,15,30 }, map);
+			return;
+		}
+		if (map->exit == Direction::EAST || map->exit == Direction::WEST)
+		{
+			float r = (rand() % 31) - 15;
+
+			SpawnPickup({ -30,15,r }, map);
+			SpawnPickup({ -20,17,r }, map);
+			SpawnPickup({ -10,19,r }, map);
+			SpawnPickup({ 0,  21,r }, map);
+			SpawnPickup({ 10, 19,r }, map);
+			SpawnPickup({ 20, 17,r }, map);
+			SpawnPickup({ 30, 15,r }, map);
+			return;
+		}
+	}
+
+	if (map->mapType == MapType::SLOPE)
+	{
+		if (map->exit == Direction::NORTH)
+		{
+			int inv = rand() % 2 ? 1 : -1;
+
+			SpawnPickup({ -10.0F * inv, 10, -30 }, map);
+			SpawnPickup({ 0, 20, 0 }, map);
+			SpawnPickup({ 10.0F * inv, 30, 30 }, map);
+			return;
+		}
+		if (map->exit == Direction::SOUTH)
+		{
+			int inv = rand() % 2 ? 1 : -1;
+
+			SpawnPickup({ -10.0F * inv, 30, -30 }, map);
+			SpawnPickup({ 0, 20, 0 }, map);
+			SpawnPickup({ 10.0F * inv, 10, 30 }, map);
+			return;
+		}
+		if (map->exit == Direction::EAST)
+		{
+			int inv = rand() % 2 ? 1 : -1;
+
+			SpawnPickup({ -30, 10, -10.0F * inv }, map);
+			SpawnPickup({ 0, 20, 0 }, map);
+			SpawnPickup({ 30, 30, 10.0F * inv }, map);
+			return;
+		}
+		if (map->exit == Direction::WEST)
+		{
+			int inv = rand() % 2 ? 1 : -1;
+
+			SpawnPickup({ 30, 10, -10.0F * inv }, map);
+			SpawnPickup({ 0, 20, 0 }, map);
+			SpawnPickup({ -30, 30, 10.0F * inv }, map);
+			return;
+		}
+	}
+
+	if (map->mapType == MapType::TUNNEL)
+	{
+		if (map->exit == Direction::NORTH)
+		{
+			float r = (rand() % 21) - 10;
+			SpawnPickup({ r, 1, 0 }, map);
+			SpawnPickup({ r, -2.5F, 10 }, map);
+			SpawnPickup({ r, -6, 20 }, map);
+				
+			r = (rand() % 21) - 10;
+			SpawnPickup({ r, -35, 100 }, map);
+			SpawnPickup({ r, -38.5F, 110 }, map);
+			SpawnPickup({ r, -42, 120 }, map);
+			return;
+		}
+		if (map->exit == Direction::SOUTH)
+		{
+			float r = (rand() % 21) - 10;
+			SpawnPickup({ r, 1, 0 }, map);
+			SpawnPickup({ r, -2.5F, -10 }, map);
+			SpawnPickup({ r, -6, -20 }, map);
+
+			r = (rand() % 21) - 10;
+			SpawnPickup({ r, -35, -100 }, map);
+			SpawnPickup({ r, -38.5F, -110 }, map);
+			SpawnPickup({ r, -42, -120 }, map);
+			return;
+		}
+		if (map->exit == Direction::EAST)
+		{
+			float r = (rand() % 21) - 10;
+			SpawnPickup({ 0, 1, r }, map);
+			SpawnPickup({ 10, -2.5F, r }, map);
+			SpawnPickup({ 20, -6, r}, map);
+
+			r = (rand() % 21) - 10;
+			SpawnPickup({ 100, -35, r }, map);
+			SpawnPickup({ 110, -38.5F, r }, map);
+			SpawnPickup({ 120, -42, r }, map);
+			return;
+		}
+		if (map->exit == Direction::WEST)
+		{
+			float r = (rand() % 21) - 10;
+			SpawnPickup({ 0, 1, r }, map);
+			SpawnPickup({ -10, -2.5F, r }, map);
+			SpawnPickup({ -20, -6, r }, map);
+
+			r = (rand() % 21) - 10;
+			SpawnPickup({ -100, -35, r }, map);
+			SpawnPickup({ -110, -38.5F, r }, map);
+			SpawnPickup({ -120, -42, r }, map);
+			return;
+		}
+	}
 }
 
 void SpawnPickup(D3DXVECTOR3 position, Map* parent)
