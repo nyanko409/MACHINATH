@@ -13,9 +13,9 @@
 //*****************************************************************************
 typedef enum
 {
-	AUDIO_BGM_TITLE	,		// TITLE BGM
-	AUDIO_BGM_GAME,			// INGAME BGM
-	AUIDO_SE_PICKUP,		// pickup sound effect
+	AUDIO_BGM_TITLE,
+	AUDIO_BGM_GAME,	
+	AUIDO_SE_PICKUP,
 	AUDIO_SE_GETREADY,
 	AUDIO_SE_ONE,
 	AUDIO_SE_TWO,
@@ -52,4 +52,3 @@ float GetVolume(SOUND_LABEL label);
 void StartFade(SOUND_LABEL label, float targetVolume, float targetTime);
 
 void SetPlaybackSpeed(SOUND_LABEL label, float speed);
-

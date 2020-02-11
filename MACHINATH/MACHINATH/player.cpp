@@ -11,6 +11,7 @@
 #include "common.h"
 #include "countdown.h"
 #include "qte.h"
+#include "effect.h"
 #include "cameraevent.h"
 
 
@@ -302,6 +303,13 @@ void MoveSideways()
 
 void Jump()
 {
+	static bool init = false;
+	if (!init)
+	{
+		init = true;
+		PlayEffect(EFFECT_JUMP, g_skateboard->GetCombinedPosition(), g_skateboard->GetCombinedRotation(), {1,1,1}, 5.0F);
+	}
+
 	// move player up
 	g_player->transform.position.y = g_player->jumpHeight * sin(D3DXToRadian(g_jumpCnt));
 	g_jumpCnt += g_player->jumpSpeed * getSlowmoFactor();
@@ -315,7 +323,9 @@ void Jump()
 	// player reached ground
 	if (g_jumpCnt > 180)
 	{
+		init = false;
 		g_player->isJumping = false;
+		PlayEffect(EFFECT_LANDING, g_skateboard->GetCombinedPosition(), g_skateboard->GetCombinedRotation(), { 2,2,2 }, 8.0F);
 		g_jumpCnt = 0;
 		g_player->transform.rotation.y = 0.0F;
 		g_player->transform.rotation.z = 0.0F;

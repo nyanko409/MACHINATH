@@ -469,7 +469,7 @@ void UpdateTest()
 
 	if (Keyboard_IsTrigger(DIK_V))
 	{
-		handle = PlayEffect(EFFECT_BOOST, t, { 0, 0, 0 }, { 1,1,1 });
+		handle = PlayEffect(EFFECT_LANDING, t, { 0, 0, 0 }, { 1,1,1 });
 	}
 	if (Keyboard_IsTrigger(DIK_B))
 	{

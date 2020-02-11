@@ -14,7 +14,6 @@
 
 
 // globals
-// EVENTDATA:	event type, player rotation, player rotation speed
 static MapData g_MapData[] =
 {
 	{MESH_MAP_START, 1, 0, Direction::NORTH, std::vector<EventData>								{EventData{{}, MapEvent::NONE}}},
