@@ -62,7 +62,7 @@ void InitCameraEvent()
 	g_camEvent = std::vector<CameraEventData>();
 	g_camPos = GetCamera()->position;
 	offsetZ = -10;
-	offsetY = 5;
+	offsetY = 10;
 	rotY = 0;
 	g_lerpSpeed = 0.1F;
 	init = false;

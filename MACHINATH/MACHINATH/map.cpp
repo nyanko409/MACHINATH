@@ -363,13 +363,13 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Dire
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 90 }, { 50, 5, 0 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 90 }, { -50, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 60, 90 }, { 50, 20, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 60, 90 }, { -50, 20, 0 }));
 		}
 		else
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 20, 20 }, { 0, 5, 50 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 20, 20 }, { 0, 5, -50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 60, 20 }, { 0, 20, 50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 60, 20 }, { 0, 20, -50 }));
 		}
 	}
 
@@ -377,27 +377,27 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Dire
 	{
 		if (exit == Direction::WEST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 65 }, { 45, 5, -15 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 20, 10 }, { 35, 5, 30 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 20, 10 }, { -20, 5, 45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 65 }, { 45, 20, -15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 60, 10 }, { 35, 20, 30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 60, 10 }, { -20, 20, 45 }));
 		}
 		else if (exit == Direction::EAST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 65 }, { -45, 5, 15 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 20, 10 }, { -35, 5, -30 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 20, 10 }, { 20, 5, -45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 65 }, { -45, 20, 15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 60, 10 }, { -35, 20, -30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 60, 10 }, { 20, 20, -45 }));
 		}
 		else if (exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 20, 10 }, { 20, 5, 45 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 30 }, { -30, 5, 35 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 60 }, { -45, 5, -15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 60, 10 }, { 20, 20, 45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 30 }, { -30, 20, 35 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 60 }, { -45, 20, -15 }));
 		}
 		else if (exit == Direction::NORTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 20, 10 }, { -20, 5, -45 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 30 }, { 30, 5, -35 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 60 }, { 45, 5, 15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 60, 10 }, { -20, 20, -45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 30 }, { 30, 20, -35 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 60 }, { 45, 20, 15 }));
 		}
 	}
 
@@ -405,27 +405,27 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Dire
 	{
 		if (exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 20, 10 }, { -20, 5, 45 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 30 }, { 30, 5, 35 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 60 }, { 45, 5, -15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 60, 10 }, { -20, 20, 45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 30 }, { 30,  20, 35 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 60 }, { 45,  20, -15 }));
 		}
 		else if (exit == Direction::EAST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 65 }, { -45, 5, -15 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 20, 10 }, { -35, 5, 30 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 20, 10 }, { 20, 5, 45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 65 }, { -45, 20, -15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 60, 10 }, { -35, 20, 30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 60, 10 }, { 20,  20, 45 }));
 		}
 		else if (exit == Direction::NORTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 20, 10 }, { 20, 5, -45 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 30 }, { -30, 5, -35 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 60 }, { -45, 5, 15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 60, 60, 10 }, { 20,  20, -45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 30 }, { -30, 20, -35 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 60 }, { -45, 20, 15 }));
 		}
 		else if (exit == Direction::WEST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 20, 65 }, { 45, 5, 15 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 20, 10 }, { 35, 5, -30 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 20, 10 }, { -20, 5, -45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 10, 60, 65 }, { 45,  20, 15 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 40, 60, 10 }, { 35,  20, -30 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 55, 60, 10 }, { -20, 20, -45 }));
 		}
 	}
 
@@ -433,13 +433,13 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Dire
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 80, 90 }, { 50, 25, 0 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 80, 90 }, { -50, 25, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 100, 90 }, { 50,  35, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 100, 90 }, { -50, 35, 0 }));
 		}
 		else
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 80, 20 }, { 0, 25, 50 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 80, 20 }, { 0, 25, -50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 100, 20 }, { 0, 35, 50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 100, 20 }, { 0, 35, -50 }));
 		}
 	}
 
@@ -471,8 +471,8 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Dire
 	{
 		if (exit == Direction::NORTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 180 }, { 50, 5, 45 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 180 }, { -50, 5, 45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 60, 180 }, { 50,  20, 45 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 60, 180 }, { -50, 20, 45 }));
 		}
 		else if (exit == Direction::SOUTH)
 		{
@@ -486,8 +486,8 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Dire
 		}
 		else if (exit == Direction::EAST)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 20, 20 }, { 45, 5, 50 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 20, 20 }, { 45, 5, -50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 60, 20 }, { 45, 20, 50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 60, 20 }, { 45, 20, -50 }));
 		}
 	}
 
@@ -495,13 +495,13 @@ std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>> GetMapCollider(MapType mt, Dire
 	{
 		if (exit == Direction::NORTH || exit == Direction::SOUTH)
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 90 }, { 50, 5, 0 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 20, 90 }, { -50, 5, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 60, 90 }, { 50,  20, 0 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 20, 60, 90 }, { -50, 20, 0 }));
 		}
 		else
 		{
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 20, 20 }, { 0, 5, 50 }));
-			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 20, 20 }, { 0, 5, -50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 60, 20 }, { 0, 20, 50 }));
+			collider.emplace_back(std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 90, 60, 20 }, { 0, 20, -50 }));
 		}
 	}
 
