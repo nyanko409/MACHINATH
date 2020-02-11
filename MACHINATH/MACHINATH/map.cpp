@@ -656,50 +656,52 @@ std::pair<D3DXVECTOR3, D3DXVECTOR3> GetMapEntranceCollider(MapType mt, Direction
 		|| mt == MapType::SLOPE || mt == MapType::TUNNEL)
 	{
 		if (exit == Direction::WEST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 45, 5, 0 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 60, 100 }, { 45, 20, 0 });
 		else if (exit == Direction::EAST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { -45, 5, 0 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 60, 100 }, { -45, 20, 0 });
 		else if (exit == Direction::SOUTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, 45 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 60, 2 }, { 0, 20, 45 });
 		else if (exit == Direction::NORTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -45 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 60, 2 }, { 0, 20, -45 });
 	}
 
 	if (mt == MapType::CURVE_LEFT)
 	{
 		if (exit == Direction::WEST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -45 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 60, 2 }, { 0, 20, -45 });
 		else if (exit == Direction::EAST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, 45 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 60, 2 }, { 0, 20, 45 });
 		else if (exit == Direction::SOUTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 45, 5, 0 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 60, 100 }, { 45, 20, 0 });
 		else if (exit == Direction::NORTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { -45, 5, 0 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 60, 100 }, { -45, 20, 0 });
 	}
 
 	if (mt == MapType::CURVE_RIGHT)
 	{
 		if (exit == Direction::WEST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, 45 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 60, 2 }, { 0, 20, 45 });
 		else if (exit == Direction::EAST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 20, 2 }, { 0, 5, -45 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 100, 60, 2 }, { 0, 20, -45 });
 		else if (exit == Direction::SOUTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { -45, 5, 0 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 60, 100 }, { -45, 20, 0 });
 		else if (exit == Direction::NORTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 100 }, { 45, 5, 0 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 60, 100 }, { 45, 20, 0 });
 	}
 
 	if (mt == MapType::HIROBA)
 	{
 		if (exit == Direction::WEST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 180 }, { 45, 5, 0 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 60, 180 }, { 45, 20, 0 });
 		else if (exit == Direction::EAST)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 20, 180 }, { -45, 5, 0 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 2, 60, 180 }, { -45, 20, 0 });
 		else if (exit == Direction::SOUTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 20, 2 }, { 0, 5, 45 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 60, 2 }, { 0, 20, 45 });
 		else if (exit == Direction::NORTH)
-			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 20, 2 }, { 0, 5, -45 });
+			return std::pair<D3DXVECTOR3, D3DXVECTOR3>({ 180, 60, 2 }, { 0, 20, -45 });
 	}
+
+	return std::pair<D3DXVECTOR3, D3DXVECTOR3>();
 }
 
 
