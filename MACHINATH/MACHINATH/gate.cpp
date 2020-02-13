@@ -27,7 +27,7 @@ void UninitGate()
 	SAFE_DELETE(g_gateLeft);
 	SAFE_DELETE(g_gateRight);
 }
-
+  
 void UpdateGate()
 {
 	if (!g_open) return;

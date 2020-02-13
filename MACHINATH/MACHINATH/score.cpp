@@ -78,7 +78,7 @@ void DrawScore()
 	int width = Texture_GetWidth(TEXTURE_INDEX_SCORE);
 	int height = Texture_GetHeight(TEXTURE_INDEX_SCORE);
 
-	if (true)
+	if (false)
 	{
 		for (int i = 0; i < RANKING_COUNT; ++i)
 		{
