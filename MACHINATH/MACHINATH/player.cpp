@@ -258,12 +258,17 @@ void MoveSideways()
 	// move player and rotate in z axis
 	if (Keyboard_IsPress(DIK_F))
 	{
+		// add -x velocity
+		g_player->sideVelocity -= 0.08F;
+		if (g_player->sideVelocity < -1)
+			g_player->sideVelocity = -1;
+
 		D3DXMATRIX mRot;
-		D3DXVECTOR3 left(0,0,1);
-		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y - 90));
+		D3DXVECTOR3 left(0, 0, 1);
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y + 90));
 		D3DXVec3TransformCoord(&left, &left, &mRot);
 
-		g_parent->transform.position += left * g_player->sideSpeed * getSlowmoFactor();
+		g_parent->transform.position += left * g_player->sideSpeed * getSlowmoFactor() * g_player->sideVelocity;
 
 		g_player->transform.localRotation.z -= g_zRotSpeed;
 		if (g_player->transform.localRotation.z < -g_zRotMax)
@@ -271,12 +276,17 @@ void MoveSideways()
 	}
 	else if (Keyboard_IsPress(DIK_G))
 	{
+		// add +x velocity
+		g_player->sideVelocity += 0.08F;
+		if (g_player->sideVelocity > 1)
+			g_player->sideVelocity = 1;
+
 		D3DXMATRIX mRot;
 		D3DXVECTOR3 right(0, 0, 1);
 		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y + 90));
 		D3DXVec3TransformCoord(&right, &right, &mRot);
 
-		g_parent->transform.position += right * g_player->sideSpeed * getSlowmoFactor();
+		g_parent->transform.position += right * g_player->sideSpeed * getSlowmoFactor() * g_player->sideVelocity;
 
 		g_player->transform.localRotation.z += g_zRotSpeed;
 		if (g_player->transform.localRotation.z > g_zRotMax)
@@ -286,6 +296,23 @@ void MoveSideways()
 	// else rotate back to original position
 	else
 	{
+		// reduce velocity back to 0
+		if (g_player->sideVelocity != 0)
+		{
+			if (g_player->sideVelocity > 0)
+			{
+				g_player->sideVelocity -= 0.08F;
+				if (g_player->sideVelocity < 0)
+					g_player->sideVelocity = 0;
+			}
+			if (g_player->sideVelocity < 0)
+			{
+				g_player->sideVelocity += 0.08F;
+				if (g_player->sideVelocity > 0)
+					g_player->sideVelocity = 0;
+			}
+		}
+
 		if (g_player->transform.localRotation.z > 0)
 		{
 			g_player->transform.localRotation.z -= g_zRotSpeed;

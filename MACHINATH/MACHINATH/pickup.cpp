@@ -94,7 +94,7 @@ void SpawnPickupAtRandom(Map* map)
 	{
 		if (map->exit == Direction::NORTH || map->exit == Direction::SOUTH)
 		{
-			float r = (rand() % 61) - 30;
+			float r = (rand() % 31) - 15;
 
 			SpawnPickup({ r,2,-10 }, map);
 			SpawnPickup({ r,2,0 }, map);
@@ -103,7 +103,7 @@ void SpawnPickupAtRandom(Map* map)
 		}
 		if (map->exit == Direction::EAST || map->exit == Direction::WEST)
 		{
-			float r = (rand() % 61) - 30;
+			float r = (rand() % 31) - 15;
 
 			SpawnPickup({ -10,2,r }, map);
 			SpawnPickup({ 0,2,r }, map);
