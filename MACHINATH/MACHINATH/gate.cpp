@@ -2,6 +2,7 @@
 #include "mesh.h"
 #include "map.h"
 #include "gate.h"
+#include "sound.h"
 
 
 static MeshObject* g_gateLeft;
@@ -42,6 +43,8 @@ void UpdateGate()
 
 		g_gateLeft->transform.position.x = -50;
 		g_gateRight->transform.position.x = 50;
+		
+		StopSound(AUDIO_SE_GATE_OPEN);
 	}
 }
 
@@ -49,4 +52,5 @@ void UpdateGate()
 void OpenGate()
 {
 	g_open = true;
+	PlaySound(AUDIO_SE_GATE_OPEN,3.0f);
 }
