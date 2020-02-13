@@ -5,6 +5,7 @@
 #include "cameraevent.h"
 #include "camera.h"
 #include "customMath.h"
+#include "score.h"
 #include "sound.h"
 
 
@@ -194,6 +195,7 @@ void MovePlayerToFinalPosition()
 	ced = { 0, 0, 0, 0, -5, -0.1F };
 	AddCameraEvent(ced);
 	ced = { -40, -0.5F, 8, 0.1F, -11, -0.1F };
+	ced.action = ShowRanking;
 	AddCameraEvent(ced);
 
 	// play player pose animation

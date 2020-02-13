@@ -8,6 +8,7 @@ struct CameraEventData
 	float zOffset, zOffsetSpeed;
 	float yOffset, yOffsetSpeed;
 	bool started, finished;
+	void(*action)();
 };
 
 
