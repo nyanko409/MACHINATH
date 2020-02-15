@@ -24,7 +24,7 @@ void StartCountdown()
 	PlaySound(AUDIO_SE_GETREADY);
 	state = GetReady;
 
-	CameraEventData ced = { 360, 0.5F, 0, 0, -7, -0.1F };
+	CameraEventData ced = { 360, 0.8F, 0, 0, -7, -0.1F };
 	AddCameraEvent(ced);
 
 	g_count1.color.a = g_count2.color.a = g_count3.color.a = 

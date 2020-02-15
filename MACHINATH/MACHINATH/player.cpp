@@ -81,8 +81,8 @@ void InitPlayer()
 
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
-	StartCountdown();
-	//g_player->isMoving = true;
+	//StartCountdown();
+	g_player->isMoving = true;
 }
 
 void UninitPlayer()
@@ -102,7 +102,7 @@ void UpdatePlayer()
 	g_skybox->transform.position = g_player->GetCombinedPosition();
 	g_skybox->transform.rotation.y += 0.01F;
 
-	// return if in countdown
+	// return if player is not moving
 	if (!g_player->isMoving) return;
 
 	// update map event
