@@ -260,15 +260,15 @@ void MoveSideways()
 	{
 		// add -x velocity
 		g_player->sideVelocity -= 0.08F;
-		if (g_player->sideVelocity < -1)
+		if (g_player->sideVelocity < -1) 
 			g_player->sideVelocity = -1;
-
+		          
 		D3DXMATRIX mRot;
 		D3DXVECTOR3 left(0, 0, 1);
-		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y + 90));
+		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y - 90));
 		D3DXVec3TransformCoord(&left, &left, &mRot);
 
-		g_parent->transform.position += left * g_player->sideSpeed * getSlowmoFactor() * g_player->sideVelocity;
+		g_parent->transform.position += left * g_player->sideSpeed * getSlowmoFactor();
 
 		g_player->transform.localRotation.z -= g_zRotSpeed;
 		if (g_player->transform.localRotation.z < -g_zRotMax)
@@ -286,7 +286,7 @@ void MoveSideways()
 		D3DXMatrixRotationY(&mRot, D3DXToRadian(g_parent->transform.rotation.y + 90));
 		D3DXVec3TransformCoord(&right, &right, &mRot);
 
-		g_parent->transform.position += right * g_player->sideSpeed * getSlowmoFactor() * g_player->sideVelocity;
+		g_parent->transform.position += right * g_player->sideSpeed * getSlowmoFactor();
 
 		g_player->transform.localRotation.z += g_zRotSpeed;
 		if (g_player->transform.localRotation.z > g_zRotMax)

@@ -1,6 +1,7 @@
 #include <vector>
 #include "sound.h"
 #include "input.h"
+#include "buttonInput.h"
 #include "font.h"
 #include "texture.h"
 #include "sprite.h"
@@ -163,8 +164,10 @@ void DrawQTE()
 	{
 		SpriteDraw(g_inner);
 
-		if (Keyboard_IsPress(DIK_SPACE))
+		if (whileButtonPressed)
+		{
 			SpriteDraw(g_press);
+		}
 
 		if(g_activeQTE == QTE_DEFAULT)
 			SpriteDraw(g_outer);
@@ -196,10 +199,10 @@ void qteDefault()
 	float dist = g_outer.scale.x - g_inner.scale.x;
 
 	// check for user input
-	if (Keyboard_IsTrigger(DIK_SPACE))
+	if (onButtonPressed)
 	{
 		// check for performance and add it to score
-		dist = fabs(dist);
+ 		dist = fabs(dist);
 		int score = 0;
 
 		if (dist < PERFECT)
@@ -258,7 +261,7 @@ void qteMultiPress()
 		}
 
 		// add score after user input
-		if (Keyboard_IsTrigger(DIK_SPACE))
+		if (onButtonPressed)
 		{
 			AddScore(10);
 		}

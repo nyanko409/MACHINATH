@@ -4,6 +4,7 @@
 #include <vector>
 #include "common.h"
 #include "mydirect3d.h"
+#include "buttonInput.h"
 #include "texture.h"
 #include "input.h"
 #include "camera.h"
@@ -51,6 +52,8 @@
 #define WINDOW_CAPTION  "MACHINATH"
 
 static HWND g_hWnd;
+bool onButtonPressed = false;
+bool whileButtonPressed = false;
 
 // プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -150,49 +153,50 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	bool init_title = false;
 	bool init_game = false;
 
+	// MAIN LOOP
 	while (WM_QUIT != msg.message) 
 	{
+		// check for input and windows events
+		onButtonPressed = false;
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		else
+
+		// GAME LOOP
+		Sleep(6);
+		Keyboard_Update();
+		UpdateFade();
+
+		switch (GetScene())
 		{
-			// MAIN LOOP
-			Sleep(6);
-			Keyboard_Update();
-			UpdateFade();
-
-			switch (GetScene())
+		case SCENE_TITLESCREEN:
+			if (!init_title)
 			{
-			case SCENE_TITLESCREEN:
-				if (!init_title)
-				{
-					FinalizeGame();
-					InitTitle();
-					init_game = false;
-					init_title = true;
-				}
-
-				UpdateTitle();
-				DrawTitle();
-				break;
-			case SCENE_GAMESCREEN:
-				if (!init_game)
-				{
-					FinalizeTitle();
-					InitGame();
-					init_title = false;
-					init_game = true;
-				}
-
-				UpdateGame();
-				DrawGame();
-				break;
-			default:
-				break;
+				FinalizeGame();
+				InitTitle();
+				init_game = false;
+				init_title = true;
 			}
+
+			UpdateTitle();
+			DrawTitle();
+			break;
+		case SCENE_GAMESCREEN:
+			if (!init_game)
+			{
+				FinalizeTitle();
+				InitGame();
+				init_title = false;
+				init_game = true;
+			}
+
+			UpdateGame();
+			DrawGame();
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -205,18 +209,33 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch (uMsg) 
+	switch (uMsg)
 	{
 	case WM_KEYDOWN:
-		if (wParam == VK_ESCAPE) {
+		if (wParam == VK_ESCAPE) 
+		{
 			ShowCursor(true);
 			SendMessage(g_hWnd, WM_CLOSE, 0, 0);
 			ShowCursor(false);
 		}
+		if (wParam == VK_SPACE)
+		{
+			// check for 30th bit to check if it is the first frame the key is pressed
+			onButtonPressed = (lParam & 0x40000000) == 0;
+			whileButtonPressed = true;
+		}
+		break;
+
+	case WM_KEYUP:
+		if (wParam == VK_SPACE)
+		{
+			whileButtonPressed = false;
+		}
 		break;
 
 	case WM_CLOSE:
-		if (MessageBox(g_hWnd, "本当に終了してよろしいですか？", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) {
+		if (MessageBox(g_hWnd, "本当に終了してよろしいですか？", "確認", MB_OKCANCEL | MB_DEFBUTTON2) == IDOK) 
+		{
 			DestroyWindow(g_hWnd);
 		}
 		return 0;

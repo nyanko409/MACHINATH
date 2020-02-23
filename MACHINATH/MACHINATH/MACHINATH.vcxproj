@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="billboard.h" />
     <ClInclude Include="boss.h" />
+    <ClInclude Include="buttonInput.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cameraevent.h" />
     <ClInclude Include="collider.h" />

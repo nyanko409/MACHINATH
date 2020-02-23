@@ -9,10 +9,13 @@
 #include "input.h"
 #include "common.h"
 #include "sound.h"
+#include "buttonInput.h"
+
 
 #define COLOR_CHANGESPEED 3
 #define ANIMATION_SPAN 5
 #define ANIMATION_PERIOD 200
+
 
 static Sprite g_titleeye;
 static Sprite g_titleforward;
@@ -28,6 +31,7 @@ static int g_Animecnt;
 static int eyeRed, eyeGreen, eyeBlue;
 
 ColorFade g_color;
+
 
 void InitTitleScreen()
 {
@@ -170,7 +174,7 @@ void UpdateTitleScreen()
 	}
 
 	// fade to game screen
-	if (Keyboard_IsTrigger(DIK_SPACE) && StartFadeToScene(SCENE_GAMESCREEN))
+	if (onButtonPressed && StartFadeToScene(SCENE_GAMESCREEN))
 	{
 		StopSound(AUDIO_SE_TITLE_NOISE);
 		PlaySound(AUDIO_SE_TITLE_PUSHBUTTON , 0.2f);
