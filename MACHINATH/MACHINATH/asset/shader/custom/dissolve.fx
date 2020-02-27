@@ -7,19 +7,32 @@ float3 AmbientColor;
 float3 DiffuseColor;
 float3 ViewDir;
 
-struct VertexOut
+sampler s0 : register(s0);
+sampler s1 : register(s1);
+float value;
+
+
+struct VS_IN
 {
-    float4 Pos : POSITION;
-    float4 Color : COLOR;
+	float3 pos : POSITION;
+	float4 col : COLOR0;
+	float2 uv : TEXCOORD0;
 };
 
-VertexOut VShader(float4 Pos : POSITION, float3 Normal : NORMAL)
+struct VertexOut
+{
+	float4 pos : POSITION;
+	float4 col : COLOR0;
+	float2 uv : TEXCOORD0;
+};
+
+VertexOut VShader(float4 Pos : POSITION, float3 Normal : NORMAL, float3 Uv : TEXCOORD0)
 {
     // init 
     VertexOut Vert = (VertexOut)0;
     float3 LightPos = float3(2, 2, 2);
-    float3 AmbientColor = float3(.5, .5, .5);
-    float3 DiffuseColor = float3(.5, .5, .5);
+    float3 AmbientColor = float3(1, 1, 1);
+    float3 DiffuseColor = float3(1, 1, 1);
 
     // offset current pos and normal to world position
     Pos = mul(Pos, World);
@@ -30,31 +43,36 @@ VertexOut VShader(float4 Pos : POSITION, float3 Normal : NORMAL)
     DiffuseColor = dot(Normal, LightVec) * DiffuseColor;
     DiffuseColor = max(DiffuseColor, 0);
 
-    Vert.Color.rgb = DiffuseColor + AmbientColor;
-    Vert.Color.a = 1.0F;
-
-    // rim lighting
-    float rim = 1.0 - abs(dot(Normal, ViewDir));
-    Vert.Color.a = pow(rim, 5);
-    Vert.Color.g = pow(rim, 5) * 10;
-    Vert.Color.rb = 0;
-    
+    Vert.col.rgb = DiffuseColor + AmbientColor;
+    Vert.col.a = 1.0F;
 
     // transform vertex from world space to screen space
     float4x4 Transform;
     Transform = mul(View, Projection);
-    Vert.Pos = mul(Pos, Transform);
+    Vert.pos = mul(Pos, Transform);
+
+	Vert.uv = Uv;
 
     return Vert;
 }
 
-float4 PShader(	float4 Diff : COLOR0, float Vfa : VFACE) : COLOR
+float4 PShader(VertexOut In) : COLOR0
 {
-    //float alpha = normal < 0.1F ? 
-    //float green = normal < 0.1F && normal > -0.1F ? 1.0F : 0.0F;
-    float green = 1.0F;
+	// get pixel color from dissolve sampler
+	float4 temp = tex2D(s1, In.uv);
+	
+	if (temp.r < value + 0.2F)
+	{
+		In.col.g *= 1 - temp.r;
+		In.col.rb *= temp.r;
+		In.col.a = temp.r < value ? 0 : In.col.a;
+	}
 
-    return Diff;
+	// get pixel color from diffuse sampler
+	float4 color = tex2D(s0, In.uv);
+	In.col *= color;
+
+    return In.col;
 }
 
 technique FirstTechnique

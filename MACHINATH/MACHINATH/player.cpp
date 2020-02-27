@@ -12,6 +12,7 @@
 #include "countdown.h"
 #include "qte.h"
 #include "effect.h"
+#include "texture.h"
 #include "cameraevent.h"
 
 

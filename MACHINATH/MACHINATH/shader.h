@@ -8,7 +8,7 @@ class GameObject;
 enum SHADER_TYPE
 {
 	SHADER_WATER,
-	SHADER_FOG,
+	SHADER_DISSOLVE,
 
 	SHADER_DEFAULT
 };

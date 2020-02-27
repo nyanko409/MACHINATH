@@ -49,6 +49,9 @@ struct MapData
 // map class
 class Map : public MeshObject
 {
+private:
+	float m_dissolveValue;
+
 public:
 	int id;								// id of the map
 	BoxCollider entrance;				// entrance collider of the map
@@ -59,12 +62,13 @@ public:
 
 
 	// costructor
-	Map(int id, Transform transform, MapData data, MapType mapType, Direction exit, 
+	Map(int id, Transform transform, MapData data, MapType mapType, Direction exit,
 		const std::pair<D3DXVECTOR3, D3DXVECTOR3>& entranceCollider,
 		const std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>& mapCollider,
 		const std::vector<std::pair<D3DXVECTOR3, D3DXVECTOR3>>& eventCollider,
 		SHADER_TYPE type = SHADER_DEFAULT, GameObject* parent = nullptr) :
-		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data), col(col), mapType(mapType)
+		id(id), MeshObject(transform, data.name, type, parent), exit(exit), data(data), col(col), mapType(mapType),
+		m_dissolveValue(1)
 	{
 		// disable draw
 		enableDraw = false;

@@ -92,6 +92,15 @@ void Map::Draw()
 		BoxCollider::DrawCollider(data.event[i].trigger, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 0, 255)));
 #endif
 
+	if (enableDraw)
+	{
+		MyDirect3D_GetDevice()->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_DISSOLVE));
+
+		m_dissolveValue -= 0.005F;
+		//if (m_dissolveValue < -1) m_dissolveValue = 1;
+		pShader->SetFloat("value", m_dissolveValue);
+	}
+
 	//pDevice->SetRenderState(D3DRS_LIGHTING, false);
 	MeshObject::Draw();
 	//pDevice->SetRenderState(D3DRS_LIGHTING, true);
@@ -193,7 +202,7 @@ void LoadMapFromFile(char* path)
 
 	g_map.emplace_back(new Map(id++, transform, g_MapData[0], MapType::NONE,  dir, 
 		GetMapEntranceCollider(MapType::NONE, dir), GetMapCollider(MapType::NONE, dir), 
-		GetMapEventCollider(MapType::NONE, dir)));
+		GetMapEventCollider(MapType::NONE, dir), SHADER_DISSOLVE));
 
 	while (true)
 	{
@@ -244,7 +253,7 @@ void LoadMapFromFile(char* path)
 			// populate map
  			g_map.emplace_back(new Map(id++, transform, g_MapData[ci], mt, dir, 
 				GetMapEntranceCollider(mt, dir), GetMapCollider(mt, dir), 
-				GetMapEventCollider(mt, dir)));
+				GetMapEventCollider(mt, dir), SHADER_DISSOLVE));
 		}
 		catch (std::runtime_error& e)
 		{
