@@ -82,8 +82,8 @@ void InitPlayer()
 
 	// play BGM and start countdown
 	PlaySound(AUDIO_BGM_GAME);
-	//StartCountdown();
-	g_player->isMoving = true;
+	StartCountdown();
+	//g_player->isMoving = true;
 }
 
 void UninitPlayer()

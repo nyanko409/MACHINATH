@@ -2,11 +2,41 @@
 #include "mesh.h"
 #include "map.h"
 #include "gate.h"
+#include "transform.h"
+#include "texture.h"
 #include "sound.h"
 
 
-static MeshObject* g_gateLeft;
-static MeshObject* g_gateRight;
+class Gate : public MeshObject
+{
+public:
+	float dissolveValue;
+
+	Gate(Transform transform, MESH_NAME name, SHADER_TYPE shader, GameObject* parent) :
+		MeshObject(transform, name, shader, parent), dissolveValue(1)
+	{}
+
+	// override draw from meshobject
+	void Draw() override;
+};
+
+void Gate::Draw()
+{
+	if (enableDraw)
+	{
+		MyDirect3D_GetDevice()->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_DISSOLVE));
+
+		dissolveValue -= 0.006F;
+		pShader->SetFloat("value", dissolveValue);
+	}
+
+	MeshObject::Draw();
+}
+
+
+
+static Gate* g_gateLeft;
+static Gate* g_gateRight;
 static bool g_open;
 
 
@@ -18,8 +48,8 @@ void InitGate()
 
 	g_open = false;
 
-	g_gateLeft = new MeshObject(Transform(), MESH_MAP_START_GATE_LEFT, SHADER_DEFAULT, map);
-	g_gateRight = new MeshObject(Transform(), MESH_MAP_START_GATE_RIGHT, SHADER_DEFAULT, map);
+	g_gateLeft = new Gate(Transform(), MESH_MAP_START_GATE_LEFT, SHADER_DISSOLVE, map);
+	g_gateRight = new Gate(Transform(), MESH_MAP_START_GATE_RIGHT, SHADER_DISSOLVE, map);
 }
 
 void UninitGate()

@@ -96,8 +96,7 @@ void Map::Draw()
 	{
 		MyDirect3D_GetDevice()->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_DISSOLVE));
 
-		m_dissolveValue -= 0.005F;
-		//if (m_dissolveValue < -1) m_dissolveValue = 1;
+		m_dissolveValue -= 0.006F;
 		pShader->SetFloat("value", m_dissolveValue);
 	}
 
