@@ -62,12 +62,12 @@ void InitRenderState();
 static void InitLibrary();
 static void FinalizeLibrary();
 
-static bool InitTitle();
+static void InitTitle();
 static void UpdateTitle();
 static void DrawTitle();
 static void FinalizeTitle();
 
-static bool InitGame();
+static void InitGame();
 static void UpdateGame();
 static void DrawGame();
 static void FinalizeGame();
@@ -212,7 +212,7 @@ LRESULT CALLBACK WndProc(HWND g_hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_KEYDOWN:
-		if (wParam == VK_ESCAPE) 
+		if (wParam == VK_ESCAPE)                                
 		{
 			ShowCursor(true);
 			SendMessage(g_hWnd, WM_CLOSE, 0, 0);
@@ -284,10 +284,9 @@ void FinalizeLibrary()
 }
 
 // init title screen
-bool InitTitle()
+void InitTitle()
 {
 	InitTitleScreen();
-	return true;
 }
 
 // update title
@@ -329,7 +328,7 @@ void FinalizeTitle()
 }
 
 // init game screen
-bool InitGame()
+void InitGame()
 {
 	InitLighting();
 	InitScore();
@@ -345,8 +344,6 @@ bool InitGame()
 	InitGate();
 
 	InitTest();
-
-	return true;
 }
 
 // update game
@@ -358,12 +355,12 @@ void UpdateGame()
 	UpdateScore();
 	UpdateMap();
 	UpdateGate();
-	UpdatePlayer();
+	//UpdatePlayer();
 	UpdatePickup();
 	UpdateLighting();
 	UpdateEnemy();
 	UpdateBoss();
-	UpdateCameraEvent();
+	//UpdateCameraEvent();
 	UpdateCamera();
 	UpdateQTE();
 	UpdateEdge();
