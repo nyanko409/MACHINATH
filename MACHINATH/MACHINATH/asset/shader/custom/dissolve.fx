@@ -72,7 +72,8 @@ float4 PShader(VertexOut In) : COLOR0
 		//In.col.g = pow((1 - temp.r), 2);
 		//In.col.rb = 0;
 		//In.col.a = temp.r < value ? 0 : In.col.a;
-		In.col.rgb = pow((1 - temp.rgb), 1) * dissolveColor.rgb;
+		//In.col.rgb = pow((1 - temp.rgb), 2) * dissolveColor.rgb;
+		In.col.rgb = (1.3F - temp.rgb) * dissolveColor.rgb;
 		In.col.a = temp.r < value ? 0 : In.col.a;
 	}
 
