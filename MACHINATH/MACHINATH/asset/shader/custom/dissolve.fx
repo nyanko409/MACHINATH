@@ -10,6 +10,7 @@ float3 ViewDir;
 sampler s0 : register(s0);
 sampler s1 : register(s1);
 float value;
+float3 dissolveColor;
 
 
 struct VS_IN
@@ -58,19 +59,22 @@ VertexOut VShader(float4 Pos : POSITION, float3 Normal : NORMAL, float3 Uv : TEX
 
 float4 PShader(VertexOut In) : COLOR0
 {
-	// get pixel color from dissolve sampler
-	float4 temp = tex2D(s1, In.uv);
-	
-	if (temp.r < value + 0.2F)
-	{
-		In.col.g *= 1 - temp.r;
-		In.col.rb *= temp.r;
-		In.col.a = temp.r < value ? 0 : In.col.a;
-	}
-
 	// get pixel color from diffuse sampler
 	float4 color = tex2D(s0, In.uv);
 	In.col *= color;
+
+	// get pixel color from dissolve sampler
+	float4 temp = tex2D(s1, In.uv);
+	
+	float dis;
+	if (temp.r < value + 0.2F)
+	{
+		//In.col.g = pow((1 - temp.r), 2);
+		//In.col.rb = 0;
+		//In.col.a = temp.r < value ? 0 : In.col.a;
+		In.col.rgb = pow((1 - temp.rgb), 1) * dissolveColor.rgb;
+		In.col.a = temp.r < value ? 0 : In.col.a;
+	}
 
     return In.col;
 }

@@ -98,6 +98,13 @@ void Map::Draw()
 
 		m_dissolveValue -= 0.006F;
 		pShader->SetFloat("value", m_dissolveValue);
+
+		// rgb
+		float col[3];
+		col[0] = 0.5F;
+		col[1] = 0;
+		col[2] = 1;
+		pShader->SetFloatArray("dissolveColor", col, 3);
 	}
 
 	//pDevice->SetRenderState(D3DRS_LIGHTING, false);

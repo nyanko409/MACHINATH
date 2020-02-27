@@ -6,6 +6,7 @@
 #include "camera.h"
 #include "customMath.h"
 #include "score.h"
+#include "texture.h"
 #include "sound.h"
 
 
@@ -16,6 +17,14 @@ void Boss::Draw()
 #ifdef _DEBUG
 	BoxCollider::DrawCollider(collider, D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255)));
 #endif
+
+	if (enableDraw)
+	{
+		MyDirect3D_GetDevice()->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_DISSOLVE));
+
+		dissolveValue -= 0.006F;
+		pShader->SetFloat("value", dissolveValue);
+	}
 
 	// draw both faces for boss
 	auto pDevice = MyDirect3D_GetDevice();
@@ -56,7 +65,7 @@ void InitBoss()
 	else
 		trans = Transform({ -200 ,50, 0 });
 
-	g_boss = new Boss(trans, MESH_BOSS, SHADER_DEFAULT, map);
+	g_boss = new Boss(trans, MESH_BOSS, SHADER_DISSOLVE, map);
 	g_boss->enableDraw = map->enableDraw;
 
 	g_collided = false;
