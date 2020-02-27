@@ -51,6 +51,7 @@ class Map : public MeshObject
 {
 private:
 	float m_dissolveValue;
+	D3DXVECTOR3 m_dissolveColor;
 
 public:
 	int id;								// id of the map
@@ -94,6 +95,45 @@ public:
 				eventCollider[i].first.x, eventCollider[i].first.y, eventCollider[i].first.z,
 				eventCollider[i].second, true);
 		}
+
+		// init dissolve color
+		m_dissolveColor = { 0,0,0 };
+
+		if (data.name == MESH_MAP_BLUE_CURVELEFT || data.name ==   MESH_MAP_BLUE_CURVERIGHT ||
+			data.name == MESH_MAP_BLUE_FALLHOLE || data.name ==    MESH_MAP_BLUE_STRAIGHT ||
+			data.name == MESH_MAP_BLUE_STRAIGHT_UP || data.name == MESH_MAP_BLUE_STRAIGHT_TUNNEL_DOWN ||
+			data.name == MESH_MAP_BLUE_HIROBA)
+			m_dissolveColor = { 0,0,1 };
+
+		if (data.name == MESH_MAP_RED_CURVELEFT || data.name ==   MESH_MAP_RED_CURVERIGHT ||
+			data.name == MESH_MAP_RED_FALLHOLE || data.name ==    MESH_MAP_RED_STRAIGHT ||
+			data.name == MESH_MAP_RED_STRAIGHT_UP || data.name == MESH_MAP_RED_STRAIGHT_TUNNEL_DOWN ||
+			data.name == MESH_MAP_RED_HIROBA)
+			m_dissolveColor = { 1,0,0 };
+
+		if (data.name == MESH_MAP_YELLOW_CURVELEFT || data.name ==   MESH_MAP_YELLOW_CURVERIGHT ||
+			data.name == MESH_MAP_YELLOW_FALLHOLE || data.name ==    MESH_MAP_YELLOW_STRAIGHT ||
+			data.name == MESH_MAP_YELLOW_STRAIGHT_UP || data.name == MESH_MAP_YELLOW_STRAIGHT_TUNNEL_DOWN ||
+			data.name == MESH_MAP_YELLOW_HIROBA)
+			m_dissolveColor = {1,1,0 };
+
+		if (data.name == MESH_MAP_GREEN_CURVELEFT || data.name ==   MESH_MAP_GREEN_CURVERIGHT ||
+			data.name == MESH_MAP_GREEN_FALLHOLE || data.name ==    MESH_MAP_GREEN_STRAIGHT ||
+			data.name == MESH_MAP_GREEN_STRAIGHT_UP || data.name == MESH_MAP_GREEN_STRAIGHT_TUNNEL_DOWN ||
+			data.name == MESH_MAP_GREEN_HIROBA)
+			m_dissolveColor = { 0,1,0 };
+
+		if (data.name == MESH_MAP_TWOTONE_CURVELEFT || data.name ==   MESH_MAP_TWOTONE_CURVERIGHT ||
+			data.name == MESH_MAP_TWOTONE_FALLHOLE || data.name ==    MESH_MAP_TWOTONE_STRAIGHT ||
+			data.name == MESH_MAP_TWOTONE_STRAIGHT_UP || data.name == MESH_MAP_TWOTONE_STRAIGHT_TUNNEL_DOWN ||
+			data.name == MESH_MAP_TWOTONE_HIROBA)
+			m_dissolveColor = { 1,1,1 };
+
+		if(data.name == MESH_MAP_METROPOLITAN)
+			m_dissolveColor = { 0,0,0 };
+
+		if (data.name == MESH_MAP_START)
+			m_dissolveColor = {1,1,1};
 	}
 
 	// destructor

@@ -92,6 +92,7 @@ void Map::Draw()
 		BoxCollider::DrawCollider(data.event[i].trigger, D3DCOLOR(D3DCOLOR_RGBA(0, 255, 0, 255)));
 #endif
 
+	// shader values
 	if (enableDraw)
 	{
 		MyDirect3D_GetDevice()->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_DISSOLVE));
@@ -101,9 +102,9 @@ void Map::Draw()
 
 		// rgb
 		float col[3];
-		col[0] = 0.5F;
-		col[1] = 0;
-		col[2] = 1;
+		col[0] = m_dissolveColor.x;
+		col[1] = m_dissolveColor.y;
+		col[2] = m_dissolveColor.z;
 		pShader->SetFloatArray("dissolveColor", col, 3);
 	}
 

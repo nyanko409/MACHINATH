@@ -18,12 +18,20 @@ void Boss::Draw()
 	BoxCollider::DrawCollider(collider, D3DCOLOR(D3DCOLOR_RGBA(255, 0, 0, 255)));
 #endif
 
+	// shader values
 	if (enableDraw)
 	{
 		MyDirect3D_GetDevice()->SetTexture(1, Texture_GetTexture(TEXTURE_INDEX_DISSOLVE));
 
 		dissolveValue -= 0.006F;
 		pShader->SetFloat("value", dissolveValue);
+
+		// rgb
+		float col[3];
+		col[0] = 0;
+		col[1] = 0;
+		col[2] = 0;
+		pShader->SetFloatArray("dissolveColor", col, 3);
 	}
 
 	// draw both faces for boss
