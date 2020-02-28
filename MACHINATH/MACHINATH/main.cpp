@@ -453,6 +453,16 @@ void InitRenderState()
 	device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_ANISOTROPIC);
 	device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
+	// enable fog
+	float Density = 0.001f;
+
+	device->SetRenderState(D3DRS_FOGENABLE, TRUE);
+	device->SetRenderState(D3DRS_FOGCOLOR, D3DXCOLOR(220, 220, 220, 0));
+	device->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_EXP);
+	device->SetRenderState(D3DRS_FOGDENSITY, *(DWORD *)(&Density));
+
+	//device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 }	
 
 
