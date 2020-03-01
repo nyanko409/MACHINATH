@@ -104,7 +104,7 @@ public:
 		D3DXMatrixRotationY(&rotY, D3DXToRadian(GetCombinedRotation().y));
 		D3DXMatrixRotationZ(&rotZ, D3DXToRadian(GetCombinedRotation().z));
 
-		D3DXVECTOR3 newForward = forward;
+		D3DXVECTOR3 newForward = {0,0,1};
 		D3DXVec3TransformCoord(&newForward, &newForward, &rotX);
 		D3DXVec3TransformCoord(&newForward, &newForward, &rotY);
 		D3DXVec3TransformCoord(&newForward, &newForward, &rotZ);

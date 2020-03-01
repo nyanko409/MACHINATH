@@ -34,7 +34,10 @@ EFK_CHAR* path[]
 	(EFK_CHAR*)L"asset/shader/effekseer/qte_success.efk",
 	(EFK_CHAR*)L"asset/shader/effekseer/boost.efk",
 	(EFK_CHAR*)L"asset/shader/effekseer/air.efk",
-	(EFK_CHAR*)L"asset/shader/effekseer/explosion_red.efk"
+	(EFK_CHAR*)L"asset/shader/effekseer/explosion_red.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/explosion_twotone.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/explosion_blue.efk",
+	(EFK_CHAR*)L"asset/shader/effekseer/explosion_yellow.efk"
 };
 
 EffekseerRenderer::Renderer* renderer = NULL;
@@ -79,7 +82,7 @@ int PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 rotation, D3DXVECT
 	return handle;
 }
 
-void UpdateEffect(int handle, D3DXVECTOR3 position, D3DXVECTOR3 rotation)
+void UpdateEffect(int handle, D3DXVECTOR3 position, D3DXVECTOR3 rotation, D3DXVECTOR3 scale)
 {
 	// update the effect of given handle
 	for (int i = 0; i < g_effect.size(); ++i)
@@ -88,6 +91,7 @@ void UpdateEffect(int handle, D3DXVECTOR3 position, D3DXVECTOR3 rotation)
 		{
 			g_effect[i].position = Effekseer::Vector3D(position.x, position.y, position.z);
 			g_effect[i].rotation = Effekseer::Vector3D(rotation.x, rotation.y, rotation.z);
+			g_effect[i].scale = Effekseer::Vector3D(scale.x, scale.y, scale.z);
 			return;
 		}
 	}
@@ -110,7 +114,7 @@ void StopAllEffect()
 	g_effect.clear();
 }
 
-void StopEffect(int handle)
+void StopEffect(int& handle)
 {
 	manager->StopEffect(handle);
 	for (int i = 0; i < g_effect.size(); ++i)
@@ -122,6 +126,7 @@ void StopEffect(int handle)
 			g_effect[i].effect = NULL;
 
 			g_effect.erase(g_effect.begin() + i);
+			handle = -1;
 			return;
 		}
 	}

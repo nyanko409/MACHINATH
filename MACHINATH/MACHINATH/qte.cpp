@@ -56,7 +56,6 @@ bool StartQTE(QTE type, int multiCount)
 		g_outer.scale.x = g_outerScale;
 		g_outer.scale.y = g_outerScale;
 		g_outer.color.a = 0;
-		//PlaySound(AUDIO_SE_QTE_STANDBY, 0.2F);
 	}
 	else if (g_activeQTE == QTE_MULTIPRESS)
 	{
@@ -263,7 +262,7 @@ void qteMultiPress()
 		// add score after user input
 		if (onButtonPressed)
 		{
-			AddScore(10);
+			AddScore(20);
 		}
 
 		// erase if scale <= inner scale
@@ -282,10 +281,10 @@ void finishQTE(bool success)
 	}
 
 	// play sound effect
-	if (success)
-		PlaySound(AUDIO_SE_QTE_SUCCESS);
-	else
-		PlaySound(AUDIO_SE_QTE_FAIL);
+	//if (success)
+	//	PlaySound(AUDIO_SE_QTE_SUCCESS);
+	//else
+	//	PlaySound(AUDIO_SE_QTE_FAIL);
 
 	PlaySound(AUDIO_SE_SLOWMO_END, 1.0F);
 	g_active = false;

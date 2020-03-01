@@ -486,7 +486,7 @@ void UpdateTest()
 	t.y += 2.5F;
 	//t.z -= 2;
 	static int handle;
-	UpdateEffect(handle, t, GetPlayer()->GetCombinedRotation());
+	//UpdateEffect(handle, t, GetPlayer()->GetCombinedRotation());
 	
 	if(Keyboard_IsTrigger(DIK_Z))
 		FadeEdge(5, 20, 50, 255, 190);

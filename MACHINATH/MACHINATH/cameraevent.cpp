@@ -64,7 +64,7 @@ void InitCameraEvent()
 	offsetZ = -10;
 	offsetY = 10;
 	rotY = 0;
-	g_lerpSpeed = 0.01F;
+	g_lerpSpeed = 0.1F;
 	init = false;
 }
 

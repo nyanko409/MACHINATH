@@ -14,7 +14,10 @@ enum Effect
 	EFFECT_QTESUCCESS,
 	EFFECT_BOOST,
 	EFFECT_AIR,
-	EFFECT_EXPLOSION_RED
+	EFFECT_EXPLOSION_RED,
+	EFFECT_EXPLOSION_TWOTONE,
+	EFFECT_EXPLOSION_BLUE,
+	EFFECT_EXPLOSION_YELLOW
 };
 
 // call once at init
@@ -28,13 +31,13 @@ int PlayEffect(Effect type, D3DXVECTOR3 position, D3DXVECTOR3 rotation = {0, 0, 
 		D3DXVECTOR3 scale = {1, 1, 1}, float playSpeed = 1.0F);
 
 // update the effect of given handle
-void UpdateEffect(int handle, D3DXVECTOR3 position, D3DXVECTOR3 rotation);
+void UpdateEffect(int handle, D3DXVECTOR3 position, D3DXVECTOR3 rotation, D3DXVECTOR3 scale);
 
 // call every frame
 void DrawEffect();
 
 // stop the effect of given handle
-void StopEffect(int handle);
+void StopEffect(int& handle);
 
 // stop all effect
 void StopAllEffect();

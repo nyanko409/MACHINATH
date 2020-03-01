@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include "common.h"
 #include "shader.h"
 #include "mydirect3d.h"
 
@@ -59,13 +60,13 @@ void DrawObjects()
 	pDevice->GetTransform(D3DTS_PROJECTION, &matProjection);
 
 	// draw objects with default shader
-	for (int j = 0; j < effect.back().second.size(); j++)
+	for (int i = 0; i < effect.back().second.size(); ++i)
 	{
-		effect.back().second[j]->Draw();
+		effect.back().second[i]->Draw();
 	}
 
 	// draw for every shader except for default shader
-	for (int i = 0; i < effect.size() - 1; i++)
+	for (int i = 0; i < effect.size() - 1; ++i)
 	{
 		// begin pass
 		effect[i].first.effect->Begin(NULL, NULL);
@@ -76,7 +77,7 @@ void DrawObjects()
 		effect[i].first.effect->SetMatrix("Projection", &matProjection);
 
 		// draw every assigned gameobject 
-		for (int j = 0; j < effect[i].second.size(); j++)
+		for (int j = 0; j < effect[i].second.size(); ++j)
 		{
 			effect[i].second[j]->Draw();
 		}
@@ -101,9 +102,8 @@ void DeassignShader(GameObject* obj, SHADER_TYPE type)
 void UninitShader()
 {
 	// free memory
-	for (int i = 0; i < effect.size(); i++)
+	for (int i = 0; i < effect.size(); ++i)
 	{
-		if(effect[i].first.effect)
-			effect[i].first.effect->Release();
+		SAFE_RELEASE(effect[i].first.effect);
 	}
 }
