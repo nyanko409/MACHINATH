@@ -30,12 +30,15 @@ static int titleforwardcnt;
 static int g_Animecnt;
 static int eyeRed, eyeGreen, eyeBlue;
 
+static bool SunaAnimeFrag;
+
 ColorFade g_color;
 
 
 void InitTitleScreen()
 {
 	//init  
+	SunaAnimeFrag = false;
 	g_color = COLOR_BLUE_IN;
 	titleforwardcnt = 60;
 	g_Animecnt = ANIMATION_PERIOD;
@@ -83,6 +86,7 @@ void InitTitleScreen()
 
 void UpdateTitleScreen()
 {
+
 	// control titleforward
 	if (titleforwardcnt > 0)
 	{
@@ -176,7 +180,9 @@ void UpdateTitleScreen()
 	// fade to game screen
 	if (onButtonPressed && StartFadeToScene(SCENE_GAMESCREEN))
 	{
+		SunaAnimeFrag = true;
 		StopSound(AUDIO_SE_TITLE_NOISE);
+		PlaySound(AUDIO_SE_TITLE_NOISE);
 		PlaySound(AUDIO_SE_TITLE_PUSHBUTTON , 0.2f);
 		StartFade(AUDIO_BGM_TITLE, 0, 3.0F);
 
@@ -185,47 +191,63 @@ void UpdateTitleScreen()
 
 void DrawTitleScreen()
 {
-	// draw title screen
-	SpriteDraw(g_titleeye);
 
-
-	//animation
-	if (g_Animecnt > 0 && g_Animecnt < ANIMATION_SPAN)
-	{
-		//SpriteDraw(g_titleSuna1);
-		
-		SpriteDraw(g_titleAnime1);
-	}
-	else if (g_Animecnt > ANIMATION_SPAN && g_Animecnt < ANIMATION_SPAN*2)
-	{
-		//SpriteDraw(g_titleSuna2);
-
-		SpriteDraw(g_titleAnime2);
-	}
-	else if (g_Animecnt > ANIMATION_SPAN*2 && g_Animecnt < ANIMATION_SPAN*3)
-	{
-		SpriteDraw(g_titleAnime3);
-	}
-	else if (g_Animecnt > ANIMATION_SPAN * 3 && g_Animecnt < ANIMATION_SPAN * 4)
-	{
-		SpriteDraw(g_titleAnime2);
-	}
-	else if (g_Animecnt > ANIMATION_SPAN * 4 && g_Animecnt < ANIMATION_SPAN * 5)
-	{
-		SpriteDraw(g_titleAnime1);
-	}
-	else
+	if (!SunaAnimeFrag)
 	{
 
-		if (titleforwardcnt > 30)
+		// draw title screen
+		SpriteDraw(g_titleeye);
+
+		//animation
+		if (g_Animecnt > 0 && g_Animecnt < ANIMATION_SPAN)
 		{
-			SpriteDraw(g_titleforward);
+			//SpriteDraw(g_titleSuna1);
+
+			SpriteDraw(g_titleAnime1);
+		}
+		else if (g_Animecnt > ANIMATION_SPAN && g_Animecnt < ANIMATION_SPAN * 2)
+		{
+			//SpriteDraw(g_titleSuna2);
+
+			SpriteDraw(g_titleAnime2);
+		}
+		else if (g_Animecnt > ANIMATION_SPAN * 2 && g_Animecnt < ANIMATION_SPAN * 3)
+		{
+			SpriteDraw(g_titleAnime3);
+		}
+		else if (g_Animecnt > ANIMATION_SPAN * 3 && g_Animecnt < ANIMATION_SPAN * 4)
+		{
+			SpriteDraw(g_titleAnime2);
+		}
+		else if (g_Animecnt > ANIMATION_SPAN * 4 && g_Animecnt < ANIMATION_SPAN * 5)
+		{
+			SpriteDraw(g_titleAnime1);
 		}
 		else
 		{
-			SpriteDraw(g_titleforward2);
+
+			if (titleforwardcnt > 30)
+			{
+				SpriteDraw(g_titleforward);
+			}
+			else
+			{
+				SpriteDraw(g_titleforward2);
+			}
 		}
 	}
+	else
+	{
+		if ((g_Animecnt/5) > ANIMATION_SPAN)
+		{
+			SpriteDraw(g_titleSuna1);
+		}
+		else
+		{
+			SpriteDraw(g_titleSuna2);
+		}
+	}
+	
 
 	//control color of sprites
 	g_titleAnime1.color = g_titleAnime2.color = g_titleAnime3.color=
