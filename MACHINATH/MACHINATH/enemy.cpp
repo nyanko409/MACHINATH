@@ -223,7 +223,7 @@ void UpdateEnemy()
 void UpdateEnemyEvent(Enemy*& enemy)
 {
 	static float lerpValue = 0.01F;
-	static float scale = 1;
+	static float scale = 0.1F;
 	static int handle = -1;
 
 	// return if not needed
@@ -232,6 +232,11 @@ void UpdateEnemyEvent(Enemy*& enemy)
 	// collided with event collider
 	if (enemy->eventCollider && enemy->eventCollider->CheckCollision(GetPlayer()->col))
 	{
+		lerpValue = 0.01F;
+		scale = 0.1F;
+		handle = -1;
+
+		// start qte
 		QueueMapEvent({ {}, MapEvent::QTE_MULTI, 20, 0.1F });
 		SAFE_DELETE(enemy->eventCollider);
 
@@ -266,7 +271,7 @@ void UpdateEnemyEvent(Enemy*& enemy)
 			GetPlayer()->GetCombinedRotation(), { scale,scale,scale });
 
 		// increase effect scale
-		if (onButtonPressed) scale += 0.3F;
+		if (onButtonPressed) scale += 0.1F;
 
 		// move player forcefully back to center
 		GetPlayer()->isMovingSideways = false;
@@ -310,8 +315,6 @@ void UpdateEnemyEvent(Enemy*& enemy)
 
 		lerpValue = 0.001F;
 		SetLerpSpeed(lerpValue);
-
-		scale = 1;
 
 		// queue up camera event
 		CameraEventData ced = { 80, 2.0F, 10, 0.2F, 1, 0.2F };
